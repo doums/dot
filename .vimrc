@@ -12,6 +12,7 @@ Plug 'scrooloose/nerdtree'
 Plug 'itchyny/lightline.vim'
 Plug 'morhetz/gruvbox'
 Plug 'junegunn/fzf.vim'
+Plug 'dag/vim-fish'
 
 call plug#end()
 
