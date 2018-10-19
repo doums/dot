@@ -16,9 +16,22 @@ alias grep='grep --color=tty -d skip'
 alias sb='subl'
 alias emu="cd /home/pierre/Android/Sdk/emulator/ && emulator -avd android -gpu host -accel on -scale 2 -no-boot-anim"
 
+# bash provides PROMPT_COMMAND to hold a command that will be evaluated right before PS1
+# xterm enables to change the window icon and title with a special sequence using the Operating System Command
+# xterm defines OSC as following: ESC ] (an escape follewed by a closing bracket])
+# the corresponding sequence using by xterm to change the window icon and title is
+# OSC 0 ; text BEL
+# its ascii equivalent \033]0;text\007
+# or with bash escape sequences \e]0;text\a
+# with text as a text parameter composed of printable characters.
+#
+# sources:
 # http://tldp.org/HOWTO/Xterm-Title-4.html#ss4.3
+# http://invisible-island.net/xterm/ctlseqs/ctlseqs.html
+
 # https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html
-PROMPT_COMMAND='echo -ne "\033]0;${SHELL##*/} ${PWD}\007"'
+
+PROMPT_COMMAND='printf "\e]0;%s %s\a" "${HOSTNAME%%.*}" "${PWD/#$HOME/\~}"'
 PS1='\u \[\033[0;32m\]\$ \[\033[m\]'
 
 export QT_AUTO_SCREEN_SCALE_FACTOR=1
