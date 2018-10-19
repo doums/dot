@@ -11,6 +11,7 @@ Plug 'tpope/vim-surround'
 Plug 'scrooloose/nerdtree'
 Plug 'itchyny/lightline.vim'
 Plug 'morhetz/gruvbox'
+Plug 'junegunn/fzf.vim'
 
 call plug#end()
 
@@ -18,11 +19,10 @@ set termguicolors
 set number
 " let g:gruvbox_italic=1
 colo hypsteria
-set background=dark
+" set background=dark
 filetype plugin on
 syntax on
 set nocompatible
-map <C-n> :NERDTreeToggle<CR>
 set noshowmode
 set laststatus=2
 let g:lightline = {
@@ -31,3 +31,12 @@ let g:lightline = {
 set shortmess=FaWcs
 set ignorecase
 set smartcase
+set tabstop=2
+set shiftwidth=2
+set expandtab
+set smarttab
+set hlsearch
+set incsearch
+nnoremap <silent> <C-s> :Files<CR>
+nnoremap <silent> ,<space> :nohlsearch<CR>
+map <C-n> :NERDTreeToggle<CR>
