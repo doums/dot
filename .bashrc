@@ -18,7 +18,7 @@ alias emu="cd /home/pierre/Android/Sdk/emulator/ && emulator -avd android -gpu h
 
 # bash provides PROMPT_COMMAND to hold a command that will be evaluated right before PS1
 # xterm enables to change the window icon and title with a special sequence using the Operating System Command
-# xterm defines OSC as following: ESC ] (an escape follewed by a closing bracket])
+# xterm defines OSC as following: ESC ] (an escape follewed by a closing bracket)
 # the corresponding sequence using by xterm to change the window icon and title is
 # OSC 0 ; text BEL
 # its ascii equivalent \033]0;text\007
