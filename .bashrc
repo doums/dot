@@ -16,6 +16,7 @@ alias grep='grep --color=tty -d skip'
 alias sb='subl'
 alias emu="cd /home/pierre/Android/Sdk/emulator/ && emulator -avd android -gpu host -accel on -scale 2 -no-boot-anim"
 
+# http://tldp.org/HOWTO/Xterm-Title-4.html#ss4.3
 PROMPT_COMMAND='echo -ne "\033]0;${TERM} - ${SHELL}:   ${PWD}\007"'
 PS1='\u \[\033[0;32m\]\$ \[\033[m\]'
 
