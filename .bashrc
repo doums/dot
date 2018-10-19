@@ -17,7 +17,8 @@ alias sb='subl'
 alias emu="cd /home/pierre/Android/Sdk/emulator/ && emulator -avd android -gpu host -accel on -scale 2 -no-boot-anim"
 
 # http://tldp.org/HOWTO/Xterm-Title-4.html#ss4.3
-PROMPT_COMMAND='echo -ne "\033]0;${SHELL##*/}: ${PWD}\007"'
+# https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html
+PROMPT_COMMAND='echo -ne "\033]0;${SHELL##*/} ${PWD}\007"'
 PS1='\u \[\033[0;32m\]\$ \[\033[m\]'
 
 export QT_AUTO_SCREEN_SCALE_FACTOR=1
