@@ -24,12 +24,13 @@ colo hypsteria
 filetype plugin on
 syntax on
 set nocompatible
+set showcmd
 set noshowmode
 set laststatus=2
 let g:lightline = {
       \ 'colorscheme': 'seoul256',
       \ }
-set shortmess=FaWcs
+set shortmess=fFaWcs
 set ignorecase
 set smartcase
 set tabstop=2
