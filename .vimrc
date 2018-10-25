@@ -42,3 +42,10 @@ set incsearch
 nnoremap <silent> <C-s> :Files<CR>
 nnoremap <silent> ,<space> :nohlsearch<CR>
 map <C-n> :NERDTreeToggle<CR>
+inoremap " ""<left>
+inoremap ' ''<left>
+inoremap ( ()<left>
+inoremap [ []<left>
+inoremap { {}<left>
+inoremap {<CR> {<CR>}<ESC>O
+inoremap {;<CR> {<CR>};<ESC>O
