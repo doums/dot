@@ -6,7 +6,6 @@ endif
 
 call plug#begin('~/.vim/plugged')
 
-Plug 'BrainDeath0/Hypsteria'
 Plug 'tpope/vim-surround'
 Plug 'scrooloose/nerdtree'
 Plug 'itchyny/lightline.vim'
@@ -20,9 +19,9 @@ call plug#end()
 let mapleader = ","
 set termguicolors
 set number
-" let g:gruvbox_italic=1
-colo hypsteria
-" set background=dark
+let g:gruvbox_italic=1
+set background=dark
+colorscheme gruvbox
 filetype plugin on
 syntax on
 set nocompatible
@@ -53,3 +52,7 @@ nnoremap <silent> <space> :nohlsearch<CR>
 map <C-n> :NERDTreeToggle<CR>
 map <Leader>c <plug>NERDCommenterToggle
 map <Leader><S-c> <plug>NERDCommenterSexy
+nmap <Up> <Nop>
+nmap <Down> <Nop>
+nmap <Right> <Nop>
+nmap <Left> <Nop>
