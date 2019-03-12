@@ -13,9 +13,11 @@ Plug 'itchyny/lightline.vim'
 Plug 'morhetz/gruvbox'
 Plug 'junegunn/fzf.vim'
 Plug 'dag/vim-fish'
+Plug 'scrooloose/nerdcommenter'
 
 call plug#end()
 
+let mapleader = ","
 set termguicolors
 set number
 " let g:gruvbox_italic=1
@@ -39,6 +41,15 @@ set expandtab
 set smarttab
 set hlsearch
 set incsearch
+set showmatch
+set matchtime=3
+let g:NERDCreateDefaultMappings = 0
+let g:NERDSpaceDelims = 1
+let g:NERDCompactSexyComs = 1
+let g:NERDCommentEmptyLines = 1
+let g:NERDTrimTrailingWhitespace = 1
 nnoremap <silent> <C-s> :Files<CR>
-nnoremap <silent> ,<space> :nohlsearch<CR>
+nnoremap <silent> <space> :nohlsearch<CR>
 map <C-n> :NERDTreeToggle<CR>
+map <Leader>c <plug>NERDCommenterToggle
+map <Leader><S-c> <plug>NERDCommenterSexy
