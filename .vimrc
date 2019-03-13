@@ -13,6 +13,7 @@ Plug 'morhetz/gruvbox'
 Plug 'junegunn/fzf.vim'
 Plug 'dag/vim-fish'
 Plug 'scrooloose/nerdcommenter'
+Plug 'doums/lightlineGruvbox'
 
 call plug#end()
 
@@ -29,7 +30,7 @@ set showcmd
 set noshowmode
 set laststatus=2
 let g:lightline = {
-      \ 'colorscheme': 'seoul256',
+      \ 'colorscheme': 'gruvbox',
       \ }
 set shortmess=fFaWcs
 set ignorecase
