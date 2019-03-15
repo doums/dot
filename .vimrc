@@ -17,6 +17,7 @@ Plug 'doums/lightlineGruvbox'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 Plug 'airblade/vim-gitgutter'
+Plug 'leafgarland/typescript-vim'
 
 call plug#end()
 
@@ -53,6 +54,7 @@ let g:NERDCompactSexyComs = 1
 let g:NERDCommentEmptyLines = 1
 let g:NERDTrimTrailingWhitespace = 1
 let g:gitgutter_enabled = 0
+let g:typescript_indent_disable = 1
 nnoremap <silent> <C-s> :Files<CR>
 nnoremap <silent> <space> :nohlsearch<CR>
 map <C-n> :NERDTreeToggle<CR>
