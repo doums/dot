@@ -14,6 +14,9 @@ Plug 'junegunn/fzf.vim'
 Plug 'dag/vim-fish'
 Plug 'scrooloose/nerdcommenter'
 Plug 'doums/lightlineGruvbox'
+Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
+Plug 'airblade/vim-gitgutter'
 
 call plug#end()
 
@@ -43,11 +46,13 @@ set hlsearch
 set incsearch
 set showmatch
 set matchtime=3
+set updatetime=100
 let g:NERDCreateDefaultMappings = 0
 let g:NERDSpaceDelims = 1
 let g:NERDCompactSexyComs = 1
 let g:NERDCommentEmptyLines = 1
 let g:NERDTrimTrailingWhitespace = 1
+let g:gitgutter_enabled = 0
 nnoremap <silent> <C-s> :Files<CR>
 nnoremap <silent> <space> :nohlsearch<CR>
 map <C-n> :NERDTreeToggle<CR>
@@ -57,3 +62,4 @@ nmap <Up> <Nop>
 nmap <Down> <Nop>
 nmap <Right> <Nop>
 nmap <Left> <Nop>
+nnoremap <Leader>g :GitGutterToggle<CR>
