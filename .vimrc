@@ -34,6 +34,7 @@ set background=dark
 colorscheme gruvbox
 filetype plugin on
 syntax on
+set mouse=a
 set nocompatible
 set showcmd
 set noshowmode
@@ -52,7 +53,7 @@ set matchtime=3
 set updatetime=100
 set splitbelow
 set splitright
-" remove all trailing whitespace before write
+" remove all trailing white space before write
 autocmd BufWritePre * %s/\s\+$//e
 
 " plugins config
@@ -74,13 +75,19 @@ let g:lightline = {
 let g:gitgutter_enabled = 0
 let g:typescript_indent_disable = 1
 let g:ale_set_highlights = 1
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_info_str = 'I'
+let g:ale_echo_msg_format = '[%linter%][%severity%] %s'
 let b:ale_fixers = {
       \ 'javascript': [ 'eslint' ],
-      \ 'typescript': [ 'eslint' ]
+      \ 'typescript': [ 'eslint', 'tsserver' ],
+      \ 'graphql': [ 'eslint ']
       \ }
 let b:ale_linters = {
       \ 'javascript': [ 'eslint', 'standard' ],
-      \ 'typescript': [ 'eslint' ]
+      \ 'typescript': [ 'eslint', 'tsserver' ],
+      \ 'graphql': [ 'eslint ']
       \ }
 let g:ale_linters_explicit = 1
 let g:fzf_colors =
@@ -117,6 +124,7 @@ noremap <Up> <Nop>
 noremap <Down> <Nop>
 noremap <Right> <Nop>
 noremap <Left> <Nop>
+nnoremap <silent> <F2> :setlocal spell! spelllang=en_us<CR>
 nnoremap <silent> <Leader>g :GitGutterToggle<CR>
 
 " NERDTree
@@ -130,6 +138,8 @@ imap <C-Space> <Plug>(ale_complete)
 nmap <Leader>b <Plug>(ale_go_to_definition_in_split)
 nmap <Leader>r <Plug>(ale_find_references)
 nmap <Leader>d <Plug>(ale_detail)
+nnoremap <Leader>f :ALESymbolSearch
+map <C-q> <Plug>(ale_hover)
 
 " tab
 nnoremap <Leader>t :tabnew<CR>
@@ -157,3 +167,8 @@ nnoremap <silent> <Leader><S-w> :vertical :resize -4<CR>
 highlight ALEInfo ctermfg=109 cterm=italic
 highlight ALEWarning ctermfg=214 cterm=italic
 highlight ALEError ctermfg=167 cterm=italic
+" fix spell highlight
+highlight SpellBad ctermfg=167 cterm=underline
+highlight SpellLocal ctermfg=108 cterm=underline
+highlight SpellCap ctermfg=108 cterm=underline
+highlight SpellRare ctermfg=108 cterm=underline
