@@ -26,6 +26,7 @@ call plug#end()
 let mapleader = ","
 set termguicolors
 set number
+let g:gruvbox_italic=1
 set background=dark
 colorscheme gruvbox
 filetype plugin on
@@ -48,9 +49,10 @@ set matchtime=3
 set updatetime=100
 set splitbelow
 set splitright
+" remove all trailing whitespace before write
+autocmd BufWritePre * %s/\s\+$//e
 
 " plugins config
-let g:gruvbox_italic=1
 let g:NERDTreeQuitOnOpen = 1
 let g:NERDTreeMapPreviewSplit = '<Leader>s'
 let g:NERDTreeMapPreviewVSplit = '<Leader>v'
