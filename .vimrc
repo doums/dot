@@ -27,6 +27,7 @@ let mapleader = ","
 set termguicolors
 set number
 let g:gruvbox_italic=1
+let g:gruvbox_sign_column='bg0'
 set background=dark
 colorscheme gruvbox
 filetype plugin on
