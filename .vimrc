@@ -54,6 +54,7 @@ autocmd BufWritePre * %s/\s\+$//e
 
 " plugins config
 let g:NERDTreeQuitOnOpen = 1
+let g:NERDTreeShowHidden = 1
 let g:NERDTreeMapPreviewSplit = '<Leader>s'
 let g:NERDTreeMapPreviewVSplit = '<Leader>v'
 let g:NERDTreeMapOpenSplit = 's'
@@ -70,12 +71,13 @@ let g:lightline = {
 set shortmess=fFaWcs
 let g:gitgutter_enabled = 0
 let g:typescript_indent_disable = 1
+let g:ale_set_highlights = 1
 let b:ale_fixers = {
       \ 'javascript': [ 'eslint' ],
       \ 'typescript': [ 'eslint' ]
       \ }
 let b:ale_linters = {
-      \ 'javascript': [ 'eslint' ],
+      \ 'javascript': [ 'eslint', 'standard' ],
       \ 'typescript': [ 'eslint' ]
       \ }
 let g:ale_linters_explicit = 1
@@ -109,20 +111,31 @@ nnoremap " <End>
 vnoremap " <End>
 nnoremap <silent> <C-s> :Files<CR>
 nnoremap <silent> <space> :nohlsearch<CR>
-noremap <silent> <C-n> :NERDTreeToggle<CR>
-map <Leader>c <plug>NERDCommenterToggle
-map <Leader><S-c> <plug>NERDCommenterSexy
 noremap <Up> <Nop>
 noremap <Down> <Nop>
 noremap <Right> <Nop>
 noremap <Left> <Nop>
 nnoremap <silent> <Leader>g :GitGutterToggle<CR>
-nnoremap <Leader>b :ALEGoToDefinition<CR>
-nnoremap <Leader>r :ALEFindReferences<CR>
+
+" NERDTree
+noremap <silent> <C-n> :NERDTreeToggle<CR>
+map <Leader>c <plug>NERDCommenterToggle
+map <Leader><S-c> <plug>NERDCommenterSexy
+
+" Ale
+nmap <Leader>a <Plug>(ale_toggle)
+imap <C-Space> <Plug>(ale_complete)
+nmap <Leader>b <Plug>(ale_go_to_definition_in_split)
+nmap <Leader>r <Plug>(ale_find_references)
+nmap <Leader>d <Plug>(ale_detail)
+
+" tab
 nnoremap <Leader>t :tabnew<CR>
 nnoremap <silent> <C-Right> :tabn<CR>
 nnoremap <silent> <C-Left> :tabp<CR>
 nnoremap <C-o> :tabo<CR>
+
+" window
 nnoremap <Leader>s :new<CR>
 nnoremap <Leader>v :vnew<CR>
 nnoremap <Leader><S-s> :split<CR>
@@ -137,3 +150,8 @@ nnoremap <silent> <Leader>< :resize +4<CR>
 nnoremap <silent> <Leader>> :resize -4<CR>
 nnoremap <silent> <Leader>w :vertical :resize +4<CR>
 nnoremap <silent> <Leader><S-w> :vertical :resize -4<CR>
+
+" fix gruvbox's highlight for Ale
+highlight ALEInfo ctermfg=109 cterm=italic
+highlight ALEWarning ctermfg=214 cterm=italic
+highlight ALEError ctermfg=167 cterm=italic
