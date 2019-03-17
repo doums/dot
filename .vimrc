@@ -4,6 +4,8 @@ if empty(glob('~/.vim/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
+let g:ale_completion_enabled=1
+
 call plug#begin('~/.vim/plugged')
 
 Plug 'tpope/vim-surround'
@@ -69,7 +71,6 @@ let g:NERDTrimTrailingWhitespace = 1
 let g:lightline = {
       \ 'colorscheme': 'gruvbox',
       \ }
-set shortmess=fFaWcs
 let g:gitgutter_enabled = 0
 let g:typescript_indent_disable = 1
 let g:ale_set_highlights = 1
