@@ -21,6 +21,7 @@ Plug 'mxw/vim-jsx'
 Plug 'airblade/vim-gitgutter'
 Plug 'leafgarland/typescript-vim'
 Plug 'w0rp/ale'
+Plug 'tpope/vim-fugitive'
 
 call plug#end()
 
@@ -34,7 +35,7 @@ set background=dark
 colorscheme gruvbox
 filetype plugin on
 syntax on
-set mouse=a
+" set mouse=a
 set nocompatible
 set showcmd
 set noshowmode
