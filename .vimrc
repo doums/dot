@@ -22,6 +22,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'leafgarland/typescript-vim'
 Plug 'w0rp/ale'
 Plug 'tpope/vim-fugitive'
+Plug 'rust-lang/rust.vim'
 
 call plug#end()
 
@@ -80,15 +81,16 @@ let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_info_str = 'I'
 let g:ale_echo_msg_format = '[%linter%][%severity%] %s'
-let b:ale_fixers = {
+let g:ale_fixers = {
       \ 'javascript': [ 'eslint' ],
       \ 'typescript': [ 'eslint', 'tsserver' ],
       \ 'graphql': [ 'eslint ']
       \ }
-let b:ale_linters = {
+let g:ale_linters = {
       \ 'javascript': [ 'eslint', 'standard' ],
       \ 'typescript': [ 'eslint', 'tsserver' ],
-      \ 'graphql': [ 'eslint ']
+      \ 'graphql': [ 'eslint '],
+      \ 'rust': [ 'cargo', 'rls', 'rustc', 'clippy', 'rustfmt' ]
       \ }
 let g:ale_linters_explicit = 1
 let g:fzf_colors =
