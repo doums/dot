@@ -81,6 +81,7 @@ let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_info_str = 'I'
 let g:ale_echo_msg_format = '[%linter%][%severity%] %s'
+let g:ale_lint_on_text_changed = 'never'
 let g:ale_fixers = {
       \ 'javascript': [ 'eslint' ],
       \ 'typescript': [ 'eslint', 'tsserver' ],
@@ -117,6 +118,7 @@ nnoremap <Leader>y "ay
 nnoremap <Leader>i "ayiw
 vnoremap <Leader>y "ay
 nnoremap <Leader>p "ap
+nnoremap <Leader>P "aP
 nnoremap é <Home>
 vnoremap é <Home>
 nnoremap " <End>
