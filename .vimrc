@@ -162,7 +162,11 @@ nnoremap <silent> <C-h> <C-w>h
 nnoremap <silent> <C-l> <C-w>l
 nnoremap <silent> <C-k> <C-w>k
 nnoremap <silent> <C-j> <C-w>j
-nnoremap <Leader>= <C-w>=
+nnoremap <silent> <Leader><Left> <C-w>H
+nnoremap <silent> <Leader><Down> <C-w>J
+nnoremap <silent> <Leader><Up> <C-w>K
+nnoremap <silent> <Leader><Right> <C-w>L
+noremap <Leader>= <C-w>=
 nnoremap <silent> <Leader>< :resize +4<CR>
 nnoremap <silent> <Leader>> :resize -4<CR>
 nnoremap <silent> <Leader>w :vertical :resize +4<CR>
