@@ -44,10 +44,10 @@ set laststatus=2
 set shortmess=fFaWcs
 set ignorecase
 set smartcase
+set autoindent
 set tabstop=2
 set shiftwidth=2
 set expandtab
-set smarttab
 set hlsearch
 set incsearch
 set showmatch
@@ -141,6 +141,7 @@ map <Leader><S-c> <plug>NERDCommenterSexy
 nmap <Leader>a <Plug>(ale_toggle)
 imap <C-Space> <Plug>(ale_complete)
 nmap <Leader>b <Plug>(ale_go_to_definition_in_split)
+nmap <Leader>n <Plug>(ale_go_to_type_definition_in_split)
 nmap <Leader>r <Plug>(ale_find_references)
 nmap <Leader>d <Plug>(ale_detail)
 nnoremap <Leader>f :ALESymbolSearch
@@ -150,7 +151,6 @@ map <C-q> <Plug>(ale_hover)
 nnoremap <Leader>t :tabnew<CR>
 nnoremap <silent> <C-Right> :tabn<CR>
 nnoremap <silent> <C-Left> :tabp<CR>
-nnoremap <C-o> :tabo<CR>
 
 " window
 nnoremap <Leader>s :new<CR>
