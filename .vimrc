@@ -167,11 +167,15 @@ nmap <Leader>r <Plug>(ale_find_references)
 nmap <Leader>d <Plug>(ale_detail)
 nnoremap <Leader>f :ALESymbolSearch
 map <C-q> <Plug>(ale_hover)
+nmap <silent> <C-PageUp> <Plug>(ale_previous_wrap)
+nmap <silent> <C-PageDown> <Plug>(ale_next_wrap)
 
 " tab
 nnoremap <Leader>t :tabnew<CR>
 nnoremap <silent> <C-Right> :tabn<CR>
 nnoremap <silent> <C-Left> :tabp<CR>
+nnoremap <silent> <C-Up> :+tabmove<CR>
+nnoremap <silent> <C-Down> :-tabmove<CR>
 
 " window
 nnoremap <Leader>s :new<CR>
