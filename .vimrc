@@ -76,12 +76,11 @@ let g:lightline = {
       \ }
 let g:gitgutter_enabled = 0
 let g:typescript_indent_disable = 1
-let g:ale_set_highlights = 1
+let g:ale_set_highlights = 0
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_info_str = 'I'
 let g:ale_echo_msg_format = '[%linter%][%severity%] %s'
-let g:ale_lint_on_text_changed = 'never'
 let g:ale_fixers = {
       \ 'javascript': [ 'eslint' ],
       \ 'typescript': [ 'eslint', 'tsserver' ],
@@ -119,6 +118,28 @@ nnoremap <Leader>i "ayiw
 vnoremap <Leader>y "ay
 nnoremap <Leader>p "ap
 nnoremap <Leader>P "aP
+vnoremap <Leader>: <Esc>:%s/\%V
+nnoremap <Leader>: :%s/
+nnoremap dw diw
+nnoremap cw ciw
+nnoremap dW diW
+nnoremap cW ciW
+nnoremap db dib
+nnoremap cb cib
+nnoremap dB diB
+nnoremap cB ciB
+nnoremap d[ di[
+nnoremap c[ ci[
+nnoremap d< di<
+nnoremap c< ci<
+nnoremap dt dit
+nnoremap ct cit
+nnoremap d' di'
+nnoremap c' ci'
+nnoremap d" di"
+nnoremap c" ci"
+nnoremap d` di`
+nnoremap c` ci`
 nnoremap é <Home>
 vnoremap é <Home>
 nnoremap " <End>
@@ -139,7 +160,7 @@ map <Leader><S-c> <plug>NERDCommenterSexy
 
 " Ale
 nmap <Leader>a <Plug>(ale_toggle)
-imap <C-Space> <Plug>(ale_complete)
+imap <C-@> <Plug>(ale_complete)
 nmap <Leader>b <Plug>(ale_go_to_definition_in_split)
 nmap <Leader>n <Plug>(ale_go_to_type_definition_in_split)
 nmap <Leader>r <Plug>(ale_find_references)
