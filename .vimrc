@@ -98,6 +98,7 @@ let g:ale_linters = {
       \ 'rust': [ 'cargo', 'rls', 'rustc', 'clippy', 'rustfmt' ]
       \ }
 let g:ale_linters_explicit = 1
+let g:rustfmt_autosave = 1
 let g:fzf_colors =
 \ { 'fg':      ['fg', 'Normal'],
   \ 'bg':      ['bg', 'Normal'],
