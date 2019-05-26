@@ -126,10 +126,10 @@ let g:fzf_action = {
 " press Ctrl-v then press Alt + the key you want
 
 " INSERT move with Alt + hjkl
-inoremap h <C-o>h
-inoremap j <C-o>j
-inoremap k <C-o>k
-inoremap l <C-o>l
+inoremap h <Left>
+inoremap j <Down>
+inoremap k <Up>
+inoremap l <Right>
 " NORMAL move fast with Alt + hjkl
 nnoremap l w
 nnoremap h b
