@@ -55,8 +55,13 @@ set matchtime=3
 set updatetime=100
 set splitbelow
 set splitright
+set startofline
 " remove all trailing white space before write
 autocmd BufWritePre * %s/\s\+$//e
+" setup timeout for mapping sequence and key code recognition
+set ttimeout
+set timeoutlen=500
+set ttimeoutlen=50
 
 " plugins config
 let g:NERDTreeQuitOnOpen = 1
@@ -112,14 +117,38 @@ let g:fzf_action = {
   \ 'ctrl-s': 'split',
   \ 'ctrl-v': 'vsplit' }
 
+
 " mapping
+
+" to map Alt key, while writing the mapping
+" in INSERT mod
+" press Ctrl-v then press Alt + the key you want
+
+" INSERT move with Alt + hjkl
+inoremap h <C-o>h
+inoremap j <C-o>j
+inoremap k <C-o>k
+inoremap l <C-o>l
+" NORMAL move fast with Alt + hjkl
+nnoremap l w
+nnoremap h b
+nnoremap j <C-d>
+nnoremap k <C-u>
+" VISUAL move fast with Alt + hjkl
+vnoremap l w
+vnoremap h b
+vnoremap j <C-d>
+vnoremap k <C-u>
+" copy/past in/from "a register
 nnoremap <Leader>y "ay
 nnoremap <Leader>i "ayiw
 vnoremap <Leader>y "ay
 nnoremap <Leader>p "ap
 nnoremap <Leader>P "aP
-vnoremap <Leader>: <Esc>:%s/\%V
-nnoremap <Leader>: :%s/
+" search and replace
+vnoremap <Leader>f <Esc>:%s/\%V
+nnoremap <Leader>f :%s/
+" delete inner by default
 nnoremap dw diw
 nnoremap cw ciw
 nnoremap dW diW
@@ -144,14 +173,21 @@ nnoremap é <Home>
 vnoremap é <Home>
 nnoremap " <End>
 vnoremap " <End>
-nnoremap <silent> <C-s> :Files<CR>
+" hide highlight after a search
 nnoremap <silent> <space> :nohlsearch<CR>
+" c'est en forgeant que l'on devient forgeron
 noremap <Up> <Nop>
 noremap <Down> <Nop>
 noremap <Right> <Nop>
 noremap <Left> <Nop>
 nnoremap <silent> <F2> :setlocal spell! spelllang=en_us<CR>
 nnoremap <silent> <Leader>g :GitGutterToggle<CR>
+
+" fzf
+nnoremap <silent> <C-s> :Files<CR>
+imap d <plug>(fzf-complete-path)
+imap f <plug>(fzf-complete-file)
+imap w <plug>(fzf-complete-line)
 
 " NERDTree
 noremap <silent> <C-n> :NERDTreeToggle<CR>
@@ -165,7 +201,7 @@ nmap <Leader>b <Plug>(ale_go_to_definition_in_split)
 nmap <Leader>n <Plug>(ale_go_to_type_definition_in_split)
 nmap <Leader>r <Plug>(ale_find_references)
 nmap <Leader>d <Plug>(ale_detail)
-nnoremap <Leader>f :ALESymbolSearch
+nnoremap <Leader>: :ALESymbolSearch
 map <C-q> <Plug>(ale_hover)
 nmap <silent> <C-PageUp> <Plug>(ale_previous_wrap)
 nmap <silent> <C-PageDown> <Plug>(ale_next_wrap)
@@ -192,10 +228,11 @@ nnoremap <silent> <Leader><Down> <C-w>J
 nnoremap <silent> <Leader><Up> <C-w>K
 nnoremap <silent> <Leader><Right> <C-w>L
 noremap <Leader>= <C-w>=
-nnoremap <silent> <Leader>< :resize +4<CR>
-nnoremap <silent> <Leader>> :resize -4<CR>
-nnoremap <silent> <Leader>w :vertical :resize +4<CR>
-nnoremap <silent> <Leader><S-w> :vertical :resize -4<CR>
+nnoremap <silent> [1;3A :resize +4<CR>
+nnoremap <silent> [1;3B :resize -4<CR>
+nnoremap <silent> [1;3C :vertical :resize +4<CR>
+nnoremap <silent> [1;3D :vertical :resize -4<CR>
+
 
 " fix gruvbox's highlight for Ale
 highlight ALEInfo ctermfg=109 cterm=italic
