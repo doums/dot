@@ -26,7 +26,7 @@ Plug 'rust-lang/rust.vim'
 
 call plug#end()
 
-" main config
+" main config {{{
 let mapleader = ","
 set termguicolors
 set number
@@ -56,8 +56,9 @@ set updatetime=100
 set splitbelow
 set splitright
 set startofline
+" }}}
 
-" plugins config
+" plugins config {{{
 let g:NERDTreeQuitOnOpen = 1
 let g:NERDTreeShowHidden = 1
 let g:NERDTreeMapPreviewSplit = '<Leader>s'
@@ -111,9 +112,9 @@ let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-s': 'split',
   \ 'ctrl-v': 'vsplit' }
+" }}}
 
-
-" mapping
+" mapping {{{
 "
 " By default Vim assumes that pressing the Alt key sets the 8th bit of a
 " typed character. However Terminator don't use this system: when Alt key
@@ -229,9 +230,9 @@ nnoremap <silent> [1;3A :resize +4<CR>
 nnoremap <silent> [1;3B :resize -4<CR>
 nnoremap <silent> [1;3C :vertical :resize +4<CR>
 nnoremap <silent> [1;3D :vertical :resize -4<CR>
+" }}}
 
-
-" fix gruvbox's highlight for Ale
+" fix gruvbox's highlight for Ale {{{
 highlight ALEInfo ctermfg=109 cterm=italic
 highlight ALEWarning ctermfg=214 cterm=italic
 highlight ALEError ctermfg=167 cterm=italic
@@ -244,9 +245,9 @@ highlight SpellRare ctermfg=108 cterm=underline
 highlight Error ctermfg=167 ctermbg=235 cterm=italic
 highlight clear ErrorMsg
 highlight ErrorMsg ctermfg=172 ctermbg=235
+" }}}
 
-" autocommand
-
+" autocommand {{{
 augroup stuff
   au!
   " remove all trailing white space before write
@@ -260,3 +261,10 @@ augroup stuff
   autocmd BufEnter * inoremap <buffer> <nowait> <Esc> <Esc>
   autocmd BufEnter * vnoremap <buffer> <nowait> <Esc> <Esc>
 augroup END
+
+" set fold to marker for .vimrc
+augroup filetype_vim
+  autocmd!
+  autocmd FileType vim setlocal foldmethod=marker
+augroup END
+" }}}
