@@ -56,12 +56,6 @@ set updatetime=100
 set splitbelow
 set splitright
 set startofline
-" remove all trailing white space before write
-autocmd BufWritePre * %s/\s\+$//e
-" setup timeout for mapping sequence and key code recognition
-set ttimeout
-set timeoutlen=500
-set ttimeoutlen=50
 
 " plugins config
 let g:NERDTreeQuitOnOpen = 1
@@ -120,10 +114,16 @@ let g:fzf_action = {
 
 
 " mapping
-
-" to map Alt key, while writing the mapping
-" in INSERT mod
-" press Ctrl-v then press Alt + the key you want
+"
+" By default Vim assumes that pressing the Alt key sets the 8th bit of a
+" typed character. However Terminator don't use this system: when Alt key
+" is pressed, the escape sequence is sent.
+"
+" To map Alt key, while writing the mapping in INSERT mod
+" hit Ctrl-v then hit Alt + the key you want
+"
+" :h map-alt-keys
+" :h :map-special-keys
 
 " INSERT move with Alt + hjkl
 inoremap h <Left>
@@ -149,6 +149,8 @@ nnoremap <Leader>P "aP
 " search and replace
 vnoremap <Leader>f <Esc>:%s/\%V
 nnoremap <Leader>f :%s/
+" quit Vim (fail if there is pending changes)
+nnoremap <Leader>q :qall<CR>
 " delete inner by default
 nnoremap dw diw
 nnoremap cw ciw
@@ -181,7 +183,12 @@ noremap <Up> <Nop>
 noremap <Down> <Nop>
 noremap <Right> <Nop>
 noremap <Left> <Nop>
+" spell check
 nnoremap <silent> <F2> :setlocal spell! spelllang=en_us<CR>
+" open .vimrc, source it
+nnoremap <F3> :tabnew $MYVIMRC<cr>
+nnoremap <F4> :source $MYVIMRC<cr>
+
 nnoremap <silent> <Leader>g :GitGutterToggle<CR>
 
 " fzf
@@ -209,8 +216,8 @@ nmap <silent> <C-PageDown> <Plug>(ale_next_wrap)
 
 " tab
 nnoremap <Leader>t :tabnew<CR>
-nnoremap <silent> <C-Right> :tabn<CR>
-nnoremap <silent> <C-Left> :tabp<CR>
+noremap <silent> <C-Right> :tabn<CR>
+noremap <silent> <C-Left> :tabp<CR>
 nnoremap <silent> <C-Up> :+tabmove<CR>
 nnoremap <silent> <C-Down> :-tabmove<CR>
 
@@ -219,7 +226,6 @@ nnoremap <Leader>s :new<CR>
 nnoremap <Leader>v :vnew<CR>
 nnoremap <Leader><S-s> :split<CR>
 nnoremap <Leader><S-v> :vsplit<CR>
-nnoremap <Leader>o :only<CR>
 nnoremap <silent> <C-h> <C-w>h
 nnoremap <silent> <C-l> <C-w>l
 nnoremap <silent> <C-k> <C-w>k
@@ -244,3 +250,23 @@ highlight SpellBad ctermfg=167 cterm=underline
 highlight SpellLocal ctermfg=108 cterm=underline
 highlight SpellCap ctermfg=108 cterm=underline
 highlight SpellRare ctermfg=108 cterm=underline
+" change error highlight
+highlight Error ctermfg=167 ctermbg=235 cterm=italic
+highlight clear ErrorMsg
+highlight ErrorMsg ctermfg=172 ctermbg=235
+
+" autocommand
+
+augroup stuff
+  au!
+  " remove all trailing white space before write
+  autocmd BufWritePre * %s/\s\+$//e
+  " Because Alt send escape sequence and there is mapping that use it
+  " Vim now waits 'timeoutlen' when escape is pressed before exit insert or
+  " visual mode for example.
+  " The following 2 lines are the trick to remove this delay. <nowait> works
+  " only for buffer mapping. That's why we use BufEnter event to add this
+  " mapping to a buffer each time we enter in a buffer.
+  autocmd BufEnter * inoremap <buffer> <nowait> <Esc> <Esc>
+  autocmd BufEnter * vnoremap <buffer> <nowait> <Esc> <Esc>
+augroup END
