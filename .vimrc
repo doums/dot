@@ -151,27 +151,17 @@ vnoremap <Leader>f <Esc>:%s/\%V
 nnoremap <Leader>f :%s/
 " quit Vim (fail if there is pending changes)
 nnoremap <Leader>q :qall<CR>
-" delete inner by default
-nnoremap dw diw
-nnoremap cw ciw
-nnoremap dW diW
-nnoremap cW ciW
-nnoremap db dib
-nnoremap cb cib
-nnoremap dB diB
-nnoremap cB ciB
-nnoremap d[ di[
-nnoremap c[ ci[
-nnoremap d< di<
-nnoremap c< ci<
-nnoremap dt dit
-nnoremap ct cit
-nnoremap d' di'
-nnoremap c' ci'
-nnoremap d" di"
-nnoremap c" ci"
-nnoremap d` di`
-nnoremap c` ci`
+" work inner by default (:h omap-info)
+onoremap w iw
+onoremap W iW
+onoremap b ib
+onoremap B iB
+onoremap [ i[
+onoremap < i<
+onoremap t it
+onoremap ' i'
+onoremap " i"
+onoremap ` i`
 nnoremap é <Home>
 vnoremap é <Home>
 nnoremap " <End>
@@ -261,7 +251,7 @@ augroup stuff
   au!
   " remove all trailing white space before write
   autocmd BufWritePre * %s/\s\+$//e
-  " Because Alt send escape sequence and there is mapping that use it
+  " Because Alt send escape sequence and there are mapping that use it,
   " Vim now waits 'timeoutlen' when escape is pressed before exit insert or
   " visual mode for example.
   " The following 2 lines are the trick to remove this delay. <nowait> works
