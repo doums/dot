@@ -56,6 +56,8 @@ set updatetime=100
 set splitbelow
 set splitright
 set startofline
+set foldlevelstart=0
+set textwidth=0
 " }}}
 
 " plugins config {{{
@@ -141,7 +143,10 @@ vnoremap l w
 vnoremap h b
 vnoremap j <C-d>
 vnoremap k <C-u>
-" copy/past in/from "a register
+" NORMAL/VISUAL/OP_P move through wrapped line
+noremap j gj
+noremap k gk
+" copy in/past from "a register
 nnoremap <Leader>y "ay
 nnoremap <Leader>i "ayiw
 vnoremap <Leader>y "ay
@@ -152,7 +157,7 @@ vnoremap <Leader>f <Esc>:%s/\%V
 nnoremap <Leader>f :%s/
 " quit Vim (fail if there is pending changes)
 nnoremap <Leader>q :qall<CR>
-" work inner by default (:h omap-info)
+" OP_P work inner by default (:h omap-info)
 onoremap w iw
 onoremap W iW
 onoremap b ib
@@ -178,7 +183,7 @@ noremap <Left> <Nop>
 nnoremap <silent> <F2> :setlocal spell! spelllang=en_us<CR>
 " open .vimrc, source it
 nnoremap <F3> :tabnew $MYVIMRC<cr>
-nnoremap <F4> :source $MYVIMRC<cr>
+nnoremap <F5> :source $MYVIMRC<cr>
 
 nnoremap <silent> <Leader>g :GitGutterToggle<CR>
 
@@ -267,4 +272,77 @@ augroup filetype_vim
   autocmd!
   autocmd FileType vim setlocal foldmethod=marker
 augroup END
+" }}}
+
+" script {{{
+
+let s:pairs = [
+      \  ['`', '`'],
+      \  ['{', '}'],
+      \  ['(', ')'],
+      \  ['[', ']']
+      \]
+
+for [open, close] in s:pairs
+  if open != close
+    execute 'inoremap <expr><silent> ' . open . ' <SID>AutoClose("' . escape(open, '"') . '", "' . escape(close, '"') . '")'
+    execute 'inoremap <expr><silent> ' . close . ' <SID>SkipClose("' . escape(open, '"') . '", "' . escape(close, '"') . '")'
+  else
+    execute 'inoremap <silent> ' . open . ' <C-r>=<SID>IsOpen("' . escape(open, '"') . '")<CR>'
+  endif
+endfor
+
+function s:IsOpen(open)
+  let l:line = getline(".") . "un mot | "
+  return l:line
+endfunction
+
+function s:AutoClose(open, close)
+  let index = col(".")
+  if col(".") == col("$") && col("$") >= 3
+    let index = col("$") - 2
+  endif
+  if IsEscaped() == v:false && s:IsStringOrComment(line("."), index) == v:false && IsBeforeOrInsideWord() == v:false
+    return a:open . a:close . "\<Left>"
+  endif
+  return a:open
+endfunction
+
+function s:SkipClose(open, close)
+  echom searchpair(a:open, a:close, 'cnW')
+  if getline(".")[col(".") - 1] == a:close && searchpair(a:open, a:close, 'cnW', '<SID>IsStringOrComment(line("."), col("."))') > 0
+    return "\<Right>"
+  endif
+  return a:close
+endfunction
+
+function FindCloser(char)
+  for [open, close] in s:pairs
+    if open == a:char
+      return close
+    endif
+  endfor
+endfunction
+
+function s:IsStringOrComment(line, col)
+  if synIDattr(synIDtrans(synID(a:line, a:col, 0)), "name") =~? "string\\|comment"
+    return v:true
+  endif
+endfunction
+
+function IsEscaped()
+  if getline(".")[col(".") - 2] == '\'
+    return v:true
+  endif
+endfunction
+
+function IsBeforeOrInsideWord()
+  if col(".") == col("$")
+    return v:false
+  endif
+  if getline(".")[col(".") - 1] =~ '\s\|\W'
+    return v:false
+  endif
+  return v:true
+endfunction
 " }}}
