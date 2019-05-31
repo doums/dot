@@ -138,6 +138,18 @@ nnoremap l w
 nnoremap h b
 nnoremap j <C-d>
 nnoremap k <C-u>
+" NORMAL smooth scroll
+nnoremap <silent> J :call <SID>ScrollDown()<CR>
+nnoremap <silent> K :call <SID>ScrollUp()<CR>
+
+function s:ScrollDown()
+  execute "normal!" &scroll / 2 . "\<C-e>"
+endfunction
+
+function s:ScrollUp()
+  execute "normal!" &scroll / 2 . "\<C-y>"
+endfunction
+
 " VISUAL move fast with Alt + hjkl
 vnoremap l w
 vnoremap h b
@@ -277,6 +289,8 @@ augroup END
 " script {{{
 
 let s:pairs = [
+      \  ['"', '"'],
+      \  ["'", "'"],
       \  ['`', '`'],
       \  ['{', '}'],
       \  ['(', ')'],
@@ -288,13 +302,19 @@ for [open, close] in s:pairs
     execute 'inoremap <expr><silent> ' . open . ' <SID>AutoClose("' . escape(open, '"') . '", "' . escape(close, '"') . '")'
     execute 'inoremap <expr><silent> ' . close . ' <SID>SkipClose("' . escape(open, '"') . '", "' . escape(close, '"') . '")'
   else
-    execute 'inoremap <silent> ' . open . ' <C-r>=<SID>IsOpen("' . escape(open, '"') . '")<CR>'
+    execute 'inoremap <expr><silent> ' . open . ' <SID>ManageQuote("' . escape(open, '"') . '")'
   endif
 endfor
 
-function s:IsOpen(open)
-  let l:line = getline(".") . "un mot | "
-  return l:line
+inoremap <expr> <BS> <SID>AutoDelete()
+
+function s:ManageQuote(quote)
+  if s:IsString(line("."), col(".")) == v:true
+        \ && getline(".")[col(".") - 1] == a:quote
+        \ && !s:IsEscaped()
+    return "\<Right>"
+  endif
+  return s:AutoClose(a:quote, a:quote)
 endfunction
 
 function s:AutoClose(open, close)
@@ -302,41 +322,54 @@ function s:AutoClose(open, close)
   if col(".") == col("$") && col("$") >= 3
     let index = col("$") - 2
   endif
-  if IsEscaped() == v:false && s:IsStringOrComment(line("."), index) == v:false && IsBeforeOrInsideWord() == v:false
+  if !s:IsEscaped()
+        \ && !s:IsString(line("."), index)
+        \ && !s:IsComment(line("."), index)
+        \ && !s:IsBeforeOrInsideWord()
     return a:open . a:close . "\<Left>"
   endif
   return a:open
 endfunction
 
 function s:SkipClose(open, close)
-  echom searchpair(a:open, a:close, 'cnW')
-  if getline(".")[col(".") - 1] == a:close && searchpair(a:open, a:close, 'cnW', '<SID>IsStringOrComment(line("."), col("."))') > 0
+  if getline(".")[col(".") - 1] == a:close
+        \ && s:SearchPair(a:open, a:close, 'cnW', 's:IsString(line("."), col(".")) || s:IsComment(line("."), col("."))') > 0
     return "\<Right>"
   endif
   return a:close
 endfunction
 
-function FindCloser(char)
+function s:AutoDelete()
   for [open, close] in s:pairs
-    if open == a:char
-      return close
+    if open == close
+      if getline(".")[col(".") - 1] == open && getline(".")[col(".") - 2] == open
+        return "\<Esc>d2li"
+      endif
     endif
   endfor
+  return "\<BS>"
 endfunction
 
-function s:IsStringOrComment(line, col)
-  if synIDattr(synIDtrans(synID(a:line, a:col, 0)), "name") =~? "string\\|comment"
+function s:IsString(line, col)
+  if synIDattr(synIDtrans(synID(a:line, a:col, 0)), "name") =~? "string"
     return v:true
   endif
 endfunction
 
-function IsEscaped()
+function s:IsComment(line, col)
+  if synIDattr(synIDtrans(synID(a:line, a:col, 0)), "name") =~? "comment"
+    return v:true
+  endif
+endfunction
+
+
+function s:IsEscaped()
   if getline(".")[col(".") - 2] == '\'
     return v:true
   endif
 endfunction
 
-function IsBeforeOrInsideWord()
+function s:IsBeforeOrInsideWord()
   if col(".") == col("$")
     return v:false
   endif
@@ -345,4 +378,20 @@ function IsBeforeOrInsideWord()
   endif
   return v:true
 endfunction
-" }}}
+
+function s:SearchPair(open, close, flags, ...)
+  let cOpen = a:open
+  let cClose = a:close
+  if a:open == '['
+    let cOpen = '\['
+  endif
+  if a:close == ']'
+    let cClose = '\]'
+  endif
+  if a:0 == 1
+    return searchpair(cOpen, '', cClose, a:flags, a:1)
+  else
+    return searchpair(cOpen, '', cClose, a:flags)
+  endfunction
+
+  " }}}
