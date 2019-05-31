@@ -309,7 +309,8 @@ endfor
 inoremap <expr> <BS> <SID>AutoDelete()
 
 function s:ManageQuote(quote)
-  if s:IsString(line("."), col(".")) == v:true
+  if s:IsString(line("."), col("."))
+        \ && s:IsString(line("."), col(".") - 1)
         \ && getline(".")[col(".") - 1] == a:quote
         \ && !s:IsEscaped()
     return "\<Right>"
@@ -318,13 +319,9 @@ function s:ManageQuote(quote)
 endfunction
 
 function s:AutoClose(open, close)
-  let index = col(".")
-  if col(".") == col("$") && col("$") >= 3
-    let index = col("$") - 2
-  endif
   if !s:IsEscaped()
-        \ && !s:IsString(line("."), index)
-        \ && !s:IsComment(line("."), index)
+        \ && !s:IsString(line("."), col("."))
+        \ && !s:IsComment(line("."), col("."))
         \ && !s:IsBeforeOrInsideWord()
     return a:open . a:close . "\<Left>"
   endif
@@ -342,26 +339,56 @@ endfunction
 function s:AutoDelete()
   for [open, close] in s:pairs
     if open == close
-      if getline(".")[col(".") - 1] == open && getline(".")[col(".") - 2] == open
-        return "\<Esc>d2li"
+      let result = s:DeleteQuotes(open)
+      if result != ''
+        return result
+      endif
+    else
+      if getline(".")[col(".") - 1] == close
+
       endif
     endif
   endfor
   return "\<BS>"
 endfunction
 
+function s:DeleteQuotes(quote)
+  if getline(".")[col(".") - 1] == a:quote
+        \ && getline(".")[col(".") - 2] == a:quote
+        \ && !s:IsComment(line("."), col(".") - 1)
+        \ && !s:IsString(line("."), col(".") + 1)
+        \ && !s:IsString(line("."), col(".") - 2)
+        \ && getline(".")[col(".") - 3] != '\'
+    if col(".") + 1 == col("$")
+      return "\<Esc>d2la"
+    else
+      return "\<Esc>d2li"
+    endif
+  endif
+endfunction
+
+autocmd CursorMoved * call TestType()
+function TestType()
+  " echom synIDattr(synIDtrans(synID(line("."), col("."), 0)), "name")
+  " echom col(".")  col("$")
+endfunction
+
 function s:IsString(line, col)
-  if synIDattr(synIDtrans(synID(a:line, a:col, 0)), "name") =~? "string"
+  if s:GetSHL(a:line, a:col) =~? "string"
     return v:true
   endif
 endfunction
 
 function s:IsComment(line, col)
-  if synIDattr(synIDtrans(synID(a:line, a:col, 0)), "name") =~? "comment"
+  if s:GetSHL(a:line, a:col) =~? "comment"
+    return v:true
+  endif
+  if col(".") == col("$")
+        \ && !getline(line("."))[col(".") - 1]
+        \ && s:GetSHL(a:line, col(".") - 1) =~? "comment"
     return v:true
   endif
 endfunction
-
 
 function s:IsEscaped()
   if getline(".")[col(".") - 2] == '\'
@@ -394,4 +421,7 @@ function s:SearchPair(open, close, flags, ...)
     return searchpair(cOpen, '', cClose, a:flags)
   endfunction
 
+  function s:GetSHL(line, col)
+    return synIDattr(synIDtrans(synID(a:line, a:col, 0)), "name")
+  endfunction
   " }}}
