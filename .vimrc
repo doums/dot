@@ -35,6 +35,7 @@ let g:gruvbox_sign_column='bg0'
 set background=dark
 colorscheme gruvbox
 filetype plugin on
+filetype indent on
 syntax on
 " set mouse=a
 set nocompatible
@@ -44,7 +45,7 @@ set laststatus=2
 set shortmess=fFaWcs
 set ignorecase
 set smartcase
-set autoindent
+set cindent
 set tabstop=2
 set shiftwidth=2
 set expandtab
@@ -288,6 +289,9 @@ augroup END
 
 " script {{{
 
+noremap cm :messages clear<CR>
+noremap m : messages<CR>
+
 let s:pairs = [
       \  ['"', '"'],
       \  ["'", "'"],
@@ -340,16 +344,72 @@ function s:AutoDelete()
   for [open, close] in s:pairs
     if open == close
       let result = s:DeleteQuotes(open)
-      if result != ''
+      if !empty(result)
         return result
       endif
     else
-      if getline(".")[col(".") - 1] == close
-
+      let result = s:DeletePair(open, close)
+      if !empty(result)
+        return result
       endif
     endif
   endfor
   return "\<BS>"
+endfunction
+
+function s:DeletePair(open, close)
+  if getline(".")[col(".") - 2] == a:open
+        \ && getline(".")[col(".") - 3] != '\'
+    let [line, col] = s:SearchPairPos(a:open, a:close, 'cnW')
+    if line == 0 && col == 0
+      return
+    endif
+    let start = {'line': line("."), 'col': col(".")}
+    let end = {'line': line, 'col': col}
+    if s:InBetweenCheck(a:close, start, end)
+      echom "OK"
+    else
+      echom "FAIL"
+    endif
+  endif
+endfunction
+
+function s:InBetweenCheck(close, start, end)
+  if a:start.line == a:end.line
+    return s:OneLineCheck(a:close, a:start, a:end)
+  endif
+  if match(getline(a:start.line), '^\s*$', a:start.col - 1) == -1
+    echom "first line fail"
+    return v:false
+  endif
+  echom 'first line OK'
+  if a:start.line + 1 < a:end.line
+    for row in getline(a:start.line + 1, a:end.line - 1)
+      if match(row, '^\s*$') == -1
+        echom "in between fail"
+        return v:false
+      endif
+    endfor
+    echom "in between lines OK"
+  endif
+  let lastLine = strpart(getline(a:end.line), 0, a:end.col)
+  if match(lastLine, '^\s*'.escape(a:close, ']').'$') == -1
+    echom "last line fail"
+    return v:false
+  endif
+  echom "last line OK"
+  return v:true
+endfunction
+
+function s:OneLineCheck(close, start, end)
+  let line = strpart(getline(a:start.line), 0, a:end.col)
+  if match(line, '^\s*'.escape(a:close, ']').'$', a:start.col - 1) == -1
+    echom "one line fail"
+    return v:false
+  else
+    echom "one line OK"
+    return v:true
+  endif
 endfunction
 
 function s:DeleteQuotes(quote)
@@ -367,7 +427,7 @@ function s:DeleteQuotes(quote)
   endif
 endfunction
 
-autocmd CursorMoved * call TestType()
+autocmd CursorMovedI * call TestType()
 function TestType()
   " echom synIDattr(synIDtrans(synID(line("."), col("."), 0)), "name")
   " echom col(".")  col("$")
@@ -407,21 +467,23 @@ function s:IsBeforeOrInsideWord()
 endfunction
 
 function s:SearchPair(open, close, flags, ...)
-  let cOpen = a:open
-  let cClose = a:close
-  if a:open == '['
-    let cOpen = '\['
-  endif
-  if a:close == ']'
-    let cClose = '\]'
-  endif
   if a:0 == 1
-    return searchpair(cOpen, '', cClose, a:flags, a:1)
+    return searchpair(escape(a:open, '['), '', escape(a:close, ']'), a:flags, a:1)
   else
-    return searchpair(cOpen, '', cClose, a:flags)
-  endfunction
+    return searchpair(escape(a:open, '['), '', escape(a:close, ']'), a:flags)
+  endif
+endfunction
 
-  function s:GetSHL(line, col)
-    return synIDattr(synIDtrans(synID(a:line, a:col, 0)), "name")
-  endfunction
+function s:SearchPairPos(open, close, flags, ...)
+  if a:0 == 1
+    return searchpairpos(escape(a:open, '['), '', escape(a:close, ']'), a:flags, a:1)
+  else
+    return searchpairpos(escape(a:open, '['), '', escape(a:close, ']'), a:flags)
+  endif
+endfunction
+
+function s:GetSHL(line, col)
+  return synIDattr(synIDtrans(synID(a:line, a:col, 0)), "name")
+endfunction
+
   " }}}
