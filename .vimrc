@@ -195,8 +195,8 @@ noremap <Left> <Nop>
 " spell check
 nnoremap <silent> <F2> :setlocal spell! spelllang=en_us<CR>
 " open .vimrc, source it
-nnoremap <F3> :tabnew $MYVIMRC<cr>
-nnoremap <F5> :write<Esc>:source $MYVIMRC<cr>
+nnoremap <F3> :tabnew $MYVIMRC<CR>
+nnoremap <F5> :write<CR>:source $MYVIMRC<CR>:messages clear<CR>
 
 nnoremap <silent> <Leader>g :GitGutterToggle<CR>
 
@@ -289,6 +289,13 @@ augroup END
 
 " script {{{
 
+" autocmd CursorMoved * call TestType()
+" autocmd CursorMovedI * call TestType()
+" function TestType()
+  " echom synIDattr(synIDtrans(synID(line("."), col("."), 0)), "name")
+  " echo col(".") col("$")
+" endfunction
+
 noremap cm :messages clear<CR>
 noremap m : messages<CR>
 
@@ -300,6 +307,7 @@ let s:pairs = [
       \  ['(', ')'],
       \  ['[', ']']
       \]
+let s:recursiveCount = 0
 
 for [open, close] in s:pairs
   if open != close
@@ -323,10 +331,13 @@ function s:ManageQuote(quote)
 endfunction
 
 function s:AutoClose(open, close)
-  if !s:IsEscaped()
-        \ && !s:IsString(line("."), col("."))
-        \ && !s:IsComment(line("."), col("."))
-        \ && !s:IsBeforeOrInsideWord()
+  if s:IsEscaped()
+        \ || s:IsString(line("."), col("."))
+        \ || s:IsComment(line("."), col("."))
+        \ || s:IsPendingClose(a:open, a:close)
+    return a:open
+  endif
+  if !s:IsBeforeOrInsideWord()
     return a:open.a:close."\<Left>"
   endif
   return a:open
@@ -340,6 +351,49 @@ function s:SkipClose(open, close)
   return a:close
 endfunction
 
+" pending close {{{
+function s:IsPendingClose(open, close)
+  if a:open == a:close
+    return
+  endif
+  let currentLine = line(".")
+  let currentCol = col(".")
+  let s:recursiveCount = 0
+  let result = s:RecursiveSearch(a:open, a:close)
+  call cursor(currentLine, currentCol)
+  return result
+endfunction
+
+function s:RecursiveSearch(open, close)
+  if s:recursiveCount >= &maxfuncdepth - 10
+    echom "max recursive depth reached"
+    return
+  endif
+  let s:recursiveCount = s:recursiveCount + 1
+  let [line, col] = searchpos(escape(a:close, ']'), 'eWz', line("w$"))
+  if line == 0 && col == 0
+    return
+  endif
+  if s:IsString(line, col) || s:IsComment(line, col)
+    return s:RecursiveSearch(a:open, a:close)
+  endif
+  echom "one close found at ".line.' '.col
+  let [pairLine, pairCol] = searchpairpos(escape(a:open, '['),
+        \ '',
+        \ escape(a:close, ']'),
+        \ 'bnW',
+        \ 's:IsString(line("."), col(".")) || s:IsComment(line("."), col("."))',
+        \ line("w0"))
+  echom "found a match at ".pairLine.' '.pairCol
+  if pairLine == 0 && pairCol == 0
+    echom "found a free close bracket"
+    return v:true
+  endif
+  return s:RecursiveSearch(a:open, a:close)
+endfunction
+" }}}
+
+" auto delete {{{
 function s:AutoDelete()
   for [open, close] in s:pairs
     if open == close
@@ -454,14 +508,9 @@ function s:DeleteQuotes(quote)
     return "\<Del>\<BS>"
   endif
 endfunction
+" }}}
 
-autocmd CursorMoved * call TestType()
-autocmd CursorMovedI * call TestType()
-function TestType()
-  " echom synIDattr(synIDtrans(synID(line("."), col("."), 0)), "name")
-  echo col(".") col("$")
-endfunction
-
+" helpers {{{
 function s:IsString(line, col)
   if s:GetSHL(a:line, a:col) =~? "string"
     return v:true
@@ -496,7 +545,7 @@ function s:IsBeforeOrInsideWord()
     endif
   endfor
   echom pattern
-  if getline(".")[col(".") - 1] =~ pattern
+  if getline(".")[col(".") - 1] =~ pattern.'\|[,;]'
     return v:false
   endif
   return v:true
@@ -521,5 +570,6 @@ endfunction
 function s:GetSHL(line, col)
   return synIDattr(synIDtrans(synID(a:line, a:col, 0)), "name")
 endfunction
+" }}}
 
-  " }}}
+" }}}
