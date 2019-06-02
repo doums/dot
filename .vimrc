@@ -287,7 +287,7 @@ augroup filetype_vim
 augroup END
 " }}}
 
-" script {{{
+" coBra {{{
 
 " autocmd CursorMoved * call TestType()
 " autocmd CursorMovedI * call TestType()
@@ -308,6 +308,7 @@ let s:pairs = [
       \  ['[', ']']
       \]
 let s:recursiveCount = 0
+let s:maxPendingCloseAttempt = 5
 
 for [open, close] in s:pairs
   if open != close
@@ -345,7 +346,11 @@ endfunction
 
 function s:SkipClose(open, close)
   if getline(".")[col(".") - 1] == a:close
-        \ && s:SearchPair(a:open, a:close, 'cnW', 's:IsString(line("."), col(".")) || s:IsComment(line("."), col("."))') > 0
+        \ && searchpair(escape(a:open, '['),
+        \ '',
+        \ escape(a:close, ']'),
+        \ 'cnW',
+        \ 's:IsString(line("."), col(".")) || s:IsComment(line("."), col("."))') > 0
     return "\<Right>"
   endif
   return a:close
@@ -365,7 +370,7 @@ function s:IsPendingClose(open, close)
 endfunction
 
 function s:RecursiveSearch(open, close)
-  if s:recursiveCount >= &maxfuncdepth - 10
+  if s:recursiveCount >= &maxfuncdepth - 10 || s:recursiveCount >= s:maxPendingCloseAttempt
     echom "max recursive depth reached"
     return
   endif
@@ -414,7 +419,12 @@ endfunction
 function s:DeletePair(open, close)
   if getline(".")[col(".") - 2] == a:open
         \ && getline(".")[col(".") - 3] != '\'
-    let [line, col] = s:SearchPairPos(a:open, a:close, 'cnW')
+    let [line, col] = searchpairpos(escape(a:open, '['),
+          \ '',
+          \ escape(a:close, ']'),
+          \ 'cnW',
+          \ '',
+          \ line("w$"))
     if line == 0 && col == 0
       return
     endif
@@ -454,8 +464,6 @@ function s:DeletePair(open, close)
         endif
         return "\<BS>\<Esc>".end.line.'G0'.toEnd.'x'.start.line.'G0'.toStart.'i'.insertMotion
       endif
-    else
-      echom "FAIL"
     endif
   endif
 endfunction
@@ -468,7 +476,6 @@ function s:InBetweenValid(close, start, end)
     echom "first line fail"
     return v:false
   endif
-  echom 'first line OK'
   if a:start.line + 1 < a:end.line
     for row in getline(a:start.line + 1, a:end.line - 1)
       if match(row, '^\s*$') == -1
@@ -476,14 +483,12 @@ function s:InBetweenValid(close, start, end)
         return v:false
       endif
     endfor
-    echom "in between lines OK"
   endif
   let lastLine = strpart(getline(a:end.line), 0, a:end.col)
   if match(lastLine, '^\s*'.escape(a:close, ']').'$') == -1
     echom "last line fail"
     return v:false
   endif
-  echom "last line OK"
   return v:true
 endfunction
 
@@ -544,27 +549,10 @@ function s:IsBeforeOrInsideWord()
       let pattern = pattern.'\|'.escape(close, ']')
     endif
   endfor
-  echom pattern
   if getline(".")[col(".") - 1] =~ pattern.'\|[,;]'
     return v:false
   endif
   return v:true
-endfunction
-
-function s:SearchPair(open, close, flags, ...)
-  if a:0 == 1
-    return searchpair(escape(a:open, '['), '', escape(a:close, ']'), a:flags, a:1)
-  else
-    return searchpair(escape(a:open, '['), '', escape(a:close, ']'), a:flags)
-  endif
-endfunction
-
-function s:SearchPairPos(open, close, flags, ...)
-  if a:0 == 1
-    return searchpairpos(escape(a:open, '['), '', escape(a:close, ']'), a:flags, a:1)
-  else
-    return searchpairpos(escape(a:open, '['), '', escape(a:close, ']'), a:flags)
-  endif
 endfunction
 
 function s:GetSHL(line, col)
