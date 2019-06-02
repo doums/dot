@@ -289,28 +289,44 @@ augroup END
 
 " coBra {{{
 
-" autocmd CursorMoved * call TestType()
-" autocmd CursorMovedI * call TestType()
-" function TestType()
+autocmd CursorMoved * call TestType()
+autocmd CursorMovedI * call TestType()
+function TestType()
   " echom synIDattr(synIDtrans(synID(line("."), col("."), 0)), "name")
-  " echo col(".") col("$")
-" endfunction
+  echo line(".") col(".")
+endfunction
 
-noremap cm :messages clear<CR>
+noremap rm :messages clear<CR>
 noremap m : messages<CR>
 
-let s:pairs = [
-      \  ['"', '"'],
-      \  ["'", "'"],
-      \  ['`', '`'],
-      \  ['{', '}'],
-      \  ['(', ')'],
-      \  ['[', ']']
-      \]
-let s:recursiveCount = 0
-let s:maxPendingCloseAttempt = 5
+" let s:save_cpo = &cpo
+" set cpo&vim
 
-for [open, close] in s:pairs
+" if exists("g:coBra")
+  " finish
+" endif
+" let g:coBra = 1
+
+if !exists("g:coBraPairs")
+  let g:coBraPairs = [
+        \  ['"', '"'],
+        \  ["'", "'"],
+        \  ['`', '`'],
+        \  ['{', '}'],
+        \  ['(', ')'],
+        \  ['[', ']']
+        \]
+endif
+
+" if !exists("g:coBraMaxPendingCloseTry")
+  " let g:coBraMaxPendingCloseTry = 10
+" endif
+
+let s:recursiveCount = 0
+let g:coBraLineMax = 10
+let g:coBraMaxPendingCloseTry = 10
+
+for [open, close] in g:coBraPairs
   if open != close
     execute 'inoremap <expr><silent> ' . open . ' <SID>AutoClose("' . escape(open, '"') . '", "' . escape(close, '"') . '")'
     execute 'inoremap <expr><silent> ' . close . ' <SID>SkipClose("' . escape(open, '"') . '", "' . escape(close, '"') . '")'
@@ -350,7 +366,8 @@ function s:SkipClose(open, close)
         \ '',
         \ escape(a:close, ']'),
         \ 'cnW',
-        \ 's:IsString(line("."), col(".")) || s:IsComment(line("."), col("."))') > 0
+        \ 's:IsString(line("."), col(".")) || s:IsComment(line("."), col("."))',
+        \ s:GetLineBoundary('f')) > 0
     return "\<Right>"
   endif
   return a:close
@@ -364,23 +381,42 @@ function s:IsPendingClose(open, close)
   let currentLine = line(".")
   let currentCol = col(".")
   let s:recursiveCount = 0
-  let result = s:RecursiveSearch(a:open, a:close)
+  if s:UnderCursorSearch(a:open, a:close, s:GetLineBoundary('b'))
+    return v:true
+  endif
+  let result = s:RecursiveSearch(a:open, a:close, s:GetLineBoundary('f'), s:GetLineBoundary('b'))
   call cursor(currentLine, currentCol)
   return result
 endfunction
 
-function s:RecursiveSearch(open, close)
-  if s:recursiveCount >= &maxfuncdepth - 10 || s:recursiveCount >= s:maxPendingCloseAttempt
+function s:UnderCursorSearch(open, close, stopLine)
+  if getline(".")[col(".") - 1] == a:close
+    let [line, col] = searchpairpos(escape(a:open, '['),
+          \ '',
+          \ escape(a:close, ']'),
+          \ 'bWn',
+          \ 's:IsString(line("."), col(".")) || s:IsComment(line("."), col("."))',
+          \ a:stopLine)
+    if line == 0 && col == 0
+      echom "free close bracket found under cursor"
+      return v:true
+    endif
+  endif
+endfunction
+
+function s:RecursiveSearch(open, close, maxForward, maxBackward)
+  echom "cursor pos ".line(".")
+  if s:recursiveCount >= &maxfuncdepth - 10 || s:recursiveCount >= g:coBraMaxPendingCloseTry
     echom "max recursive depth reached"
     return
   endif
   let s:recursiveCount = s:recursiveCount + 1
-  let [line, col] = searchpos(escape(a:close, ']'), 'eWz', line("w$"))
+  let [line, col] = searchpos(escape(a:close, ']'), 'eWz', a:maxForward)
   if line == 0 && col == 0
     return
   endif
   if s:IsString(line, col) || s:IsComment(line, col)
-    return s:RecursiveSearch(a:open, a:close)
+    return s:RecursiveSearch(a:open, a:close, a:maxForward, a:maxBackward)
   endif
   echom "one close found at ".line.' '.col
   let [pairLine, pairCol] = searchpairpos(escape(a:open, '['),
@@ -388,19 +424,19 @@ function s:RecursiveSearch(open, close)
         \ escape(a:close, ']'),
         \ 'bnW',
         \ 's:IsString(line("."), col(".")) || s:IsComment(line("."), col("."))',
-        \ line("w0"))
+        \ a:maxBackward)
   echom "found a match at ".pairLine.' '.pairCol
   if pairLine == 0 && pairCol == 0
     echom "found a free close bracket"
     return v:true
   endif
-  return s:RecursiveSearch(a:open, a:close)
+  return s:RecursiveSearch(a:open, a:close, a:maxForward, a:maxBackward)
 endfunction
 " }}}
 
 " auto delete {{{
 function s:AutoDelete()
-  for [open, close] in s:pairs
+  for [open, close] in g:coBraPairs
     if open == close
       let result = s:DeleteQuotes(open)
       if !empty(result)
@@ -424,7 +460,7 @@ function s:DeletePair(open, close)
           \ escape(a:close, ']'),
           \ 'cnW',
           \ '',
-          \ line("w$"))
+          \ s:GetLineBoundary('f'))
     if line == 0 && col == 0
       return
     endif
@@ -544,7 +580,7 @@ function s:IsBeforeOrInsideWord()
     return v:false
   endif
   let pattern = '\s'
-  for [open, close] in s:pairs
+  for [open, close] in g:coBraPairs
     if open != close
       let pattern = pattern.'\|'.escape(close, ']')
     endif
@@ -555,9 +591,44 @@ function s:IsBeforeOrInsideWord()
   return v:true
 endfunction
 
+function s:GetLineBoundary(direction)
+  if !exists("g:coBraLineMax") || g:coBraLineMax <= 0
+    if a:direction == 'f'
+      echom "line boundary is ".line("w$")
+      return line("w$")
+    else
+      echom "line boundary is ".line("w0")
+      return line("w0")
+    endif
+  endif
+  if a:direction == 'f'
+    let boundary = line(".") + g:coBraLineMax - 1
+    if boundary > line("$")
+      echom "line boundary is ".line("$")
+      return line("$")
+    else
+      echom "line boundary is ".boundary
+      return boundary
+    endif
+  endif
+  if a:direction == 'b'
+    let boundary = line(".") - g:coBraLineMax + 1
+    if boundary < 1
+      echom "line boundary is 1"
+      return 1
+    else
+      echom "line boundary is ".boundary
+      return boundary
+    endif
+  endif
+endfunction
+
 function s:GetSHL(line, col)
   return synIDattr(synIDtrans(synID(a:line, a:col, 0)), "name")
 endfunction
 " }}}
+
+" let &cpo = s:save_cpo
+" unlet s:save_cpo
 
 " }}}
