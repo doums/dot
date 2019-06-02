@@ -322,7 +322,6 @@ function s:ManageQuote(quote)
   return s:AutoClose(a:quote, a:quote)
 endfunction
 
-" TODO allow autoclose inside other bracket pairs!
 function s:AutoClose(open, close)
   if !s:IsEscaped()
         \ && !s:IsString(line("."), col("."))
@@ -369,10 +368,11 @@ function s:DeletePair(open, close)
     let end = {'line': line, 'col': col}
     echom "start ".string(start)
     echom "end ".string(end)
+    if start.line == end.line && end.col == start.col
+      return "\<Del>\<BS>"
+    endif
     if s:InBetweenValid(a:close, start, end)
-      if start.line == end.line && end.col == start.col
-        return "\<Del>\<BS>"
-      elseif start.line == end.line && end.col != start.col
+      if start.line == end.line
         let toEnd = end.col - 2
         let toStart = ''
         if start.col - 2 > 0
@@ -489,7 +489,14 @@ function s:IsBeforeOrInsideWord()
   if col(".") == col("$")
     return v:false
   endif
-  if getline(".")[col(".") - 1] =~ '\s'
+  let pattern = '\s'
+  for [open, close] in s:pairs
+    if open != close
+      let pattern = pattern.'\|'.escape(close, ']')
+    endif
+  endfor
+  echom pattern
+  if getline(".")[col(".") - 1] =~ pattern
     return v:false
   endif
   return v:true
