@@ -196,7 +196,7 @@ noremap <Left> <Nop>
 nnoremap <silent> <F2> :setlocal spell! spelllang=en_us<CR>
 " open .vimrc, source it
 nnoremap <F3> :tabnew $MYVIMRC<cr>
-nnoremap <F5> :source $MYVIMRC<cr>
+nnoremap <F5> :write<Esc>:source $MYVIMRC<cr>
 
 nnoremap <silent> <Leader>g :GitGutterToggle<CR>
 
@@ -322,12 +322,13 @@ function s:ManageQuote(quote)
   return s:AutoClose(a:quote, a:quote)
 endfunction
 
+" TODO allow autoclose inside other bracket pairs!
 function s:AutoClose(open, close)
   if !s:IsEscaped()
         \ && !s:IsString(line("."), col("."))
         \ && !s:IsComment(line("."), col("."))
         \ && !s:IsBeforeOrInsideWord()
-    return a:open . a:close . "\<Left>"
+    return a:open.a:close."\<Left>"
   endif
   return a:open
 endfunction
@@ -366,15 +367,46 @@ function s:DeletePair(open, close)
     endif
     let start = {'line': line("."), 'col': col(".")}
     let end = {'line': line, 'col': col}
-    if s:InBetweenCheck(a:close, start, end)
-      echom "OK"
+    echom "start ".string(start)
+    echom "end ".string(end)
+    if s:InBetweenValid(a:close, start, end)
+      if start.line == end.line && end.col == start.col
+        return "\<Del>\<BS>"
+      elseif start.line == end.line && end.col != start.col
+        let toEnd = end.col - 2
+        let toStart = ''
+        if start.col - 2 > 0
+          let toStart = (start.col - 2).'l'
+        endif
+        return "\<BS>\<Esc>0".toEnd.'lx0'.toStart.'i'
+      else
+        let toEnd = ''
+        let toStart = ''
+        let insertMotion = ''
+        if end.col - 1 > 0
+          let toEnd = (end.col - 1).'l'
+        endif
+        let i = 0
+        if start.col == col("$")
+          let i = start.col - 3
+          if col("$") - 1 > 1
+            let insertMotion = "\<Right>"
+          endif
+        else
+          let i = start.col - 2
+        endif
+        if i > 0
+          let toStart = i.'l'
+        endif
+        return "\<BS>\<Esc>".end.line.'G0'.toEnd.'x'.start.line.'G0'.toStart.'i'.insertMotion
+      endif
     else
       echom "FAIL"
     endif
   endif
 endfunction
 
-function s:InBetweenCheck(close, start, end)
+function s:InBetweenValid(close, start, end)
   if a:start.line == a:end.line
     return s:OneLineCheck(a:close, a:start, a:end)
   endif
@@ -419,18 +451,15 @@ function s:DeleteQuotes(quote)
         \ && !s:IsString(line("."), col(".") + 1)
         \ && !s:IsString(line("."), col(".") - 2)
         \ && getline(".")[col(".") - 3] != '\'
-    if col(".") + 1 == col("$")
-      return "\<Esc>d2la"
-    else
-      return "\<Esc>d2li"
-    endif
+    return "\<Del>\<BS>"
   endif
 endfunction
 
+autocmd CursorMoved * call TestType()
 autocmd CursorMovedI * call TestType()
 function TestType()
   " echom synIDattr(synIDtrans(synID(line("."), col("."), 0)), "name")
-  " echom col(".")  col("$")
+  echo col(".") col("$")
 endfunction
 
 function s:IsString(line, col)
@@ -460,7 +489,7 @@ function s:IsBeforeOrInsideWord()
   if col(".") == col("$")
     return v:false
   endif
-  if getline(".")[col(".") - 1] =~ '\s\|\W'
+  if getline(".")[col(".") - 1] =~ '\s'
     return v:false
   endif
   return v:true
