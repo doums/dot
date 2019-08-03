@@ -204,7 +204,7 @@ nnoremap <silent> <F2> :setlocal spell! spelllang=en_us<CR>
 " open .vimrc, source it
 nnoremap <F3> :tabnew $MYVIMRC<CR>
 " nnoremap <F5> :write<CR>:source $MYVIMRC<CR>:messages clear<CR>
-noremap <F5> :Cargo run<CR>
+noremap <F5> :write<CR>:Cargo run<CR>
 
 nnoremap <silent> <Leader>g :GitGutterToggle<CR>
 
