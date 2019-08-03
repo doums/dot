@@ -9,12 +9,17 @@ alias emu="cd /home/pierre/Android/Sdk/emulator/;emulator -avd android -gpu host
 alias db="adb shell input keyevent 82"
 alias dbk="adb shell am force-stop com.monbuilding.app"
 alias rr="adb shell input text "RR""
-alias ds="xrandr --output eDP-1 --auto --output HDMI-1 --auto --scale 1.33333x1.33333 --right-of eDP-1"
+alias ds="xrandr --output eDP-1 --auto --output DP-2 --auto --scale 1.33333x1.33333 --right-of eDP-1"
 
 set -x LD_LIBRARY_PATH /usr/local/lib $LD_LIBRARY_PATH
 set -x QT_AUTO_SCREEN_SCALE_FACTOR 1
 set -x GDK_SCALE 2
 set -x GDK_DPI_SCALE 0.5
 set -x ANDROID_HOME $HOME/Android/Sdk
-set -x JAVA_HOME /usr/lib/jvm/java-8-openjdk
-
+set -x JAVA_HOME /usr/lib/jvm/java-11-openjdk
+set -x XDG_SESSION_TYPE X11
+set -x PATH /opt/arcanist/bin $PATH
+set -x PATH /home/pierre/Android/Sdk/platform-tools $PATH
+set -x PATH $HOME/.cargo/env $PATH
+set -x fish_emoji_width 2
+set -x MANPAGER "vim -M +MANPAGER -"

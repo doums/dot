@@ -23,6 +23,7 @@ Plug 'leafgarland/typescript-vim'
 Plug 'w0rp/ale'
 Plug 'tpope/vim-fugitive'
 Plug 'rust-lang/rust.vim'
+Plug 'doums/coBra'
 
 call plug#end()
 
@@ -59,6 +60,7 @@ set splitright
 set startofline
 set foldlevelstart=0
 set textwidth=0
+:runtime! ftplugin/man.vim
 " }}}
 
 " plugins config {{{
@@ -75,8 +77,8 @@ let g:NERDCompactSexyComs = 1
 let g:NERDCommentEmptyLines = 1
 let g:NERDTrimTrailingWhitespace = 1
 let g:lightline = {
-      \ 'colorscheme': 'gruvbox',
-      \ }
+    \ 'colorscheme': 'gruvbox',
+    \ }
 let g:gitgutter_enabled = 0
 let g:typescript_indent_disable = 1
 let g:ale_set_highlights = 0
@@ -85,36 +87,46 @@ let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_info_str = 'I'
 let g:ale_echo_msg_format = '[%linter%][%severity%] %s'
 let g:ale_fixers = {
-      \ 'javascript': [ 'eslint' ],
-      \ 'typescript': [ 'eslint', 'tsserver' ],
-      \ 'graphql': [ 'eslint ']
-      \ }
+    \ 'javascript': [ 'eslint' ],
+    \ 'typescript': [ 'eslint', 'tsserver' ],
+    \ 'graphql': [ 'eslint ']
+    \ }
 let g:ale_linters = {
-      \ 'javascript': [ 'eslint', 'standard' ],
-      \ 'typescript': [ 'eslint', 'tsserver' ],
-      \ 'graphql': [ 'eslint '],
-      \ 'rust': [ 'cargo', 'rls', 'rustc', 'clippy', 'rustfmt' ]
-      \ }
+    \ 'javascript': [ 'eslint', 'standard' ],
+    \ 'typescript': [ 'eslint', 'tsserver' ],
+    \ 'graphql': [ 'eslint '],
+    \ 'rust': [ 'cargo', 'rls', 'rustc', 'clippy', 'rustfmt' ]
+    \ }
 let g:ale_linters_explicit = 1
 let g:rustfmt_autosave = 1
 let g:fzf_colors =
 \ { 'fg':      ['fg', 'Normal'],
-  \ 'bg':      ['bg', 'Normal'],
-  \ 'hl':      ['fg', 'Comment'],
-  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-  \ 'hl+':     ['fg', 'Statement'],
-  \ 'info':    ['fg', 'PreProc'],
-  \ 'border':  ['fg', 'Ignore'],
-  \ 'prompt':  ['fg', 'Conditional'],
-  \ 'pointer': ['fg', 'Exception'],
-  \ 'marker':  ['fg', 'Keyword'],
-  \ 'spinner': ['fg', 'Label'],
-  \ 'header':  ['fg', 'Comment'] }
+\ 'bg':      ['bg', 'Normal'],
+\ 'hl':      ['fg', 'Comment'],
+\ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+\ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+\ 'hl+':     ['fg', 'Statement'],
+\ 'info':    ['fg', 'PreProc'],
+\ 'border':  ['fg', 'Ignore'],
+\ 'prompt':  ['fg', 'Conditional'],
+\ 'pointer': ['fg', 'Exception'],
+\ 'marker':  ['fg', 'Keyword'],
+\ 'spinner': ['fg', 'Label'],
+\ 'header':  ['fg', 'Comment'] }
 let g:fzf_action = {
-  \ 'ctrl-t': 'tab split',
-  \ 'ctrl-s': 'split',
-  \ 'ctrl-v': 'vsplit' }
+\ 'ctrl-t': 'tab split',
+\ 'ctrl-s': 'split',
+\ 'ctrl-v': 'vsplit' }
+let g:rust_keep_autopairs_default = 0
+let g:coBraPairs = {
+    \ 'rust': [
+    \    ['<', '>'],
+    \    ['"', '"'],
+    \    ['{', '}'],
+    \    ['(', ')'],
+    \    ['[', ']']
+    \ ]
+    \ }
 " }}}
 
 " mapping {{{
@@ -144,11 +156,11 @@ nnoremap <silent> J :call <SID>ScrollDown()<CR>
 nnoremap <silent> K :call <SID>ScrollUp()<CR>
 
 function s:ScrollDown()
-  execute "normal!" &scroll / 2 . "\<C-e>"
+execute "normal!" &scroll / 2 . "\<C-e>"
 endfunction
 
 function s:ScrollUp()
-  execute "normal!" &scroll / 2 . "\<C-y>"
+execute "normal!" &scroll / 2 . "\<C-y>"
 endfunction
 
 " VISUAL move fast with Alt + hjkl
@@ -160,9 +172,8 @@ vnoremap k <C-u>
 noremap j gj
 noremap k gk
 " copy in/past from "a register
-nnoremap <Leader>y "ay
+noremap <Leader>y "ay
 nnoremap <Leader>i "ayiw
-vnoremap <Leader>y "ay
 nnoremap <Leader>p "ap
 nnoremap <Leader>P "aP
 " search and replace
@@ -181,10 +192,6 @@ onoremap t it
 onoremap ' i'
 onoremap " i"
 onoremap ` i`
-nnoremap é <Home>
-vnoremap é <Home>
-nnoremap " <End>
-vnoremap " <End>
 " hide highlight after a search
 nnoremap <silent> <space> :nohlsearch<CR>
 " c'est en forgeant que l'on devient forgeron
@@ -196,7 +203,8 @@ noremap <Left> <Nop>
 nnoremap <silent> <F2> :setlocal spell! spelllang=en_us<CR>
 " open .vimrc, source it
 nnoremap <F3> :tabnew $MYVIMRC<CR>
-nnoremap <F5> :write<CR>:source $MYVIMRC<CR>:messages clear<CR>
+" nnoremap <F5> :write<CR>:source $MYVIMRC<CR>:messages clear<CR>
+noremap <F5> :Cargo run<CR>
 
 nnoremap <silent> <Leader>g :GitGutterToggle<CR>
 
@@ -214,8 +222,8 @@ map <Leader><S-c> <plug>NERDCommenterSexy
 " Ale
 nmap <Leader>a <Plug>(ale_toggle)
 imap <C-@> <Plug>(ale_complete)
-nmap <Leader>b <Plug>(ale_go_to_definition_in_split)
-nmap <Leader>n <Plug>(ale_go_to_type_definition_in_split)
+nmap <Leader>b <Plug>(ale_go_to_definition)
+nmap <Leader>n <Plug>(ale_go_to_type_definition)
 nmap <Leader>r <Plug>(ale_find_references)
 nmap <Leader>d <Plug>(ale_detail)
 nnoremap <Leader>: :ALESymbolSearch
@@ -267,26 +275,32 @@ highlight ErrorMsg ctermfg=172 ctermbg=235
 
 " autocommand {{{
 augroup stuff
-  au!
-  " remove all trailing white space before write
-  autocmd BufWritePre * %s/\s\+$//e
-  " Because Alt send escape sequence and there are mapping that use it,
-  " Vim now waits 'timeoutlen' when escape is pressed before exit insert or
-  " visual mode for example.
-  " The following 2 lines are the trick to remove this delay. <nowait> works
-  " only for buffer mapping. That's why we use BufEnter event to add this
-  " mapping to a buffer each time we enter in a buffer.
-  autocmd BufEnter * inoremap <buffer> <nowait> <Esc> <Esc>
-  autocmd BufEnter * vnoremap <buffer> <nowait> <Esc> <Esc>
-augroup END
-
+autocmd!
+" remove all trailing white space before write
+autocmd BufWritePre * %s/\s\+$//e
+" Because Alt send escape sequence and there are mapping that use it,
+" Vim now waits 'timeoutlen' when escape is pressed before exit insert or
+" visual mode for example.
+" The following 2 lines are the trick to remove this delay. <nowait> works
+" only for buffer mapping. That's why we use BufEnter event to add this
+" mapping to a buffer each time we enter in a buffer.
+autocmd BufEnter * inoremap <buffer> <nowait> <Esc> <Esc>
+autocmd BufEnter * vnoremap <buffer> <nowait> <Esc> <Esc>
 " set fold to marker for .vimrc
-augroup filetype_vim
-  autocmd!
-  autocmd FileType vim setlocal foldmethod=marker
+autocmd FileType vim setlocal foldmethod=marker
+" set a print shortcut for some programming languages
+autocmd FileType * call s:PrintMaps()
 augroup END
 " }}}
 
+function s:PrintMaps()
+  if &filetype == "rust"
+    nnoremap <buffer> <Leader>; iprintln!("")<Esc><Left>i
+    inoremap <buffer> <Leader>; println!("")<Esc><Left>i
+  endif
+endfunction
+
+finish
 " coBra {{{
 
 autocmd CursorMoved * call TestType()
@@ -297,7 +311,7 @@ function TestType()
 endfunction
 
 noremap rm :messages clear<CR>
-noremap m : messages<CR>
+noremap m :messages<CR>
 
 " let s:save_cpo = &cpo
 " set cpo&vim
@@ -306,16 +320,21 @@ noremap m : messages<CR>
   " finish
 " endif
 " let g:coBra = 1
+let g:defaultPairs = [
+      \  ['"', '"'],
+      \  ["'", "'"],
+      \  ['`', '`'],
+      \  ['{', '}'],
+      \  ['(', ')'],
+      \  ['<', '>'],
+      \  ['[', ']']
+      \ ]
+let b:pairs = g:defaultPairs
 
-if !exists("g:coBraPairs")
-  let g:coBraPairs = [
-        \  ['"', '"'],
-        \  ["'", "'"],
-        \  ['`', '`'],
-        \  ['{', '}'],
-        \  ['(', ')'],
-        \  ['[', ']']
-        \]
+if !exists('g:coBraPairs')
+  let g:coBraPairs = { 'default': g:defaultPairs }
+elseif !has_key(g:coBraPairs, 'default')
+  let g:coBraPairs.default = g:defaultPairs
 endif
 
 " if !exists("g:coBraMaxPendingCloseTry")
@@ -326,16 +345,35 @@ let s:recursiveCount = 0
 let g:coBraLineMax = 10
 let g:coBraMaxPendingCloseTry = 10
 
-for [open, close] in g:coBraPairs
-  if open != close
-    execute 'inoremap <expr><silent> ' . open . ' <SID>AutoClose("' . escape(open, '"') . '", "' . escape(close, '"') . '")'
-    execute 'inoremap <expr><silent> ' . close . ' <SID>SkipClose("' . escape(open, '"') . '", "' . escape(close, '"') . '")'
-  else
-    execute 'inoremap <expr><silent> ' . open . ' <SID>ManageQuote("' . escape(open, '"') . '")'
-  endif
-endfor
+augroup coBra
+  autocmd!
+  autocmd FileType * call s:Init()
+augroup END
 
-inoremap <expr> <BS> <SID>AutoDelete()
+function s:Init()
+  for type in keys(g:coBraPairs)
+    if type == &filetype
+      return s:setPairsAndMap(type)
+    endif
+  endfor
+  return s:setPairsAndMap('default')
+endfunction
+
+function s:setPairsAndMap(type)
+  let b:pairs = g:coBraPairs[a:type]
+  for [open, close] in b:pairs
+    if open != close
+      execute 'inoremap <buffer><expr><silent> '.open.
+            \' <SID>AutoClose("'.escape(open, '"').'", "'.escape(close, '"').'")'
+      execute 'inoremap <buffer><expr><silent> '.close.
+            \' <SID>SkipClose("'.escape(open, '"').'", "'.escape(close, '"').'")'
+    else
+      execute 'inoremap <buffer><expr><silent> '.open.' <SID>ManageQuote("'.escape(open, '"').'")'
+    endif
+  endfor
+  inoremap <buffer><expr> <BS> <SID>AutoDelete()
+  inoremap <buffer><expr> <CR> <SID>AutoBreak()
+endfunction
 
 function s:ManageQuote(quote)
   if s:IsString(line("."), col("."))
@@ -373,6 +411,26 @@ function s:SkipClose(open, close)
   return a:close
 endfunction
 
+" auto break {{{
+function s:AutoBreak()
+  for [open, close] in b:pairs
+    if open != close && getline(line("."))[col(".") - 2] == open
+      let [line, col] = searchpairpos(escape(open, '['),
+            \ '',
+            \ escape(close, ']'),
+            \ 'cnW',
+            \ 's:IsString(line("."), col(".")) || s:IsComment(line("."), col("."))',
+            \ s:GetLineBoundary('f'))
+      if line == line(".") &&
+            \ match(getline("."), '^'.escape(open, '[').'\s*'.escape(close, ']'), col(".") - 2) > -1
+        return "\<CR>\<CR>\<Up>\<C-f>"
+      endif
+    endif
+  endfor
+  return "\<CR>"
+endfunction
+" }}}
+
 " pending close {{{
 function s:IsPendingClose(open, close)
   if a:open == a:close
@@ -390,7 +448,7 @@ function s:IsPendingClose(open, close)
 endfunction
 
 function s:UnderCursorSearch(open, close, stopLine)
-  if getline(".")[col(".") - 1] == a:close
+  if getline(".")[col(".") - 1] == a:close && !s:IsArrowOrGreaterLessSign(a:close, line("."), col(".") - 1)
     let [line, col] = searchpairpos(escape(a:open, '['),
           \ '',
           \ escape(a:close, ']'),
@@ -415,7 +473,9 @@ function s:RecursiveSearch(open, close, maxForward, maxBackward)
   if line == 0 && col == 0
     return
   endif
-  if s:IsString(line, col) || s:IsComment(line, col)
+  if s:IsString(line, col) ||
+        \ s:IsComment(line, col) ||
+        \ s:IsArrowOrGreaterLessSign(a:close, line, col - 1)
     return s:RecursiveSearch(a:open, a:close, a:maxForward, a:maxBackward)
   endif
   echom "one close found at ".line.' '.col
@@ -423,7 +483,7 @@ function s:RecursiveSearch(open, close, maxForward, maxBackward)
         \ '',
         \ escape(a:close, ']'),
         \ 'bnW',
-        \ 's:IsString(line("."), col(".")) || s:IsComment(line("."), col("."))',
+        \ 's:IsString(line("."), col(".")) || s:IsComment(line("."), col(".")) || s:IsArrowOrGreaterLessSign(a:open, line("."), col(".") - 1)',
         \ a:maxBackward)
   echom "found a match at ".pairLine.' '.pairCol
   if pairLine == 0 && pairCol == 0
@@ -436,7 +496,7 @@ endfunction
 
 " auto delete {{{
 function s:AutoDelete()
-  for [open, close] in g:coBraPairs
+  for [open, close] in b:pairs
     if open == close
       let result = s:DeleteQuotes(open)
       if !empty(result)
@@ -471,7 +531,7 @@ function s:DeletePair(open, close)
     if start.line == end.line && end.col == start.col
       return "\<Del>\<BS>"
     endif
-    if s:InBetweenValid(a:close, start, end)
+    if s:IsPairEmpty(a:open, a:close, start, end)
       if start.line == end.line
         let toEnd = end.col - 2
         let toStart = ''
@@ -504,37 +564,13 @@ function s:DeletePair(open, close)
   endif
 endfunction
 
-function s:InBetweenValid(close, start, end)
+function s:IsPairEmpty(open, close, start, end)
   if a:start.line == a:end.line
-    return s:OneLineCheck(a:close, a:start, a:end)
-  endif
-  if match(getline(a:start.line), '^\s*$', a:start.col - 1) == -1
-    echom "first line fail"
-    return v:false
-  endif
-  if a:start.line + 1 < a:end.line
-    for row in getline(a:start.line + 1, a:end.line - 1)
-      if match(row, '^\s*$') == -1
-        echom "in between fail"
-        return v:false
-      endif
-    endfor
-  endif
-  let lastLine = strpart(getline(a:end.line), 0, a:end.col)
-  if match(lastLine, '^\s*'.escape(a:close, ']').'$') == -1
-    echom "last line fail"
-    return v:false
-  endif
-  return v:true
-endfunction
-
-function s:OneLineCheck(close, start, end)
-  let line = strpart(getline(a:start.line), 0, a:end.col)
-  if match(line, '^\s*'.escape(a:close, ']').'$', a:start.col - 1) == -1
-    echom "one line fail"
-    return v:false
+    let [line, col] = searchpos(escape(a:open, '[').'\s*'.escape(a:close, ']'), 'bW', a:start.line)
   else
-    echom "one line OK"
+    let [line, col] = searchpos(escape(a:open, '[').'\(\s*\n\)\{'.(a:end.line - a:start.line).'}\s*'.escape(a:close, ']'), 'bW', a:start.line)
+  endif
+  if line == a:start.line && col == a:start.col - 1
     return v:true
   endif
 endfunction
@@ -580,7 +616,7 @@ function s:IsBeforeOrInsideWord()
     return v:false
   endif
   let pattern = '\s'
-  for [open, close] in g:coBraPairs
+  for [open, close] in b:pairs
     if open != close
       let pattern = pattern.'\|'.escape(close, ']')
     endif
@@ -592,7 +628,7 @@ function s:IsBeforeOrInsideWord()
 endfunction
 
 function s:GetLineBoundary(direction)
-  if !exists("g:coBraLineMax") || g:coBraLineMax <= 0
+  if (!exists("g:coBraLineMax") || g:coBraLineMax) <= 0 && !exists("g:coBraFullWindow")
     if a:direction == 'f'
       echom "line boundary is ".line("w$")
       return line("w$")
@@ -623,6 +659,23 @@ function s:GetLineBoundary(direction)
   endif
 endfunction
 
+function s:IsArrowOrGreaterLessSign(c, lnum, index)
+  if a:c != '<' && a:c != '>'
+    return
+  endif
+  let line = getline(a:lnum)
+  if strpart(line, a:index - 1, 2)  =~ '^[-=]>$'
+    echom "arrow"
+    return v:true
+  elseif strpart(line, a:index, 2)  =~ '^[<>]=$'
+    echom "greater/less or equal"
+    return v:true
+  elseif match(line, '^\s\=[<>]\s\=\(-\=\d\|\w\)', a:index - 1) > -1
+    echom "greater/less"
+    return v:true
+  endif
+endfunction
+
 function s:GetSHL(line, col)
   return synIDattr(synIDtrans(synID(a:line, a:col, 0)), "name")
 endfunction
@@ -632,3 +685,5 @@ endfunction
 " unlet s:save_cpo
 
 " }}}
+
+
