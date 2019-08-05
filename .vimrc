@@ -154,6 +154,9 @@ nnoremap k <C-u>
 " NORMAL smooth scroll
 nnoremap <silent> J :call <SID>ScrollDown()<CR>
 nnoremap <silent> K :call <SID>ScrollUp()<CR>
+" NORMAL move through buffer list
+nnoremap <silent> n :bnext<CR>
+nnoremap <silent> p :bprevious<CR>
 
 function s:ScrollDown()
 execute "normal!" &scroll / 2 . "\<C-e>"
