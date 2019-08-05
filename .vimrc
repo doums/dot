@@ -60,6 +60,7 @@ set splitright
 set startofline
 set foldlevelstart=0
 set textwidth=0
+set hidden
 :runtime! ftplugin/man.vim
 " }}}
 
@@ -117,6 +118,7 @@ let g:fzf_action = {
 \ 'ctrl-t': 'tab split',
 \ 'ctrl-s': 'split',
 \ 'ctrl-v': 'vsplit' }
+let g:fzf_buffers_jump = 1
 let g:rust_keep_autopairs_default = 0
 let g:coBraPairs = {
     \ 'rust': [
@@ -154,9 +156,10 @@ nnoremap k <C-u>
 " NORMAL smooth scroll
 nnoremap <silent> J :call <SID>ScrollDown()<CR>
 nnoremap <silent> K :call <SID>ScrollUp()<CR>
-" NORMAL move through buffer list
+" NORMAL buffer
 nnoremap <silent> n :bnext<CR>
 nnoremap <silent> p :bprevious<CR>
+nnoremap <silent> b :Buffers<CR>
 
 function s:ScrollDown()
 execute "normal!" &scroll / 2 . "\<C-e>"
