@@ -9,7 +9,6 @@ let g:ale_completion_enabled=1
 call plug#begin('~/.vim/plugged')
 
 Plug 'tpope/vim-surround'
-Plug 'scrooloose/nerdtree'
 Plug 'itchyny/lightline.vim'
 Plug 'morhetz/gruvbox'
 Plug 'junegunn/fzf.vim'
@@ -61,17 +60,11 @@ set startofline
 set foldlevelstart=0
 set textwidth=0
 set hidden
+set switchbuf=usetab
 :runtime! ftplugin/man.vim
 " }}}
 
 " plugins config {{{
-let g:NERDTreeQuitOnOpen = 1
-let g:NERDTreeShowHidden = 1
-let g:NERDTreeMapPreviewSplit = '<Leader>s'
-let g:NERDTreeMapPreviewVSplit = '<Leader>v'
-let g:NERDTreeMapOpenSplit = 's'
-let g:NERDTreeMapOpenVSplit = 'v'
-let g:NERDCreateDefaultMappings = 0
 let g:NERDCreateDefaultMappings = 0
 let g:NERDSpaceDelims = 1
 let g:NERDCompactSexyComs = 1
