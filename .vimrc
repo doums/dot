@@ -61,6 +61,9 @@ set foldlevelstart=0
 set textwidth=0
 set hidden
 set switchbuf=usetab
+set scrolloff=5
+set completeopt=menuone,popup
+set completepopup=border:off
 :runtime! ftplugin/man.vim
 " }}}
 
@@ -214,7 +217,6 @@ imap f <plug>(fzf-complete-file)
 imap w <plug>(fzf-complete-line)
 
 " NERDTree
-noremap <silent> <C-n> :NERDTreeToggle<CR>
 map <Leader>c <plug>NERDCommenterToggle
 map <Leader><S-c> <plug>NERDCommenterSexy
 
