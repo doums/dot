@@ -21,6 +21,7 @@ Plug 'w0rp/ale'
 Plug 'tpope/vim-fugitive'
 Plug 'rust-lang/rust.vim'
 Plug 'doums/coBra'
+Plug 'doums/darcula'
 Plug 'jparise/vim-graphql'
 
 call plug#end()
@@ -73,6 +74,10 @@ let g:NERDCommentEmptyLines = 1
 let g:NERDTrimTrailingWhitespace = 1
 let g:lightline = {
       \ 'colorscheme': 'darcula',
+      \ }
+let g:lightline.tab = {
+      \ 'active': [ 'filename', 'modified' ],
+      \ 'inactive': [ 'filename', 'modified' ]
       \ }
 let g:gitgutter_enabled = 0
 let g:typescript_indent_disable = 1
@@ -282,14 +287,21 @@ function s:PrintMaps()
     nnoremap <buffer> <Leader>; iprintln!("")<Esc><Left>i
     inoremap <buffer> <Leader>; println!("")<Esc><Left>i
   endif
+  if &filetype == "javascript" || &filetype == "typescript"
+    nnoremap <buffer> <Leader>; iconsole.log('')<Esc><Left>i
+    inoremap <buffer> <Leader>; console.log('')<Esc><Left>i
+  endif
 endfunction
 
-noremap <F9> :call DebugHi()<CR>
+" noremap <F9> :call <SID>DebugHi()<CR>
+nnoremap <F5> :source $MYVIMRC<CR>
 
-function DebugHi()
+" autocmd CursorMoved * call s:DebugHi()
+
+function s:DebugHi()
   let name = synID(line("."), col("."), 1)->synIDattr("name")
   let link= synID(line("."), col("."), 1)->synIDtrans()->synIDattr("name")
   let fg = synID(line("."), col("."), 1)->synIDtrans()->synIDattr("fg")
   let bg = synID(line("."), col("."), 1)->synIDtrans()->synIDattr("bg")
-  echo 'hi group: '.name.', linked to: '.link.', bg: '.bg.', fg: '.fg
+  echo 'hi: '.name.', link: '.link.', bg: '.bg.', fg: '.fg
 endfunction
