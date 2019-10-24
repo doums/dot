@@ -73,11 +73,15 @@ let g:NERDCompactSexyComs = 1
 let g:NERDCommentEmptyLines = 1
 let g:NERDTrimTrailingWhitespace = 1
 let g:lightline = {
-      \ 'colorscheme': 'darcula',
+      \ 'colorscheme': 'darcula'
       \ }
 let g:lightline.tab = {
       \ 'active': [ 'filename', 'modified' ],
       \ 'inactive': [ 'filename', 'modified' ]
+      \ }
+let g:lightline.tabline = {
+      \ 'left': [ [ 'tabs' ] ],
+      \ 'right': []
       \ }
 let g:gitgutter_enabled = 0
 let g:typescript_indent_disable = 1
