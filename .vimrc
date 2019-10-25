@@ -62,6 +62,7 @@ set cursorline
 set switchbuf=usetab
 set scrolloff=5
 set completeopt=menuone,popup
+set fillchars=
 set completepopup=border:off
 :runtime! ftplugin/man.vim
 " }}}
