@@ -73,7 +73,7 @@ let g:NERDCompactSexyComs = 1
 let g:NERDCommentEmptyLines = 1
 let g:NERDTrimTrailingWhitespace = 1
 let g:lightline = {
-      \ 'colorscheme': 'darcula'
+      \ 'colorscheme': 'darculaOriginal'
       \ }
 let g:lightline.tab = {
       \ 'active': [ 'filename', 'modified' ],
@@ -116,10 +116,10 @@ let g:fzf_colors =
 \ 'hl+':     ['fg', 'Statement'],
 \ 'info':    ['fg', 'PreProc'],
 \ 'border':  ['fg', 'Ignore'],
-\ 'prompt':  ['fg', 'Conditional'],
+\ 'prompt':  ['fg', 'Function'],
 \ 'pointer': ['fg', 'Exception'],
 \ 'marker':  ['fg', 'Keyword'],
-\ 'spinner': ['fg', 'Label'],
+\ 'spinner': ['fg', 'PreProc'],
 \ 'header':  ['fg', 'Comment'] }
 let g:fzf_action = {
 \ 'ctrl-t': 'tab split',
@@ -304,7 +304,7 @@ endfunction
 " noremap <F9> :call <SID>DebugHi()<CR>
 nnoremap <F5> :source $MYVIMRC<CR>
 
-" autocmd CursorMoved * call s:DebugHi()
+autocmd CursorMoved * call s:DebugHi()
 
 function s:DebugHi()
   let name = synID(line("."), col("."), 1)->synIDattr("name")
