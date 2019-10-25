@@ -83,6 +83,10 @@ let g:lightline.tabline = {
       \ 'left': [ [ 'tabs' ] ],
       \ 'right': []
       \ }
+let g:lightline.tabline_subseparator = {
+      \ 'left': '',
+      \ 'right': ''
+      \ }
 let g:gitgutter_enabled = 0
 let g:typescript_indent_disable = 1
 let g:ale_set_highlights = 0
