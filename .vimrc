@@ -213,6 +213,8 @@ noremap <Up> <Nop>
 noremap <Down> <Nop>
 noremap <Right> <Nop>
 noremap <Left> <Nop>
+" select all
+noremap <silent> <C-a> ggvG
 " spell check
 nnoremap <silent> <F2> :setlocal spell! spelllang=en_us<CR>
 " open .vimrc, source it
@@ -220,6 +222,7 @@ nnoremap <F3> :tabnew $MYVIMRC<CR>
 " nnoremap <F5> :write<CR>:source $MYVIMRC<CR>:messages clear<CR>
 noremap <F5> :write<CR>:Cargo run<CR>
 
+" GitGutter
 nnoremap <silent> <Leader>g :GitGutterToggle<CR>
 
 " fzf
@@ -275,7 +278,7 @@ nnoremap <silent> [1;3D :vertical :resize -4<CR>
 augroup stuff
 autocmd!
 " remove all trailing white space before write
-autocmd BufWritePre * %s/\s\+$//e
+" autocmd BufWritePre * %s/\s\+$//e
 " Because Alt send escape sequence and there are mapping that use it,
 " Vim now waits 'timeoutlen' when escape is pressed before exit insert or
 " visual mode for example.
@@ -303,9 +306,9 @@ function s:PrintMaps()
 endfunction
 
 " noremap <F9> :call <SID>DebugHi()<CR>
-nnoremap <F5> :source $MYVIMRC<CR>
+" nnoremap <F5> :source $MYVIMRC<CR>
 
-autocmd CursorMoved * call s:DebugHi()
+" autocmd CursorMoved * call s:DebugHi()
 
 function s:DebugHi()
   let name = synID(line("."), col("."), 1)->synIDattr("name")
