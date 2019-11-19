@@ -30,7 +30,7 @@ call plug#end()
 let mapleader = ","
 set termguicolors
 set number
-set background=dark
+" set background=dark
 colorscheme darcula
 filetype plugin on
 filetype indent on
@@ -292,6 +292,13 @@ autocmd FileType vim setlocal foldmethod=marker
 " set a print shortcut for some programming languages
 autocmd FileType * call s:PrintMaps()
 augroup END
+" }}}
+
+" darcula override {{{
+hi! link rustQuestionMark PreProc
+hi! link rustMacro PreProc
+call darcula#Hi('rustLifetime', darcula#palette.macroName, darcula#palette.bg, 'italic')
+call darcula#Hi('rustTypeParameter', darcula#palette.macroName, darcula#palette.bg, 'bold')
 " }}}
 
 function s:PrintMaps()
