@@ -26,7 +26,7 @@ Plug 'jparise/vim-graphql'
 
 call plug#end()
 
-" main config {{{
+" vanilla config {{{
 let mapleader = ","
 set termguicolors
 set number
@@ -64,6 +64,7 @@ set scrolloff=5
 set completeopt=menuone,popup
 set fillchars=diff:\ " a space
 set completepopup=border:off
+set autoread
 :runtime! ftplugin/man.vim
 " }}}
 
@@ -287,6 +288,9 @@ autocmd!
 " mapping to a buffer each time we enter in a buffer.
 autocmd BufEnter * inoremap <buffer> <nowait> <Esc> <Esc>
 autocmd BufEnter * vnoremap <buffer> <nowait> <Esc> <Esc>
+" whenever CursorHold is fired (nothing typed during 'updatetime')
+" run checktime to refresh the buffer and retrieve any external changes
+autocmd CursorHold * checktime %
 " set fold to marker for .vimrc
 autocmd FileType vim setlocal foldmethod=marker
 " set a print shortcut for some programming languages
