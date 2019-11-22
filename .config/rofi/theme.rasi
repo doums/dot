@@ -1,0 +1,53 @@
+* {
+  background-color: #212121;
+  text-color: #9E9E9E;
+  font: "Inconsolata 10";
+  border: 0px;
+}
+
+window {
+  anchor: north;
+  location: north;
+  padding: 30px;
+  y-offset: 400px;
+  width: 700px;
+}
+
+mainbox {
+  children: [ mode-switcher, inputbar, message, listview ];
+}
+
+prompt {
+  padding: 10px 20px;
+  enabled: false;
+}
+
+entry {
+  padding: 10px 20px;
+}
+
+element {
+  padding: 10px 20px;
+  highlight: bold;
+}
+
+element selected {
+  text-color: #357EDD;
+  highlight: bold;
+}
+
+listview {
+  fixed-height: false;
+  scrollbar: true;
+  cycle: true;
+  lines: 5;
+}
+
+button {
+  padding: 10px 0;
+}
+
+button selected {
+  text-color: #357EDD;
+  padding: 10px 0;
+}

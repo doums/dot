@@ -1,0 +1,25 @@
+configuration {
+  modi: "drun,window,run,ssh";
+  show-icons: true;
+  display-window: "#";
+  display-windowcd: "#";
+  display-run: "$";
+  display-ssh: "ssh";
+  display-drun: "~";
+  display-combi: "combi";
+  display-keys: "key";
+  drun-display-format: "{name}";
+  terminal: "terminator";
+  matching: "normal";
+  dpi: 1;
+  scroll-method: 1;
+  window-format: "{c} - {t}";
+  theme: "theme.rasi";
+  ssh-command: "terminator -e 'ssh {host}'";
+  run-shell-command: "terminator -e '{cmd}'";
+  icon-theme: "Paper";
+  kb-mode-next: "Alt+l,Alt+Right";
+  kb-mode-previous: "Alt+h,Alt+Left";
+  kb-row-up: "Up,Alt+k";
+  kb-row-down: "Down,Alt+j";
+}
