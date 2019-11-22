@@ -214,7 +214,7 @@ noremap <Down> <Nop>
 noremap <Right> <Nop>
 noremap <Left> <Nop>
 " select all
-noremap <silent> <C-a> ggvG
+noremap <silent> <C-a> ggvG$
 " spell check
 nnoremap <silent> <F2> :setlocal spell! spelllang=en_us<CR>
 " open .vimrc, source it
