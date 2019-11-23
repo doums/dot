@@ -232,7 +232,7 @@ imap d <plug>(fzf-complete-path)
 imap f <plug>(fzf-complete-file)
 imap w <plug>(fzf-complete-line)
 
-" NERDTree
+" NERDCommenter
 map <Leader>c <plug>NERDCommenterToggle
 map <Leader><S-c> <plug>NERDCommenterSexy
 
