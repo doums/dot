@@ -95,47 +95,49 @@ let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_info_str = 'I'
 let g:ale_echo_msg_format = '[%linter%][%severity%] %s'
 let g:ale_fixers = {
-    \ 'javascript': [ 'eslint' ],
-    \ 'typescript': [ 'eslint', 'tsserver' ],
-    \ 'graphql': [ 'eslint' ]
-    \ }
+      \ 'javascript': [ 'eslint' ],
+      \ 'typescript': [ 'eslint', 'tsserver' ],
+      \ 'graphql': [ 'eslint' ]
+      \ }
 let g:ale_linters = {
-    \ 'javascript': [ 'eslint', 'standard' ],
-    \ 'typescript': [ 'eslint', 'tsserver' ],
-    \ 'graphql': [ 'eslint '],
-    \ 'rust': [ 'cargo', 'rls', 'rustc', 'clippy', 'rustfmt' ]
-    \ }
+      \ 'javascript': [ 'eslint', 'standard' ],
+      \ 'typescript': [ 'eslint', 'tsserver' ],
+      \ 'graphql': [ 'eslint '],
+      \ 'rust': [ 'cargo', 'rls', 'rustc', 'clippy', 'rustfmt' ]
+      \ }
 let g:ale_linters_explicit = 1
 let g:rustfmt_autosave = 1
-let g:fzf_colors =
-\ { 'fg':      ['fg', 'Normal'],
-\ 'bg':      ['bg', 'Normal'],
-\ 'hl':      ['fg', 'Comment'],
-\ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-\ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-\ 'hl+':     ['fg', 'Statement'],
-\ 'info':    ['fg', 'PreProc'],
-\ 'border':  ['fg', 'Ignore'],
-\ 'prompt':  ['fg', 'Function'],
-\ 'pointer': ['fg', 'Exception'],
-\ 'marker':  ['fg', 'Keyword'],
-\ 'spinner': ['fg', 'PreProc'],
-\ 'header':  ['fg', 'Comment'] }
+let g:fzf_colors = {
+      \ 'fg':      ['fg', 'Normal'],
+      \ 'bg':      ['bg', 'Normal'],
+      \ 'hl':      ['fg', 'Comment'],
+      \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+      \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+      \ 'hl+':     ['fg', 'Statement'],
+      \ 'info':    ['fg', 'PreProc'],
+      \ 'border':  ['fg', 'Ignore'],
+      \ 'prompt':  ['fg', 'Function'],
+      \ 'pointer': ['fg', 'Exception'],
+      \ 'marker':  ['fg', 'Keyword'],
+      \ 'spinner': ['fg', 'PreProc'],
+      \ 'header':  ['fg', 'Comment']
+      \ }
 let g:fzf_action = {
-\ 'ctrl-t': 'tab split',
-\ 'ctrl-s': 'split',
-\ 'ctrl-v': 'vsplit' }
+      \ 'ctrl-t': 'tab split',
+      \ 'ctrl-s': 'split',
+      \ 'ctrl-v': 'vsplit'
+      \ }
 let g:fzf_buffers_jump = 1
 let g:rust_keep_autopairs_default = 0
 let g:coBraPairs = {
-    \ 'rust': [
-    \    ['<', '>'],
-    \    ['"', '"'],
-    \    ['{', '}'],
-    \    ['(', ')'],
-    \    ['[', ']']
-    \ ]
-    \ }
+      \ 'rust': [
+      \    ['<', '>'],
+      \    ['"', '"'],
+      \    ['{', '}'],
+      \    ['(', ')'],
+      \    ['[', ']']
+      \    ]
+      \ }
 " }}}
 
 " vanilla mapping {{{
@@ -237,7 +239,7 @@ nnoremap <silent> [1;3C :vertical :resize +4<CR>
 nnoremap <silent> [1;3D :vertical :resize -4<CR>
 " spell check
 nnoremap <silent> <F2> :setlocal spell! spelllang=en_us<CR>
-" open .vimrc, source it
+" open .vimrc
 nnoremap <F3> :tabnew $MYVIMRC<CR>
 " }}}
 
@@ -269,8 +271,6 @@ nmap <silent> <C-PageDown> <Plug>(ale_next_wrap)
 " autocommand {{{
 augroup stuff
 autocmd!
-" remove all trailing white space before write
-" autocmd BufWritePre * %s/\s\+$//e
 " Because Alt send escape sequence and there are mapping that use it,
 " Vim now waits 'timeoutlen' when escape is pressed before exit insert or
 " visual mode for example.
