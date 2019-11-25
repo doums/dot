@@ -30,12 +30,10 @@ call plug#end()
 let mapleader = ","
 set termguicolors
 set number
-" set background=dark
 colorscheme darcula
 filetype plugin on
 filetype indent on
 syntax on
-" set mouse=a
 set nocompatible
 set showcmd
 set noshowmode
@@ -140,8 +138,14 @@ let g:coBraPairs = {
     \ }
 " }}}
 
-" mapping {{{
-"
+" vanilla mapping {{{
+
+" c'est en forgeant que l'on devient forgeron
+noremap <Up> <Nop>
+noremap <Down> <Nop>
+noremap <Right> <Nop>
+noremap <Left> <Nop>
+
 " By default Vim assumes that pressing the Alt key sets the 8th bit of a
 " typed character. However Terminator don't use this system: when Alt key
 " is pressed, the escape sequence is sent.
@@ -162,6 +166,17 @@ nnoremap l w
 nnoremap h b
 nnoremap j <C-d>
 nnoremap k <C-u>
+" VISUAL move fast with Alt + hjkl
+vnoremap l w
+vnoremap h b
+vnoremap j <C-d>
+vnoremap k <C-u>
+" NORMAL/VISUAL/OP_P move through wrapped line
+noremap <silent> j gj
+noremap <silent> k gk
+" remap goto begin and end of line
+noremap H 0
+noremap L $
 " NORMAL smooth scroll
 nnoremap <silent> J :call <SID>ScrollDown()<CR>
 nnoremap <silent> K :call <SID>ScrollUp()<CR>
@@ -169,23 +184,6 @@ nnoremap <silent> K :call <SID>ScrollUp()<CR>
 nnoremap <silent> n :bnext<CR>
 nnoremap <silent> p :bprevious<CR>
 nnoremap <silent> b :Buffers<CR>
-
-function s:ScrollDown()
-execute "normal!" &scroll / 2 . "\<C-e>"
-endfunction
-
-function s:ScrollUp()
-execute "normal!" &scroll / 2 . "\<C-y>"
-endfunction
-
-" VISUAL move fast with Alt + hjkl
-vnoremap l w
-vnoremap h b
-vnoremap j <C-d>
-vnoremap k <C-u>
-" NORMAL/VISUAL/OP_P move through wrapped line
-noremap j gj
-noremap k gk
 " copy in/past from "a register
 noremap <Leader>y "ay
 nnoremap <Leader>i "ayiw
@@ -209,52 +207,16 @@ onoremap " i"
 onoremap ` i`
 " hide highlight after a search
 nnoremap <silent> <space> :nohlsearch<CR>
-" c'est en forgeant que l'on devient forgeron
-noremap <Up> <Nop>
-noremap <Down> <Nop>
-noremap <Right> <Nop>
-noremap <Left> <Nop>
 " select all
 noremap <silent> <C-a> ggvG$
-" spell check
-nnoremap <silent> <F2> :setlocal spell! spelllang=en_us<CR>
-" open .vimrc, source it
-nnoremap <F3> :tabnew $MYVIMRC<CR>
-" nnoremap <F5> :write<CR>:source $MYVIMRC<CR>:messages clear<CR>
-noremap <F5> :write<CR>:Cargo run<CR>
-
-" GitGutter
-nnoremap <silent> <Leader>g :GitGutterToggle<CR>
-
-" fzf
-nnoremap <silent> <C-s> :Files<CR>
-imap d <plug>(fzf-complete-path)
-imap f <plug>(fzf-complete-file)
-imap w <plug>(fzf-complete-line)
-
-" NERDCommenter
-map <Leader>c <plug>NERDCommenterToggle
-map <Leader><S-c> <plug>NERDCommenterSexy
-
-" Ale
-nmap <Leader>a <Plug>(ale_toggle)
-imap <C-@> <Plug>(ale_complete)
-nmap <Leader>b <Plug>(ale_go_to_definition)
-nmap <Leader>n <Plug>(ale_go_to_type_definition)
-nmap <Leader>r <Plug>(ale_find_references)
-nmap <Leader>d <Plug>(ale_detail)
-nnoremap <Leader>: :ALESymbolSearch
-map <C-q> <Plug>(ale_hover)
-nmap <silent> <C-PageUp> <Plug>(ale_previous_wrap)
-nmap <silent> <C-PageDown> <Plug>(ale_next_wrap)
-
+" show trailing whitespaces
+nnoremap <Leader><Space> /\s\+$<CR>
 " tab
 nnoremap <Leader>t :tabnew<CR>
 noremap <silent> <C-Right> :tabn<CR>
 noremap <silent> <C-Left> :tabp<CR>
 nnoremap <silent> <C-Up> :+tabmove<CR>
 nnoremap <silent> <C-Down> :-tabmove<CR>
-
 " window
 nnoremap <Leader>s :new<CR>
 nnoremap <Leader>v :vnew<CR>
@@ -273,6 +235,35 @@ nnoremap <silent> [1;3A :resize +4<CR>
 nnoremap <silent> [1;3B :resize -4<CR>
 nnoremap <silent> [1;3C :vertical :resize +4<CR>
 nnoremap <silent> [1;3D :vertical :resize -4<CR>
+" spell check
+nnoremap <silent> <F2> :setlocal spell! spelllang=en_us<CR>
+" open .vimrc, source it
+nnoremap <F3> :tabnew $MYVIMRC<CR>
+" }}}
+
+" {{{ plugin mapping
+
+" GitGutter
+nnoremap <silent> <Leader>g :GitGutterToggle<CR>
+" fzf
+nnoremap <silent> <C-s> :Files<CR>
+imap d <plug>(fzf-complete-path)
+imap f <plug>(fzf-complete-file)
+imap w <plug>(fzf-complete-line)
+" NERDCommenter
+map <Leader>c <plug>NERDCommenterToggle
+map <Leader><S-c> <plug>NERDCommenterSexy
+" Ale
+nmap <Leader>a <Plug>(ale_toggle)
+imap <C-@> <Plug>(ale_complete)
+nmap <Leader>b <Plug>(ale_go_to_definition)
+nmap <Leader>n <Plug>(ale_go_to_type_definition)
+nmap <Leader>r <Plug>(ale_find_references)
+nmap <Leader>d <Plug>(ale_detail)
+nnoremap <Leader>: :ALESymbolSearch
+map <C-q> <Plug>(ale_hover)
+nmap <silent> <C-PageUp> <Plug>(ale_previous_wrap)
+nmap <silent> <C-PageDown> <Plug>(ale_next_wrap)
 " }}}
 
 " autocommand {{{
@@ -293,8 +284,8 @@ autocmd BufEnter * vnoremap <buffer> <nowait> <Esc> <Esc>
 autocmd CursorHold * checktime %
 " set fold to marker for .vimrc
 autocmd FileType vim setlocal foldmethod=marker
-" set a print shortcut for some programming languages
-autocmd FileType * call s:PrintMaps()
+" set stuff for some programming languages
+autocmd FileType * call s:CodeStuff()
 augroup END
 " }}}
 
@@ -305,17 +296,30 @@ call darcula#Hi('rustLifetime', darcula#palette.macroName, darcula#palette.bg, '
 call darcula#Hi('rustTypeParameter', darcula#palette.macroName, darcula#palette.bg, 'bold')
 " }}}
 
-function s:PrintMaps()
+" {{{ functions
+function s:ScrollDown()
+execute "normal!" &scroll / 2 . "\<C-e>"
+endfunction
+
+function s:ScrollUp()
+execute "normal!" &scroll / 2 . "\<C-y>"
+endfunction
+
+function s:CodeStuff()
   if &filetype == "rust"
     nnoremap <buffer> <Leader>; iprintln!("")<Esc><Left>i
     inoremap <buffer> <Leader>; println!("")<Esc><Left>i
+    nnoremap <buffer> <F5> :write<CR>:Cargo run<CR>
+    nnoremap <buffer> <F4> :write<CR>:Cargo test<CR>
   endif
   if &filetype == "javascript" || &filetype == "typescript"
     nnoremap <buffer> <Leader>; iconsole.log('')<Esc><Left>i
     inoremap <buffer> <Leader>; console.log('')<Esc><Left>i
   endif
 endfunction
+" }}}
 
+" {{{ scraps
 " noremap <F9> :call <SID>DebugHi()<CR>
 " nnoremap <F5> :source $MYVIMRC<CR>
 
@@ -328,3 +332,4 @@ function s:DebugHi()
   let bg = synID(line("."), col("."), 1)->synIDtrans()->synIDattr("bg")
   echo 'hi: '.name.', link: '.link.', bg: '.bg.', fg: '.fg
 endfunction
+" }}}
