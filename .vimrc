@@ -243,7 +243,7 @@ nnoremap <silent> <F2> :setlocal spell! spelllang=en_us<CR>
 nnoremap <F3> :tabnew $MYVIMRC<CR>
 " }}}
 
-" {{{ plugin mapping
+" {{{ plugins mapping
 
 " GitGutter
 nnoremap <silent> <Leader>g :GitGutterToggle<CR>
