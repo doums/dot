@@ -286,6 +286,7 @@ autocmd CursorHold * checktime %
 autocmd FileType vim setlocal foldmethod=marker
 " set stuff for some programming languages
 autocmd FileType * call s:CodeStuff()
+autocmd FileType man set nonumber
 augroup END
 " }}}
 
