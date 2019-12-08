@@ -256,7 +256,7 @@ imap d <plug>(fzf-complete-path)
 imap f <plug>(fzf-complete-file)
 imap w <plug>(fzf-complete-line)
 " netrw
-nnoremap <Tab> :Lex<CR>
+nnoremap <silent> <Tab> :Lex<CR>
 " NERDCommenter
 map <Leader>c <plug>NERDCommenterToggle
 map <Leader><S-c> <plug>NERDCommenterSexy
