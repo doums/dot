@@ -292,6 +292,9 @@ autocmd FileType vim setlocal foldmethod=marker
 " set stuff for some programming languages
 autocmd FileType * call s:CodeStuff()
 autocmd FileType man set nonumber
+" when browsing whitin netrw, map cw to gncd -> make the dir under
+" the cursor the new tree top and set the current working dir to it
+autocmd FileType netrw nmap <buffer><silent> cw gncd
 augroup END
 " }}}
 
