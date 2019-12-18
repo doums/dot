@@ -17,7 +17,7 @@ Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 Plug 'airblade/vim-gitgutter'
 Plug 'leafgarland/typescript-vim'
-Plug 'w0rp/ale'
+Plug 'dense-analysis/ale'
 Plug 'tpope/vim-fugitive'
 Plug 'rust-lang/rust.vim'
 Plug 'doums/coBra'
@@ -93,6 +93,8 @@ let g:lightline.tabline_subseparator = {
 let g:gitgutter_enabled = 0
 let g:typescript_indent_disable = 1
 let g:ale_set_highlights = 0
+" Use ALE's function for omnicompletion, :h omnifunc
+set omnifunc=ale#completion#OmniFunc
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_info_str = 'I'
@@ -244,6 +246,8 @@ nnoremap <silent> [1;3D :vertical :resize -4<CR>
 nnoremap <silent> <F2> :setlocal spell! spelllang=en_us<CR>
 " open .vimrc
 nnoremap <F3> :tabnew $MYVIMRC<CR>
+" omni completion
+imap <Tab> <C-x><C-o>
 " }}}
 
 " {{{ plugins mapping
