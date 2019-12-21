@@ -316,12 +316,16 @@ call darcula#Hi('rustTypeParameter', darcula#palette.macroName, darcula#palette.
 function s:Complete()
   let infos = complete_info()
   if infos.pum_visible == 1 && !empty(infos.items)
-    if infos.selected == -1
+    if infos.selected < 0
       let idx = 0
     else
       let idx = infos.selected
     endif
-    return "\<C-o>diw".infos.items[idx].word." "
+    if empty(infos.items[idx].abbr)
+      return "\<C-o>diw".infos.items[idx].word." "
+    else
+      return "\<C-o>diw".infos.items[idx].abbr." "
+    endif
   else
     return "\<Tab>"
   endif
