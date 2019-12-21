@@ -4,8 +4,6 @@ if empty(glob('~/.vim/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-let g:ale_completion_enabled=1
-
 call plug#begin('~/.vim/plugged')
 
 Plug 'tpope/vim-surround'
@@ -23,6 +21,9 @@ Plug 'rust-lang/rust.vim'
 Plug 'doums/coBra'
 Plug 'doums/darcula'
 Plug 'jparise/vim-graphql'
+Plug 'Shougo/deoplete.nvim'
+Plug 'roxma/nvim-yarp'
+Plug 'roxma/vim-hug-neovim-rpc'
 
 call plug#end()
 
@@ -67,6 +68,7 @@ set autoread
 " }}}
 
 " plugins config {{{
+let g:deoplete#enable_at_startup = 1
 let g:netrw_liststyle = 3
 let g:netrw_banner = 0
 let g:netrw_winsize = 30
@@ -94,7 +96,7 @@ let g:gitgutter_enabled = 0
 let g:typescript_indent_disable = 1
 let g:ale_set_highlights = 0
 " Use ALE's function for omnicompletion, :h omnifunc
-set omnifunc=ale#completion#OmniFunc
+" set omnifunc=ale#completion#OmniFunc
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_info_str = 'I'
@@ -246,8 +248,9 @@ nnoremap <silent> [1;3D :vertical :resize -4<CR>
 nnoremap <silent> <F2> :setlocal spell! spelllang=en_us<CR>
 " open .vimrc
 nnoremap <F3> :tabnew $MYVIMRC<CR>
-" omni completion
-imap <Tab> <C-x><C-o>
+" replace the word under the cursor
+" by the first or the selected completion suggestion
+inoremap <expr> <Tab> <SID>Complete()
 " }}}
 
 " {{{ plugins mapping
@@ -310,12 +313,26 @@ call darcula#Hi('rustTypeParameter', darcula#palette.macroName, darcula#palette.
 " }}}
 
 " {{{ functions
+function s:Complete()
+  let infos = complete_info()
+  if infos.pum_visible == 1 && !empty(infos.items)
+    if infos.selected == -1
+      let idx = 0
+    else
+      let idx = infos.selected
+    endif
+    return "\<C-o>diw".infos.items[idx].word." "
+  else
+    return "\<Tab>"
+  endif
+endfunction
+
 function s:ScrollDown()
-execute "normal!" &scroll / 2 . "\<C-e>"
+  execute "normal!" &scroll / 2 . "\<C-e>"
 endfunction
 
 function s:ScrollUp()
-execute "normal!" &scroll / 2 . "\<C-y>"
+  execute "normal!" &scroll / 2 . "\<C-y>"
 endfunction
 
 function s:CodeStuff()
