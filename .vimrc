@@ -78,7 +78,17 @@ let g:NERDCompactSexyComs = 1
 let g:NERDCommentEmptyLines = 1
 let g:NERDTrimTrailingWhitespace = 1
 let g:lightline = {
-      \ 'colorscheme': 'darculaOriginal'
+      \ 'colorscheme': 'darculaOriginal',
+			\ 'component_function': {
+			\   'gitbranch': 'fugitive#head'
+			\ }
+      \ }
+let g:lightline.active = {
+      \ 'right': [
+      \   [ 'lineinfo' ],
+      \   [ 'percent' ],
+      \   [ 'gitbranch', 'fileformat', 'fileencoding', 'filetype' ]
+      \ ]
       \ }
 let g:lightline.tab = {
       \ 'active': [ 'filename', 'modified' ],
