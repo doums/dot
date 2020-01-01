@@ -1,3 +1,4 @@
+# Defined in - @ line 2
 function start_docker
-	systemctl start docker.service
+	sudo systemctl start docker.service
 end

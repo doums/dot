@@ -1,3 +1,4 @@
+# Defined in - @ line 2
 function stop_docker
-	systemctl stop docker.service
+	sudo systemctl stop docker.service
 end
