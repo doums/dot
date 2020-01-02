@@ -332,11 +332,9 @@ function s:Complete()
       let idx = infos.selected
     endif
     if empty(infos.items[idx].abbr)
-      echo infos.items[idx].word
-      return "\<Left>\<C-o>diw".infos.items[idx].word." "
+      return "\<Left>\<C-o>diw".infos.items[idx].word
     else
-      echo infos.items[idx].abbr
-      return "\<Left>\<C-o>diw".infos.items[idx].abbr." "
+      return "\<Left>\<C-o>diw".infos.items[idx].abbr
     endif
   else
     return "\<Tab>"
