@@ -114,7 +114,8 @@ let g:ale_echo_msg_format = '[%linter%][%severity%] %s'
 let g:ale_fixers = {
       \ 'javascript': [ 'eslint' ],
       \ 'typescript': [ 'eslint', 'tsserver' ],
-      \ 'graphql': [ 'eslint' ]
+      \ 'graphql': [ 'eslint' ],
+      \ 'rust': [ 'rustfmt' ]
       \ }
 let g:ale_linters = {
       \ 'javascript': [ 'eslint', 'standard' ],
@@ -123,7 +124,7 @@ let g:ale_linters = {
       \ 'rust': [ 'cargo', 'rls', 'rustc', 'clippy', 'rustfmt' ]
       \ }
 let g:ale_linters_explicit = 1
-let g:rustfmt_autosave = 1
+let g:ale_fix_on_save = 1
 let g:fzf_colors = {
       \ 'fg':      ['fg', 'Normal'],
       \ 'bg':      ['bg', 'Normal'],
