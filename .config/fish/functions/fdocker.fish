@@ -62,6 +62,9 @@ function manage_volume
 end
 
 function fdocker
+  if not docker ps > /dev/null
+    return 1
+  end
   set choice (printf 'container\nimage\nvolume\n' | fzf)
   if test -z $choice
     return 0

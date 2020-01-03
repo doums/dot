@@ -64,7 +64,9 @@ set completeopt=menuone,popup
 set fillchars=diff:\ " a space
 set completepopup=border:off
 set autoread
-:runtime! ftplugin/man.vim
+set display=lastline
+set wildmenu
+runtime! ftplugin/man.vim
 " }}}
 
 " plugins config {{{
