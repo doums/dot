@@ -66,6 +66,7 @@ set completepopup=border:off
 set autoread
 set display=lastline
 set wildmenu
+set clipboard=unnamedplus,autoselect,exclude:cons\|linux
 runtime! ftplugin/man.vim
 " }}}
 
