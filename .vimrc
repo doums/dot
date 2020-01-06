@@ -84,13 +84,34 @@ let g:lightline = {
       \ 'colorscheme': 'darculaOriginal',
 			\ 'component_function': {
 			\   'gitbranch': 'fugitive#head'
-			\ }
+			\ },
+      \ 'component_expand': {
+      \   'ale_ok': 'lla#Ok',
+      \   'ale_cheking': 'lla#Checking',
+      \   'ale_error': 'lla#Errors',
+      \   'ale_warning': 'lla#Warnings'
+      \ },
+      \ 'component_type': {
+      \   'ale_ok': 'ok',
+      \   'ale_cheking': 'middle',
+      \   'ale_error': 'error',
+      \   'ale_warning': 'warning'
+      \ }
       \ }
 let g:lightline.active = {
       \ 'right': [
       \   [ 'lineinfo' ],
       \   [ 'percent' ],
-      \   [ 'gitbranch', 'fileformat', 'fileencoding', 'filetype' ]
+      \   [
+      \     'gitbranch',
+      \     'fileformat',
+      \     'fileencoding',
+      \     'filetype',
+      \     'ale_cheking',
+      \     'ale_ok',
+      \     'ale_warning',
+      \     'ale_error'
+      \   ]
       \ ]
       \ }
 let g:lightline.tab = {
@@ -108,8 +129,6 @@ let g:lightline.tabline_subseparator = {
 let g:gitgutter_enabled = 0
 let g:typescript_indent_disable = 1
 let g:ale_set_highlights = 0
-" Use ALE's function for omnicompletion, :h omnifunc
-" set omnifunc=ale#completion#OmniFunc
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_info_str = 'I'
