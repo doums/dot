@@ -64,6 +64,9 @@ end
 function fdocker
   if not systemctl is-active docker > /dev/null
     set choice (printf 'start docker ?\nyes\nno' | fzf --header-lines=1)
+    if test -z $choice
+      return 0
+    end
     switch $choice
       case yes
         sudo systemctl start docker
