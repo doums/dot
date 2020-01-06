@@ -62,10 +62,19 @@ function manage_volume
 end
 
 function fdocker
-  if not docker ps > /dev/null
-    return 1
+  if not systemctl is-active docker > /dev/null
+    set choice (printf 'start docker ?\nyes\nno' | fzf --header-lines=1)
+    switch $choice
+      case yes
+        sudo systemctl start docker
+        if test $status -ne 0
+          return 1
+        end
+      case no
+        return 0
+    end
   end
-  set choice (printf 'container\nimage\nvolume\n' | fzf)
+  set choice (printf 'container\nimage\nvolume\nstop docker' | fzf)
   if test -z $choice
     return 0
   end
@@ -76,6 +85,8 @@ function fdocker
       manage_image
     case volume
       manage_volume
+    case 'stop docker'
+      sudo systemctl stop docker
+      return 0
   end
 end
-
