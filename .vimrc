@@ -20,6 +20,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'rust-lang/rust.vim'
 Plug 'doums/coBra'
 Plug 'doums/darcula'
+Plug 'doums/sae'
 Plug 'jparise/vim-graphql'
 Plug 'Shougo/deoplete.nvim'
 Plug 'roxma/nvim-yarp'
@@ -204,13 +205,13 @@ inoremap j <Down>
 inoremap k <Up>
 inoremap l <Right>
 " NORMAL move fast with Alt + hjkl
-nnoremap l w
-nnoremap h b
+nmap l <Plug>SaeRight
+nmap h <Plug>SaeLeft
 nnoremap j <C-d>
 nnoremap k <C-u>
 " VISUAL move fast with Alt + hjkl
-vnoremap l w
-vnoremap h b
+vmap l <Plug>SaeRight
+vmap h <Plug>SaeLeft
 vnoremap j <C-d>
 vnoremap k <C-u>
 " NORMAL/VISUAL/OP_P move through wrapped line
@@ -220,8 +221,8 @@ noremap <silent> k gk
 noremap H 0
 noremap L $
 " NORMAL smooth scroll
-nnoremap <silent> J :call <SID>ScrollDown()<CR>
-nnoremap <silent> K :call <SID>ScrollUp()<CR>
+nmap J <Plug>SaeUp
+nmap K <Plug>SaeDown
 " NORMAL buffer
 nnoremap <silent> n :bnext<CR>
 nnoremap <silent> p :bprevious<CR>
@@ -364,14 +365,6 @@ function s:Complete()
   endif
 endfunction
 
-function s:ScrollDown()
-  execute "normal!" &scroll / 2 . "\<C-e>"
-endfunction
-
-function s:ScrollUp()
-  execute "normal!" &scroll / 2 . "\<C-y>"
-endfunction
-
 function s:CodeStuff()
   if &filetype == "rust"
     nnoremap <buffer> <Leader>; iprintln!("")<Esc><Left>i
@@ -391,6 +384,8 @@ endfunction
 " nnoremap <F5> :source $MYVIMRC<CR>
 
 " autocmd CursorMoved * call s:DebugHi()
+
+" noremap <A-y> :call <SID>Log()<CR>
 
 function s:DebugHi()
   let name = synID(line("."), col("."), 1)->synIDattr("name")
