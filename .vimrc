@@ -8,6 +8,7 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'tpope/vim-surround'
 Plug 'itchyny/lightline.vim'
+Plug '/usr/bin/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'dag/vim-fish'
 Plug 'scrooloose/nerdcommenter'
@@ -136,15 +137,17 @@ let g:ale_echo_msg_info_str = 'I'
 let g:ale_echo_msg_format = '[%linter%][%severity%] %s'
 let g:ale_fixers = {
       \ 'javascript': [ 'eslint' ],
-      \ 'typescript': [ 'eslint', 'tsserver' ],
+      \ 'json': [ 'eslint', 'standard' ],
+      \ 'typescript': [ 'eslint' ],
       \ 'graphql': [ 'eslint' ],
       \ 'rust': [ 'rustfmt' ]
       \ }
 let g:ale_linters = {
       \ 'javascript': [ 'eslint', 'standard' ],
+      \ 'json': [ 'eslint', 'standard' ],
       \ 'typescript': [ 'eslint', 'tsserver' ],
       \ 'graphql': [ 'eslint '],
-      \ 'rust': [ 'cargo', 'rls', 'rustc', 'clippy', 'rustfmt' ]
+      \ 'rust': [ 'rls', 'rustfmt', 'cargo' ]
       \ }
 let g:ale_linters_explicit = 1
 let g:ale_fix_on_save = 1
@@ -168,6 +171,7 @@ let g:fzf_action = {
       \ 'ctrl-s': 'split',
       \ 'ctrl-v': 'vsplit'
       \ }
+" let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
 let g:fzf_buffers_jump = 1
 let g:rust_keep_autopairs_default = 0
 let g:coBraPairs = {
@@ -237,17 +241,6 @@ vnoremap <Leader>f <Esc>:%s/\%V
 nnoremap <Leader>f :%s/
 " quit Vim (fail if there is pending changes)
 nnoremap <Leader>q :qall<CR>
-" OP_P work inner by default (:h omap-info)
-onoremap w iw
-onoremap W iW
-onoremap b ib
-onoremap B iB
-onoremap [ i[
-onoremap < i<
-onoremap t it
-onoremap ' i'
-onoremap " i"
-onoremap ` i`
 " hide highlight after a search
 nnoremap <silent> <space> :nohlsearch<CR>
 " select all
