@@ -227,6 +227,8 @@ noremap L $
 " NORMAL smooth scroll
 nmap J <Plug>SaeUp
 nmap K <Plug>SaeDown
+" work inner by default
+onoremap w iw
 " NORMAL buffer
 nnoremap <silent> n :bnext<CR>
 nnoremap <silent> p :bprevious<CR>
@@ -303,8 +305,8 @@ nmap <Leader>r <Plug>(ale_find_references)
 nmap <Leader>d <Plug>(ale_detail)
 nnoremap <Leader>: :ALESymbolSearch
 map <C-q> <Plug>(ale_hover)
-nmap <silent> <C-PageUp> <Plug>(ale_previous_wrap)
-nmap <silent> <C-PageDown> <Plug>(ale_next_wrap)
+nmap <silent> <C-g> <Plug>(ale_previous_wrap)
+nmap <silent> <C-G> <Plug>(ale_next_wrap)
 " }}}
 
 " autocommand {{{
