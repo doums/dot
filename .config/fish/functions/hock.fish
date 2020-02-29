@@ -1,10 +1,11 @@
-# Fast dOCKer manager using fzf
+# hock, Handy dOCKer manager using fzf
 
 function continue_prompt
-  printf '\npress q to quit\nor any key to continue'
-  read -n 1 -P '' key -s
-  printf '\n\n'
-  if test $key = 'q'
+  set choice (printf 'back\nquit' | fzf --height=4 --layout=default --no-info --no-mouse)
+  if test -z $choice
+    return 0
+  end
+  if test $choice = 'quit'
     return 1
   end
 end
@@ -14,8 +15,12 @@ function manage_container
   if test (count $containers) -eq 0
     return 0
   end
-  set action (printf 'inspect\nkill\nlogs\npause\nport\nrestart\nrm\nstart\nstop\ntop\nunpause\nupdate\nwait\n' | fzf)
+  set action (printf 'inspect\nkill\nlogs\npause\nport\nrestart\nrm\nstart\nstop\ntop\nunpause\nupdate\nwait\n' | fzf --no-info)
   if test -z $action
+    manage_container
+    if test $status -eq 1
+      return 1
+    end
     return 0
   end
   set cmd docker
@@ -41,8 +46,12 @@ function manage_image
   if test (count $images) -eq 0
     return 0
   end
-  set action (printf 'history\ninspect\nsave\nrm' | fzf)
+  set action (printf 'history\ninspect\nsave\nrm' | fzf --no-info)
   if test -z $action
+    manage_image
+    if test $status -eq 1
+      return 1
+    end
     return 0
   end
   set cmd 'docker image'
@@ -68,8 +77,12 @@ function manage_volume
   if test (count $volumes) -eq 0
     return 0
   end
-  set action (printf 'inspect\nrm' | fzf)
+  set action (printf 'inspect\nrm' | fzf --no-info)
   if test -z $action
+    manage_volume
+    if test $status -eq 1
+      return 1
+    end
     return 0
   end
   set cmd "docker volume $action"
@@ -89,8 +102,12 @@ function manage_network
   if test (count $networks) -eq 0
     return 0
   end
-  set action (printf 'inspect\nprune\nrm' | fzf)
+  set action (printf 'inspect\nprune\nrm' | fzf --no-info)
   if test -z $action
+    manage_network
+    if test $status -eq 1
+      return 1
+    end
     return 0
   end
   set cmd "docker network $action"
@@ -105,9 +122,9 @@ function manage_network
   manage_network
 end
 
-function fock
+function hock
   if not systemctl is-active docker > /dev/null
-    set choice (printf 'start docker ?\nyes\nno' | fzf --header-lines=1)
+    set choice (printf 'start docker ?\nyes\nno' | fzf --header-lines=1 --no-info)
     if test -z $choice
       return 0
     end
@@ -121,7 +138,7 @@ function fock
         return 0
     end
   end
-  set choice (printf 'container\nimage\nvolume\nnetwork\nstop docker\ndocker-compose up -d' | fzf)
+  set choice (printf 'container\nimage\nvolume\nnetwork\nstop docker\ndocker-compose up -d' | fzf --no-info)
   if test -z $choice
     return 0
   end
@@ -131,25 +148,25 @@ function fock
       if test $status -eq 1
         return 0
       end
-      fock
+      hock
     case image
       manage_image
       if test $status -eq 1
         return 0
       end
-      fock
+      hock
     case volume
       manage_volume
       if test $status -eq 1
         return 0
       end
-      fock
+      hock
     case network
       manage_network
       if test $status -eq 1
         return 0
       end
-      fock
+      hock
     case 'stop docker'
       sudo systemctl stop docker
       return 0
