@@ -4,8 +4,6 @@ alias ll='ls -l --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color
 alias la='ls -la --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
 alias grep='grep --color=tty -d skip'
 alias sb='subl'
-alias rp='/usr/bin/./remove_package.sh'
-alias emu="cd /home/pierre/Android/Sdk/emulator/;emulator -avd android -gpu host -accel on -scale 2 -no-boot-anim"
 alias db="adb shell input keyevent 82"
 alias dbk="adb shell am force-stop com.monbuilding.app"
 alias rr="adb shell input text "RR""
@@ -17,10 +15,12 @@ set -x QT_AUTO_SCREEN_SCALE_FACTOR 1
 set -x GDK_SCALE 2
 set -x GDK_DPI_SCALE 0.5
 set -x ANDROID_HOME $HOME/Android/Sdk
+set -x PATH $ANDROID_HOME/emulator $PATH
+set -x PATH $ANDROID_HOME/tools $PATH
+set -x PATH $ANDROID_HOME/tools/bin $PATH
+set -x PATH $ANDROID_HOME/platform-tools $PATH
 set -x JAVA_HOME /usr/lib/jvm/default
 set -x XDG_SESSION_TYPE X11
-set -x PATH /opt/arcanist/bin $PATH
-set -x PATH /home/pierre/Android/Sdk/platform-tools $PATH
 set -x PATH $HOME/.cargo/env $PATH
 set -x fish_emoji_width 2
 set -x PATH /opt/node/bin $PATH
@@ -28,4 +28,4 @@ set -x PATH /home/pierre/.yarn/bin $PATH
 set -x MANPAGER "vim -M +MANPAGER -"
 set -x MAKEFLAGS "-j8"
 set -x BROWSER none
-set -x FZF_DEFAULT_COMMAND "rg --files --hidden --no-ignore --follow"
+set -x FZF_DEFAULT_COMMAND "rg --files --hidden --no-ignore"
