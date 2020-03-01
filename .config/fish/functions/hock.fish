@@ -11,7 +11,7 @@ function continue_prompt
 end
 
 function manage_container
-  set containers (docker ps -a | fzf -m --header-lines=1 | awk '{print $1}')
+  set containers (docker ps -a | fzf -m --header-lines=1 --preview 'echo {}' --preview-window=up:4:wrap | awk '{print $1}')
   if test (count $containers) -eq 0
     return 0
   end
@@ -42,7 +42,7 @@ function manage_container
 end
 
 function manage_image
-  set images (docker images | fzf -m --header-lines=1 | awk '{print $3}')
+  set images (docker images | fzf -m --header-lines=1 --preview 'echo {}' --preview-window=up:2:wrap | awk '{print $3}')
   if test (count $images) -eq 0
     return 0
   end
@@ -73,7 +73,7 @@ function manage_image
 end
 
 function manage_volume
-  set volumes (docker volume ls | fzf -m --header-lines=1 | awk '{print $2}')
+  set volumes (docker volume ls | fzf -m --header-lines=1 --preview 'echo {}' --preview-window=up:2:wrap | awk '{print $2}')
   if test (count $volumes) -eq 0
     return 0
   end
@@ -98,7 +98,7 @@ function manage_volume
 end
 
 function manage_network
-  set networks (docker network ls | fzf -m --header-lines=1 | awk '{print $2}')
+  set networks (docker network ls | fzf -m --header-lines=1 --preview 'echo {}' --preview-window=up:2:wrap | awk '{print $2}')
   if test (count $networks) -eq 0
     return 0
   end
