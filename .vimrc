@@ -73,15 +73,23 @@ runtime! ftplugin/man.vim
 " }}}
 
 " plugins config {{{
+
+" deoplete
 let g:deoplete#enable_at_startup = 1
+
+" netrw
 let g:netrw_liststyle = 3
 let g:netrw_banner = 0
 let g:netrw_winsize = 30
+
+" NERDCommenter
 let g:NERDCreateDefaultMappings = 0
 let g:NERDSpaceDelims = 1
 let g:NERDCompactSexyComs = 1
 let g:NERDCommentEmptyLines = 1
 let g:NERDTrimTrailingWhitespace = 1
+
+" lightline.vim
 let g:lightline = {
       \ 'colorscheme': 'darculaOriginal',
 			\ 'component_function': {
@@ -128,8 +136,14 @@ let g:lightline.tabline_subseparator = {
       \ 'left': '',
       \ 'right': ''
       \ }
+
+" GitGutter
 let g:gitgutter_enabled = 0
+
+" typescript-vim
 let g:typescript_indent_disable = 1
+
+" ALE
 let g:ale_set_highlights = 0
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
@@ -151,6 +165,8 @@ let g:ale_linters = {
       \ }
 let g:ale_linters_explicit = 1
 let g:ale_fix_on_save = 1
+
+" fzf
 let g:fzf_colors = {
       \ 'fg':      ['fg', 'Normal'],
       \ 'bg':      ['bg', 'Normal'],
@@ -171,8 +187,15 @@ let g:fzf_action = {
       \ 'ctrl-s': 'split',
       \ 'ctrl-v': 'vsplit'
       \ }
-" let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
 let g:fzf_buffers_jump = 1
+command! -bang -nargs=? -complete=dir Files
+    \ call fzf#vim#files(<q-args>, {'options': [
+        \ '--preview',
+        \ 'bat --color=always {} | head -n 50',
+        \ '--preview-window', 'right:70%'
+        \]}, <bang>0)
+
+" coBra
 let g:rust_keep_autopairs_default = 0
 let g:coBraPairs = {
       \ 'rust': [
@@ -372,6 +395,12 @@ function s:CodeStuff()
     inoremap <buffer> <Leader>; console.log('')<Esc><Left>i
   endif
 endfunction
+" }}}
+
+" {{{ fix alacritty colors
+if &term == "alacritty"
+  let &term = "xterm-256color"
+endif
 " }}}
 
 " {{{ scraps
