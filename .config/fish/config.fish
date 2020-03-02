@@ -22,6 +22,7 @@ set -x PATH $ANDROID_HOME/platform-tools $PATH
 set -x JAVA_HOME /usr/lib/jvm/default
 set -x XDG_SESSION_TYPE X11
 set -x PATH $HOME/.cargo/env $PATH
+set -x PATH $PATH $HOME/.gem/ruby/2.7.0/bin
 set -x fish_emoji_width 2
 set -x PATH /opt/node/bin $PATH
 set -x PATH /home/pierre/.yarn/bin $PATH
