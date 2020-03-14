@@ -1,4 +1,4 @@
-# find a file fast
+# Defined in - @ line 2
 function ffd
-  fd -H -t f -t l $argv | fzf --preview 'echo {}' --preview-window=down:4:wrap
+	ffd.sh $argv
 end
