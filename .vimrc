@@ -8,8 +8,6 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'tpope/vim-surround'
 Plug 'itchyny/lightline.vim'
-Plug '/usr/bin/fzf'
-Plug 'junegunn/fzf.vim'
 Plug 'dag/vim-fish'
 Plug 'scrooloose/nerdcommenter'
 Plug 'pangloss/vim-javascript'
@@ -20,6 +18,7 @@ Plug 'dense-analysis/ale'
 Plug 'tpope/vim-fugitive'
 Plug 'rust-lang/rust.vim'
 Plug 'doums/coBra'
+Plug 'doums/fzfTools'
 Plug 'doums/darcula'
 Plug 'doums/sae'
 Plug 'jparise/vim-graphql'
@@ -166,35 +165,6 @@ let g:ale_linters = {
 let g:ale_linters_explicit = 1
 let g:ale_fix_on_save = 1
 
-" fzf
-let g:fzf_colors = {
-      \ 'fg':      ['fg', 'Normal'],
-      \ 'bg':      ['bg', 'Normal'],
-      \ 'hl':      ['fg', 'Comment'],
-      \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-      \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-      \ 'hl+':     ['fg', 'Statement'],
-      \ 'info':    ['fg', 'PreProc'],
-      \ 'border':  ['fg', 'Ignore'],
-      \ 'prompt':  ['fg', 'Function'],
-      \ 'pointer': ['fg', 'Exception'],
-      \ 'marker':  ['fg', 'Keyword'],
-      \ 'spinner': ['fg', 'PreProc'],
-      \ 'header':  ['fg', 'Comment']
-      \ }
-let g:fzf_action = {
-      \ 'ctrl-t': 'tab split',
-      \ 'ctrl-s': 'split',
-      \ 'ctrl-v': 'vsplit'
-      \ }
-let g:fzf_buffers_jump = 1
-command! -bang -nargs=? -complete=dir Files
-    \ call fzf#vim#files(<q-args>, {'options': [
-        \ '--preview',
-        \ 'bat --color=always {} | head -n 50',
-        \ '--preview-window', 'right:70%'
-        \]}, <bang>0)
-
 " coBra
 let g:rust_keep_autopairs_default = 0
 let g:coBraPairs = {
@@ -215,57 +185,32 @@ noremap <Up> <Nop>
 noremap <Down> <Nop>
 noremap <Right> <Nop>
 noremap <Left> <Nop>
-
-" By default Vim assumes that pressing the Alt key sets the 8th bit of a
-" typed character. However Terminator don't use this system: when Alt key
-" is pressed, the escape sequence is sent.
-"
-" To map Alt key, while writing the mapping in INSERT mod
-" hit Ctrl-v then hit Alt + the key you want
-"
-" :h map-alt-keys
-" :h :map-special-keys
-
-" INSERT move with Alt + hjkl
-inoremap h <Left>
-inoremap j <Down>
-inoremap k <Up>
-inoremap l <Right>
-" NORMAL move fast with Alt + hjkl
-nmap l <Plug>SaeRight
-nmap h <Plug>SaeLeft
-nnoremap j <C-d>
-nnoremap k <C-u>
-" VISUAL move fast with Alt + hjkl
-vmap l <Plug>SaeRight
-vmap h <Plug>SaeLeft
-vnoremap j <C-d>
-vnoremap k <C-u>
+" NORMAL move fast with Ctrl + hjkl
+nmap <C-l> <Plug>SaeRight
+nmap <C-h> <Plug>SaeLeft
+noremap <C-j> <C-d>
+noremap <C-k> <C-u>
+" VISUAL move fast with Ctrl + hjkl
+vmap <C-l> <Plug>SaeRight
+vmap <C-h> <Plug>SaeLeft
+vnoremap <C-j> <C-d>
+vnoremap <C-k> <C-u>
 " NORMAL/VISUAL/OP_P move through wrapped line
 noremap <silent> j gj
 noremap <silent> k gk
 " remap goto begin and end of line
-noremap H 0
-noremap L $
-" NORMAL smooth scroll
-nmap J <Plug>SaeUp
-nmap K <Plug>SaeDown
+noremap <Space>h 0
+noremap <Space>l $
 " work inner by default
 onoremap w iw
-" NORMAL buffer
-nnoremap <silent> n :bnext<CR>
-nnoremap <silent> p :bprevious<CR>
-nnoremap <silent> b :Buffers<CR>
 " copy in/past from "a register
-noremap <Leader>y "ay
-nnoremap <Leader>i "ayiw
-nnoremap <Leader>p "ap
-nnoremap <Leader>P "aP
+noremap <Leader>y ay
+nnoremap <Leader>i ayiw
+nnoremap <Leader>p ap
+nnoremap <Leader>P aP
 " search and replace
 vnoremap <Leader>f <Esc>:%s/\%V
 nnoremap <Leader>f :%s/
-" quit Vim (fail if there is pending changes)
-nnoremap <Leader>q :qall<CR>
 " hide highlight after a search
 nnoremap <silent> <space> :nohlsearch<CR>
 " select all
@@ -279,41 +224,38 @@ noremap <silent> <C-Left> :tabp<CR>
 nnoremap <silent> <C-Up> :+tabmove<CR>
 nnoremap <silent> <C-Down> :-tabmove<CR>
 " window
-nnoremap <Leader>s :new<CR>
-nnoremap <Leader>v :vnew<CR>
-nnoremap <Leader><S-s> :split<CR>
-nnoremap <Leader><S-v> :vsplit<CR>
-nnoremap <silent> <C-h> <C-w>h
-nnoremap <silent> <C-l> <C-w>l
-nnoremap <silent> <C-k> <C-w>k
-nnoremap <silent> <C-j> <C-w>j
+nnoremap <silent><Leader>s :new<CR>
+nnoremap <silent><Leader>v :vnew<CR>
+nnoremap <silent><Leader><S-s> :split<CR>
+nnoremap <silent><Leader><S-v> :vsplit<CR>
+nnoremap <silent> <h <C-w>h
+nnoremap <silent> <l <C-w>l
+nnoremap <silent> <k <C-w>k
+nnoremap <silent> <j <C-w>j
 nnoremap <silent> <Leader><Left> <C-w>H
 nnoremap <silent> <Leader><Down> <C-w>J
 nnoremap <silent> <Leader><Up> <C-w>K
 nnoremap <silent> <Leader><Right> <C-w>L
 noremap <Leader>= <C-w>=
-nnoremap <silent> [1;3A :resize +4<CR>
-nnoremap <silent> [1;3B :resize -4<CR>
-nnoremap <silent> [1;3C :vertical :resize +4<CR>
-nnoremap <silent> [1;3D :vertical :resize -4<CR>
-" spell check
-nnoremap <silent> <F2> :setlocal spell! spelllang=en_us<CR>
-" open .vimrc
-nnoremap <F3> :tabnew $MYVIMRC<CR>
+nnoremap <silent> ²j :resize +4<CR>
+nnoremap <silent> ²k :resize -4<CR>
+nnoremap <silent> ²h :vertical :resize +4<CR>
+nnoremap <silent> ²l :vertical :resize -4<CR>
 " replace the word under the cursor
 " by the first or the selected completion suggestion
 inoremap <expr> <Tab> <SID>Complete()
+" terminal mode
+tnoremap <Leader>n <C-W>N
+nnoremap <silent> <Down> :term<CR>
 " }}}
 
 " {{{ plugins mapping
 
 " GitGutter
 nnoremap <silent> <Leader>g :GitGutterToggle<CR>
-" fzf
-nnoremap <silent> <C-s> :Files<CR>
-imap d <plug>(fzf-complete-path)
-imap f <plug>(fzf-complete-file)
-imap w <plug>(fzf-complete-line)
+" fzfTools
+nmap <C-s> <Plug>Ls
+nmap <C-b> <Plug>Buf
 " netrw
 nnoremap <silent> <Tab> :Lex<CR>
 " NERDCommenter
@@ -335,14 +277,6 @@ nmap <silent> <C-G> <Plug>(ale_next_wrap)
 " autocommand {{{
 augroup stuff
 autocmd!
-" Because Alt send escape sequence and there are mapping that use it,
-" Vim now waits 'timeoutlen' when escape is pressed before exit insert or
-" visual mode for example.
-" The following 2 lines are the trick to remove this delay. <nowait> works
-" only for buffer mapping. That's why we use BufEnter event to add this
-" mapping to a buffer each time we enter in a buffer.
-autocmd BufEnter * inoremap <buffer> <nowait> <Esc> <Esc>
-autocmd BufEnter * vnoremap <buffer> <nowait> <Esc> <Esc>
 " whenever CursorHold is fired (nothing typed during 'updatetime')
 " run checktime to refresh the buffer and retrieve any external changes
 autocmd CursorHold * checktime %
@@ -354,6 +288,11 @@ autocmd FileType man set nonumber
 " when browsing whitin netrw, map cw to gncd -> make the dir under
 " the cursor the new tree top and set the current working dir to it
 autocmd FileType netrw nmap <buffer><silent> cw gncd
+" terminal stuff
+" autocmd TerminalOpen,TerminalWinOpen * call s:InitTermSetUp()
+" autocmd WinLeave,BufLeave * call s:RestoreSetUp()
+" autocmd WinEnter,BufEnter * call s:InitTermSetUp()
+" autocmd TerminalWinOpen * call s:NewTerm()
 augroup END
 " }}}
 
