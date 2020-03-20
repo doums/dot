@@ -204,10 +204,10 @@ noremap <Space>l $
 " work inner by default
 onoremap w iw
 " copy in/past from "a register
-noremap <Leader>y ay
-nnoremap <Leader>i ayiw
-nnoremap <Leader>p ap
-nnoremap <Leader>P aP
+noremap <Leader>y "ay
+nnoremap <Leader>i "ayiw
+nnoremap <Leader>p "ap
+nnoremap <Leader>P "aP
 " search and replace
 vnoremap <Leader>f <Esc>:%s/\%V
 nnoremap <Leader>f :%s/
