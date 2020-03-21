@@ -41,6 +41,7 @@ set showcmd
 set noshowmode
 set laststatus=2
 set shortmess=fFaWcs
+set ttimeoutlen=0
 set ignorecase
 set smartcase
 set cindent
