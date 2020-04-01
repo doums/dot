@@ -15,12 +15,12 @@ Plug 'mxw/vim-jsx'
 Plug 'airblade/vim-gitgutter'
 Plug 'leafgarland/typescript-vim'
 Plug 'dense-analysis/ale'
-Plug 'tpope/vim-fugitive'
 Plug 'rust-lang/rust.vim'
 Plug 'doums/coBra'
 Plug 'doums/fzfTools'
 Plug 'doums/darcula'
 Plug 'doums/sae'
+Plug 'doums/gitBranch'
 Plug 'jparise/vim-graphql'
 Plug 'Shougo/deoplete.nvim'
 Plug 'roxma/nvim-yarp'
@@ -40,7 +40,7 @@ set nocompatible
 set showcmd
 set noshowmode
 set laststatus=2
-set shortmess=fFaWcs
+set shortmess=IfFaWcs
 set ttimeoutlen=0
 set ignorecase
 set smartcase
@@ -93,7 +93,7 @@ let g:NERDTrimTrailingWhitespace = 1
 let g:lightline = {
       \ 'colorscheme': 'darculaOriginal',
 			\ 'component_function': {
-			\   'gitbranch': 'fugitive#head'
+			\   'gitbranch': 'gitBranch#Get'
 			\ },
       \ 'component_expand': {
       \   'ale_ok': 'lla#Ok',
