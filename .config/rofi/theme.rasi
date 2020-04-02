@@ -1,7 +1,7 @@
 * {
   background-color: #212121;
   text-color: #9E9E9E;
-  font: "Inconsolata 10";
+  font: "Inconsolata Regular 14";
   border: 0px;
 }
 

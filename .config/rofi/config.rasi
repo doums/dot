@@ -9,9 +9,9 @@ configuration {
   display-combi: "combi";
   display-keys: "key";
   drun-display-format: "{name}";
-  terminal: "terminator";
+  terminal: "alacritty";
   matching: "normal";
-  dpi: 1;
+  dpi: 144;
   scroll-method: 1;
   window-format: "{c} - {t}";
   theme: "theme.rasi";
