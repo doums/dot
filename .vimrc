@@ -6,7 +6,6 @@ endif
 
 call plug#begin('~/.vim/plugged')
 
-Plug 'tpope/vim-surround'
 Plug 'itchyny/lightline.vim'
 Plug 'dag/vim-fish'
 Plug 'scrooloose/nerdcommenter'
@@ -22,9 +21,9 @@ Plug 'doums/darcula'
 Plug 'doums/sae'
 Plug 'doums/gitBranch'
 Plug 'jparise/vim-graphql'
-Plug 'Shougo/deoplete.nvim'
 Plug 'roxma/nvim-yarp'
 Plug 'roxma/vim-hug-neovim-rpc'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 call plug#end()
 
@@ -161,7 +160,8 @@ let g:ale_linters = {
       \ 'json': [ 'eslint', 'standard' ],
       \ 'typescript': [ 'eslint', 'tsserver' ],
       \ 'graphql': [ 'eslint '],
-      \ 'rust': [ 'rls', 'rustfmt', 'cargo' ]
+      \ 'rust': [ 'rls', 'rustfmt', 'cargo' ],
+      \ 'sh': [ 'shellcheck' ]
       \ }
 let g:ale_linters_explicit = 1
 let g:ale_fix_on_save = 1
@@ -175,8 +175,25 @@ let g:coBraPairs = {
       \    ['{', '}'],
       \    ['(', ')'],
       \    ['[', ']']
-      \    ]
+      \ ]
       \ }
+
+" Coc
+call darcula#Hi('CocErrorSign', darcula#palette.errorStripe, darcula#palette.gutter)
+call darcula#Hi('CocWarningSign', darcula#palette.warnStripe, darcula#palette.gutter)
+call darcula#Hi('CocInfoSign', darcula#palette.infoStripe, darcula#palette.gutter)
+call darcula#Hi('CocHintSign', darcula#palette.infoStripe, darcula#palette.gutter)
+hi! link CocErrorFloat Pmenu
+hi! link CocWarningFloat Pmenu
+hi! link CocInfoFloat Pmenu
+hi! link CocHintFloat Pmenu
+call darcula#Hi('CocHighlightText', darcula#palette.null, darcula#palette.identifierUnderCaret)
+call darcula#Hi('CocHighlightRead', darcula#palette.null, darcula#palette.identifierUnderCaret)
+call darcula#Hi('CocHighlightWrite', darcula#palette.null, darcula#palette.identifierUnderCaretWrite)
+call darcula#Hi('CocErrorHighlight', darcula#palette.null, darcula#palette.codeError, 'NONE')
+call darcula#Hi('CocWarningHighlight', darcula#palette.null, darcula#palette.codeWarning, 'NONE')
+call darcula#Hi('CocInfoHighlight', darcula#palette.null, darcula#palette.null, 'NONE')
+call darcula#Hi('CocHintHighlight', darcula#palette.null, darcula#palette.null, 'NONE')
 " }}}
 
 " vanilla mapping {{{
@@ -214,8 +231,6 @@ vnoremap <Leader>f <Esc>:%s/\%V
 nnoremap <Leader>f :%s/
 " hide highlight after a search
 nnoremap <silent> <space> :nohlsearch<CR>
-" select all
-noremap <silent> <C-a> ggvG$
 " show trailing whitespaces
 nnoremap <Leader><Space> /\s\+$<CR>
 " tab
@@ -247,7 +262,6 @@ nnoremap <silent> ²l :vertical :resize -4<CR>
 inoremap <expr> <Tab> <SID>Complete()
 " terminal mode
 tnoremap <Leader>n <C-W>N
-nnoremap <silent> <Down> :term<CR>
 " }}}
 
 " {{{ plugins mapping
@@ -273,6 +287,8 @@ nnoremap <Leader>: :ALESymbolSearch
 map <C-q> <Plug>(ale_hover)
 nmap <silent> <C-g> <Plug>(ale_previous_wrap)
 nmap <silent> <C-G> <Plug>(ale_next_wrap)
+" Coc
+inoremap <silent><expr> <c-space> coc#refresh()
 " }}}
 
 " autocommand {{{
@@ -289,6 +305,7 @@ autocmd FileType man set nonumber
 " when browsing whitin netrw, map cw to gncd -> make the dir under
 " the cursor the new tree top and set the current working dir to it
 autocmd FileType netrw nmap <buffer><silent> cw gncd
+autocmd CursorHold * silent call CocActionAsync('highlight')
 " terminal stuff
 " autocmd TerminalOpen,TerminalWinOpen * call s:InitTermSetUp()
 " autocmd WinLeave,BufLeave * call s:RestoreSetUp()
@@ -345,7 +362,7 @@ endif
 
 " {{{ scraps
 " noremap <F9> :call <SID>DebugHi()<CR>
-" nnoremap <F5> :source $MYVIMRC<CR>
+nnoremap <F5> :source $MYVIMRC<CR>
 
 " autocmd CursorMoved * call s:DebugHi()
 
