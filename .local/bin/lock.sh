@@ -1,37 +1,44 @@
 #!/bin/bash
 
-bg_lock=/tmp/bg_lock.png
-scrot $bg_lock -o -e 'mv $f /tmp/'
-brightness=$(identify -colorspace Gray -gamma 0.6 -crop 300x400+1130+520 -format "%[fx:mean*100]\n" $bg_lock)
-brightness=${brightness%.*}
-if [ $brightness -gt 60 ]; then
-  text_color=black
-  args="--insidecolor=0000001c
-    --ringcolor=0000003e
-    --linecolor=00000000
-    --keyhlcolor=ffffff80
-    --ringvercolor=ffffff00
-    --separatorcolor=22222260
-    --insidevercolor=ffffff1c
-    --ringwrongcolor=ffffff55
-    --insidewrongcolor=ffffff1c
-    --verifcolor=00000000
-    --wrongcolor=00000000
-    --layoutcolor=00000000"
-else
-  text_color=white
-  args="--insidecolor=ffffff1c
-    --ringcolor=ffffff3e
-    --linecolor=ffffff00
-    --keyhlcolor=00000080
-    --ringvercolor=00000000
-    --separatorcolor=22222260
-    --insidevercolor=0000001c
-    --ringwrongcolor=00000055
-    --insidewrongcolor=0000001c
-    --verifcolor=00000000
-    --wrongcolor=00000000
-    --layoutcolor=00000000"
+red="\e[38;5;1m"
+bold="\e[1m"
+reset="\e[0m"
+
+if ! shotgun --version &> /dev/null; then
+  >&2 printf "%bThis script needs %bshotgun%b%b to work.%b\n" "$red" "$bold" "$reset" "$red" "$reset"
+  exit 1
 fi
-convert $bg_lock -scale 10% -scale 1000% -colorspace Gray -gamma 0.6 -average -font "Inconsolata-Regular" -pointsize 26 -fill $text_color -gravity Center -annotate +0+0 "locked" $bg_lock
-i3lock -n -i $bg_lock $args $@
+
+if ! gm -help &> /dev/null; then
+  >&2 printf "%bThis script needs %bgraphicsmagick%b%b to work.%b\n" "$red" "$bold" "$reset" "$red" "$reset"
+  exit 1
+fi
+
+if ! i3lock --version &> /dev/null; then
+  >&2 printf "%bThis script needs %bi3lock-color%b%b to work.%b\n" "$red" "$bold" "$reset" "$red" "$reset"
+  exit 1
+fi
+
+bg_lock=/tmp/bg_lock.png
+shotgun $bg_lock
+gm convert $bg_lock -scale 10% -scale 1000% -colorspace Gray -gamma 0.6 \
+  -fill  "#33333355" \
+  -draw 'rectangle 1237,707 1324,734' \
+  -font "/usr/share/fonts/TTF/Inconsolata-Bold.ttf" -pointsize 26 -fill white \
+  -draw 'gravity Center text 0,0 locked' \
+  $bg_lock
+options="
+--insidecolor=ffffff1c
+--ringcolor=ffffff3e
+--linecolor=ffffff00
+--keyhlcolor=00000080
+--ringvercolor=00000000
+--separatorcolor=22222260
+--insidevercolor=0000001c
+--ringwrongcolor=00000055
+--insidewrongcolor=0000001c
+--verifcolor=00000000
+--wrongcolor=00000000
+--layoutcolor=00000000"
+mapfile -t options <<< "$options"
+i3lock -n -i "$bg_lock" "${options[@]}" "$@"
