@@ -1,7 +1,61 @@
 [global_config]
+  broadcast_default = off
   enabled_plugins = LaunchpadCodeURLHandler, APTURLHandler, LaunchpadBugURLHandler
   inactive_color_offset = 1.0
+  suppress_multiple_term_dialog = True
 [keybindings]
+  broadcast_all = None
+  broadcast_group = None
+  broadcast_off = None
+  close_term = None
+  close_window = None
+  copy = <Primary><Shift>c
+  cycle_next = None
+  cycle_prev = None
+  edit_tab_title = None
+  edit_terminal_title = None
+  edit_window_title = None
+  full_screen = None
+  go_down = None
+  go_left = None
+  go_next = None
+  go_prev = None
+  go_right = None
+  go_up = None
+  group_all = None
+  group_tab = None
+  help = None
+  hide_window = None
+  insert_number = None
+  insert_padded = None
+  layout_launcher = None
+  move_tab_left = None
+  move_tab_right = None
+  new_tab = None
+  new_terminator = None
+  new_window = None
+  next_tab = None
+  paste = <Primary><Shift>v
+  prev_tab = None
+  reset = None
+  reset_clear = <Primary><Alt>w
+  resize_down = None
+  resize_left = None
+  resize_right = None
+  resize_up = None
+  rotate_ccw = None
+  rotate_cw = None
+  scaled_zoom = None
+  search = None
+  split_horiz = <Primary><Alt>s
+  split_vert = <Primary><Alt>v
+  toggle_scrollbar = None
+  toggle_zoom = F11
+  ungroup_all = None
+  ungroup_tab = None
+  zoom_in = None
+  zoom_normal = None
+  zoom_out = None
 [layouts]
   [[default]]
     [[[child1]]]
@@ -16,8 +70,18 @@
   [[default]]
     background_color = "#222d32"
     cursor_color = "#aaaaaa"
-    font = Inconsolata 12
+    font = Inconsolata 14
     foreground_color = "#888a85"
+    palette = "#282828:#cc241d:#98971a:#d79921:#458588:#b16286:#689d6a:#a89984:#928374:#fb4934:#b8bb26:#fabd2f:#83a598:#d3869b:#8ec07c:#ebdbb2"
+    scrollback_infinite = True
+    show_titlebar = False
+    use_system_font = False
+  [[nord]]
+    background_color = "#2E3440"
+    cursor_color = "#D8DEE9"
+    font = Inconsolata 14
+    foreground_color = "#D8DEE9"
+    palette = "#3b4252:#bf616a:#a3be8c:#ebcb8b:#81a1c1:#b48ead:#88c0d0:#e5e9f0:#4c566a:#bf616a:#a3be8c:#ebcb8b:#81a1c1:#b48ead:#8fbcbb:#eceff4"
     scrollback_infinite = True
     show_titlebar = False
     use_system_font = False
