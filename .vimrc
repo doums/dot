@@ -73,9 +73,6 @@ runtime! ftplugin/man.vim
 
 " plugins config {{{
 
-" deoplete
-let g:deoplete#enable_at_startup = 1
-
 " netrw
 let g:netrw_liststyle = 3
 let g:netrw_banner = 0
@@ -160,9 +157,9 @@ let g:ale_linters = {
       \ 'json': [ 'eslint', 'standard' ],
       \ 'typescript': [ 'eslint', 'tsserver' ],
       \ 'graphql': [ 'eslint '],
-      \ 'rust': [ 'rls', 'rustfmt', 'cargo' ],
       \ 'sh': [ 'shellcheck' ]
       \ }
+      " \ 'rust': [ 'rls', 'rustfmt', 'cargo' ],
 let g:ale_linters_explicit = 1
 let g:ale_fix_on_save = 1
 
@@ -259,7 +256,7 @@ nnoremap <silent> ²h :vertical :resize +4<CR>
 nnoremap <silent> ²l :vertical :resize -4<CR>
 " replace the word under the cursor
 " by the first or the selected completion suggestion
-inoremap <expr> <Tab> <SID>Complete()
+" inoremap <expr> <Tab> <SID>Complete()
 " terminal mode
 tnoremap <Leader>n <C-W>N
 " }}}
@@ -287,8 +284,38 @@ nnoremap <Leader>: :ALESymbolSearch
 map <C-q> <Plug>(ale_hover)
 nmap <silent> <C-g> <Plug>(ale_previous_wrap)
 nmap <silent> <C-G> <Plug>(ale_next_wrap)
+
 " Coc
 inoremap <silent><expr> <c-space> coc#refresh()
+
+" use <tab> for trigger completion and navigate to the next complete item
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+inoremap <silent><expr> <Tab>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<Tab>" :
+      \ coc#refresh()
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+"
+" Symbol renaming
+nmap <S-F6> <Plug>(coc-rename)
+"
+" Use `[g` and `]g` to navigate diagnostics
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Apply AutoFix to problem on the current line.
+nmap <leader><CR> <Plug>(coc-fix-current)
 " }}}
 
 " autocommand {{{
@@ -342,8 +369,8 @@ endfunction
 
 function s:CodeStuff()
   if &filetype == "rust"
-    nnoremap <buffer> <Leader>; iprintln!("")<Esc><Left>i
-    inoremap <buffer> <Leader>; println!("")<Esc><Left>i
+    nnoremap <buffer> <Leader>; iprintln!("{:#?}", )<Esc><Left>i
+    inoremap <buffer> <Leader>; println!("{:#?}", )<Esc><Left>i
     nnoremap <buffer> <F5> :write<CR>:Cargo run<CR>
     nnoremap <buffer> <F4> :write<CR>:Cargo test<CR>
   endif
