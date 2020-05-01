@@ -14,6 +14,7 @@ alias rr="adb shell input text "RR""
 alias ds="xrandr --output DP-2 --auto --scale 1.333 --above eDP-1"
 alias fk="fk.sh"
 alias fkp="fkp.sh"
+alias pac="pac.sh"
 
 set fish_greeting
 set -x LD_LIBRARY_PATH /usr/local/lib $LD_LIBRARY_PATH
