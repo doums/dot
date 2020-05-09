@@ -63,6 +63,7 @@ set switchbuf=usetab
 set scrolloff=5
 set completeopt=menuone,popup
 set fillchars=diff:\ " a space
+set pumheight=10
 set completepopup=border:off
 set autoread
 set display=lastline
@@ -174,23 +175,6 @@ let g:coBraPairs = {
       \    ['[', ']']
       \ ]
       \ }
-
-" Coc
-call darcula#Hi('CocErrorSign', darcula#palette.errorStripe, darcula#palette.gutter)
-call darcula#Hi('CocWarningSign', darcula#palette.warnStripe, darcula#palette.gutter)
-call darcula#Hi('CocInfoSign', darcula#palette.infoStripe, darcula#palette.gutter)
-call darcula#Hi('CocHintSign', darcula#palette.infoStripe, darcula#palette.gutter)
-hi! link CocErrorFloat Pmenu
-hi! link CocWarningFloat Pmenu
-hi! link CocInfoFloat Pmenu
-hi! link CocHintFloat Pmenu
-call darcula#Hi('CocHighlightText', darcula#palette.null, darcula#palette.identifierUnderCaret)
-call darcula#Hi('CocHighlightRead', darcula#palette.null, darcula#palette.identifierUnderCaret)
-call darcula#Hi('CocHighlightWrite', darcula#palette.null, darcula#palette.identifierUnderCaretWrite)
-call darcula#Hi('CocErrorHighlight', darcula#palette.null, darcula#palette.codeError, 'NONE')
-call darcula#Hi('CocWarningHighlight', darcula#palette.null, darcula#palette.codeWarning, 'NONE')
-call darcula#Hi('CocInfoHighlight', darcula#palette.null, darcula#palette.null, 'NONE')
-call darcula#Hi('CocHintHighlight', darcula#palette.null, darcula#palette.null, 'NONE')
 " }}}
 
 " vanilla mapping {{{
@@ -254,9 +238,6 @@ nnoremap <silent> ²j :resize +4<CR>
 nnoremap <silent> ²k :resize -4<CR>
 nnoremap <silent> ²h :vertical :resize +4<CR>
 nnoremap <silent> ²l :vertical :resize -4<CR>
-" replace the word under the cursor
-" by the first or the selected completion suggestion
-" inoremap <expr> <Tab> <SID>Complete()
 " terminal mode
 tnoremap <Leader>n <C-W>N
 " }}}
@@ -284,8 +265,59 @@ nnoremap <Leader>: :ALESymbolSearch
 map <C-q> <Plug>(ale_hover)
 nmap <silent> <C-g> <Plug>(ale_previous_wrap)
 nmap <silent> <C-G> <Plug>(ale_next_wrap)
+" }}}
 
-" Coc
+" autocommand {{{
+augroup stuff
+autocmd!
+" whenever CursorHold is fired (nothing typed during 'updatetime')
+" run checktime to refresh the buffer and retrieve any external changes
+autocmd CursorHold * checktime %
+" set fold to marker for .vimrc
+autocmd FileType vim setlocal foldmethod=marker
+" set stuff for some programming languages
+autocmd FileType * call s:CodeStuff()
+autocmd FileType man set nonumber
+" when browsing whitin netrw, map cw to gncd -> make the dir under
+" the cursor the new tree top and set the current working dir to it
+autocmd FileType netrw nmap <buffer><silent> cw gncd
+" terminal stuff
+" autocmd TerminalOpen,TerminalWinOpen * call s:InitTermSetUp()
+" autocmd WinLeave,BufLeave * call s:RestoreSetUp()
+" autocmd WinEnter,BufEnter * call s:InitTermSetUp()
+" autocmd TerminalWinOpen * call s:NewTerm()
+augroup END
+" }}}
+
+" darcula override {{{
+hi! link rustQuestionMark PreProc
+hi! link rustMacro PreProc
+call darcula#Hi('rustLifetime', darcula#palette.macroName, darcula#palette.bg, 'italic')
+call darcula#Hi('rustTypeParameter', darcula#palette.macroName, darcula#palette.bg, 'bold')
+" }}}
+
+" {{{ functions
+function s:CodeStuff()
+  if &filetype == "rust"
+    nnoremap <buffer> <Leader>; iprintln!("{:#?}", );<Esc><Left>i
+    inoremap <buffer> <Leader>; println!("{:#?}", );<Esc><Left>i
+    nnoremap <buffer> <F5> :write<CR>:Cargo run<CR>
+    nnoremap <buffer> <F4> :write<CR>:Cargo test<CR>
+  endif
+  if &filetype == "javascript" || &filetype == "typescript"
+    nnoremap <buffer> <Leader>; iconsole.log('')<Esc><Left>i
+    inoremap <buffer> <Leader>; console.log('')<Esc><Left>i
+  endif
+endfunction
+" }}}
+
+" {{{ fix alacritty colors
+if &term == "alacritty"
+  let &term = "xterm-256color"
+endif
+" }}}
+
+" {{{ Coc
 inoremap <silent><expr> <c-space> coc#refresh()
 
 " use <tab> for trigger completion and navigate to the next complete item
@@ -316,75 +348,39 @@ nmap <silent> gr <Plug>(coc-references)
 
 " Apply AutoFix to problem on the current line.
 nmap <leader><CR> <Plug>(coc-fix-current)
-" }}}
 
-" autocommand {{{
-augroup stuff
-autocmd!
-" whenever CursorHold is fired (nothing typed during 'updatetime')
-" run checktime to refresh the buffer and retrieve any external changes
-autocmd CursorHold * checktime %
-" set fold to marker for .vimrc
-autocmd FileType vim setlocal foldmethod=marker
-" set stuff for some programming languages
-autocmd FileType * call s:CodeStuff()
-autocmd FileType man set nonumber
-" when browsing whitin netrw, map cw to gncd -> make the dir under
-" the cursor the new tree top and set the current working dir to it
-autocmd FileType netrw nmap <buffer><silent> cw gncd
-autocmd CursorHold * silent call CocActionAsync('highlight')
-" terminal stuff
-" autocmd TerminalOpen,TerminalWinOpen * call s:InitTermSetUp()
-" autocmd WinLeave,BufLeave * call s:RestoreSetUp()
-" autocmd WinEnter,BufEnter * call s:InitTermSetUp()
-" autocmd TerminalWinOpen * call s:NewTerm()
-augroup END
-" }}}
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call <SID>show_documentation()<CR>
 
-" darcula override {{{
-hi! link rustQuestionMark PreProc
-hi! link rustMacro PreProc
-call darcula#Hi('rustLifetime', darcula#palette.macroName, darcula#palette.bg, 'italic')
-call darcula#Hi('rustTypeParameter', darcula#palette.macroName, darcula#palette.bg, 'bold')
-" }}}
-
-" {{{ functions
-function s:Complete()
-  let infos = complete_info()
-  if infos.pum_visible == 1 && !empty(infos.items)
-    if infos.selected < 0
-      let idx = 0
-    else
-      let idx = infos.selected
-    endif
-    if empty(infos.items[idx].abbr)
-      return "\<Left>\<C-o>diw".infos.items[idx].word
-    else
-      return "\<Left>\<C-o>diw".infos.items[idx].abbr
-    endif
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
   else
-    return "\<Tab>"
+    call CocAction('doHover')
   endif
 endfunction
 
-function s:CodeStuff()
-  if &filetype == "rust"
-    nnoremap <buffer> <Leader>; iprintln!("{:#?}", )<Esc><Left>i
-    inoremap <buffer> <Leader>; println!("{:#?}", )<Esc><Left>i
-    nnoremap <buffer> <F5> :write<CR>:Cargo run<CR>
-    nnoremap <buffer> <F4> :write<CR>:Cargo test<CR>
-  endif
-  if &filetype == "javascript" || &filetype == "typescript"
-    nnoremap <buffer> <Leader>; iconsole.log('')<Esc><Left>i
-    inoremap <buffer> <Leader>; console.log('')<Esc><Left>i
-  endif
-endfunction
-" }}}
+" highlights
+call darcula#Hi('CocErrorSign', darcula#palette.errorStripe, darcula#palette.gutter)
+call darcula#Hi('CocWarningSign', darcula#palette.warnStripe, darcula#palette.gutter)
+call darcula#Hi('CocInfoSign', darcula#palette.infoStripe, darcula#palette.gutter)
+call darcula#Hi('CocHintSign', darcula#palette.infoStripe, darcula#palette.gutter)
+hi! link CocErrorFloat Pmenu
+hi! link CocWarningFloat Pmenu
+hi! link CocInfoFloat Pmenu
+hi! link CocHintFloat Pmenu
+call darcula#Hi('CocHighlightText', darcula#palette.null, darcula#palette.identifierUnderCaret)
+call darcula#Hi('CocHighlightRead', darcula#palette.null, darcula#palette.identifierUnderCaret)
+call darcula#Hi('CocHighlightWrite', darcula#palette.null, darcula#palette.identifierUnderCaretWrite)
+call darcula#Hi('CocErrorHighlight', darcula#palette.null, darcula#palette.codeError, 'NONE')
+call darcula#Hi('CocWarningHighlight', darcula#palette.null, darcula#palette.codeWarning, 'NONE')
+call darcula#Hi('CocInfoHighlight', darcula#palette.null, darcula#palette.null, 'NONE')
+call darcula#Hi('CocHintHighlight', darcula#palette.null, darcula#palette.null, 'NONE')
 
-" {{{ fix alacritty colors
-if &term == "alacritty"
-  let &term = "xterm-256color"
-endif
+augroup cocAutocmd
+autocmd!
+autocmd CursorHold * silent call CocActionAsync('highlight')
+augroup END
 " }}}
 
 " {{{ scraps
