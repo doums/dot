@@ -21,8 +21,6 @@ Plug 'doums/darcula'
 Plug 'doums/sae'
 Plug 'doums/gitBranch'
 Plug 'jparise/vim-graphql'
-Plug 'roxma/nvim-yarp'
-Plug 'roxma/vim-hug-neovim-rpc'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 call plug#end()
