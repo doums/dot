@@ -16,7 +16,7 @@ Plug 'leafgarland/typescript-vim'
 Plug 'dense-analysis/ale'
 Plug 'rust-lang/rust.vim'
 Plug 'doums/coBra'
-" Plug 'doums/fzfTools'
+Plug 'doums/fzfTools'
 Plug 'doums/darcula'
 Plug 'doums/sae'
 " Plug 'doums/gitBranch'
@@ -34,7 +34,7 @@ filetype plugin on
 filetype indent on
 syntax on
 set noshowmode
-set shortmess=fFaWcs
+set shortmess=IfFaWcs
 set ignorecase
 set smartcase
 set cindent
@@ -83,7 +83,8 @@ let g:NERDTrimTrailingWhitespace = 1
 let g:lightline = {
       \ 'colorscheme': 'darculaOriginal',
 			\ 'component_function': {
-			\   'gitbranch': 'gitBranch#Get'
+			\   'gitbranch': 'gitBranch#Get',
+      \   'coc_status': 'coc#status' 
 			\ },
       \ 'component_expand': {
       \   'ale_ok': 'lla#Ok',
@@ -103,6 +104,7 @@ let g:lightline.active = {
       \   [ 'lineinfo' ],
       \   [ 'percent' ],
       \   [
+      \     'coc_status',
       \     'gitbranch',
       \     'fileformat',
       \     'fileencoding',
@@ -222,15 +224,11 @@ nnoremap <silent> <A-h> <C-w>h
 nnoremap <silent> <A-l> <C-w>l
 nnoremap <silent> <A-k> <C-w>k
 nnoremap <silent> <A-j> <C-w>j
-nnoremap <silent> <Leader><Left> <C-w>H
-nnoremap <silent> <Leader><Down> <C-w>J
-nnoremap <silent> <Leader><Up> <C-w>K
-nnoremap <silent> <Leader><Right> <C-w>L
 noremap <Leader>= <C-w>=
-nnoremap <silent> ²j :resize +4<CR>
-nnoremap <silent> ²k :resize -4<CR>
-nnoremap <silent> ²h :vertical :resize +4<CR>
-nnoremap <silent> ²l :vertical :resize -4<CR>
+nnoremap <silent> <A-Up> :resize +4<CR>
+nnoremap <silent> <A-Down> :resize -4<CR>
+nnoremap <silent> <A-Right> :vertical :resize +4<CR>
+nnoremap <silent> <A-Left> :vertical :resize -4<CR>
 " terminal mode
 tnoremap <Leader>n <C-W>N
 " }}}
@@ -311,6 +309,9 @@ endif
 " }}}
 
 " {{{ Coc
+let g:coc_status_error_sign='e'
+let g:coc_status_warning_sign='w'
+
 inoremap <silent><expr> <c-space> coc#refresh()
 
 " use <tab> for trigger completion and navigate to the next complete item
@@ -325,10 +326,10 @@ inoremap <silent><expr> <Tab>
       \ coc#refresh()
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-"
+
 " Symbol renaming
 nmap <S-F6> <Plug>(coc-rename)
-"
+
 " Use `[g` and `]g` to navigate diagnostics
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
@@ -368,11 +369,12 @@ call darcula#Hi('CocHighlightWrite', darcula#palette.null, darcula#palette.ident
 call darcula#Hi('CocErrorHighlight', darcula#palette.null, darcula#palette.codeError, 'NONE')
 call darcula#Hi('CocWarningHighlight', darcula#palette.null, darcula#palette.codeWarning, 'NONE')
 call darcula#Hi('CocInfoHighlight', darcula#palette.null, darcula#palette.null, 'NONE')
-call darcula#Hi('CocHintHighlight', darcula#palette.null, darcula#palette.null, 'NONE')
+call darcula#Hi('CocHintHighlight', darcula#palette.hintFg, darcula#palette.hintBg, 'NONE')
 
 augroup cocAutocmd
 autocmd!
 autocmd CursorHold * silent call CocActionAsync('highlight')
+autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
 augroup END
 " }}}
 

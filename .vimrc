@@ -88,7 +88,8 @@ let g:NERDTrimTrailingWhitespace = 1
 let g:lightline = {
       \ 'colorscheme': 'darculaOriginal',
 			\ 'component_function': {
-			\   'gitbranch': 'gitBranch#Get'
+			\   'gitbranch': 'gitBranch#Get',
+      \   'coc_status': 'coc#status' 
 			\ },
       \ 'component_expand': {
       \   'ale_ok': 'lla#Ok',
@@ -108,6 +109,7 @@ let g:lightline.active = {
       \   [ 'lineinfo' ],
       \   [ 'percent' ],
       \   [
+      \     'coc_status',
       \     'gitbranch',
       \     'fileformat',
       \     'fileencoding',
@@ -227,10 +229,6 @@ nnoremap <silent> <h <C-w>h
 nnoremap <silent> <l <C-w>l
 nnoremap <silent> <k <C-w>k
 nnoremap <silent> <j <C-w>j
-nnoremap <silent> <Leader><Left> <C-w>H
-nnoremap <silent> <Leader><Down> <C-w>J
-nnoremap <silent> <Leader><Up> <C-w>K
-nnoremap <silent> <Leader><Right> <C-w>L
 noremap <Leader>= <C-w>=
 nnoremap <silent> ²j :resize +4<CR>
 nnoremap <silent> ²k :resize -4<CR>
@@ -316,6 +314,9 @@ endif
 " }}}
 
 " {{{ Coc
+let g:coc_status_error_sign='e'
+let g:coc_status_warning_sign='w'
+
 inoremap <silent><expr> <c-space> coc#refresh()
 
 " use <tab> for trigger completion and navigate to the next complete item
@@ -363,6 +364,7 @@ call darcula#Hi('CocErrorSign', darcula#palette.errorStripe, darcula#palette.gut
 call darcula#Hi('CocWarningSign', darcula#palette.warnStripe, darcula#palette.gutter)
 call darcula#Hi('CocInfoSign', darcula#palette.infoStripe, darcula#palette.gutter)
 call darcula#Hi('CocHintSign', darcula#palette.infoStripe, darcula#palette.gutter)
+call darcula#Hi('CocHintVirtualText', darcula#palette.hintFg, darcula#palette.hintBg)
 hi! link CocErrorFloat Pmenu
 hi! link CocWarningFloat Pmenu
 hi! link CocInfoFloat Pmenu
@@ -373,11 +375,12 @@ call darcula#Hi('CocHighlightWrite', darcula#palette.null, darcula#palette.ident
 call darcula#Hi('CocErrorHighlight', darcula#palette.null, darcula#palette.codeError, 'NONE')
 call darcula#Hi('CocWarningHighlight', darcula#palette.null, darcula#palette.codeWarning, 'NONE')
 call darcula#Hi('CocInfoHighlight', darcula#palette.null, darcula#palette.null, 'NONE')
-call darcula#Hi('CocHintHighlight', darcula#palette.null, darcula#palette.null, 'NONE')
+call darcula#Hi('CocHintHighlight', darcula#palette.hintFg, darcula#palette.hintBg, 'NONE')
 
 augroup cocAutocmd
 autocmd!
 autocmd CursorHold * silent call CocActionAsync('highlight')
+autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
 augroup END
 " }}}
 
