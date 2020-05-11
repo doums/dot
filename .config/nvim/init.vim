@@ -126,6 +126,10 @@ let g:lightline.tabline_subseparator = {
 
 " GitGutter
 let g:gitgutter_enabled = 0
+hi! link GitGutterAdd GitAddStripe
+hi! link GitGutterChange GitChangeStripe
+hi! link GitGutterDelete GitDeleteStripe
+let g:gitgutter_sign_removed = '▶'
 
 " typescript-vim
 let g:typescript_indent_disable = 1
@@ -153,6 +157,12 @@ let g:ale_linters = {
       " \ 'rust': [ 'rls', 'rustfmt', 'cargo' ],
 let g:ale_linters_explicit = 1
 let g:ale_fix_on_save = 1
+hi! link ALEError Error
+hi! link ALEWarning CodeWarning
+hi! link ALEInfo CodeInfo
+hi! link ALEErrorSign ErrorSign
+hi! link ALEWarningSign WarningSign
+hi! link ALEInfoSign InfoSign
 
 " coBra
 let g:rust_keep_autopairs_default = 0
@@ -347,26 +357,25 @@ function! s:show_documentation()
 endfunction
 
 " highlights
-call darcula#Hi('CocErrorSign', darcula#palette.errorStripe, darcula#palette.gutter)
-call darcula#Hi('CocWarningSign', darcula#palette.warnStripe, darcula#palette.gutter)
-call darcula#Hi('CocInfoSign', darcula#palette.infoStripe, darcula#palette.gutter)
-call darcula#Hi('CocHintSign', darcula#palette.infoStripe, darcula#palette.gutter)
+hi! link CocErrorSign ErrorSign
+hi! link CocWarningSign WarningSign
+hi! link CocInfoSign InfoSign
+hi! link CocHintSign InfoSign
 hi! link CocErrorFloat Pmenu
 hi! link CocWarningFloat Pmenu
 hi! link CocInfoFloat Pmenu
 hi! link CocHintFloat Pmenu
-call darcula#Hi('CocHighlightText', darcula#palette.null, darcula#palette.identifierUnderCaret)
-call darcula#Hi('CocHighlightRead', darcula#palette.null, darcula#palette.identifierUnderCaret)
-call darcula#Hi('CocHighlightWrite', darcula#palette.null, darcula#palette.identifierUnderCaretWrite)
-call darcula#Hi('CocErrorHighlight', darcula#palette.null, darcula#palette.codeError, 'NONE')
-call darcula#Hi('CocWarningHighlight', darcula#palette.null, darcula#palette.codeWarning, 'NONE')
-call darcula#Hi('CocInfoHighlight', darcula#palette.null, darcula#palette.null, 'NONE')
-call darcula#Hi('CocHintHighlight', darcula#palette.hintFg, darcula#palette.hintBg, 'NONE')
+hi! link CocHighlightText IdentifierUnderCaret
+hi! link CocHighlightRead IdentifierUnderCaret
+hi! link CocHighlightWrite IdentifierUnderCaretWrite
+hi! link CocErrorHighlight CodeError
+hi! link CocWarningHighlight CodeWarning
+hi! link CocInfoHighlight CodeInfo
+hi! link CocHintHighlight CodeHint
 
 augroup cocAutocmd
 autocmd!
 autocmd CursorHold * silent call CocActionAsync('highlight')
-autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
 augroup END
 " }}}
 
