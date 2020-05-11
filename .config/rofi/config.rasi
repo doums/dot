@@ -15,8 +15,8 @@ configuration {
   scroll-method: 1;
   window-format: "{c} - {t}";
   theme: "theme.rasi";
-  ssh-command: "terminator -e 'ssh {host}'";
-  run-shell-command: "terminator -e '{cmd}'";
+  ssh-command: "alacritty -e 'ssh {host}'";
+  run-shell-command: "alacritty -e '{cmd}'";
   icon-theme: "Paper";
   kb-mode-next: "Alt+l,Alt+Right";
   kb-mode-previous: "Alt+h,Alt+Left";
