@@ -19,6 +19,7 @@ Plug 'doums/coBra'
 Plug 'doums/fzfTools'
 Plug 'doums/darcula'
 Plug 'doums/sae'
+Plug 'doums/llCoc'
 " Plug 'doums/gitBranch'
 Plug 'jparise/vim-graphql'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -82,21 +83,17 @@ let g:NERDTrimTrailingWhitespace = 1
 " lightline.vim
 let g:lightline = {
       \ 'colorscheme': 'darculaOriginal',
-			\ 'component_function': {
-			\   'gitbranch': 'gitBranch#Get',
-      \   'coc_status': 'coc#status' 
-			\ },
       \ 'component_expand': {
-      \   'ale_ok': 'lla#Ok',
-      \   'ale_cheking': 'lla#Checking',
-      \   'ale_error': 'lla#Errors',
-      \   'ale_warning': 'lla#Warnings'
+      \   'coc_erro': 'llCoc#Error',
+      \   'coc_warn': 'llCoc#Warning',
+      \   'coc_info': 'llCoc#Information',
+      \   'coc_stat': 'llCoc#Status'
       \ },
       \ 'component_type': {
-      \   'ale_ok': 'ok',
-      \   'ale_cheking': 'middle',
-      \   'ale_error': 'error',
-      \   'ale_warning': 'warning'
+      \   'coc_stat': 'middle',
+      \   'coc_erro': 'error',
+      \   'coc_warn': 'warning',
+      \   'coc_info': 'info'
       \ }
       \ }
 let g:lightline.active = {
@@ -104,15 +101,13 @@ let g:lightline.active = {
       \   [ 'lineinfo' ],
       \   [ 'percent' ],
       \   [
-      \     'coc_status',
-      \     'gitbranch',
       \     'fileformat',
       \     'fileencoding',
       \     'filetype',
-      \     'ale_cheking',
-      \     'ale_ok',
-      \     'ale_warning',
-      \     'ale_error'
+      \     'coc_info',
+      \     'coc_warn',
+      \     'coc_erro',
+      \     'coc_stat'
       \   ]
       \ ]
       \ }
