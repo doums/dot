@@ -304,9 +304,6 @@ endif
 " }}}
 
 " {{{ Coc
-let g:coc_status_error_sign='e'
-let g:coc_status_warning_sign='w'
-
 inoremap <silent><expr> <c-space> coc#refresh()
 
 " use <tab> for trigger completion and navigate to the next complete item
