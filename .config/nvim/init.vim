@@ -330,11 +330,11 @@ inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " Symbol renaming
-nmap <S-F6> <Plug>(coc-rename)
+nmap <A-r> <Plug>(coc-rename)
 
-" Use `[g` and `]g` to navigate diagnostics
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
+" Navigate diagnostics
+nmap <silent> <A-e> <Plug>(coc-diagnostic-next)
+nmap <silent> <A-z> <Plug>(coc-diagnostic-prev)
 
 " GoTo code navigation.
 nmap <silent> gd <Plug>(coc-definition)
@@ -343,10 +343,21 @@ nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
 " Apply AutoFix to problem on the current line.
-nmap <leader><CR> <Plug>(coc-fix-current)
+nmap <A-CR> <Plug>(coc-fix-current)
 
-" Use K to show documentation in preview window.
-nnoremap <silent> K :call <SID>show_documentation()<CR>
+" Hover
+nnoremap <silent> <A-d> :call <SID>show_documentation()<CR>
+
+" Formatting selected code.
+xmap <A-q> <Plug>(coc-format-selected)
+nmap <A-q> <Plug>(coc-format-selected)
+
+" Show all diagnostics.
+nnoremap <silent> <A-a>  :<C-u>CocList diagnostics<cr>
+" Find symbol of current document.
+nnoremap <silent> <A-f>  :<C-u>CocList outline<cr>
+" Search workspace symbols.
+nnoremap <silent> <A-F>  :<C-u>CocList -I symbols<cr>
 
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
@@ -376,6 +387,7 @@ hi! link CocHintHighlight CodeHint
 augroup cocAutocmd
 autocmd!
 autocmd CursorHold * silent call CocActionAsync('highlight')
+autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup END
 " }}}
 
