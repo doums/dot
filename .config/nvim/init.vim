@@ -9,19 +9,14 @@ call plug#begin(stdpath('data').'/plugged')
 Plug 'itchyny/lightline.vim'
 Plug 'dag/vim-fish'
 Plug 'scrooloose/nerdcommenter'
-Plug 'pangloss/vim-javascript'
-Plug 'mxw/vim-jsx'
 Plug 'airblade/vim-gitgutter'
-Plug 'leafgarland/typescript-vim'
 Plug 'dense-analysis/ale'
-Plug 'rust-lang/rust.vim'
 Plug 'doums/coBra'
 Plug 'doums/fzfTools'
 Plug 'doums/darcula'
 Plug 'doums/sae'
 Plug 'doums/llCoc'
 " Plug 'doums/gitBranch'
-Plug 'jparise/vim-graphql'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 call plug#end()
@@ -314,8 +309,6 @@ endif
 " }}}
 
 " {{{ Coc
-inoremap <silent><expr> <c-space> coc#refresh()
-
 " use <tab> for trigger completion and navigate to the next complete item
 function! s:check_back_space() abort
   let col = col('.') - 1
@@ -337,10 +330,12 @@ nmap <silent> <A-e> <Plug>(coc-diagnostic-next)
 nmap <silent> <A-z> <Plug>(coc-diagnostic-prev)
 
 " GoTo code navigation.
-nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> <A-b> <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
+
+" Find usages
+nmap <silent> <A-u> <Plug>(coc-references)
 
 " Apply AutoFix to problem on the current line.
 nmap <A-CR> <Plug>(coc-fix-current)
@@ -353,11 +348,11 @@ xmap <A-q> <Plug>(coc-format-selected)
 nmap <A-q> <Plug>(coc-format-selected)
 
 " Show all diagnostics.
-nnoremap <silent> <A-a>  :<C-u>CocList diagnostics<cr>
+nnoremap <silent> <A-a>  :<C-u>CocList diagnostics<CR>
 " Find symbol of current document.
-nnoremap <silent> <A-f>  :<C-u>CocList outline<cr>
+nnoremap <silent> <A-f>  :<C-u>CocList outline<CR>
 " Search workspace symbols.
-nnoremap <silent> <A-F>  :<C-u>CocList -I symbols<cr>
+nnoremap <silent> <A-F>  :<C-u>CocList -I symbols<CR>
 
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
@@ -383,12 +378,16 @@ hi! link CocErrorHighlight CodeError
 hi! link CocWarningHighlight CodeWarning
 hi! link CocInfoHighlight CodeInfo
 hi! link CocHintHighlight CodeHint
+hi! link CocRustChainingHint CodeHint
 
 augroup cocAutocmd
 autocmd!
 autocmd CursorHold * silent call CocActionAsync('highlight')
 autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup END
+
+" restart rust-analyer
+nnoremap <A-R> :CocCommand rust-analyzer.reload<CR>
 " }}}
 
 " {{{ scraps
