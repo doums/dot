@@ -20,6 +20,8 @@ alias vim='nvim'
 set fish_greeting
 set -x LD_LIBRARY_PATH /usr/local/lib $LD_LIBRARY_PATH
 set -x QT_AUTO_SCREEN_SCALE_FACTOR 1
+set -x EDITOR /usr/bin/nvim
+set -x VISUAL /usr/bin/nvim
 set -x GDK_SCALE 2
 set -x GDK_DPI_SCALE 0.5
 set -x ANDROID_HOME $HOME/Android/Sdk
@@ -42,3 +44,6 @@ set -x BROWSER none
 set -x FZF_DEFAULT_OPTS "--bind 'ctrl-w:toggle-preview-wrap,ctrl-p:toggle-preview' --color='bg:#2e3440,fg:#eceff4,preview-bg:#2e3440,preview-fg:#eceff4,border:#d8dee9,bg+:#434c5e,fg+:#eceff4,hl:#8fbcbb,hl+:#88c0d0,gutter:#3b4252,pointer:#e5e9f0,prompt:#88c0d0,marker:#81a1c1,spinner:#81a1c1,header:#5e81ac,info:#81a1c1'"
 set -x FZF_DEFAULT_COMMAND "rg --files --hidden --no-ignore"
 set -x XDG_DATA_DIRS /home/pierre/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share
+set -x NNN_OPTS Qex
+set -x NNN_COLORS 2341
+set -x NNN_PLUG 't:-_bat $nnn;i:-_|feh $nnn;p:-_|evince $nnn'
