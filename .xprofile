@@ -1,0 +1,14 @@
+#!/bin/bash
+
+export PATH="$PATH:/home/pierre/.local/bin"
+
+case $XDG_SESSION_DESKTOP in
+  spectrwm)
+    export BG_PRIMARY=/home/pierre/Images/joshua-newton-199769-1.jpg
+    export BG_SECONDARY=/home/pierre/Images/joshua-newton-199769-1.jpg
+    export NNN_OPTS=Qex
+    export NNN_COLORS=2341
+    export NNN_PLUG='t:-_bat $nnn;i:-_|feh $nnn;p:-_|evince $nnn'
+    export NNN_BMS='h:~;d:~/Documents;r:/'
+  ;;
+esac
