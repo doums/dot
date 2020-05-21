@@ -17,6 +17,7 @@ alias fkp='fkp.sh'
 alias pac='pac.sh'
 alias vim='nvim'
 alias gl='gl.sh'
+alias glf='git log -p --date=format:%c --abbrev-commit --'
 
 set fish_greeting
 set -x LD_LIBRARY_PATH /usr/local/lib $LD_LIBRARY_PATH
