@@ -6,7 +6,7 @@ remove ()
   sudo pacman -Rsn "$choice"
 }
 
-choice=$(printf "query\nforeign\nsync\nremove" | fzf --no-info)
+choice=$(printf "query\nforeign\nsync\nexplicitly\nremove" | fzf --no-info)
 case "$choice" in
   "query")
     pacman -Qq | fzf --preview 'pacman -Qil {}' --preview-window=right:70%:noborder
@@ -18,6 +18,10 @@ case "$choice" in
     pacman -Ssq | fzf --preview 'pacman -Si {}'\
       --preview-window=right:70%:noborder\
       --bind "change:reload(pacman -Ssq)"
+  ;;
+  "explicitly")
+    pacman -Qeq | fzf --preview 'pacman -Qil {}'\
+      --preview-window=right:70%:noborder
   ;;
   "remove")
     remove

@@ -1,0 +1,24 @@
+#!/usr/bin/bash
+
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+if ! fzf --version &> /dev/null; then
+  printf "%s\n" "fzf not found"
+  exit 1
+fi
+
+if ! bat --version &> /dev/null; then
+  printf "%s\n" "bat not found"
+  exit 1
+fi
+
+if ! git status > /dev/null; then
+  exit 1
+fi
+
+git log --oneline --decorate=short | fzf \
+--preview="git show --color=always --pretty=medium --date=format:%c {1}" \
+--preview-window=right:70%:noborder \
+--header="git log"
