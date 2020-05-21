@@ -8,7 +8,7 @@ case $XDG_SESSION_DESKTOP in
     export BG_SECONDARY=/home/pierre/Images/joshua-newton-199769-1.jpg
     export NNN_OPTS=Qex
     export NNN_COLORS=2341
-    export NNN_PLUG='t:-_bat $nnn;i:-_|feh $nnn;p:-_|evince $nnn'
+    export NNN_PLUG='t:-_bat $nnn'
     export NNN_BMS='h:~;d:~/Documents;r:/'
   ;;
 esac
