@@ -235,7 +235,7 @@ nnoremap <silent> <A-Down> :resize -4<CR>
 nnoremap <silent> <A-Right> :vertical :resize +4<CR>
 nnoremap <silent> <A-Left> :vertical :resize -4<CR>
 " terminal mode
-tnoremap <Leader>n <C-W>N
+tnoremap <Leader>n <C-\><C-N>
 " }}}
 
 " {{{ plugins mapping
@@ -245,6 +245,8 @@ nnoremap <silent> <Leader>g :GitGutterToggle<CR>
 " fzfTools
 nmap <C-s> <Plug>Ls
 nmap <C-b> <Plug>Buf
+nmap <C-g> <Plug>FGitLog
+vmap <C-g> <Plug>GitLogSel
 " netrw
 nnoremap <silent> <Tab> :Lex<CR>
 " NERDCommenter
@@ -259,8 +261,6 @@ nmap <Leader>r <Plug>(ale_find_references)
 nmap <Leader>d <Plug>(ale_detail)
 nnoremap <Leader>: :ALESymbolSearch
 map <C-q> <Plug>(ale_hover)
-nmap <silent> <C-g> <Plug>(ale_previous_wrap)
-nmap <silent> <C-G> <Plug>(ale_next_wrap)
 " }}}
 
 " autocommand {{{
