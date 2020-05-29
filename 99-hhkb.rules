@@ -1,0 +1,1 @@
+ACTION=="add", SUBSYSTEMS=="usb", ATTRS{idVendor}=="0853", ATTRS{idProduct}=="0100", ATTRS{manufacturer}=="Topre Corporation", ATTRS{product}=="HHKB Professional", ENV{DISPLAY}=":0", ENV{XAUTHORITY}="/home/pierre/.Xauthority", RUN+="/home/pierre/.local/bin/hhkb.sh"
