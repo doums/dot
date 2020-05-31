@@ -15,5 +15,5 @@ while [ -z "$id" ]; do
   sleep 1
   id=$(xinput list --id-only "Topre Corporation HHKB Professional");
 done
-xkbcomp -i "$id" /home/pierre/.local/share/hhkb/hhkb_us.xkb "$DISPLAY"
+xkbcomp -i "$id" /home/pierre/.local/share/hhkb/hhkb.xkb "$DISPLAY"
 ) &
