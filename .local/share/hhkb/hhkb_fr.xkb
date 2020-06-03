@@ -72,6 +72,7 @@ xkb_keycodes "hkk" {
     <SCLK> = 78;
     <KPSU> = 82;
     <KPAD> = 86;
+    <LVL3> = 92;
     <FK11> = 95;
     <FK12> = 96;
     <HENK> = 100;
@@ -103,7 +104,7 @@ xkb_keycodes "hkk" {
 
 xkb_types "hkk" {
 
-    virtual_modifiers Alt,NumLock;
+    virtual_modifiers Alt,NumLock,LevelThree;
 
     type "ONE_LEVEL" {
         modifiers= none;
@@ -116,12 +117,13 @@ xkb_types "hkk" {
         level_name[Level2]= "Shift";
     };
     type "THREE_LEVEL" {
-        modifiers= Shift+Alt;
+        modifiers= Shift+LevelThree;
         map[Shift]= Level2;
-        map[Alt]= Level3;
+        map[LevelThree]= Level3;
+        map[Shift+LevelThree]= Level3;
         level_name[Level1]= "Base";
         level_name[Level2]= "Shift";
-        level_name[Level3]= "Alt Base";
+        level_name[Level3]= "Level3";
     };
     type "CTRL+ALT" {
         modifiers= Control+Alt;
@@ -158,7 +160,7 @@ xkb_types "hkk" {
 
 xkb_compatibility "hkk" {
 
-    virtual_modifiers Alt,Super,AltGr;
+    virtual_modifiers Alt,Super,AltGr,LevelThree;
 
     interpret.useModMapMods= AnyLevel;
     interpret.repeat= False;
@@ -200,6 +202,14 @@ xkb_compatibility "hkk" {
     };
     interpret Any+AnyOf(all) {
         action= SetMods(modifiers=modMapMods,clearLocks);
+    };
+    interpret ISO_Level3_Shift+AnyOf(all) {
+        virtualModifier= LevelThree;
+        useModMapMods=level1;
+        action= SetMods(modifiers=LevelThree,clearLocks);
+    };
+    interpret ISO_Level3_Shift+AnyOfOrNone(all) {
+        action= SetMods(modifiers=LevelThree,clearLocks);
     };
     interpret XF86Switch_VT_1+AnyOfOrNone(all) {
         repeat= True;
@@ -411,7 +421,7 @@ xkb_symbols "hkk" {
         type= "ALT_LEVEL",
         [ Print, Sys_Req ]
     };
-    key <RALT> {[ Alt_R ]};
+    key <RALT> {[ ISO_Level3_Shift ]};
     key <HOME> {[ Home ]};
     key <UP> {[ Up ]};
     key <PGUP> {[ Prior ]};
@@ -438,11 +448,12 @@ xkb_symbols "hkk" {
     key <KPMU> {[ KP_Multiply ]};
     key <KPDV> {[ KP_Divide ]};
     key <KPEN> {[ KP_Enter ]};
+    key <LVL3> {[ ISO_Level3_Shift ]};
     modifier_map Control { <LCTL> };
     modifier_map Shift { <LFSH> };
     modifier_map Shift { <RTSH> };
     modifier_map Mod1 { <LALT> };
-    modifier_map Mod1 { <RALT> };
+    modifier_map Mod5 { <LVL3> };
     modifier_map Mod4 { <LWIN> };
     modifier_map Mod4 { <RWIN> };
 };
