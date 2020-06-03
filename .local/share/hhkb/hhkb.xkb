@@ -56,6 +56,7 @@ xkb_keycodes "hkk" {
     <AB09> = 60;
     <AB10> = 61;
     <RTSH> = 62;
+    <KPMU> = 63;
     <LALT> = 64;
     <SPCE> = 65;
     <FK01> = 67;
@@ -69,10 +70,14 @@ xkb_keycodes "hkk" {
     <FK09> = 75;
     <FK10> = 76;
     <SCLK> = 78;
+    <KPSU> = 82;
+    <KPAD> = 86;
     <FK11> = 95;
     <FK12> = 96;
     <HENK> = 100;
     <MUHE> = 102;
+    <KPEN> = 104;
+    <KPDV> = 106;
     <PRSC> = 107;
     <RALT> = 108;
     <HOME> = 110;
@@ -377,6 +382,11 @@ xkb_symbols "hkk" {
     key <LWIN> {[ Super_L ]};
     key <RWIN> {[ Super_R ]};
     key <STOP> {[ Cancel ]};
+    key <KPAD> {[ KP_Add ]};
+    key <KPSU> {[ KP_Subtract ]};
+    key <KPMU> {[ KP_Multiply ]};
+    key <KPDV> {[ KP_Divide ]};
+    key <KPEN> {[ KP_Enter ]};
     modifier_map Control { <LCTL> };
     modifier_map Shift { <LFSH> };
     modifier_map Shift { <RTSH> };
