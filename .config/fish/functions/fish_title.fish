@@ -1,9 +1,4 @@
-# Defined in - @ line 2
+# Defined in /tmp/fish.Y271LK/fish_title.fish @ line 2
 function fish_title
-  set path (string split -r -m1 / $SHELL)
-  if test (count $path) -gt 1
-    echo $path[2]
-  else
-    echo $SHELL
-  end
+  echo (status current-command) (__fish_pwd)
 end

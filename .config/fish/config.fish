@@ -47,8 +47,8 @@ set -x FZF_DEFAULT_COMMAND "rg --files --hidden --no-ignore"
 set -x XDG_DATA_DIRS /home/pierre/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share
 set -x NNN_OPTS Qex
 set -x NNN_COLORS 2341
-set -x NNN_PLUG 't:-_bat $nnn'
-set -x NNN_BMS 'h:~;d:~/Documents;r:/'
+set -x NNN_PLUG 't:-_bat $nnn;f:-_|firefox $nnn*'
+set -x NNN_BMS 'h:~;d:~/Documents;r:/;a:~/Documents/aos/aos-app/'
 set -x XDG_CONFIG_HOME $HOME/.config
 set -x DENO_INSTALL $HOME/.deno
 set -x PATH $PATH $DENO_INSTALL/bin
