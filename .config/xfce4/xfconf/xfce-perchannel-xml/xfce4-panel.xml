@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<channel name="xfce4-panel" version="1.0">
+  <property name="configver" type="int" value="2"/>
+  <property name="panels" type="array">
+    <value type="int" value="1"/>
+    <property name="panel-1" type="empty">
+      <property name="position" type="string" value="p=8;x=175;y=1415"/>
+      <property name="plugin-ids" type="array">
+        <value type="int" value="1"/>
+        <value type="int" value="8"/>
+        <value type="int" value="10"/>
+        <value type="int" value="9"/>
+        <value type="int" value="2"/>
+        <value type="int" value="3"/>
+        <value type="int" value="7"/>
+        <value type="int" value="5"/>
+        <value type="int" value="6"/>
+        <value type="int" value="4"/>
+      </property>
+      <property name="position-locked" type="bool" value="true"/>
+      <property name="autohide-behavior" type="uint" value="1"/>
+      <property name="length" type="uint" value="100"/>
+      <property name="size" type="uint" value="50"/>
+      <property name="background-style" type="uint" value="1"/>
+      <property name="background-color" type="array">
+        <value type="uint" value="1819"/>
+        <value type="uint" value="11706"/>
+        <value type="uint" value="16649"/>
+        <value type="uint" value="65535"/>
+      </property>
+      <property name="background-alpha" type="uint" value="0"/>
+      <property name="mode" type="uint" value="0"/>
+      <property name="enter-opacity" type="uint" value="100"/>
+      <property name="leave-opacity" type="uint" value="100"/>
+      <property name="background-rgba" type="array">
+        <value type="double" value="0.750000"/>
+        <value type="double" value="0.250000"/>
+        <value type="double" value="0.250000"/>
+        <value type="double" value="0.000000"/>
+      </property>
+      <property name="nrows" type="uint" value="1"/>
+      <property name="span-monitors" type="bool" value="true"/>
+      <property name="icon-size" type="uint" value="0"/>
+    </property>
+  </property>
+  <property name="plugins" type="empty">
+    <property name="plugin-1" type="string" value="whiskermenu"/>
+    <property name="plugin-2" type="string" value="separator">
+      <property name="style" type="uint" value="0"/>
+      <property name="expand" type="bool" value="true"/>
+    </property>
+    <property name="plugin-3" type="string" value="power-manager-plugin"/>
+    <property name="plugin-5" type="string" value="systray">
+      <property name="names-visible" type="array">
+        <value type="string" value="xfce4-power-manager"/>
+        <value type="string" value="pidgin"/>
+        <value type="string" value="thunar"/>
+        <value type="string" value="steam"/>
+        <value type="string" value="toolbox"/>
+        <value type="string" value="deluge"/>
+        <value type="string" value="vlc"/>
+        <value type="string" value="applet networkmanager"/>
+        <value type="string" value="discord"/>
+        <value type="string" value="redshift-gtk"/>
+        <value type="string" value="obs"/>
+        <value type="string" value="hexchat"/>
+        <value type="string" value="slack"/>
+      </property>
+      <property name="size-max" type="uint" value="64"/>
+      <property name="show-frame" type="bool" value="false"/>
+      <property name="names-ordered" type="array">
+        <value type="string" value="jetbrains-toolbox"/>
+        <value type="string" value="pasystray"/>
+        <value type="string" value="teams"/>
+        <value type="string" value="pidgin"/>
+        <value type="string" value="obs"/>
+        <value type="string" value="steam"/>
+        <value type="string" value="vlc"/>
+        <value type="string" value="slack"/>
+        <value type="string" value="thunar"/>
+        <value type="string" value="deluge"/>
+        <value type="string" value="discord"/>
+        <value type="string" value="toolbox"/>
+        <value type="string" value="redshift-gtk"/>
+        <value type="string" value="applet networkmanager"/>
+      </property>
+    </property>
+    <property name="plugin-6" type="string" value="clock">
+      <property name="mode" type="uint" value="2"/>
+      <property name="digital-format" type="string" value="%kh %M"/>
+    </property>
+    <property name="plugin-7" type="string" value="pulseaudio">
+      <property name="enable-keyboard-shortcuts" type="bool" value="true"/>
+      <property name="mpris-players" type="string" value="chromium.instance10347;chromium.instance1057;chromium.instance1097;chromium.instance1132;chromium.instance1133;chromium.instance1143;chromium.instance1151;chromium.instance12916;chromium.instance1300;chromium.instance1322;chromium.instance1380;chromium.instance1386;chromium.instance1404;chromium.instance1448;chromium.instance1500;chromium.instance1536;chromium.instance1601;chromium.instance1645;chromium.instance1658;chromium.instance1673;chromium.instance1715;chromium.instance1789;chromium.instance1860;chromium.instance1865;chromium.instance18917;chromium.instance2059;chromium.instance21384;chromium.instance2260;chromium.instance2267;chromium.instance2501;chromium.instance2740;chromium.instance27954;chromium.instance29007;chromium.instance29706;chromium.instance3109;chromium.instance3387;chromium.instance38613;chromium.instance4378;chromium.instance4414;chromium.instance5100;chromium.instance5563;chromium.instance6100;chromium.instance9480;vlc"/>
+    </property>
+    <property name="plugin-4" type="string" value="separator">
+      <property name="expand" type="bool" value="false"/>
+      <property name="style" type="uint" value="0"/>
+    </property>
+    <property name="plugin-9" type="string" value="tasklist">
+      <property name="show-labels" type="bool" value="false"/>
+      <property name="flat-buttons" type="bool" value="false"/>
+      <property name="switch-workspace-on-unminimize" type="bool" value="true"/>
+      <property name="show-wireframes" type="bool" value="false"/>
+      <property name="include-all-workspaces" type="bool" value="true"/>
+      <property name="show-only-minimized" type="bool" value="false"/>
+      <property name="include-all-monitors" type="bool" value="true"/>
+      <property name="show-handle" type="bool" value="false"/>
+      <property name="grouping" type="uint" value="0"/>
+    </property>
+    <property name="plugin-8" type="string" value="separator">
+      <property name="style" type="uint" value="0"/>
+      <property name="expand" type="bool" value="false"/>
+    </property>
+    <property name="plugin-10" type="string" value="separator">
+      <property name="expand" type="bool" value="false"/>
+      <property name="style" type="uint" value="0"/>
+    </property>
+  </property>
+</channel>
