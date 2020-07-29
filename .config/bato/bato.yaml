@@ -1,0 +1,13 @@
+tick_rate: 1
+critical_level: 5
+low_level: 30
+critical:
+  summary: Critical battery level!
+  icon: battery-caution
+low:
+  summary: Battery low
+  icon: battery-040
+full:
+  summary: Battery full
+  icon: battery-full
+  urgency: Normal
