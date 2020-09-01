@@ -1,6 +1,6 @@
 * {
-  background-color: #374029;
-  text-color: #acacaa;
+  background-color: #404040;
+  text-color: #bfbfbf;
   font: "Inconsolata Regular 14";
   border: 0px;
 }
@@ -31,7 +31,7 @@ element {
 }
 
 element selected {
-  text-color: #f2f2f0;
+  text-color: #fafafa;
   highlight: bold;
 }
 
@@ -47,6 +47,6 @@ button {
 }
 
 button selected {
-  text-color: #f2f2f0;
+  text-color: #fafafa;
   padding: 10px 0;
 }

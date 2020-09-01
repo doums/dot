@@ -11,21 +11,23 @@ alias sb='subl'
 alias db='adb shell input keyevent 82'
 alias dbk='adb shell am force-stop com.monbuilding.app'
 alias rr='adb shell input text "RR"'
-alias ds='xrandr --output DP-2 --auto --scale 1.333 --above eDP-1'
+alias ds='xrandr --output DP-2 --auto --scale 1.333 --left eDP-1'
 alias fk='fk.sh'
 alias fkp='fkp.sh'
 alias pac='pac.sh'
 alias vim='nvim'
 alias gl='gl.sh'
 alias glf='git log -p --date=format:%c --abbrev-commit --'
+alias pm='pm2'
+alias wtr='curl fr.wttr.in'
 
 set fish_greeting
 set -x LD_LIBRARY_PATH /usr/local/lib $LD_LIBRARY_PATH
 set -x QT_AUTO_SCREEN_SCALE_FACTOR 1
 set -x EDITOR /usr/bin/nvim
 set -x VISUAL /usr/bin/nvim
-set -x GDK_SCALE 2
-set -x GDK_DPI_SCALE 0.5
+# set -x GDK_SCALE 2
+# set -x GDK_DPI_SCALE 0.5
 set -x ANDROID_HOME $HOME/Android/Sdk
 set -x PATH $ANDROID_HOME/emulator $PATH
 set -x PATH $ANDROID_HOME/tools $PATH
@@ -49,6 +51,7 @@ set -x NNN_OPTS Qex
 set -x NNN_COLORS 2341
 set -x NNN_PLUG 't:-_bat $nnn;f:-_|firefox $nnn*'
 set -x NNN_BMS 'h:~;d:~/Documents;r:/;a:~/Documents/aos/aos-app/'
+set -x NNN_FCOLORS 'c1e2435e006033f7c6d6abc4'
 set -x XDG_CONFIG_HOME $HOME/.config
 set -x DENO_INSTALL $HOME/.deno
 set -x PATH $PATH $DENO_INSTALL/bin

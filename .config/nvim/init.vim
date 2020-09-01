@@ -26,11 +26,8 @@ let mapleader = ","
 set termguicolors
 set number
 colorscheme darcula
-filetype plugin on
-filetype indent on
-syntax on
 set noshowmode
-set shortmess=IfFaWcs
+set shortmess=IFaWcs
 set ignorecase
 set smartcase
 set cindent
@@ -42,7 +39,6 @@ set matchtime=3
 set updatetime=100
 set splitbelow
 set splitright
-set startofline
 set foldlevelstart=0
 set textwidth=0
 set hidden
@@ -55,9 +51,7 @@ set fillchars=vert:\ ,diff:\ ,fold:\ " a space
 set complete=.,w,b,u,t,i
 set clipboard+=unnamedplus
 set guicursor=
-set autoread
 set display=lastline
-set wildmenu
 runtime ftplugin/man.vim
 " }}}
 
@@ -236,6 +230,8 @@ nnoremap <silent> <A-Right> :vertical :resize +4<CR>
 nnoremap <silent> <A-Left> :vertical :resize -4<CR>
 " terminal mode
 tnoremap <Leader>n <C-\><C-N>
+" allow saving a file as sudo
+cnoremap w!! :w :term sudo tee % > /dev/null
 " }}}
 
 " {{{ plugins mapping
@@ -345,6 +341,7 @@ nmap <silent> <A-u> <Plug>(coc-references)
 
 " Apply AutoFix to problem on the current line.
 nmap <A-CR> <Plug>(coc-fix-current)
+nmap <A-S-a> <Plug>(coc-codeaction-line)
 
 " Hover
 nnoremap <silent> <A-d> :call <SID>show_documentation()<CR>
