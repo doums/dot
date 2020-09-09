@@ -299,7 +299,7 @@ xkb_symbols "hkk" {
     };
     key <AE08> {
         type= "THREE_LEVEL",
-        [ underscore, 8, backslash ]
+        [ underscore, 8, section ]
     };
     key <AE09> {
         type= "THREE_LEVEL",
@@ -321,7 +321,10 @@ xkb_symbols "hkk" {
     key <TAB> {[ Tab, ISO_Left_Tab ]};
     key <AD01> {[ a, A ]};
     key <AD02> {[ z, Z ]};
-    key <AD03> {[ e, E ]};
+    key <AD03> {
+        type= "THREE_LEVEL",
+        [ e, E, EuroSign ]
+    };
     key <AD04> {[ r, R ]};
     key <AD05> {[ t, T ]};
     key <AD06> {[ y, Y ]};
@@ -361,7 +364,7 @@ xkb_symbols "hkk" {
     key <AB06> {[ n, N ]};
     key <AB07> {[ comma, question ]};
     key <AB08> {[ semicolon, period ]};
-    key <AB09> {[ colon, slash ]};
+    key <AB09> {[ colon, backslash ]};
     key <AB10> {[ exclam, slash ]};
     key <RTSH> {[ Shift_R ]};
     key <LALT> {[ Alt_L ]};
