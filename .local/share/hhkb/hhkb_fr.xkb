@@ -364,8 +364,8 @@ xkb_symbols "hkk" {
     key <AB06> {[ n, N ]};
     key <AB07> {[ comma, question ]};
     key <AB08> {[ semicolon, period ]};
-    key <AB09> {[ colon, backslash ]};
-    key <AB10> {[ exclam, slash ]};
+    key <AB09> {[ colon, slash ]};
+    key <AB10> {[ exclam, backslash ]};
     key <RTSH> {[ Shift_R ]};
     key <LALT> {[ Alt_L ]};
     key <SPCE> {[ space ]};
