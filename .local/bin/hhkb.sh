@@ -1,5 +1,8 @@
 #!/usr/bin/bash
 
+# This script is called by udev rule /etc/udev/rules.d/99-hhkb.rules
+# when the HHKB keyboard is plugged in (USB).
+
 (
 if ! xinput --version &> /dev/null; then
   >&2 printf "%s\n" "xinput, command not found"
@@ -11,6 +14,7 @@ if ! xkbcomp -version &> /dev/null; then
   exit 1
 fi
 
+id=$(xinput list --id-only "Topre Corporation HHKB Professional");
 while [ -z "$id" ]; do
   sleep 1
   id=$(xinput list --id-only "Topre Corporation HHKB Professional");

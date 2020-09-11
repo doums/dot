@@ -16,7 +16,6 @@ Plug 'doums/fzfTools'
 Plug 'doums/darcula'
 Plug 'doums/sae'
 Plug 'doums/llCoc'
-" Plug 'doums/gitBranch'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 call plug#end()
@@ -124,6 +123,7 @@ let g:gitgutter_sign_removed = '▶'
 let g:typescript_indent_disable = 1
 
 " ALE
+let g:ale_disable_lsp = 1
 let g:ale_sign_error = "▬"
 let g:ale_sign_warning = "▬"
 let g:ale_sign_info = "▬"
@@ -135,15 +135,15 @@ let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_info_str = 'I'
 let g:ale_echo_msg_format = '[%linter%][%severity%] %s'
 let g:ale_fixers = {
-      \ 'javascript': [ 'eslint' ],
-      \ 'json': [ 'eslint', 'standard' ],
+      \ 'javascript': [ 'prettier', 'eslint' ],
+      \ 'json': [ 'eslint' ],
       \ 'typescript': [ 'eslint' ],
       \ 'graphql': [ 'eslint' ],
       \ 'rust': [ 'rustfmt' ]
       \ }
 let g:ale_linters = {
-      \ 'javascript': [ 'eslint', 'standard' ],
-      \ 'json': [ 'eslint', 'standard' ],
+      \ 'javascript': [ 'eslint' ],
+      \ 'json': [ 'eslint' ],
       \ 'typescript': [ 'eslint', 'tsserver' ],
       \ 'graphql': [ 'eslint '],
       \ 'sh': [ 'shellcheck' ]
@@ -151,6 +151,7 @@ let g:ale_linters = {
       " \ 'rust': [ 'rls', 'rustfmt', 'cargo' ],
 let g:ale_linters_explicit = 1
 let g:ale_fix_on_save = 1
+let g:ale_completion_autoimport = 1
 hi! link ALEError Error
 hi! link ALEWarning CodeWarning
 hi! link ALEInfo CodeInfo

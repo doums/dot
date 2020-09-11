@@ -6,7 +6,7 @@ remove ()
   sudo pacman -Rsn "$choice"
 }
 
-choice=$(printf "query\nforeign\nsync\nexplicitly\nremove" | fzf --no-info)
+choice=$(printf "query\nforeign\nsync\nexplicitly\nremove\nupdate" | fzf --no-info)
 case "$choice" in
   "query")
     pacman -Qq | fzf --preview 'pacman -Qil {}' --preview-window=right:70%:noborder
@@ -25,5 +25,8 @@ case "$choice" in
   ;;
   "remove")
     remove
+  ;;
+  "update")
+    sudo pacman -Syu
   ;;
 esac
