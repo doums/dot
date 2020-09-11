@@ -14,10 +14,10 @@ if ! xkbcomp -version &> /dev/null; then
   exit 1
 fi
 
-id=$(xinput list --id-only "Topre Corporation HHKB Professional");
+id=$(xinput list --id-only "Topre Corporation HHKB Professional")
 while [ -z "$id" ]; do
   sleep 1
-  id=$(xinput list --id-only "Topre Corporation HHKB Professional");
+  id=$(xinput list --id-only "Topre Corporation HHKB Professional")
 done
 xkbcomp -i "$id" /home/pierre/.local/share/hhkb/hhkb_fr.xkb "$DISPLAY"
 ) &

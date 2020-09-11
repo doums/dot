@@ -13,7 +13,7 @@ if ! xkbcomp -version &> /dev/null; then
   exit 1
 fi
 
-id=$(xinput list --id-only "Topre Corporation HHKB Professional");
+id=$(xinput list --id-only "Topre Corporation HHKB Professional")
 if [ -n "$id" ]; then
   xkbcomp -i "$id" /home/pierre/.local/share/hhkb/hhkb_fr.xkb "$DISPLAY"
 fi
