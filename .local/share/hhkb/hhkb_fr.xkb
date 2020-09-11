@@ -1,5 +1,5 @@
 xkb_keymap {
-xkb_keycodes "hkk" {
+xkb_keycodes "hhk" {
     minimum = 8;
     maximum = 255;
     <ESC> = 9;
@@ -102,7 +102,7 @@ xkb_keycodes "hkk" {
     indicator 1 = "";
 };
 
-xkb_types "hkk" {
+xkb_types "hhk" {
 
     virtual_modifiers Alt,NumLock,LevelThree;
 
@@ -158,7 +158,7 @@ xkb_types "hkk" {
     };
 };
 
-xkb_compatibility "hkk" {
+xkb_compatibility "hhk" {
 
     virtual_modifiers Alt,Super,AltGr,LevelThree;
 
@@ -264,7 +264,7 @@ xkb_compatibility "hkk" {
     group 4 = AltGr;
 };
 
-xkb_symbols "hhk" {
+xkb_symbols "fr+pc" {
 
     name[group1]="Azerty FR";
 
