@@ -9,8 +9,9 @@ configuration {
   display-combi: "combi";
   display-keys: "key";
   drun-display-format: "{name}";
+  drun-match-fields: "name,generic,categories,keywords"; 
   terminal: "alacritty";
-  matching: "normal";
+  matching: "fuzzy";
   dpi: 144;
   scroll-method: 1;
   window-format: "{c} - {t}";
