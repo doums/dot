@@ -6,7 +6,7 @@ step=5
 app="audio script"
 default_sink=0
 default_source=1
-sink_limit=100
+sink_limit=150
 notification_id=111211211
 src_notification_id=112112111
 icon_sink_high="audio-volume-high"
@@ -78,14 +78,12 @@ source_mute() {
   line=$(pactl list sources | rg "Source #$default_source" -A 8 --trim -m 1 | tail -n 1)
   read -ra array <<< "$line"
   if [ "${array[1]}" = yes ]; then
-    icon="$icon_source"
     body="on"
   else
-    icon="$icon_source"
     body="mute"
   fi
   pactl set-source-mute "$default_source" toggle
-  dunstify -a "$app" -u normal -r "$src_notification_id" -i "$icon" "Micro" "$body"
+  dunstify -a "$app" -u normal -r "$src_notification_id" -i "$icon_source" "Micro" "$body"
 }
 
 case "$1" in
