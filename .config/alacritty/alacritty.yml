@@ -1,5 +1,13 @@
 # Configuration for Alacritty, the GPU enhanced terminal emulator.
 
+# Import additional configuration files
+#
+# These configuration files will be loaded in order, replacing values in files
+# loaded earlier with those loaded later in the chain. The file itself will
+# always be loaded last.
+#import:
+#  - /path/to/alacritty.yml
+
 # Any items in the `env` entry below will be added as
 # environment variables. Some entries may override variables
 # set by alacritty itself.
@@ -15,8 +23,9 @@
 window:
   # Window dimensions (changes require restart)
   #
-  # Specified in number of columns/lines, not pixels.
-  # If both are `0`, this setting is ignored.
+  # Number of lines/columns (not pixels) in the terminal. The number of columns
+  # must be at least `2`, while using a value of `0` for columns and lines will
+  # fall back to the window manager's recommended size.
   dimensions:
     columns: 80
     lines: 24
@@ -315,6 +324,7 @@ font:
 #background_opacity: 1.0
 
 #selection:
+  # This string contains all characters that are used as separators for "semantic words" in Alacritty.
   #semantic_escape_chars: ",│`|:\"' ()[]{}<>\t"
 
   # When set to `true`, selected text will be copied to the primary clipboard.
@@ -480,10 +490,11 @@ font:
 #
 #   - ToggleViMode
 #   - SearchForward
+#       Start searching toward the right of the search origin.
 #   - SearchBackward
+#       Start searching toward the left of the search origin.
 #   - Copy
 #   - Paste
-#   - PasteSelection
 #   - IncreaseFontSize
 #   - DecreaseFontSize
 #   - ResetFontSize
@@ -496,51 +507,88 @@ font:
 #   - ScrollToTop
 #   - ScrollToBottom
 #   - ClearHistory
+#       Remove the terminal's scrollback history.
 #   - Hide
+#       Hide the Alacritty window.
 #   - Minimize
+#       Minimize the Alacritty window.
 #   - Quit
+#       Quit Alacritty.
 #   - ToggleFullscreen
 #   - SpawnNewInstance
+#       Spawn a new instance of Alacritty.
 #   - ClearLogNotice
+#       Clear Alacritty's UI warning and error notice.
 #   - ClearSelection
+#       Remove the active selection.
 #   - ReceiveChar
 #   - None
 #
 #   (`mode: Vi` only):
 #   - Open
+#       Open URLs at the cursor location with the launcher configured in `url.launcher`.
 #   - Up
+#       Move the vi mode cursor up by one line.
 #   - Down
+#       Move the vi mode cursor down by one line.
 #   - Left
+#       Move the vi mode cursor left by one character.
 #   - Right
+#       Move the vi mode cursor right by one character.
 #   - First
+#       Move the vi mode cursor to the start of the line, searching across newlines if it is already at the beginning.
 #   - Last
+#       Move the vi mode cursor to the end of the line, searching across newlines if it is already at the end.
 #   - FirstOccupied
+#       Move the vi mode cursor to the first non-empty cell in this line, searching across newlines if it is already at the first one.
 #   - High
+#       Move the vi mode cursor to the top of the screen.
 #   - Middle
+#       Move the vi mode cursor to the middle of the screen.
 #   - Low
+#       Move the vi mode cursor to the bottom of the screen.
 #   - SemanticLeft
+#       Move the vi mode cursor to the start of the previous semantically separated word.
 #   - SemanticRight
+#       Move the vi mode cursor to the start of the next semantically separated word.
 #   - SemanticLeftEnd
+#       Move the vi mode cursor to the end of the previous semantically separated word.
 #   - SemanticRightEnd
-#   - WordRight
+#       Move the vi mode cursor to the end of the next semantically separated word.
 #   - WordLeft
-#   - WordRightEnd
+#       Move the vi mode cursor to the start of the previous whitespace separated word.
+#   - WordRight
+#       Move the vi mode cursor to the start of the next whitespace separated word.
 #   - WordLeftEnd
+#       Move the vi mode cursor to the end of the previous whitespace separated word.
+#   - WordRightEnd
+#       Move the vi mode cursor to the end of the next whitespace separated word.
 #   - Bracket
+#       Move the vi mode cursor to the next character that matches the bracket at the cursor's
+#       current location.
 #   - ToggleNormalSelection
 #   - ToggleLineSelection
 #   - ToggleBlockSelection
 #   - ToggleSemanticSelection
+#       Toggle semantic selection based on `selection.semantic_escape_chars`.
 #   - SearchNext
+#       Jump to the beginning of the next match.
 #   - SearchPrevious
+#       Jump to the beginning of the previous match.
 #   - SearchStart
+#       Jump to the next start of a match to the left of the vi mode cursor.
 #   - SearchEnd
+#       Jump to the next end of a match to the left of the vi mode cursor.
 #
 #   (macOS only):
-#   - ToggleSimpleFullscreen: Enters fullscreen without occupying another space
+#   - ToggleSimpleFullscreen
+#       Enter fullscreen without occupying another space.
 #
 #   (Linux/BSD only):
-#   - CopySelection: Copies into selection buffer
+#   - CopySelection
+#       Copy from the selection buffer.
+#   - PasteSelection
+#       Paste from the selection buffer.
 #
 # - `command`: Fork and execute a specified command plus arguments
 #
@@ -571,6 +619,7 @@ font:
 #    - AppCursor
 #    - AppKeypad
 #    - Alt
+#    - Vi
 #
 #    A `~` operator can be used before a mode to apply the binding whenever
 #    the mode is *not* active, e.g. `~Alt`.
@@ -598,6 +647,7 @@ font:
   #- { key: Escape,                      mode: Vi, action: ClearSelection          }
   #- { key: I,                           mode: Vi, action: ScrollToBottom          }
   #- { key: I,                           mode: Vi, action: ToggleViMode            }
+  #- { key: C,      mods: Control,       mode: Vi, action: ToggleViMode            }
   #- { key: Y,      mods: Control,       mode: Vi, action: ScrollLineUp            }
   #- { key: E,      mods: Control,       mode: Vi, action: ScrollLineDown          }
   #- { key: G,                           mode: Vi, action: ScrollToTop             }
@@ -641,39 +691,42 @@ font:
   #- { key: N,      mods: Shift,         mode: Vi, action: SearchPrevious          }
 
   # (Windows, Linux, and BSD only)
-  #- { key: V,        mods: Control|Shift,           action: Paste            }
-  #- { key: C,        mods: Control|Shift,           action: Copy             }
-  #- { key: F,        mods: Control|Shift,           action: SearchForward    }
-  #- { key: B,        mods: Control|Shift,           action: SearchBackward   }
-  #- { key: C,        mods: Control|Shift, mode: Vi, action: ClearSelection   }
-  #- { key: Insert,   mods: Shift,                   action: PasteSelection   }
-  #- { key: Key0,     mods: Control,                 action: ResetFontSize    }
-  #- { key: Equals,   mods: Control,                 action: IncreaseFontSize }
-  #- { key: Add,      mods: Control,                 action: IncreaseFontSize }
-  #- { key: Subtract, mods: Control,                 action: DecreaseFontSize }
-  #- { key: Minus,    mods: Control,                 action: DecreaseFontSize }
+  #- { key: V,              mods: Control|Shift,           action: Paste            }
+  #- { key: C,              mods: Control|Shift,           action: Copy             }
+  #- { key: F,              mods: Control|Shift,           action: SearchForward    }
+  #- { key: B,              mods: Control|Shift,           action: SearchBackward   }
+  #- { key: C,              mods: Control|Shift, mode: Vi, action: ClearSelection   }
+  #- { key: Insert,         mods: Shift,                   action: PasteSelection   }
+  #- { key: Key0,           mods: Control,                 action: ResetFontSize    }
+  #- { key: Equals,         mods: Control,                 action: IncreaseFontSize }
+  #- { key: Plus,           mods: Control,                 action: IncreaseFontSize }
+  #- { key: NumpadAdd,      mods: Control,                 action: IncreaseFontSize }
+  #- { key: Minus,          mods: Control,                 action: DecreaseFontSize }
+  #- { key: NumpadSubtract, mods: Control,                 action: DecreaseFontSize }
 
   # (Windows only)
   #- { key: Return,   mods: Alt,           action: ToggleFullscreen }
 
   # (macOS only)
-  #- { key: K,      mods: Command, mode: ~Vi, chars: "\x0c"            }
-  #- { key: Key0,   mods: Command,            action: ResetFontSize    }
-  #- { key: Equals, mods: Command,            action: IncreaseFontSize }
-  #- { key: Add,    mods: Command,            action: IncreaseFontSize }
-  #- { key: Minus,  mods: Command,            action: DecreaseFontSize }
-  #- { key: K,      mods: Command,            action: ClearHistory     }
-  #- { key: V,      mods: Command,            action: Paste            }
-  #- { key: C,      mods: Command,            action: Copy             }
-  #- { key: C,      mods: Command, mode: Vi,  action: ClearSelection   }
-  #- { key: H,      mods: Command,            action: Hide             }
-  #- { key: M,      mods: Command,            action: Minimize         }
-  #- { key: Q,      mods: Command,            action: Quit             }
-  #- { key: W,      mods: Command,            action: Quit             }
-  #- { key: N,      mods: Command,            action: SpawnNewInstance }
-  #- { key: F,      mods: Command|Control,    action: ToggleFullscreen }
-  #- { key: F,      mods: Command,            action: SearchForward    }
-  #- { key: B,      mods: Command,            action: SearchBackward   }
+  #- { key: K,              mods: Command, mode: ~Vi, chars: "\x0c"            }
+  #- { key: Key0,           mods: Command,            action: ResetFontSize    }
+  #- { key: Equals,         mods: Command,            action: IncreaseFontSize }
+  #- { key: Plus,           mods: Command,            action: IncreaseFontSize }
+  #- { key: NumpadAdd,      mods: Command,            action: IncreaseFontSize }
+  #- { key: Minus,          mods: Command,            action: DecreaseFontSize }
+  #- { key: NumpadSubtract, mods: Command,            action: DecreaseFontSize }
+  #- { key: K,              mods: Command,            action: ClearHistory     }
+  #- { key: V,              mods: Command,            action: Paste            }
+  #- { key: C,              mods: Command,            action: Copy             }
+  #- { key: C,              mods: Command, mode: Vi,  action: ClearSelection   }
+  #- { key: H,              mods: Command,            action: Hide             }
+  #- { key: M,              mods: Command,            action: Minimize         }
+  #- { key: Q,              mods: Command,            action: Quit             }
+  #- { key: W,              mods: Command,            action: Quit             }
+  #- { key: N,              mods: Command,            action: SpawnNewInstance }
+  #- { key: F,              mods: Command|Control,    action: ToggleFullscreen }
+  #- { key: F,              mods: Command,            action: SearchForward    }
+  #- { key: B,              mods: Command,            action: SearchBackward   }
 
 #debug:
   # Display the time it takes to redraw each frame.
