@@ -7,11 +7,10 @@ alias ls='ls --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=au
 alias ll='ls -l --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
 alias la='ls -la --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
 alias grep='grep --color=tty -d skip'
-alias sb='subl'
 alias db='adb shell input keyevent 82'
 alias dbk='adb shell am force-stop com.monbuilding.app'
 alias rr='adb shell input text "RR"'
-alias ds='xrandr --output DP-2 --auto --scale 1.333 --left eDP-1'
+alias ds='xrandr --output eDP-1 --auto --output DP-2 --auto --scale 1.333 --right-of eDP-1'
 alias fk='fk.sh'
 alias fkp='fkp.sh'
 alias pac='pac.sh'
@@ -44,7 +43,7 @@ set -x PATH $HOME/.local/bin $PATH
 set -x PATH $PATH $HOME/.local/share/JetBrains/Toolbox/bin
 set -x MANPAGER 'nvim +Man!'
 set -x MAKEFLAGS '-j8'
-set -x FZF_DEFAULT_OPTS "--bind 'ctrl-w:toggle-preview-wrap,ctrl-p:toggle-preview' --color='bg:#2b2b2b,fg:#e6e1dc,preview-bg:#2b2b2b,preview-fg:#e6e1dc,border:#4d4d4d,bg+:#333435,fg+:#e6e1dc,hl:#cc7833,hl+:#cc7833,gutter:#2b2b2b,pointer:#cc7833,prompt:#bc9458,marker:#8a653b,spinner:#8a653b,header:#bc9458,info:#8a653b'"
+set -x FZF_DEFAULT_OPTS "--bind 'ctrl-w:toggle-preview-wrap,ctrl-p:toggle-preview,ctrl-a:toggle-all' --color='bg:#2b2b2b,fg:#e6e1dc,preview-bg:#2b2b2b,preview-fg:#e6e1dc,border:#4d4d4d,bg+:#333435,fg+:#e6e1dc,hl:#cc7833,hl+:#cc7833,gutter:#2b2b2b,pointer:#cc7833,prompt:#bc9458,marker:#8a653b,spinner:#8a653b,header:#bc9458,info:#8a653b'"
 set -x FZF_DEFAULT_COMMAND "rg --files --hidden --no-ignore"
 set -x XDG_DATA_DIRS /home/pierre/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share
 set -x NNN_OPTS Qex
