@@ -19,6 +19,8 @@ alias gl='gl.sh'
 alias glf='git log -p --date=format:%c --abbrev-commit --'
 alias pm='pm2'
 alias wtr='curl fr.wttr.in'
+alias pso='pm2 stop optional'
+alias psa='pm2 stop all'
 
 set fish_greeting
 set -x LD_LIBRARY_PATH /usr/local/lib $LD_LIBRARY_PATH

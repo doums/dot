@@ -51,6 +51,7 @@ set complete=.,w,b,u,t,i
 set clipboard+=unnamedplus
 set guicursor=
 set display=lastline
+set spelllang=en_us
 runtime ftplugin/man.vim
 " }}}
 
@@ -192,9 +193,8 @@ vnoremap <C-k> <C-u>
 " NORMAL/VISUAL/OP_P move through wrapped line
 noremap <silent> j gj
 noremap <silent> k gk
-" remap goto begin and end of line
-noremap <Space>h 0
-noremap <Space>l $
+" remap goto begin of line
+noremap ù 0
 " work inner by default
 onoremap w iw
 " copy in/past from "a register
@@ -233,6 +233,9 @@ nnoremap <silent> <A-Left> :vertical :resize -4<CR>
 tnoremap <Leader>n <C-\><C-N>
 " allow saving a file as sudo
 cnoremap w!! :w :term sudo tee % > /dev/null
+" toggle spell check
+nnoremap <silent> <F2> :set spell!<cr>
+inoremap <silent> <F2> <C-O>:set spell!<cr>
 " }}}
 
 " {{{ plugins mapping
@@ -321,9 +324,9 @@ inoremap <silent><expr> <Tab>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<Tab>" :
       \ coc#refresh()
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <silent><expr> <CR> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>"
+inoremap <silent><expr> <c-space> coc#refresh()
 
 " Symbol renaming
 nmap <A-r> <Plug>(coc-rename)

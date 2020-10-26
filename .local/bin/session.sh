@@ -12,7 +12,7 @@ fi
 choice=$(printf "lock\nlogout\nsuspend\npoweroff\nreboot" | dmenu -b -i -p 'session' "$@")
 case $choice in
   "lock") lock.sh;;
-  "logout") pkill -SIGTERM spectrwm;;
+  "logout") pkill -SIGTERM "$DESKTOP_SESSION";;
   "suspend") systemctl suspend;;
   "poweroff") systemctl poweroff;;
   "reboot" ) systemctl reboot;;
