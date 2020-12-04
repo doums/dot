@@ -14,11 +14,13 @@ alias ds='xrandr --output eDP-1 --auto --output DP-2 --auto --scale 1.333 --righ
 alias fk='fk.sh'
 alias fkp='fkp.sh'
 alias pac='pac.sh'
+alias hok='hock.sh'
 alias vim='nvim'
 alias gl='gl.sh'
 alias glf='git log -p --date=format:%c --abbrev-commit --'
 alias pm='pm2'
 alias wtr='curl fr.wttr.in'
+alias pls='pm2 ls'
 alias pso='pm2 stop optional'
 alias psa='pm2 stop all'
 
@@ -39,9 +41,10 @@ set -x XDG_SESSION_TYPE X11
 set -x PATH $PATH $HOME/.cargo/bin
 set -x PATH $PATH $HOME/.gem/ruby/2.7.0/bin
 set -x fish_emoji_width 2
-set -x PATH /opt/node/bin $PATH
+set -x PATH /opt/node-v12.16.1-linux-x64/bin $PATH
 set -x PATH /home/pierre/.yarn/bin $PATH
 set -x PATH $HOME/.local/bin $PATH
+set -x PATH $HOME/.local/jetbrains $PATH
 set -x PATH $PATH $HOME/.local/share/JetBrains/Toolbox/bin
 set -x MANPAGER 'nvim +Man!'
 set -x MAKEFLAGS '-j8'

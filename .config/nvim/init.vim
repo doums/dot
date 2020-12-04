@@ -247,8 +247,6 @@ nmap <C-s> <Plug>Ls
 nmap <C-b> <Plug>Buf
 nmap <C-g> <Plug>FGitLog
 vmap <C-g> <Plug>GitLogSel
-" netrw
-nnoremap <silent> <Tab> :Lex<CR>
 " NERDCommenter
 map <Leader>c <plug>NERDCommenterToggle
 map <Leader><S-c> <plug>NERDCommenterSexy
