@@ -7,7 +7,6 @@ endif
 call plug#begin(stdpath('data').'/plugged')
 
 Plug 'itchyny/lightline.vim'
-Plug 'dag/vim-fish'
 Plug 'scrooloose/nerdcommenter'
 Plug 'airblade/vim-gitgutter'
 Plug 'dense-analysis/ale'
@@ -24,6 +23,7 @@ call plug#end()
 let mapleader = ","
 set termguicolors
 set number
+set relativenumber
 colorscheme darcula
 set noshowmode
 set shortmess=IFaWcs
