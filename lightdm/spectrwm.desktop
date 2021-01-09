@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=spectrwm
+Comment=The spectrwm window manager
+Type=Application
+Exec=/home/pierre/.local/bin/launch_spectrwm.sh
+TryExec=spectrwm
+Keywords=tiling;window;manager;wm;
