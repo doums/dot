@@ -264,7 +264,7 @@ xkb_compatibility "hhk" {
     group 4 = AltGr;
 };
 
-xkb_symbols "fr+pc" {
+xkb_symbols "hhk" {
 
     name[group1]="Azerty FR";
 
