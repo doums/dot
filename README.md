@@ -61,6 +61,15 @@ gtk-theme-name = "Adapta-Nokto"
 gtk-font-name = "Roboto 12"
 ```
 
+### fonts
+
+put the files located in the `font` directory in `/usr/share/fonts/TTF` and make them readable by every user
+
+update de font cache
+```
+fc-cache
+```
+
 ## notes
 
 The following notes are relevant to the installation of ArchLinux.
