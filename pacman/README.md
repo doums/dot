@@ -1,6 +1,6 @@
 ## pacman stuff
 
-Includes the main pacman configuration file and a post-transaction hook that runs after every system update, package installation, and package removal. It will only keep one older version of the packages.
+Includes the main pacman configuration file and a post-transaction hook that runs after every system update, package installation and package removal. It will only keep one older version of the installed packages, preventing the cache from growing indefinitely.
 
 - move `pacman.conf` in `/etc`
 - move `clean_cache.hook` in `/etc/pacman.d/hooks`

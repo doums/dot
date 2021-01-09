@@ -1,5 +1,29 @@
 # My personal dotfiles
 
+## ArchLinux installation
+
+### in the live environment
+Connect in wireless using `iwd`
+```
+$ iwctl
+```
+resources: https://wiki.archlinux.org/index.php/Iwd#Connect_to_a_network
+
+### during the arch-chroot session (aka Inception)
+Install `networkmanager` package
+```
+pacman -S networkmanager
+```
+
+### first boot in the fresh installed Linux
+start the service `NetworkManager.service`
+```
+sudo systemctl enable NetworkManager.service
+sudo systemctl start NetworkManager.service
+```
+then connect to a network using `nmtui`
+
+source: https://wiki.archlinux.org/index.php/NetworkManager#Installation
 
 ## Design porn
 
@@ -12,6 +36,21 @@ https://github.com/adapta-project/adapta-gtk-theme.git
 https://github.com/snwh/paper-icon-theme
 
 resources: https://wiki.archlinux.org/index.php/Icons#Manually
+
+### set gtk theme
+in `$XDG_CONFIG_HOME/gtk-3.0/settings.ini`
+```
+[Settings]
+gtk-icon-theme-name = Paper
+gtk-theme-name = Adapta-Nokto
+gtk-font-name = Roboto 12
+```
+in ~/.gtkrc-2.0
+```
+gtk-icon-theme-name = "Paper"
+gtk-theme-name = "Adapta-Nokto"
+gtk-font-name = "Roboto 12"
+```
 
 ## notes
 
