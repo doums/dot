@@ -10,9 +10,9 @@ $ iwctl
 resources: https://wiki.archlinux.org/index.php/Iwd#Connect_to_a_network
 
 ### during the arch-chroot session (aka Inception)
-Install `networkmanager` package
+Install `base-devel` and `networkmanager` packages
 ```
-pacman -S networkmanager
+pacman -S base-devel networkmanager
 ```
 
 ### first boot in the fresh installed Linux
@@ -24,6 +24,15 @@ sudo systemctl start NetworkManager.service
 then connect to a network using `nmtui`
 
 source: https://wiki.archlinux.org/index.php/NetworkManager#Installation
+
+### create XDG user directories
+```
+sudo pacman -S xdg-user-dirs
+xdg-user-dirs-update
+```
+
+source: https://wiki.archlinux.org/index.php/XDG_user_directories
+
 
 ## Design porn
 
@@ -74,7 +83,9 @@ FONT_MAP=cp437
 source: https://wiki.archlinux.org/index.php/HiDPI#Linux_console
 
 ### solve icon problem for apps installed through Flatpak
+```
 cd `/var/lib/flatpak/exports/share/applications`
+```
 rename the links to match this format: obs.desktop, vlc.desktop
 
 ### journal

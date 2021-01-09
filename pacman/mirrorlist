@@ -1,0 +1,24 @@
+##
+## Arch Linux repository mirrorlist
+## Generated on 2019-06-20
+##
+
+Server = https://mirrors.niyawe.de/archlinux/$repo/os/$arch
+Server = https://mirror.wtnet.de/arch/$repo/os/$arch
+Server = https://mirror.f4st.host/archlinux/$repo/os/$arch
+Server = https://arch.jensgutermuth.de/$repo/os/$arch
+Server = https://archlinux.mailtunnel.eu/$repo/os/$arch
+
+# Server = https://mirrors.n-ix.net/archlinux/$repo/os/$arch
+# Server = https://mirror.cyberbits.eu/archlinux/$repo/os/$arch
+# Server = http://test.com/$repo/os/$arch/
+# Server = http://mirror.upb.edu.co/archlinux/$repo/os/$arch
+# Server = rsync://arch.nimukaito.net/arch/$repo/os/$arch
+# Server = http://mirror.cse.iitk.ac.in/archlinux/$repo/os/$arch
+# Server = http://mirror-hk.koddos.net/archlinux/$repo/os/$arch
+# Server = http://mirror.kku.ac.th/archlinux/$repo/os/$arch
+# Server = rsync://rsync.spline.inf.fu-berlin.de/archlinux/$repo/os/$arch
+# Server = https://mirrors.phx.ms/arch/$repo/os/$arch
+# Server = https://mirror.stephen304.com/archlinux/
+# Server = rsync://archlinux.mirror.ba/archlinux/
+# Server = http://mirror.netcologne.de/archlinux/
