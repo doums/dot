@@ -72,6 +72,7 @@ let g:NERDTrimTrailingWhitespace = 1
 " lightline.vim
 let g:lightline = {
       \ 'colorscheme': 'darculaOriginal',
+      \ 'subseparator': { 'left': ' ', 'right': ' ' },
       \ 'component_expand': {
       \   'coc_erro': 'llCoc#Error',
       \   'coc_warn': 'llCoc#Warning',

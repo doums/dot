@@ -1,0 +1,13 @@
+nmap <C-l> w
+nmap <C-h> b
+noremap <C-j> <C-d>
+noremap <C-k> <C-u>
+vmap <C-l> w
+vmap <C-h> b
+vnoremap <C-j> <C-d>
+vnoremap <C-k> <C-u>
+noremap ù 0
+noremap <silent> j gj
+noremap <silent> k gk
+onoremap w iw
+noremap <C-w>l <M-l>

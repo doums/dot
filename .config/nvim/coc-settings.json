@@ -1,14 +1,13 @@
 {
-  "diagnostic.errorSign": "> ",
-  "diagnostic.warningSign": "~ ",
-  "diagnostic.infoSign": "- ",
-  "diagnostic.hintSign": "- ",
+  "diagnostic.errorSign": "▬",
+  "diagnostic.warningSign": "▬",
+  "diagnostic.infoSign": "▬",
+  "diagnostic.hintSign": "▬",
   "suggest.noselect": false,
-  "rust-analyzer.notifications.cargoTomlNotFound": true,
-  "rust-analyser.enableCargoWatchOnStartup": true,
-  "rust-analyzer.completion.addCallArgumentSnippets": false,
   "coc.source.around.shortcut": "B",
   "suggest.fixInsertedWord": false,
-  "diagnostic.joinMessageLines": true,
-  "diagnostic.enableHighlightLineNumber": false
+  "diagnostic.enableHighlightLineNumber": false,
+  "http.proxyStrictSSL": false,
+  "clangd.path": "/usr/bin/clangd",
+  "rust-analyzer.checkOnSave.command": "clippy"
 }

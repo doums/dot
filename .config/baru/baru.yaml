@@ -1,4 +1,4 @@
-format: '%m  %c  %t  %b  %i  %s   %w%e  %a    %d'
+format: '%m  %c %f  %t  %b  %i  %s   %w%e  %a    %d'
 tick: 50
 pulse_tick: 50
 battery:
@@ -14,6 +14,11 @@ brightness:
   label: '󰃟'
   format: '%v %l'
 cpu:
+  label: '󰻠'
+  high_label: '󰈸'
+  format: '%v'
+cpu_freq:
+  tick: 500
   label: '󰻠'
   high_label: '󰈸'
   format: '%v %l'
@@ -43,8 +48,8 @@ wired:
   format: '%l'
 wireless:
   interface: wlan0
-  display: Essid
+  display: LabelOnly
   max_essid_len: 5
   label: '󰤥'
   disconnected_label: '󰤮'
-  format: '%v %l'
+  format: '%l'
