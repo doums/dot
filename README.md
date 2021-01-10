@@ -49,9 +49,19 @@ https://github.com/adapta-project/adapta-gtk-theme.git
 (see notes below to fix HiDPI scaling problem)
 
 ### icon and cursor theme
-https://github.com/snwh/paper-icon-theme
+install https://github.com/snwh/paper-icon-theme
 
-resources: https://wiki.archlinux.org/index.php/Icons#Manually
+edit `/usr/share/icons/default/index.theme`
+```
+[Icon Theme]
+Inherits=Paper
+```
+
+note: the icon theme is also set when `.Xresources` file is read when lightdm (display manager) starts and sources `.xprofile`
+
+resources:
+- https://wiki.archlinux.org/index.php/Icons#Manually
+- https://wiki.archlinux.org/index.php/Cursor_themes#XDG_specification
 
 ### set gtk theme
 in `$XDG_CONFIG_HOME/gtk-3.0/settings.ini`
