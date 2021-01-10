@@ -2,6 +2,12 @@
 
 ## ArchLinux installation
 
+Linux build:
+- display server: Xorg (X11)
+- no desktop environment
+- graphical display manager: LightDM + its gtk greeter
+- window manager Spectrwm
+
 ### in the live environment
 Connect in wireless using `iwd`
 ```
