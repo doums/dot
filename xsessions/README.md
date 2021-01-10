@@ -1,4 +1,4 @@
-## lighdm as a display manager
+## X sessions
 
 put the files in `/usr/share/xsessions`
 
