@@ -33,6 +33,13 @@ xdg-user-dirs-update
 
 source: https://wiki.archlinux.org/index.php/XDG_user_directories
 
+### mount helper and USB
+```
+sudo pacman -S udisks2 udiskie
+```
+
+source: https://wiki.archlinux.org/index.php/Udisks
+
 
 ## Design porn
 
@@ -41,7 +48,7 @@ https://github.com/adapta-project/adapta-gtk-theme.git
 
 (see notes below to fix HiDPI scaling problem)
 
-### icon them
+### icon and cursor theme
 https://github.com/snwh/paper-icon-theme
 
 resources: https://wiki.archlinux.org/index.php/Icons#Manually
@@ -63,6 +70,10 @@ gtk-font-name = "Roboto 12"
 
 ### fonts
 
+first install some TTF fonts
+```
+sudo pacman -S noto-fonts ttf-dejavu ttf-liberation
+```
 put the files located in the `font` directory in `/usr/share/fonts/TTF` and make them readable by every user
 
 update de font cache
@@ -93,7 +104,7 @@ source: https://wiki.archlinux.org/index.php/HiDPI#Linux_console
 
 ### solve icon problem for apps installed through Flatpak
 ```
-cd `/var/lib/flatpak/exports/share/applications`
+cd /var/lib/flatpak/exports/share/applications
 ```
 rename the links to match this format: obs.desktop, vlc.desktop
 
@@ -107,19 +118,27 @@ SystemMaxUse=1G
 source: https://wiki.archlinux.org/index.php/Systemd/Journal#Journal_size_limit
 
 ### fix Adapta theme for HiDPI
+install build dependencies
+```
+sudo pacman -S inkscape sassc parallel
+```
 in `wm/asset/assets-xfwm-scripts/render-assets-xfwm.sh` make these changes
 ```
--Dide.ui.scale=2.0
-Exec=env GDK_SCALE=2 steam
+ if [ "$inkver" = 0.91 ]; then
 -    non_scale_dpi=90
 +    non_scale_dpi=135
  else
 -    non_scale_dpi=96
 +    non_scale_dpi=144
+ fi
 ```
 then build and install:
 ```
 ./autogen.sh --prefix=/usr --disable-cinnamon --disable-mate --disable-gnome --disable-flashback --disable-openbox --enable-parallel
 make
 sudo make install
+```
+remove build dependencies
+```
+sudo pacman -Rsn inkscape sassc parallel
 ```
