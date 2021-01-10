@@ -76,7 +76,7 @@ source: https://wiki.archlinux.org/index.php/Udisks
 ### gtk theme, Adapta
 https://github.com/adapta-project/adapta-gtk-theme.git
 
-(see notes below to fix HiDPI scaling problem)
+(see notes below for how to build it for HiDPI)
 
 ### icon and cursor theme
 install https://github.com/snwh/paper-icon-theme
