@@ -6,7 +6,7 @@ Linux build:
 - display server: Xorg (X11)
 - no desktop environment
 - graphical display manager: LightDM + its gtk greeter
-- window manager Spectrwm
+- window manager: Spectrwm
 
 ### in the live environment
 Connect in wireless using `iwd`
@@ -58,7 +58,7 @@ sudo systemctl enable lightdm
 ```
 https://wiki.archlinux.org/index.php/LightDM#Installation
 
-3. install Spectrwm the window manager
+3. install the window manager Spectrwm
 ```
 rua install spectrwm-git
 ```
@@ -198,3 +198,10 @@ remove build dependencies
 sudo pacman -Rsn inkscape sassc parallel
 ```
 
+### gnome keyring
+
+```
+sudo pacman -S gnome-keyring
+```
+
+https://wiki.archlinux.org/index.php/GNOME/Keyring#Installation

@@ -1,5 +1,5 @@
 if test -n "$DESKTOP_SESSION"
-    set (gnome-keyring-daemon --start | string split "=")
+    set -x (gnome-keyring-daemon --start | string split "=")
 end
 
 alias ..='cd ..'
@@ -43,7 +43,7 @@ set -x XDG_SESSION_TYPE X11
 set -x PATH $PATH $HOME/.cargo/bin
 set -x PATH $PATH $HOME/.gem/ruby/2.7.0/bin
 set -x fish_emoji_width 2
-set -x PATH /opt/node-v14.15.3-linux-x64/bin $PATH
+set -x PATH /opt/node/bin $PATH
 set -x PATH /home/pierre/.yarn/bin $PATH
 set -x PATH $HOME/.local/bin $PATH
 set -x PATH $HOME/.local/jetbrains $PATH
