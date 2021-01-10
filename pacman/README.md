@@ -11,3 +11,15 @@ sudo pacman -S pacman-contrib
 ```
 
 source: https://wiki.archlinux.org/index.php/Pacman#Cleaning_the_package_cache
+
+### improving compile time
+in `/etc/makepkg.conf` uncomment the line
+```
+MAKEFLAGS="-j8"
+```
+replace 8 with the number of CPU cores
+```
+nproc
+```
+
+source: https://wiki.archlinux.org/index.php/Makepkg#Improving_compile_times
