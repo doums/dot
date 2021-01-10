@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=nnn
+Comment=Terminal file manager
+Exec=alacritty --class nnn,nnn -e nnn
+Icon=file-manager
+Categories=System;FileTools;FileManager;ConsoleOnly
+Keywords=File;Manager;Management;Explorer

@@ -1,0 +1,13 @@
+[Desktop Entry]
+
+Type=Application
+
+Version=1.0
+Name=Insomnia
+Comment=HTTP and GraphQL Client
+Path=/opt/insomnia
+Exec=./Insomnia.AppImage
+Icon=insomnia
+Terminal=false
+Categories=Development;
+
