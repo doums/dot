@@ -197,3 +197,4 @@ remove build dependencies
 ```
 sudo pacman -Rsn inkscape sassc parallel
 ```
+
