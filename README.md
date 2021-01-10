@@ -33,11 +33,35 @@ xdg-user-dirs-update
 
 source: https://wiki.archlinux.org/index.php/XDG_user_directories
 
+### graphical environment setup
+
+1. install the display server Xorg (implementation of the X Window System aka X11) and the display driver (`mesa` for intel integrated graphic card)
+```
+sudo pacman -S xorg-server mesa
+```
+https://wiki.archlinux.org/index.php/Xorg\
+https://wiki.archlinux.org/index.php/Intel_graphics#Installation
+
+2. install the display manager LightDM and its greeter
+```
+sudo pacman -S lightdm lightdm-gtk-greeter
+```
+start the service
+```
+sudo systemctl enable lightdm
+```
+https://wiki.archlinux.org/index.php/LightDM#Installation
+
+3. install Spectrwm the window manager
+```
+rua install spectrwm-git
+```
+source: https://github.com/conformal/spectrwm
+
 ### mount helper and USB
 ```
 sudo pacman -S udisks2 udiskie
 ```
-
 source: https://wiki.archlinux.org/index.php/Udisks
 
 
@@ -90,6 +114,21 @@ update de font cache
 ```
 fc-cache
 ```
+
+### HiDPI
+
+DPI is set in `.Xresources`
+```
+Xft.dpi: 144
+```
+it will be loaded during display manager (ligthdm) starts and sources `.xprofile`
+```
+[[ -f "$home/.Xresources" ]] && xrdb -merge $home/.Xresources
+```
+
+sources:
+- https://wiki.archlinux.org/index.php/HiDPI#X_Resources
+- https://wiki.archlinux.org/index.php/LightDM#Environment_variables
 
 ## notes
 
