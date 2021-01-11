@@ -14,7 +14,7 @@ if ! fzf --version &> /dev/null; then
 fi
 
 processes=$(ss -pnOatu \
-| fzf -m --header-lines=1 --preview 'echo {}' --preview-window=up:4:wrap \
+| fzf -m --header-lines=1 --preview 'echo {}' --preview-window=up:4:sharp:wrap \
 | awk '{print $7}')
 
 for process in ${processes}; do

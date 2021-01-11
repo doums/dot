@@ -18,4 +18,4 @@ if ! fd --version &> /dev/null; then
   exit 1
 fi
 
-fd -H -t f -t l "$@" | fzf --preview 'echo {}' --preview-window=down:4:wrap
+fd -H -t f -t l "$@" | fzf --preview 'echo {}' --preview-window=down:4:sharp:wrap

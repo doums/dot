@@ -14,7 +14,7 @@ if ! fzf --version &> /dev/null; then
 fi
 
 pids=$(ps -eo user=user,pid=pid,ppid=ppid,%cpu=cpu,%mem=mem,args=cmd \
-| fzf -m --header-lines=1 --preview 'echo {}' --preview-window=up:4:wrap \
+| fzf -m --header-lines=1 --preview 'echo {}' --preview-window=up:4:sharp:wrap \
 | awk '{print $2}')
 
 for pid in ${pids}; do

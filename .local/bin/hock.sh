@@ -12,7 +12,7 @@ back_prompt() {
 }
 
 manage_container() {
-  selection=$(docker ps -a | fzf -m --header-lines=1 --preview 'echo {}' --preview-window=up:4:wrap | awk '{print $1}')
+  selection=$(docker ps -a | fzf -m --header-lines=1 --preview 'echo {}' --preview-window=up:4:sharp:wrap | awk '{print $1}')
   mapfile -t containers <<< "$selection"
   if [ ${#containers[*]} -eq 1 ] && [ -z "${containers[0]}" ]; then
     return 0
@@ -44,7 +44,7 @@ manage_container() {
 }
 
 manage_image() {
-  selection=$(docker images | fzf -m --header-lines=1 --preview 'echo {}' --preview-window=up:2:wrap | awk '{print $3}')
+  selection=$(docker images | fzf -m --header-lines=1 --preview 'echo {}' --preview-window=up:2:sharp:wrap | awk '{print $3}')
   mapfile -t images <<< "$selection"
   if [ ${#images[*]} -eq 1 ] && [ -z "${images[0]}" ]; then
     return 0
@@ -76,7 +76,7 @@ manage_image() {
 }
 
 manage_volume() {
-  selection=$(docker volume ls | fzf -m --header-lines=1 --preview 'echo {}' --preview-window=up:2:wrap | awk '{print $2}')
+  selection=$(docker volume ls | fzf -m --header-lines=1 --preview 'echo {}' --preview-window=up:2:sharp:wrap | awk '{print $2}')
   mapfile -t volumes <<< "$selection"
   if [ ${#volumes[*]} -eq 1 ] && [ -z "${volumes[0]}" ]; then
     return 0
@@ -100,7 +100,7 @@ manage_volume() {
 }
 
 manage_network() {
-  selection=$(docker network ls | fzf -m --header-lines=1 --preview 'echo {}' --preview-window=up:2:wrap | awk '{print $2}')
+  selection=$(docker network ls | fzf -m --header-lines=1 --preview 'echo {}' --preview-window=up:2:sharp:wrap | awk '{print $2}')
   mapfile -t networks <<< "$selection"
   if [ ${#networks[*]} -eq 1 ] && [ -z "${networks[0]}" ]; then
     return 0
