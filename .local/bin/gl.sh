@@ -19,12 +19,13 @@ if ! git status > /dev/null; then
 fi
 
 if [ ! "$1" ]; then
-  git log --oneline --decorate=short | fzf \
+  output=$(git log --oneline --decorate=short | fzf \
     --preview="git show --color --abbrev-commit --pretty=medium --date=format:%c {1}" \
     --preview-window=right:70%:noborder \
-    --header="git log"
-else
-  git log --oneline --parents --decorate=short --diff-filter=a -- "$1" | fzf \
+    --header="git log" | awk '{print $1}')
+  git show "$output"
+  else
+    git log --oneline --parents --decorate=short --diff-filter=a -- "$1" | fzf \
     --with-nth=3.. \
     --preview="git show --color --abbrev-commit -s --pretty=medium --date=format:%c {1} \
     && echo -e \n \
