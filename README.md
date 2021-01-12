@@ -31,6 +31,13 @@ then connect to a network using `nmtui`
 
 source: https://wiki.archlinux.org/index.php/NetworkManager#Installation
 
+### enable periodic TRIM
+```
+sudo systemctl enable fstrim.timer
+sudo systemctl start fstrim.timer
+```
+source: https://wiki.archlinux.org/index.php/Solid_state_drive#Periodic_TRIM
+
 ### create XDG user directories
 ```
 sudo pacman -S xdg-user-dirs
