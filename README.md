@@ -6,7 +6,7 @@ Linux build:
 - display server: Xorg (X11)
 - no desktop environment
 - display manager: LightDM + its gtk greeter
-- window manager: Spectrwm
+- window managers: spectrwm & dwm
 - compositor: picom
 
 ### in the live environment
