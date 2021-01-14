@@ -4,17 +4,18 @@ home=/home/pierre
 
 [[ -f "$home/.Xresources" ]] && xrdb -merge $home/.Xresources
 
+# setxkbmap -I/home/pierre/Documents/hhkb/rules/ -rules hhkb -model hhkb -layout hhkb
+
 export PATH="$PATH:$home/.local/bin"
 export _JAVA_AWT_WM_NONREPARENTING=1
+export BG_PRIMARY=$home/Images/dark_ocean.png
+export BG_SECONDARY=$home/Images/dark_ocean.png
+export NNN_OPTS=Qex
+export NNN_COLORS=2341
+export NNN_PLUG='t:-_bat $nnn'
+export NNN_BMS='h:~;d:~/Documents;r:/'
+export _JAVA_AWT_WM_NONREPARENTING=1
 
-case $XDG_SESSION_DESKTOP in
-  spectrwm|dwm)
-    export BG_PRIMARY=$home/Images/dark_ocean.png
-    export BG_SECONDARY=$home/Images/dark_ocean.png
-    export NNN_OPTS=Qex
-    export NNN_COLORS=2341
-    export NNN_PLUG='t:-_bat $nnn'
-    export NNN_BMS='h:~;d:~/Documents;r:/'
-    export _JAVA_AWT_WM_NONREPARENTING=1
-  ;;
-esac
+if [ "$XDG_SESSION_DESKTOP" = 'dwm' ]; then
+  (baru | xrootwin) &
+fi

@@ -5,8 +5,9 @@
 Linux build:
 - display server: Xorg (X11)
 - no desktop environment
-- graphical display manager: LightDM + its gtk greeter
+- display manager: LightDM + its gtk greeter
 - window manager: Spectrwm
+- compositor: picom
 
 ### in the live environment
 Connect in wireless using `iwd`
@@ -142,6 +143,12 @@ it will be loaded during display manager (ligthdm) starts and sources `.xprofile
 sources:
 - https://wiki.archlinux.org/index.php/HiDPI#X_Resources
 - https://wiki.archlinux.org/index.php/LightDM#Environment_variables
+
+### patch font with MDI icons
+
+Material Design Icons font: https://github.com/Templarian/MaterialDesign-Font
+
+font patcher: https://github.com/ryanoasis/nerd-fonts#font-patcher
 
 ## notes
 
