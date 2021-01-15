@@ -1,0 +1,56 @@
+default xkb_types "hhkb" {
+
+    virtual_modifiers Alt,NumLock,LevelThree;
+
+    type "ONE_LEVEL" {
+        modifiers= none;
+        level_name[Level1]= "Any";
+    };
+    type "TWO_LEVEL" {
+        modifiers= Shift;
+        map[Shift]= Level2;
+        level_name[Level1]= "Base";
+        level_name[Level2]= "Shift";
+    };
+    type "THREE_LEVEL" {
+        modifiers= Shift+LevelThree;
+        map[Shift]= Level2;
+        map[LevelThree]= Level3;
+        map[Shift+LevelThree]= Level3;
+        level_name[Level1]= "Base";
+        level_name[Level2]= "Shift";
+        level_name[Level3]= "Level3";
+    };
+    type "CTRL+ALT" {
+        modifiers= Control+Alt;
+        map[Control+Alt]= Level2;
+        level_name[Level1]= "Base";
+        level_name[Level2]= "Ctrl+Alt";
+    };
+    type "ALPHABETIC" {
+        modifiers= Shift;
+        map[Shift]= Level2;
+        level_name[Level1]= "Base";
+        level_name[Level2]= "Caps";
+    };
+    type "KEYPAD" {
+        modifiers= Shift+NumLock;
+        map[Shift]= Level2;
+        map[NumLock]= Level2;
+        level_name[Level1]= "Base";
+        level_name[Level2]= "Number";
+    };
+    type "CONTROL_LEVEL" {
+        modifiers= Control;
+        map[Control]= Level2;
+        level_name[Level1]= "Base";
+        level_name[Level2]= "Control";
+    };
+    type "ALT_LEVEL" {
+        modifiers= Alt;
+        map[Alt]= Level2;
+        level_name[Level1]= "Base";
+        level_name[Level2]= "Alt";
+    };
+};
+

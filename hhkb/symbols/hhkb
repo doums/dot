@@ -1,0 +1,197 @@
+default xkb_symbols "hhkb" {
+
+    name[group1]="Custom Azerty FR";
+
+    key <ESC> {[ Escape ]};
+    key <AE01> {
+        type= "THREE_LEVEL",
+        [ ampersand, 1, onesuperior ]
+    };
+    key <AE02> {
+        type= "THREE_LEVEL",
+        [ eacute, 2, twosuperior ]
+    };
+    key <AE03> {
+        type= "THREE_LEVEL",
+        [ quotedbl, 3, numbersign ]
+    };
+    key <AE04> {
+        type= "THREE_LEVEL",
+        [ apostrophe, 4, braceleft ]
+    };
+    key <AE05> {
+        type= "THREE_LEVEL",
+        [ parenleft, 5, bracketleft ]
+    };
+    key <AE06> {
+        type= "THREE_LEVEL",
+        [ minus, 6, bar ]
+    };
+    key <AE07> {
+        type= "THREE_LEVEL",
+        [ egrave, 7, grave ]
+    };
+    key <AE08> {
+        type= "THREE_LEVEL",
+        [ underscore, 8, section ]
+    };
+    key <AE09> {
+        type= "THREE_LEVEL",
+        [ ccedilla, 9, asciicircum ]
+    };
+    key <AE10> {
+        type= "THREE_LEVEL",
+        [ agrave, 0, at ]
+    };
+    key <AE11> {
+        type= "THREE_LEVEL",
+        [ parenright, degree, bracketright ]
+    };
+    key <AE12> {
+        type= "THREE_LEVEL",
+        [ equal, plus, braceright ]
+    };
+    key <BKSP> {[ BackSpace ]};
+    key <TAB> {[ Tab, ISO_Left_Tab ]};
+    key <AD01> {[ a, A ]};
+    key <AD02> {[ z, Z ]};
+    key <AD03> {
+        type= "THREE_LEVEL",
+        [ e, E, EuroSign ]
+    };
+    key <AD04> {[ r, R ]};
+    key <AD05> {[ t, T ]};
+    key <AD06> {[ y, Y ]};
+    key <AD07> {[ u, U ]};
+    key <AD08> {[ i, I ]};
+    key <AD09> {[ o, O ]};
+    key <AD10> {[ p, P ]};
+    key <AD11> {[ dead_circumflex, dead_diaeresis ]};
+    key <AD12> {[ dollar, sterling ]};
+    key <RTRN> {[ Return ]};
+    key <LCTL> {[ Control_L ]};
+    key <AC01> {[ q, Q ]};
+    key <AC02> {[ s, S ]};
+    key <AC03> {[ d, D ]};
+    key <AC04> {[ f, F ]};
+    key <AC05> {[ g, G ]};
+    key <AC06> {[ h, H ]};
+    key <AC07> {[ j, J ]};
+    key <AC08> {[ k, K ]};
+    key <AC09> {[ l, L ]};
+    key <AC10> {[ m, M ]};
+    key <AC11> {[ ugrave, percent ]};
+    key <TLDE> {[ asciitilde, asciicircum ]};
+    key <LFSH> {[ Shift_L ]};
+    key <BKSL> {[ asterisk, mu ]};
+    key <AB01> {
+        type= "THREE_LEVEL",
+        [ w, W, less ]
+    };
+    key <AB02> {
+        type= "THREE_LEVEL",
+        [ x, X, greater ]
+    };
+    key <AB03> {[ c, C ]};
+    key <AB04> {[ v, V ]};
+    key <AB05> {[ b, B ]};
+    key <AB06> {[ n, N ]};
+    key <AB07> {[ comma, question ]};
+    key <AB08> {[ semicolon, period ]};
+    key <AB09> {[ colon, slash ]};
+    key <AB10> {[ exclam, backslash ]};
+    key <RTSH> {[ Shift_R ]};
+    key <LALT> {[ Alt_L ]};
+    key <SPCE> {[ space ]};
+    key <FK01> {
+        type= "CTRL+ALT",
+        [ F1, XF86Switch_VT_1 ]
+    };
+    key <FK02> {
+        type= "CTRL+ALT",
+        [ F2, XF86Switch_VT_2 ]
+    };
+    key <FK03> {
+        type= "CTRL+ALT",
+        [ F3, XF86Switch_VT_3 ]
+    };
+    key <FK04> {
+        type= "CTRL+ALT",
+        [ F4, XF86Switch_VT_4 ]
+    };
+    key <FK05> {
+        type= "CTRL+ALT",
+        [ F5, XF86Switch_VT_5 ]
+    };
+    key <FK06> {
+        type= "CTRL+ALT",
+        [ F6, XF86Switch_VT_6 ]
+    };
+    key <FK07> {
+        type= "CTRL+ALT",
+        [ F7, XF86Switch_VT_7 ]
+    };
+    key <FK08> {
+        type= "CTRL+ALT",
+        [ F8, XF86Switch_VT_8 ]
+    };
+    key <FK09> {
+        type= "CTRL+ALT",
+        [ F9, XF86Switch_VT_9 ]
+    };
+    key <FK10> {
+        type= "CTRL+ALT",
+        [ F10, XF86Switch_VT_10 ]
+    };
+    key <FK11> {
+        type= "CTRL+ALT",
+        [ F11, XF86Switch_VT_11 ]
+    };
+    key <FK12> {
+        type= "CTRL+ALT",
+        [ F12, XF86Switch_VT_12 ]
+    };
+    key <SCLK> {[ Scroll_Lock ]};
+    key <HENK> {[ Henkan_Mode ]};
+    key <MUHE> {[ Muhenkan ]};
+    key <PRSC> {
+        type= "ALT_LEVEL",
+        [ Print, Sys_Req ]
+    };
+    key <RALT> {[ ISO_Level3_Shift ]};
+    key <HOME> {[ Home ]};
+    key <UP> {[ Up ]};
+    key <PGUP> {[ Prior ]};
+    key <LEFT> {[ Left ]};
+    key <RGHT> {[ Right ]};
+    key <END> {[ End ]};
+    key <DOWN> {[ Down ]};
+    key <PGDN> {[ Next ]};
+    key <INS> {[ Insert ]};
+    key <DELE> {[ Delete ]};
+    key <MTE> {[ XF86AudioMute ]};
+    key <VOL-> {[ XF86AudioLowerVolume ]};
+    key <VOL+> {[ XF86AudioRaiseVolume ]};
+    key <POWR> {[ XF86PowerOff ]};
+    key <PAUS> {
+        type= "CONTROL_LEVEL",
+        [ Pause, Break ]
+    };
+    key <LWIN> {[ Super_L ]};
+    key <RWIN> {[ Super_R ]};
+    key <STOP> {[ Cancel ]};
+    key <KPAD> {[ KP_Add ]};
+    key <KPSU> {[ KP_Subtract ]};
+    key <KPMU> {[ KP_Multiply ]};
+    key <KPDV> {[ KP_Divide ]};
+    key <KPEN> {[ KP_Enter ]};
+    key <LVL3> {[ ISO_Level3_Shift ]};
+    modifier_map Control { <LCTL> };
+    modifier_map Shift { <LFSH> };
+    modifier_map Shift { <RTSH> };
+    modifier_map Mod1 { <LALT> };
+    modifier_map Mod5 { <LVL3> };
+    modifier_map Mod4 { <LWIN> };
+    modifier_map Mod4 { <RWIN> };
+};
+

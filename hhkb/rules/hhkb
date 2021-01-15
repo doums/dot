@@ -1,0 +1,14 @@
+! layout = keycodes
+  hhkb = hhkb
+
+! model = types
+  hhkb = hhkb
+
+! model = compat
+  hhkb = hhkb
+
+! model = symbols
+  hhkb = hhkb
+
+! model = geometry
+  hhkb = pc(pc104)

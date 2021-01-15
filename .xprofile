@@ -4,8 +4,6 @@ home=/home/pierre
 
 [[ -f "$home/.Xresources" ]] && xrdb -merge $home/.Xresources
 
-# setxkbmap -I/home/pierre/Documents/hhkb/rules/ -rules hhkb -model hhkb -layout hhkb
-
 export PATH="$PATH:$home/.local/bin"
 export _JAVA_AWT_WM_NONREPARENTING=1
 export BG_PRIMARY=$home/Images/dark_ocean.png

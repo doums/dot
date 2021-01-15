@@ -129,6 +129,31 @@ update de font cache
 fc-cache
 ```
 
+*emoji support*
+```
+$ sudo pacman -S noto-fonts-emoji
+```
+
+*patch font to add MDI icons glyphs*
+
+Material Design Icons font: https://github.com/Templarian/MaterialDesign-Font
+
+font patcher: https://github.com/ryanoasis/nerd-fonts#font-patcher
+1. install FontForge
+```
+sudo pacman -S FontForge
+```
+2. clone the repo
+```
+git clone --depth 1 https://github.com/ryanoasis/nerd-fonts.git
+cd nerd-fonts
+```
+3. move the MDI font in `src/glyphs/`
+4. patch
+```
+./font-patcher --custom MaterialDesignIconsDesktop.ttf --progressbars --careful ./font-patcher --custom MaterialDesignIconsDesktop.ttf --progressbars --careful ~/Téléchargements/fonts/ttf/JetBrainsMono-Regular.ttf path/to/targetFont.ttf
+```
+
 ### HiDPI
 
 DPI is set in `.Xresources`
@@ -144,22 +169,7 @@ sources:
 - https://wiki.archlinux.org/index.php/HiDPI#X_Resources
 - https://wiki.archlinux.org/index.php/LightDM#Environment_variables
 
-### patch font with MDI icons
-
-Material Design Icons font: https://github.com/Templarian/MaterialDesign-Font
-
-font patcher: https://github.com/ryanoasis/nerd-fonts#font-patcher
-
-## notes
-
-The following notes are relevant to the installation of ArchLinux.
-
-### emoji support
-```
-$ sudo pacman -S noto-fonts-emoji
-```
-
-### linux console font
+larger font for linux console
 ```
 $ sudo pacman -S terminus-font
 ```
@@ -170,6 +180,12 @@ FONT_MAP=cp437
 ```
 
 source: https://wiki.archlinux.org/index.php/HiDPI#Linux_console
+
+
+## notes
+
+The following notes are relevant to the installation of ArchLinux.
+
 
 ### solve icon problem for apps installed through Flatpak
 ```
