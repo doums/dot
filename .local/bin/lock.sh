@@ -41,4 +41,4 @@ options="
 --wrongcolor=00000000
 --layoutcolor=00000000"
 mapfile -t options <<< "$options"
-i3lock -n -i "$bg_lock" "${options[@]}" "$@"
+i3lock -i "$bg_lock" "${options[@]}" "$@"
