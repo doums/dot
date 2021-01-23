@@ -1,3 +1,3 @@
 #!/bin/bash
 
-spectrwm &> spectrwm.log
+spectrwm &> .spectrwm.log
