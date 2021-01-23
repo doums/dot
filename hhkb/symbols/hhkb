@@ -169,6 +169,7 @@ default xkb_symbols "hhkb" {
     key <PGDN> {[ Next ]};
     key <INS> {[ Insert ]};
     key <DELE> {[ Delete ]};
+    key <MMTE> {[ XF86AudioMicMute ]};
     key <MUTE> {[ XF86AudioMute ]};
     key <VOL-> {[ XF86AudioLowerVolume ]};
     key <VOL+> {[ XF86AudioRaiseVolume ]};

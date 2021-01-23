@@ -98,6 +98,7 @@ default xkb_keycodes "hhkb" {
     <LWIN> = 133;
     <RWIN> = 134;
     <STOP> = 136;
+    <MMTE> = 198;
     indicator 1 = "";
 };
 
