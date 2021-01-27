@@ -6,7 +6,7 @@ endif
 
 call plug#begin(stdpath('data').'/plugged')
 
-Plug 'itchyny/lightline.vim'
+Plug 'doums/barow'
 Plug 'scrooloose/nerdcommenter'
 Plug 'airblade/vim-gitgutter'
 Plug 'dense-analysis/ale'
@@ -14,8 +14,15 @@ Plug 'doums/coBra'
 Plug 'doums/fzfTools'
 Plug 'doums/darcula'
 Plug 'doums/sae'
-Plug 'doums/llCoc'
+Plug 'doums/barowCoc'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+" web dev
+Plug 'pangloss/vim-javascript'
+Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
+Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
+Plug 'jparise/vim-graphql'
 
 call plug#end()
 
@@ -69,50 +76,15 @@ let g:NERDCompactSexyComs = 1
 let g:NERDCommentEmptyLines = 1
 let g:NERDTrimTrailingWhitespace = 1
 
-" lightline.vim
-let g:lightline = {
-      \ 'colorscheme': 'darculaOriginal',
-      \ 'subseparator': { 'left': ' ', 'right': ' ' },
-      \ 'component_expand': {
-      \   'coc_erro': 'llCoc#Error',
-      \   'coc_warn': 'llCoc#Warning',
-      \   'coc_info': 'llCoc#Information',
-      \   'coc_stat': 'llCoc#Status'
-      \ },
-      \ 'component_type': {
-      \   'coc_stat': 'middle',
-      \   'coc_erro': 'error',
-      \   'coc_warn': 'warning',
-      \   'coc_info': 'info'
-      \ }
-      \ }
-let g:lightline.active = {
-      \ 'right': [
-      \   [ 'lineinfo' ],
-      \   [ 'percent' ],
-      \   [
-      \     'fileformat',
-      \     'fileencoding',
-      \     'filetype',
-      \     'coc_info',
-      \     'coc_warn',
-      \     'coc_erro',
-      \     'coc_stat'
-      \   ]
-      \ ]
-      \ }
-let g:lightline.tab = {
-      \ 'active': [ 'filename', 'modified' ],
-      \ 'inactive': [ 'filename', 'modified' ]
-      \ }
-let g:lightline.tabline = {
-      \ 'left': [ [ 'tabs' ] ],
-      \ 'right': []
-      \ }
-let g:lightline.tabline_subseparator = {
-      \ 'left': '',
-      \ 'right': ''
-      \ }
+" barow
+let g:barow = {
+      \  'modules': [
+      \    [ 'barowCoc#error', 'BarowError' ],
+      \    [ 'barowCoc#warn', 'BarowWarn' ],
+      \    [ 'barowCoc#info', 'BarowInfo' ],
+      \    [ 'barowCoc#status', 'StatusLine' ]
+      \  ]
+      \}
 
 " GitGutter
 let g:gitgutter_enabled = 0
@@ -216,6 +188,7 @@ noremap <silent> <C-Right> :tabn<CR>
 noremap <silent> <C-Left> :tabp<CR>
 nnoremap <silent> <C-Up> :+tabmove<CR>
 nnoremap <silent> <C-Down> :-tabmove<CR>
+nnoremap <Leader>) <C-w><C-]><C-w>T
 " window
 nnoremap <silent><Leader>s :new<CR>
 nnoremap <silent><Leader>v :vnew<CR>
@@ -281,6 +254,11 @@ autocmd FileType netrw nmap <buffer><silent> cw gncd
 " autocmd WinLeave,BufLeave * call s:RestoreSetUp()
 " autocmd WinEnter,BufEnter * call s:InitTermSetUp()
 " autocmd TerminalWinOpen * call s:NewTerm()
+
+" web dev, forces vim to rescan the entire buffer when highlighting for js and
+" ts file
+autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
+autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
 augroup END
 " }}}
 
