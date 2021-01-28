@@ -2,11 +2,8 @@ if test -n "$DESKTOP_SESSION"
     set -x (gnome-keyring-daemon --start | string split "=")
 end
 
-alias ..='cd ..'
-alias ls='ls --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
-alias ll='ls -l --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
-alias la='ls -la --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
-alias grep='grep --color=tty -d skip'
+alias ls='exa --group-directories-first'
+alias la='exa -lag --group-directories-first'
 alias db='adb shell input keyevent 82'
 alias dbk='adb shell am force-stop com.monbuilding.app'
 alias rr='adb shell input text "RR"'
@@ -19,20 +16,17 @@ alias vim='nvim'
 alias gl='gl.sh'
 alias glf='git log -p --date=format:%c --abbrev-commit --'
 alias wtr='curl fr.wttr.in'
-alias pm='pm2'
-alias pls='pm2 ls'
-alias pso='pm2 stop optional'
-alias psa='pm2 stop all'
-alias pog='pm2 log'
-alias pev='MODE=dev pm2 restart ecosystem.config.js --only'
+alias dc='docker-compose'
+alias log='docker logs -f'
+alias aos='docker-compose up -d mongo redis postgres minio-server keycloak aos-client-app aos-server-app'
 
 set fish_greeting
 set -x LD_LIBRARY_PATH /usr/local/lib $LD_LIBRARY_PATH
 set -x QT_AUTO_SCREEN_SCALE_FACTOR 1
 set -x EDITOR /usr/bin/nvim
 set -x VISUAL /usr/bin/nvim
-# set -x GDK_SCALE 2
-# set -x GDK_DPI_SCALE 0.5
+set -x GDK_SCALE 2
+set -x GDK_DPI_SCALE 0.5
 set -x ANDROID_HOME $HOME/Android/Sdk
 set -x PATH $ANDROID_HOME/emulator $PATH
 set -x PATH $ANDROID_HOME/tools $PATH
