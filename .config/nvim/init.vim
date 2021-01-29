@@ -15,6 +15,7 @@ Plug 'doums/fzfTools'
 Plug 'doums/darcula'
 Plug 'doums/sae'
 Plug 'doums/barowCoc'
+Plug 'doums/barowGit'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " web dev
@@ -79,9 +80,11 @@ let g:NERDTrimTrailingWhitespace = 1
 " barow
 let g:barow = {
       \  'modules': [
+      \    [ 'barowGit#branch', 'StatusLine' ],
       \    [ 'barowCoc#error', 'BarowError' ],
       \    [ 'barowCoc#warn', 'BarowWarn' ],
       \    [ 'barowCoc#info', 'BarowInfo' ],
+      \    [ 'barowCoc#hint', 'BarowHint' ],
       \    [ 'barowCoc#status', 'StatusLine' ]
       \  ]
       \}
