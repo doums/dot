@@ -11,6 +11,7 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'airblade/vim-gitgutter'
 Plug 'dense-analysis/ale'
 Plug 'doums/coBra'
+Plug 'doums/oterm'
 Plug 'doums/fzfTools'
 Plug 'doums/darcula'
 Plug 'doums/sae'
@@ -80,7 +81,7 @@ let g:NERDTrimTrailingWhitespace = 1
 " barow
 let g:barow = {
       \  'modules': [
-      \    [ 'barowGit#branch', 'StatusLine' ],
+      \    [ 'barowGit#branch', 'BarowHint' ],
       \    [ 'barowCoc#error', 'BarowError' ],
       \    [ 'barowCoc#warn', 'BarowWarn' ],
       \    [ 'barowCoc#info', 'BarowInfo' ],
@@ -219,6 +220,8 @@ inoremap <silent> <F2> <C-O>:set spell!<cr>
 
 " GitGutter
 nnoremap <silent> <Leader>g :GitGutterToggle<CR>
+" oterm
+nmap <Leader>o <Plug>OTerm
 " fzfTools
 nmap <C-s> <Plug>Ls
 nmap <C-b> <Plug>Buf
