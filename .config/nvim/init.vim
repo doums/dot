@@ -18,6 +18,7 @@ Plug 'doums/sae'
 Plug 'doums/barowCoc'
 Plug 'doums/barowGit'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'mcchrish/nnn.vim'
 
 " web dev
 Plug 'pangloss/vim-javascript'
@@ -90,6 +91,9 @@ let g:barow = {
       \  ]
       \}
 
+" nnn.vim
+let g:nnn#layout = { 'left': '~40%' }
+
 " GitGutter
 let g:gitgutter_enabled = 0
 hi! link GitGutterAdd GitAddStripe
@@ -113,9 +117,10 @@ let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_info_str = 'I'
 let g:ale_echo_msg_format = '[%linter%][%severity%] %s'
 let g:ale_fixers = {
-      \ 'javascript': [ 'prettier', 'eslint' ],
+      \ 'javascript': [ 'eslint', 'prettier' ],
       \ 'json': [ 'eslint' ],
-      \ 'typescript': [ 'eslint' ],
+      \ 'typescript': [ 'eslint', 'prettier' ],
+      \ 'typescriptreact': [ 'eslint', 'prettier' ],
       \ 'graphql': [ 'eslint' ],
       \ 'rust': [ 'rustfmt' ]
       \ }
@@ -123,10 +128,10 @@ let g:ale_linters = {
       \ 'javascript': [ 'eslint' ],
       \ 'json': [ 'eslint' ],
       \ 'typescript': [ 'eslint', 'tsserver' ],
+      \ 'typescriptreact': [ 'eslint', 'tsserver' ],
       \ 'graphql': [ 'eslint '],
       \ 'sh': [ 'shellcheck' ]
       \ }
-      " \ 'rust': [ 'rls', 'rustfmt', 'cargo' ],
 let g:ale_linters_explicit = 1
 let g:ale_fix_on_save = 1
 let g:ale_completion_autoimport = 1
