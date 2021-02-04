@@ -9,10 +9,11 @@ export BG_PRIMARY=$home/Images/dark_ocean.png
 export BG_SECONDARY=$home/Images/dark_ocean.png
 export NNN_OPTS=Qex
 export NNN_COLORS=2341
+export NNN_FCOLORS='0505040a00060e0801030301'
 export NNN_PLUG='t:-_bat $nnn'
 export NNN_BMS='h:~;d:~/Documents;r:/'
 export _JAVA_AWT_WM_NONREPARENTING=1
 
-if [ "$XDG_SESSION_DESKTOP" = 'dwm' ]; then
+if [ "$XDG_SESSION_DESKTOP" = 'dwm' ] || [ "$XDG_SESSION_DESKTOP" = 'rosu' ]; then
   (baru | xrootwin) &
 fi

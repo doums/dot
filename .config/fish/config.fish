@@ -51,7 +51,7 @@ set -x NNN_OPTS Qex
 set -x NNN_COLORS 2341
 set -x NNN_PLUG 't:-_bat $nnn;f:-_|firefox $nnn*'
 set -x NNN_BMS 'h:~;d:~/Documents;r:/;a:~/Documents/aos/aos-app/'
-set -x NNN_FCOLORS 'c1e2435e006033f7c6d6abc4'
+set -x NNN_FCOLORS '0505040a00060e0801030301'
 set -x XDG_CONFIG_HOME $HOME/.config
 set -x DENO_INSTALL $HOME/.deno
 set -x PATH $PATH $DENO_INSTALL/bin
