@@ -6,16 +6,16 @@ endif
 
 call plug#begin(stdpath('data').'/plugged')
 
-Plug 'doums/barow'
 Plug 'scrooloose/nerdcommenter'
 Plug 'airblade/vim-gitgutter'
 Plug 'dense-analysis/ale'
+Plug 'doums/barow'
 Plug 'doums/coBra'
 Plug 'doums/oterm'
 Plug 'doums/fzfTools'
 Plug 'doums/darcula'
 Plug 'doums/sae'
-Plug 'doums/barowCoc'
+Plug 'doums/barowLSP'
 Plug 'doums/barowGit'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'mcchrish/nnn.vim'
@@ -32,8 +32,8 @@ call plug#end()
 " vanilla config {{{
 let mapleader = ","
 set termguicolors
-set number
 set relativenumber
+set number
 colorscheme darcula
 set noshowmode
 set shortmess=IFaWcs
@@ -83,11 +83,12 @@ let g:NERDTrimTrailingWhitespace = 1
 let g:barow = {
       \  'modules': [
       \    [ 'barowGit#branch', 'BarowHint' ],
-      \    [ 'barowCoc#error', 'BarowError' ],
-      \    [ 'barowCoc#warn', 'BarowWarn' ],
-      \    [ 'barowCoc#info', 'BarowInfo' ],
-      \    [ 'barowCoc#hint', 'BarowHint' ],
-      \    [ 'barowCoc#status', 'StatusLine' ]
+      \    [ 'barowLSP#error', 'BarowError' ],
+      \    [ 'barowLSP#warning', 'BarowWarning' ],
+      \    [ 'barowLSP#info', 'BarowInfo' ],
+      \    [ 'barowLSP#hint', 'BarowHint' ],
+      \    [ 'barowLSP#coc_status', 'StatusLine' ],
+      \    [ 'barowLSP#ale_status', 'StatusLine' ]
       \  ]
       \}
 
@@ -135,6 +136,9 @@ let g:ale_linters = {
 let g:ale_linters_explicit = 1
 let g:ale_fix_on_save = 1
 let g:ale_completion_autoimport = 1
+let g:ale_floating_preview = 1
+let g:ale_hover_to_floating_preview = 1
+let g:ale_detail_to_floating_preview = 1
 hi! link ALEError Error
 hi! link ALEWarning CodeWarning
 hi! link ALEInfo CodeInfo
@@ -237,13 +241,13 @@ map <Leader>c <plug>NERDCommenterToggle
 map <Leader><S-c> <plug>NERDCommenterSexy
 " Ale
 nmap <Leader>a <Plug>(ale_toggle)
-imap <C-@> <Plug>(ale_complete)
 nmap <Leader>b <Plug>(ale_go_to_definition)
 nmap <Leader>n <Plug>(ale_go_to_type_definition)
 nmap <Leader>r <Plug>(ale_find_references)
 nmap <Leader>d <Plug>(ale_detail)
 nnoremap <Leader>: :ALESymbolSearch
 map <C-q> <Plug>(ale_hover)
+nmap <A-e> <Plug>(ale_fix)
 " }}}
 
 " autocommand {{{
@@ -313,15 +317,15 @@ inoremap <silent><expr> <Tab>
       \ <SID>check_back_space() ? "\<Tab>" :
       \ coc#refresh()
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <silent><expr> <CR> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>"
+inoremap <silent><expr> <CR> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 inoremap <silent><expr> <c-space> coc#refresh()
 
 " Symbol renaming
 nmap <A-r> <Plug>(coc-rename)
 
 " Navigate diagnostics
-nmap <silent> <A-e> <Plug>(coc-diagnostic-next)
-nmap <silent> <A-z> <Plug>(coc-diagnostic-prev)
+nmap <silent> <A-"> <Plug>(coc-diagnostic-next)
+nmap <silent> <A-'> <Plug>(coc-diagnostic-prev)
 
 " GoTo code navigation.
 nmap <silent> <A-b> <Plug>(coc-definition)
@@ -337,6 +341,9 @@ nmap <A-S-a> <Plug>(coc-codeaction-line)
 
 " Hover
 nnoremap <silent> <A-d> :call <SID>show_documentation()<CR>
+
+" Trigger completion
+inoremap <silent><expr> <c-space> coc#refresh()
 
 " Formatting selected code.
 xmap <A-q> <Plug>(coc-format-selected)
