@@ -136,9 +136,6 @@ let g:ale_linters = {
 let g:ale_linters_explicit = 1
 let g:ale_fix_on_save = 1
 let g:ale_completion_autoimport = 1
-let g:ale_floating_preview = 1
-let g:ale_hover_to_floating_preview = 1
-let g:ale_detail_to_floating_preview = 1
 hi! link ALEError Error
 hi! link ALEWarning CodeWarning
 hi! link ALEInfo CodeInfo
@@ -223,6 +220,8 @@ cnoremap w!! :w :term sudo tee % > /dev/null
 " toggle spell check
 nnoremap <silent> <F2> :set spell!<cr>
 inoremap <silent> <F2> <C-O>:set spell!<cr>
+" open loclist
+nmap <A-z> :lopen<CR>
 " }}}
 
 " {{{ plugins mapping
@@ -248,14 +247,17 @@ nmap <Leader>d <Plug>(ale_detail)
 nnoremap <Leader>: :ALESymbolSearch
 map <C-q> <Plug>(ale_hover)
 nmap <A-e> <Plug>(ale_fix)
+nmap <A-(> <Plug>(ale_previous_wrap)
+nmap <A--> <Plug>(ale_next_wrap)
 " }}}
 
 " autocommand {{{
 augroup stuff
 autocmd!
-" whenever CursorHold is fired (nothing typed during 'updatetime')
-" run checktime to refresh the buffer and retrieve any external changes
-autocmd CursorHold * checktime %
+" whenever CursorHold is fired (nothing typed during 'updatetime') in a normal
+" bufer (&buftype option is empty) run checktime to refresh the buffer and
+" retrieve any external changes
+autocmd CursorHold * if empty(&buftype) | checktime % | endif
 " set fold to marker for .vimrc
 autocmd FileType vim setlocal foldmethod=marker
 " set stuff for some programming languages
