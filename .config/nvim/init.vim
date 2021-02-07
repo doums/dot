@@ -12,13 +12,13 @@ Plug 'dense-analysis/ale'
 Plug 'doums/barow'
 Plug 'doums/coBra'
 Plug 'doums/oterm'
+Plug 'doums/nnnvi'
 Plug 'doums/fzfTools'
 Plug 'doums/darcula'
 Plug 'doums/sae'
 Plug 'doums/barowLSP'
 Plug 'doums/barowGit'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'mcchrish/nnn.vim'
 
 " web dev
 Plug 'pangloss/vim-javascript'
@@ -79,6 +79,16 @@ let g:NERDCompactSexyComs = 1
 let g:NERDCommentEmptyLines = 1
 let g:NERDTrimTrailingWhitespace = 1
 
+" nnnvi
+let g:nnnvi = {
+      \  'layout': { 'left': 40, 'min': 50 },
+      \  'maps': {
+      \    '<A-s>': 'split',
+      \    '<A-v>': 'vsplit',
+      \    '<A-a>': 'tabedit',
+      \  }
+      \}
+
 " barow
 let g:barow = {
       \  'modules': [
@@ -91,9 +101,6 @@ let g:barow = {
       \    [ 'barowLSP#ale_status', 'StatusLine' ]
       \  ]
       \}
-
-" nnn.vim
-let g:nnn#layout = { 'left': '~40%' }
 
 " GitGutter
 let g:gitgutter_enabled = 0
@@ -249,6 +256,9 @@ map <C-q> <Plug>(ale_hover)
 nmap <A-e> <Plug>(ale_fix)
 nmap <A-(> <Plug>(ale_previous_wrap)
 nmap <A--> <Plug>(ale_next_wrap)
+" nnnvi
+nmap <Tab> <Plug>NNNs
+nmap <S-Tab> <Plug>NNNnos
 " }}}
 
 " autocommand {{{
