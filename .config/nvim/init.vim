@@ -81,7 +81,7 @@ let g:NERDTrimTrailingWhitespace = 1
 
 " nnnvi
 let g:nnnvi = {
-      \  'layout': { 'left': 40, 'min': 50 },
+      \  'layout': { 'left': 40, 'min': 30 },
       \  'maps': {
       \    '<A-s>': 'split',
       \    '<A-v>': 'vsplit',
@@ -97,10 +97,12 @@ let g:barow = {
       \    [ 'barowLSP#warning', 'BarowWarning' ],
       \    [ 'barowLSP#info', 'BarowInfo' ],
       \    [ 'barowLSP#hint', 'BarowHint' ],
-      \    [ 'barowLSP#coc_status', 'StatusLine' ],
-      \    [ 'barowLSP#ale_status', 'StatusLine' ]
+      \    [ 'barowLSP#coc_status', 'Barow' ],
+      \    [ 'barowLSP#ale_status', 'Barow' ]
       \  ]
       \}
+hi! link StatusLine Barow
+hi! link StatusLineNC BarowNC
 
 " GitGutter
 let g:gitgutter_enabled = 0
@@ -240,7 +242,7 @@ nmap <Leader>o <Plug>OTerm
 " fzfTools
 nmap <C-s> <Plug>Ls
 nmap <C-b> <Plug>Buf
-nmap <C-g> <Plug>FGitLog
+nmap <C-g> <Plug>GitLog
 vmap <C-g> <Plug>GitLogSel
 " NERDCommenter
 map <Leader>c <plug>NERDCommenterToggle
