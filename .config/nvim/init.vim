@@ -18,6 +18,7 @@ Plug 'doums/darcula'
 Plug 'doums/sae'
 Plug 'doums/barowLSP'
 Plug 'doums/barowGit'
+Plug 'doums/rgv'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " web dev
@@ -87,6 +88,12 @@ let g:nnnvi = {
       \    '<A-v>': 'vsplit',
       \    '<A-a>': 'tabedit',
       \  }
+      \}
+
+" fzfTools
+let g:fzfTools = {
+      \  'gitlog': { 'tab': 1 },
+      \  'gitlogsel': { 'tab': 1 },
       \}
 
 " barow
@@ -261,6 +268,8 @@ nmap <A--> <Plug>(ale_next_wrap)
 " nnnvi
 nmap <Tab> <Plug>NNNs
 nmap <S-Tab> <Plug>NNNnos
+" rgv
+nmap <A-o> <Plug>RgToggle
 " }}}
 
 " autocommand {{{
@@ -275,15 +284,6 @@ autocmd FileType vim setlocal foldmethod=marker
 " set stuff for some programming languages
 autocmd FileType * call s:CodeStuff()
 autocmd FileType man set nonumber
-" when browsing whitin netrw, map cw to gncd -> make the dir under
-" the cursor the new tree top and set the current working dir to it
-autocmd FileType netrw nmap <buffer><silent> cw gncd
-" terminal stuff
-" autocmd TerminalOpen,TerminalWinOpen * call s:InitTermSetUp()
-" autocmd WinLeave,BufLeave * call s:RestoreSetUp()
-" autocmd WinEnter,BufEnter * call s:InitTermSetUp()
-" autocmd TerminalWinOpen * call s:NewTerm()
-
 " web dev, forces vim to rescan the entire buffer when highlighting for js and
 " ts file
 autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
