@@ -369,12 +369,11 @@ nnoremap <silent> <A-a>  :<C-u>CocList diagnostics<CR>
 nnoremap <silent> <A-f>  :<C-u>CocList outline<CR>
 " Search workspace symbols.
 nnoremap <silent> <A-F>  :<C-u>CocList -I symbols<CR>
-
 " Scroll floating window
-nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
-nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
-inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<C-f>"
-inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<C-b>"
+nnoremap <silent><nowait><expr> <A-w> coc#float#scroll(1)
+nnoremap <silent><nowait><expr> <A-x> coc#float#scroll(0)
+inoremap <silent><nowait><expr> <A-w> coc#float#scroll(1)
+inoremap <silent><nowait><expr> <A-x> coc#float#scroll(0)
 
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
