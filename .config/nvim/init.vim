@@ -248,7 +248,8 @@ nnoremap <silent> <Leader>g :GitGutterToggle<CR>
 nmap <Leader>o <Plug>OTerm
 " fzfTools
 nmap <C-s> <Plug>Ls
-nmap <C-b> <Plug>Buf
+nmap <C-b> <Plug>Buffers
+nmap <C-r> <Plug>Registers
 nmap <C-g> <Plug>GitLog
 vmap <C-g> <Plug>GitLogSel
 " NERDCommenter
@@ -387,7 +388,7 @@ endfunction
 hi! link CocErrorSign ErrorSign
 hi! link CocWarningSign WarningSign
 hi! link CocInfoSign InfoSign
-hi! link CocHintSign InfoSign
+hi! link CocHintSign HintSign
 hi! link CocErrorFloat Pmenu
 hi! link CocWarningFloat Pmenu
 hi! link CocInfoFloat Pmenu
