@@ -87,7 +87,8 @@ let g:nnnvi = {
       \    '<A-s>': 'split',
       \    '<A-v>': 'vsplit',
       \    '<A-a>': 'tabedit',
-      \  }
+      \  },
+      \  'options': '-A'
       \}
 
 " fzfTools
