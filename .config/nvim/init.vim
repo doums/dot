@@ -249,7 +249,7 @@ nmap <Leader>o <Plug>OTerm
 " fzfTools
 nmap <C-s> <Plug>Ls
 nmap <C-b> <Plug>Buffers
-nmap <C-r> <Plug>Registers
+nmap <A-p> <Plug>Registers
 nmap <C-g> <Plug>GitLog
 vmap <C-g> <Plug>GitLogSel
 " NERDCommenter

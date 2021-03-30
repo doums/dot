@@ -129,12 +129,12 @@ update de font cache
 fc-cache
 ```
 
-*emoji support*
+**emoji support**
 ```
 $ sudo pacman -S noto-fonts-emoji
 ```
 
-*patch font to add MDI icons glyphs*
+**patch font to add MDI icons glyphs**
 
 Material Design Icons font: https://github.com/Templarian/MaterialDesign-Font
 
@@ -151,7 +151,7 @@ cd nerd-fonts
 3. move the MDI font in `src/glyphs/`
 4. patch
 ```
-./font-patcher --custom MaterialDesignIconsDesktop.ttf --progressbars --careful ./font-patcher --custom MaterialDesignIconsDesktop.ttf --progressbars --careful ~/Téléchargements/fonts/ttf/JetBrainsMono-Regular.ttf path/to/targetFont.ttf
+./font-patcher --custom MaterialDesignIconsDesktop.ttf --progressbars --careful ~/Téléchargements/fonts/ttf/JetBrainsMono-Regular.ttf path/to/targetFont.ttf
 ```
 
 ### HiDPI
