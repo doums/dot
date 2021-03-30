@@ -48,7 +48,6 @@ wired:
   format: '%l'
 wireless:
   interface: wlan0
-  display: LabelOnly
   max_essid_len: 5
   label: '󰤥'
   disconnected_label: '󰤮'
