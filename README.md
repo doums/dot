@@ -151,7 +151,7 @@ cd nerd-fonts
 3. move the MDI font in `src/glyphs/`
 4. patch
 ```
-./font-patcher --custom MaterialDesignIconsDesktop.ttf --progressbars --careful ~/Téléchargements/fonts/ttf/JetBrainsMono-Regular.ttf path/to/targetFont.ttf
+./font-patcher --custom MaterialDesignIconsDesktop.ttf --progressbars --careful path/to/fontToPatch.ttf
 ```
 
 ### HiDPI
