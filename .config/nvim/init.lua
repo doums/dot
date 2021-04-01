@@ -1,5 +1,7 @@
+-- ALIASES -------------------------------------------------------
 local fn = vim.fn
 local cmd = vim.cmd
+local g = vim.g
 
 -- PLUGINS -------------------------------------------------------
 -- auto install paq-nvim
@@ -28,9 +30,10 @@ paq 'doums/sae'
 paq 'doums/barowLSP'
 paq 'doums/barowGit'
 paq 'doums/rgv'
-paq {'neoclide/coc.nvim', branch='release'}
 paq {'nvim-treesitter/nvim-treesitter', run=update_ts_parsers}
 paq 'nvim-treesitter/playground'
+paq 'neovim/nvim-lspconfig'
+paq 'hrsh7th/nvim-compe'
 
 -- HELPERS -------------------------------------------------------
 --[[ make buffer and window option global as well
@@ -48,11 +51,17 @@ local function t(str)
   return vim.api.nvim_replace_termcodes(str, true, true, true)
 end
 
--- use `nvim_set_keymap` with `noremap` option set to `true` by default
+-- map with `noremap` option set to `true` by default
 local function map(mode, lhs, rhs, opts)
   opts = opts or {noremap = true}
   if opts.noremap == nil then opts.noremap = true end
-  vim.api.nvim_set_keymap(mode, lhs, rhs, opts)
+  if opts.buffer then
+    opts.buffer = nil
+    vim.api.nvim_buf_set_keymap(0, mode, lhs, rhs, opts)
+  else
+    opts.buffer = nil
+    vim.api.nvim_set_keymap(mode, lhs, rhs, opts)
+  end
 end
 
 -- OPTIONS -------------------------------------------------------
@@ -78,7 +87,7 @@ opt('hidden', true)
 opt('cursorline', true, 'w')
 opt('switchbuf', 'usetab')
 opt('scrolloff', 5, 'w')
-opt('completeopt', 'menuone')
+opt('completeopt', 'menuone,noselect')
 opt('pumheight', 10)
 opt('fillchars', 'vert: ,diff: ,fold: ', 'w')
 opt('complete', vim.bo.complete..',i', 'b')
@@ -91,7 +100,7 @@ cmd 'colorscheme darcula'
 -- nvim as man pager
 cmd 'runtime ftplugin/man.vim'
 -- map leader
-vim.g.mapleader = ','
+g.mapleader = ','
 
 -- MAPPINGS ------------------------------------------------------
 -- c'est en forgeant que l'on devient forgeron
@@ -143,18 +152,20 @@ map('t', '<Leader>n', '<C-\\><C-N>')
 
 -- AUTOCOMMANDS --------------------------------------------------
 -- see https://github.com/neovim/neovim/pull/12378
-cmd 'augroup init.lua'
-cmd 'autocmd!'
--- whenever CursorHold is fired (nothing typed during 'updatetime') in a normal
--- bufer (&buftype option is empty) run checktime to refresh the buffer and
--- retrieve any external changes
-cmd 'autocmd CursorHold * if empty(&buftype) | checktime % | endif'
--- set fold to marker for .vimrc
-cmd 'autocmd FileType vim setlocal foldmethod=marker'
--- set stuff for some programming languages
-cmd 'autocmd FileType * call v:lua.code_log()'
-cmd 'autocmd FileType man set nonumber'
-cmd 'augroup END'
+vim.api.nvim_exec([[
+  augroup init.lua
+    autocmd!
+    " whenever CursorHold is fired (nothing typed during 'updatetime') in a normal
+    " bufer (&buftype option is empty) run checktime to refresh the buffer and
+    " retrieve any external changes
+    autocmd CursorHold * if empty(&buftype) | checktime % | endif
+    " set fold to marker for .vimrc
+    autocmd FileType vim setlocal foldmethod=marker
+    " set stuff for some programming languages
+    autocmd FileType * call v:lua.code_log()
+    autocmd FileType man set nonumber
+  augroup END
+]], false)
 
 -- FUNCTIONS -----------------------------------------------------
 function _G.code_log()
@@ -169,7 +180,7 @@ function _G.code_log()
 end
 
 -- barow ---------------------------------------------------------
-vim.g.barow = {
+g.barow = {
   modules = {
     {'barowGit#branch', 'BarowHint'},
     {'barowLSP#error', 'BarowError'},
@@ -184,13 +195,13 @@ cmd 'hi! link StatusLine Barow'
 cmd 'hi! link StatusLineNC BarowNC'
 
 -- kommentary ----------------------------------------------------
-vim.g.kommentary_create_default_mappings = false
-vim.api.nvim_set_keymap("n", "<leader>cc", "<Plug>kommentary_line_default", {})
-vim.api.nvim_set_keymap("n", "<leader>c", "<Plug>kommentary_motion_default", {})
-vim.api.nvim_set_keymap("v", "<leader>c", "<Plug>kommentary_visual_default", {})
+g.kommentary_create_default_mappings = false
+map("n", "<leader>cc", "<Plug>kommentary_line_default", {noremap=false})
+map("n", "<leader>c", "<Plug>kommentary_motion_default", {noremap=false})
+map("v", "<leader>c", "<Plug>kommentary_visual_default", {noremap=false})
 
 -- coBra ---------------------------------------------------------
-vim.g.coBraPairs = {
+g.coBraPairs = {
   rust = {
     {'<', '>'},
     {'"', '"'},
@@ -204,7 +215,7 @@ vim.g.coBraPairs = {
 map('n', '<Leader>o', '<Plug>OTerm', {noremap=false})
 
 -- fzfTools ------------------------------------------------------
-vim.g.fzfTools = {
+g.fzfTools = {
   gitlog = {tab = 1},
   gitlogsel = {tab = 1},
 }
@@ -215,7 +226,7 @@ map('n', '<C-g>', '<Plug>GitLog', {noremap=false})
 map('n', '<C-g>', '<Plug>SGitLog', {noremap=false})
 
 -- nnnvi ---------------------------------------------------------
-vim.g.nnnvi = {
+g.nnnvi = {
   layout = {left = 40, min = 30},
   maps = {
     ['<A-s>'] = 'split',
@@ -228,7 +239,6 @@ map('n', '<S-Tab>', '<Plug>NNNnos', {noremap=false})
 
 -- rgv -----------------------------------------------------------
 map('n', '<A-o>', '<Plug>RgToggle', {noremap=false})
-
 
 -- nvim-treesitter -----------------------------------------------
 require'nvim-treesitter.configs'.setup {
@@ -245,22 +255,95 @@ require'nvim-treesitter.configs'.setup {
   },
 }
 
+-- nvim-lspconfig ------------------------------------------------
+local lspconfig = require'lspconfig'
+
+-- Rust
+lspconfig.rust_analyzer.setup {}
+map('n', '<space>,', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>')
+map('n', '<space>;', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>')
+map('n', '<space>a', '<cmd>lua vim.lsp.buf.code_action()<CR>')
+map('n', '<space>d', '<cmd>lua vim.lsp.buf.definition()<CR>')
+map('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>')
+map('n', '<space>h', '<cmd>lua vim.lsp.buf.hover()<CR>')
+map('n', '<space>m', '<cmd>lua vim.lsp.buf.rename()<CR>')
+map('n', '<space>r', '<cmd>lua vim.lsp.buf.references()<CR>')
+map('n', '<space>s', '<cmd>lua vim.lsp.buf.document_symbol()<CR>')
+
+-- nvim-compe ----------------------------------------------------
+require'compe'.setup {
+  enabled = true,
+  autocomplete = true,
+  debug = false,
+  min_length = 1,
+  preselect = 'enable',
+  throttle_time = 80,
+  source_timeout = 200,
+  incomplete_delay = 400,
+  max_abbr_width = 100,
+  max_kind_width = 100,
+  max_menu_width = 100,
+  documentation = true,
+  source = {
+    path = true,
+    buffer = true,
+    calc = true,
+    nvim_lsp = true,
+    nvim_lua = true
+  }
+}
+
+local function check_back_space()
+  local col = fn.col('.') - 1
+  if col == 0 or fn.getline('.'):sub(col, col):match('%s') then
+    return true
+  else
+    return false
+  end
+end
+
+function _G.tab_complete()
+  if fn.pumvisible() == 1 then
+    return t'<C-n>'
+  elseif check_back_space() then
+    return t'<Tab>'
+  else
+    return fn['compe#complete']()
+  end
+end
+
+function _G.s_tab_complete()
+  if fn.pumvisible() == 1 then
+    return t"<C-p>"
+  else
+    return t"<S-Tab>"
+  end
+end
+
+map("i", "<Tab>", "v:lua.tab_complete()", {expr = true})
+map("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
+map("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
+map("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
+map('i', '<C-Space>', 'compe#complete()', {silent=true, expr=true})
+map('i', '<CR>', "compe#confirm('<CR>')", {silent=true, expr=true})
+map('i', '<C-e>', "compe#close('<C-e>')", {silent=true, expr=true})
+
 -- ALE -----------------------------------------------------------
-vim.g.ale_disable_lsp = 1
-vim.g.ale_sign_error = '▬'
-vim.g.ale_sign_warning = '▬'
-vim.g.ale_sign_info = '▬'
-vim.g.ale_sign_style_error = '▬'
-vim.g.ale_sign_style_warning = '▬'
-vim.g.ale_set_highlights = 0
-vim.g.ale_echo_msg_error_str = 'E'
-vim.g.ale_echo_msg_warning_str = 'W'
-vim.g.ale_echo_msg_info_str = 'I'
-vim.g.ale_echo_msg_format = '[%linter%][%severity%] %s'
-vim.g.ale_linters_explicit = 1
-vim.g.ale_fix_on_save = 1
-vim.g.ale_completion_autoimport = 1
-vim.g.ale_fixers = {
+g.ale_disable_lsp = 1
+g.ale_sign_error = '▬'
+g.ale_sign_warning = '▬'
+g.ale_sign_info = '▬'
+g.ale_sign_style_error = '▬'
+g.ale_sign_style_warning = '▬'
+g.ale_set_highlights = 0
+g.ale_echo_msg_error_str = 'E'
+g.ale_echo_msg_warning_str = 'W'
+g.ale_echo_msg_info_str = 'I'
+g.ale_echo_msg_format = '[%linter%][%severity%] %s'
+g.ale_linters_explicit = 1
+g.ale_fix_on_save = 1
+g.ale_completion_autoimport = 1
+g.ale_fixers = {
   javascript = {'eslint', 'prettier'},
   json = {'eslint'},
   typescript = {'eslint', 'prettier'},
@@ -268,7 +351,7 @@ vim.g.ale_fixers = {
   graphql = {'eslint'},
   rust = {'rustfmt'}
 }
-vim.g.ale_linters = {
+g.ale_linters = {
   javascript = {'eslint'},
   json = {'eslint'},
   typescript = {'eslint', 'tsserver'},
