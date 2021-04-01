@@ -1,19 +1,20 @@
 local fn = vim.fn
+local cmd = vim.cmd
 
 -- PLUGINS -------------------------------------------------------
 -- auto install paq-nvim
 local install_path = fn.stdpath('data')..'/site/pack/paqs/opt/paq-nvim'
 if fn.empty(fn.glob(install_path)) > 0 then
-  vim.cmd('!git clone https://github.com/savq/paq-nvim.git '..install_path)
+  cmd('!git clone https://github.com/savq/paq-nvim.git '..install_path)
 end
 
-vim.cmd 'packadd paq-nvim'         -- Load package
+cmd 'packadd paq-nvim'             -- Load package
 local paq = require'paq-nvim'.paq  -- Import module and bind `paq` function
-paq {'savq/paq-nvim', opt=true}    -- Let Paq manage itself
 
 -- update treesitter parsers
-local function update_ts_parsers() vim.cmd 'TSUpdate' end
+local function update_ts_parsers() cmd 'TSUpdate' end
 
+paq {'savq/paq-nvim', opt=true}    -- Let Paq manage itself
 paq 'b3nj5m1n/kommentary'
 paq 'airblade/vim-gitgutter'
 paq 'dense-analysis/ale'
@@ -30,7 +31,6 @@ paq 'doums/rgv'
 paq {'neoclide/coc.nvim', branch='release'}
 paq {'nvim-treesitter/nvim-treesitter', run=update_ts_parsers}
 paq 'nvim-treesitter/playground'
-------------------------------------------------------------------
 
 -- HELPERS -------------------------------------------------------
 --[[ make buffer and window option global as well
@@ -54,7 +54,6 @@ local function map(mode, lhs, rhs, opts)
   if opts.noremap == nil then opts.noremap = true end
   vim.api.nvim_set_keymap(mode, lhs, rhs, opts)
 end
-------------------------------------------------------------------
 
 -- OPTIONS -------------------------------------------------------
 opt('termguicolors', true)
@@ -85,12 +84,12 @@ opt('fillchars', 'vert: ,diff: ,fold: ', 'w')
 opt('complete', vim.bo.complete..',i', 'b')
 opt('clipboard', 'unnamedplus')
 opt('guicursor', '')
-------------------------------------------------------------------
 
+-- VARIOUS -------------------------------------------------------
 -- color scheme
-vim.cmd 'colorscheme darcula'
+cmd 'colorscheme darcula'
 -- nvim as man pager
-vim.cmd 'runtime ftplugin/man.vim'
+cmd 'runtime ftplugin/man.vim'
 -- map leader
 vim.g.mapleader = ','
 
@@ -141,9 +140,35 @@ map('n', '<A-Right>', ':vertical resize +4<CR>', {silent=true})
 map('n', '<A-Left>', ':vertical resize -4<CR>', {silent=true})
 -- terminal normal mode
 map('t', '<Leader>n', '<C-\\><C-N>')
-------------------------------------------------------------------
 
--- barow --------------------------------------------------------
+-- AUTOCOMMANDS --------------------------------------------------
+-- see https://github.com/neovim/neovim/pull/12378
+cmd 'augroup init.lua'
+cmd 'autocmd!'
+-- whenever CursorHold is fired (nothing typed during 'updatetime') in a normal
+-- bufer (&buftype option is empty) run checktime to refresh the buffer and
+-- retrieve any external changes
+cmd 'autocmd CursorHold * if empty(&buftype) | checktime % | endif'
+-- set fold to marker for .vimrc
+cmd 'autocmd FileType vim setlocal foldmethod=marker'
+-- set stuff for some programming languages
+cmd 'autocmd FileType * call v:lua.code_log()'
+cmd 'autocmd FileType man set nonumber'
+cmd 'augroup END'
+
+-- FUNCTIONS -----------------------------------------------------
+function _G.code_log()
+  if vim.bo.filetype == 'rust' then
+    map('n', '<Leader>;', 'iprintln!("{:#?}", );<Esc><Left>i', {buffer=true})
+    map('i', '<Leader>;', 'println!("{:#?}", );<Esc><Left>i', {buffer=true})
+  end
+  if vim.bo.filetype == 'javascript' or vim.bo.filetype == 'typescript' then
+    map('n', '<Leader>;', "iconsole.log('')<Esc><Left>i", {buffer=true})
+    map('i', '<Leader>;', "console.log('')<Esc><Left>i", {buffer=true})
+  end
+end
+
+-- barow ---------------------------------------------------------
 vim.g.barow = {
   modules = {
     {'barowGit#branch', 'BarowHint'},
@@ -155,17 +180,14 @@ vim.g.barow = {
     {'barowLSP#ale_status', 'Barow'}
   }
 }
--- TODO
--- hi! link StatusLine Barow
--- hi! link StatusLineNC BarowNC
-------------------------------------------------------------------
+cmd 'hi! link StatusLine Barow'
+cmd 'hi! link StatusLineNC BarowNC'
 
 -- kommentary ----------------------------------------------------
 vim.g.kommentary_create_default_mappings = false
 vim.api.nvim_set_keymap("n", "<leader>cc", "<Plug>kommentary_line_default", {})
 vim.api.nvim_set_keymap("n", "<leader>c", "<Plug>kommentary_motion_default", {})
 vim.api.nvim_set_keymap("v", "<leader>c", "<Plug>kommentary_visual_default", {})
-------------------------------------------------------------------
 
 -- coBra ---------------------------------------------------------
 vim.g.coBraPairs = {
@@ -177,11 +199,9 @@ vim.g.coBraPairs = {
     {'[', ']'}
   }
 }
-------------------------------------------------------------------
 
 -- OTerm ---------------------------------------------------------
 map('n', '<Leader>o', '<Plug>OTerm', {noremap=false})
-------------------------------------------------------------------
 
 -- fzfTools ------------------------------------------------------
 vim.g.fzfTools = {
@@ -193,7 +213,6 @@ map('n', '<C-b>', '<Plug>Buffers', {noremap=false})
 map('n', '<A-p>', '<Plug>Registers', {noremap=false})
 map('n', '<C-g>', '<Plug>GitLog', {noremap=false})
 map('n', '<C-g>', '<Plug>SGitLog', {noremap=false})
-------------------------------------------------------------------
 
 -- nnnvi ---------------------------------------------------------
 vim.g.nnnvi = {
@@ -206,8 +225,63 @@ vim.g.nnnvi = {
 }
 map('n', '<Tab>', '<Plug>NNNs', {noremap=false})
 map('n', '<S-Tab>', '<Plug>NNNnos', {noremap=false})
-------------------------------------------------------------------
 
 -- rgv -----------------------------------------------------------
 map('n', '<A-o>', '<Plug>RgToggle', {noremap=false})
-------------------------------------------------------------------
+
+
+-- nvim-treesitter -----------------------------------------------
+require'nvim-treesitter.configs'.setup {
+  highlight = {
+    enable = true
+  },
+  indent = {
+    enable = true
+  },
+  playground = {
+    enable = true,
+    updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
+    persist_queries = false -- Whether the query persists across vim sessions
+  },
+}
+
+-- ALE -----------------------------------------------------------
+vim.g.ale_disable_lsp = 1
+vim.g.ale_sign_error = '▬'
+vim.g.ale_sign_warning = '▬'
+vim.g.ale_sign_info = '▬'
+vim.g.ale_sign_style_error = '▬'
+vim.g.ale_sign_style_warning = '▬'
+vim.g.ale_set_highlights = 0
+vim.g.ale_echo_msg_error_str = 'E'
+vim.g.ale_echo_msg_warning_str = 'W'
+vim.g.ale_echo_msg_info_str = 'I'
+vim.g.ale_echo_msg_format = '[%linter%][%severity%] %s'
+vim.g.ale_linters_explicit = 1
+vim.g.ale_fix_on_save = 1
+vim.g.ale_completion_autoimport = 1
+vim.g.ale_fixers = {
+  javascript = {'eslint', 'prettier'},
+  json = {'eslint'},
+  typescript = {'eslint', 'prettier'},
+  typescriptreact = {'eslint', 'prettier'},
+  graphql = {'eslint'},
+  rust = {'rustfmt'}
+}
+vim.g.ale_linters = {
+  javascript = {'eslint'},
+  json = {'eslint'},
+  typescript = {'eslint', 'tsserver'},
+  typescriptreact = {'eslint', 'tsserver'},
+  graphql = {'eslint '},
+  sh = {'shellcheck'}
+}
+cmd 'hi! link ALEError Error'
+cmd 'hi! link ALEWarning CodeWarning'
+cmd 'hi! link ALEInfo CodeInfo'
+cmd 'hi! link ALEErrorSign ErrorSign'
+cmd 'hi! link ALEWarningSign WarningSign'
+cmd 'hi! link ALEInfoSign InfoSign'
+map('', '<A-e>', '<Plug>(ale_fix)', {noremap=false})
+map('', '<A-(>', '<Plug>(ale_previous_wrap)', {noremap=false})
+map('', '<A-->', '<Plug>(ale_next_wrap)', {noremap=false})
