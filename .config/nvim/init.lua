@@ -196,9 +196,9 @@ cmd 'hi! link StatusLineNC BarowNC'
 
 -- kommentary ----------------------------------------------------
 g.kommentary_create_default_mappings = false
-map("n", "<leader>cc", "<Plug>kommentary_line_default", {noremap=false})
-map("n", "<leader>c", "<Plug>kommentary_motion_default", {noremap=false})
-map("v", "<leader>c", "<Plug>kommentary_visual_default", {noremap=false})
+map('n', '<leader>cc', '<Plug>kommentary_line_default', {noremap=false})
+map('n', '<leader>c', '<Plug>kommentary_motion_default', {noremap=false})
+map('v', '<leader>c', '<Plug>kommentary_visual_default', {noremap=false})
 
 -- coBra ---------------------------------------------------------
 g.coBraPairs = {
@@ -255,20 +255,35 @@ require'nvim-treesitter.configs'.setup {
   },
 }
 
--- nvim-lspconfig ------------------------------------------------
+-- lsp -----------------------------------------------------------
 local lspconfig = require'lspconfig'
+
+map('n', '<A-a>', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>')
+map('n', '<A-z>', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>')
+map('n', '<A-CR>', '<cmd>lua vim.lsp.buf.code_action()<CR>')
+map('v', '<A-CR>', '<cmd>lua vim.lsp.buf.range_code_action()<CR>')
+map('n', '<A-b>', '<cmd>lua vim.lsp.buf.definition()<CR>')
+map('n', '<A-t>', '<cmd>lua vim.lsp.buf.type_definition()<CR>')
+map('n', '<A-f>', '<cmd>lua vim.lsp.buf.formatting()<CR>')
+map('v', '<A-f>', '<cmd>lua vim.lsp.buf.range_formatting()<CR>')
+map('n', '<A-d>', '<cmd>lua vim.lsp.buf.hover()<CR>')
+map('n', '<A-r>', '<cmd>lua vim.lsp.buf.rename()<CR>')
+map('n', '<A-u>', '<cmd>lua vim.lsp.buf.references()<CR>')
+map('n', '<A-s>', '<cmd>lua vim.lsp.buf.document_symbol()<CR>')
+map('n', '<A-g>', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
+map('n', '<A-w>', '<cmd>lua vim.lsp.buf.workspace_symbol("")<CR>')
 
 -- Rust
 lspconfig.rust_analyzer.setup {}
-map('n', '<space>,', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>')
-map('n', '<space>;', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>')
-map('n', '<space>a', '<cmd>lua vim.lsp.buf.code_action()<CR>')
-map('n', '<space>d', '<cmd>lua vim.lsp.buf.definition()<CR>')
-map('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>')
-map('n', '<space>h', '<cmd>lua vim.lsp.buf.hover()<CR>')
-map('n', '<space>m', '<cmd>lua vim.lsp.buf.rename()<CR>')
-map('n', '<space>r', '<cmd>lua vim.lsp.buf.references()<CR>')
-map('n', '<space>s', '<cmd>lua vim.lsp.buf.document_symbol()<CR>')
+
+cmd 'augroup init.lua'
+cmd 'autocmd!'
+-- open a floating window with the diagnostics from the current cursor position
+cmd [[autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()]]
+-- highlight the symbol under the cursor
+cmd [[autocmd CursorHold,CursorHoldI * lua vim.lsp.buf.document_highlight()]]
+cmd [[autocmd CursorMoved * lua vim.lsp.buf.clear_references()]]
+cmd 'augroup END'
 
 -- nvim-compe ----------------------------------------------------
 require'compe'.setup {
@@ -314,16 +329,16 @@ end
 
 function _G.s_tab_complete()
   if fn.pumvisible() == 1 then
-    return t"<C-p>"
+    return t'<C-p>'
   else
-    return t"<S-Tab>"
+    return t'<S-Tab>'
   end
 end
 
-map("i", "<Tab>", "v:lua.tab_complete()", {expr = true})
-map("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
-map("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
-map("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
+map('i', '<Tab>', 'v:lua.tab_complete()', {expr = true})
+map('s', '<Tab>', 'v:lua.tab_complete()', {expr = true})
+map('i', '<S-Tab>', 'v:lua.s_tab_complete()', {expr = true})
+map('s', '<S-Tab>', 'v:lua.s_tab_complete()', {expr = true})
 map('i', '<C-Space>', 'compe#complete()', {silent=true, expr=true})
 map('i', '<CR>', "compe#confirm('<CR>')", {silent=true, expr=true})
 map('i', '<C-e>', "compe#close('<C-e>')", {silent=true, expr=true})
