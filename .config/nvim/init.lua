@@ -34,6 +34,7 @@ paq {'nvim-treesitter/nvim-treesitter', run=update_ts_parsers}
 paq 'nvim-treesitter/playground'
 paq 'neovim/nvim-lspconfig'
 paq 'hrsh7th/nvim-compe'
+paq 'nvim-lua/lsp_extensions.nvim'
 
 -- HELPERS -------------------------------------------------------
 --[[ make buffer and window option global as well
@@ -159,8 +160,6 @@ vim.api.nvim_exec([[
     " bufer (&buftype option is empty) run checktime to refresh the buffer and
     " retrieve any external changes
     autocmd CursorHold * if empty(&buftype) | checktime % | endif
-    " set fold to marker for .vimrc
-    autocmd FileType vim setlocal foldmethod=marker
     " set stuff for some programming languages
     autocmd FileType * call v:lua.code_log()
     autocmd FileType man set nonumber
@@ -255,17 +254,20 @@ require'nvim-treesitter.configs'.setup {
   },
 }
 
--- lsp -----------------------------------------------------------
+-- LSP -----------------------------------------------------------
 local lspconfig = require'lspconfig'
 
-map('n', '<A-a>', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>')
-map('n', '<A-z>', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>')
+fn.sign_define('LspDiagnosticsSignError', {text = '▬', texthl = 'LspDiagnosticsSignError'})
+fn.sign_define('LspDiagnosticsSignWarning', {text = '▬', texthl = 'LspDiagnosticsSignWarning'})
+fn.sign_define('LspDiagnosticsSignInformation', {text = '▬', texthl = 'LspDiagnosticsSignInformation'})
+fn.sign_define('LspDiagnosticsSignHint', {text = '▬', texthl = 'LspDiagnosticsSignHint'})
+
+map('n', '<A-a>', '<cmd>lua vim.lsp.diagnostic.goto_prev{popup_opts={show_header=false}}<CR>')
+map('n', '<A-z>', '<cmd>lua vim.lsp.diagnostic.goto_next{popup_opts={show_header=false}}<CR>')
 map('n', '<A-CR>', '<cmd>lua vim.lsp.buf.code_action()<CR>')
 map('v', '<A-CR>', '<cmd>lua vim.lsp.buf.range_code_action()<CR>')
 map('n', '<A-b>', '<cmd>lua vim.lsp.buf.definition()<CR>')
 map('n', '<A-t>', '<cmd>lua vim.lsp.buf.type_definition()<CR>')
-map('n', '<A-f>', '<cmd>lua vim.lsp.buf.formatting()<CR>')
-map('v', '<A-f>', '<cmd>lua vim.lsp.buf.range_formatting()<CR>')
 map('n', '<A-d>', '<cmd>lua vim.lsp.buf.hover()<CR>')
 map('n', '<A-r>', '<cmd>lua vim.lsp.buf.rename()<CR>')
 map('n', '<A-u>', '<cmd>lua vim.lsp.buf.references()<CR>')
@@ -273,17 +275,54 @@ map('n', '<A-s>', '<cmd>lua vim.lsp.buf.document_symbol()<CR>')
 map('n', '<A-g>', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
 map('n', '<A-w>', '<cmd>lua vim.lsp.buf.workspace_symbol("")<CR>')
 
--- Rust
-lspconfig.rust_analyzer.setup {}
+local function on_attach(client)
+  if client.resolved_capabilities.document_range_formatting then
+    map('n', '<A-f>', '<cmd>lua vim.lsp.buf.range_formatting()<CR>')
+  elseif client.resolved_capabilities.document_formatting then
+    map('n', '<A-f>', '<cmd>lua vim.lsp.buf.formatting()<CR>')
+  end
+  -- open a floating window with the diagnostics from the current cursor position
+  vim.api.nvim_exec([[
+    augroup lsp_on_attach
+      autocmd!
+      autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics{show_header=false}
+    augroup END
+  ]], false)
+  -- highlight the symbol under the cursor
+  if client.resolved_capabilities.document_highlight then
+    vim.api.nvim_exec([[
+      augroup lsp_document_highlight
+        autocmd!
+        autocmd CursorHold,CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()
+        autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+      augroup END
+    ]], false)
+  end
+end
 
-cmd 'augroup init.lua'
-cmd 'autocmd!'
--- open a floating window with the diagnostics from the current cursor position
-cmd [[autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()]]
--- highlight the symbol under the cursor
-cmd [[autocmd CursorHold,CursorHoldI * lua vim.lsp.buf.document_highlight()]]
-cmd [[autocmd CursorMoved * lua vim.lsp.buf.clear_references()]]
-cmd 'augroup END'
+vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
+  vim.lsp.diagnostic.on_publish_diagnostics, {
+    virtual_text = false
+  }
+)
+
+require'lspconfig'.clangd.setup {on_attach = on_attach}    -- C, C++
+require'lspconfig'.tsserver.setup {on_attach = on_attach}  -- TypeScript
+lspconfig.rust_analyzer.setup {                            -- Rust
+  on_attach = on_attach,
+  settings = {
+    ['rust-analyzer.checkOnSave.command'] = 'clippy'
+  }
+}
+
+-- lsp_extensions.nvim -------------------------------------------
+-- enable inlay hints for Rust
+vim.api.nvim_exec([[
+  augroup lsp_inlay_hints
+    autocmd!
+    autocmd CursorHold,BufEnter,BufWinEnter,TabEnter,BufWritePost *.rs :lua require'lsp_extensions'.inlay_hints{highlight="CodeHint", prefix=""}
+  augroup END
+]], false)
 
 -- nvim-compe ----------------------------------------------------
 require'compe'.setup {
@@ -340,7 +379,7 @@ map('s', '<Tab>', 'v:lua.tab_complete()', {expr = true})
 map('i', '<S-Tab>', 'v:lua.s_tab_complete()', {expr = true})
 map('s', '<S-Tab>', 'v:lua.s_tab_complete()', {expr = true})
 map('i', '<C-Space>', 'compe#complete()', {silent=true, expr=true})
-map('i', '<CR>', "compe#confirm('<CR>')", {silent=true, expr=true})
+map('i', '<CR>', "compe#confirm('<CR>')", {silent=true, expr=true, noremap=false})
 map('i', '<C-e>', "compe#close('<C-e>')", {silent=true, expr=true})
 
 -- ALE -----------------------------------------------------------
