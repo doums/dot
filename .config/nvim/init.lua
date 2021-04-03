@@ -374,13 +374,12 @@ function _G.s_tab_complete()
   end
 end
 
-map('i', '<Tab>', 'v:lua.tab_complete()', {expr = true})
-map('s', '<Tab>', 'v:lua.tab_complete()', {expr = true})
-map('i', '<S-Tab>', 'v:lua.s_tab_complete()', {expr = true})
-map('s', '<S-Tab>', 'v:lua.s_tab_complete()', {expr = true})
+map('i', '<Tab>', 'v:lua.tab_complete()', {expr=true})
+map('s', '<Tab>', 'v:lua.tab_complete()', {expr=true})
+map('i', '<S-Tab>', 'v:lua.s_tab_complete()', {expr=true})
+map('s', '<S-Tab>', 'v:lua.s_tab_complete()', {expr=true})
 map('i', '<C-Space>', 'compe#complete()', {silent=true, expr=true})
-map('i', '<CR>', "compe#confirm('<CR>')", {silent=true, expr=true, noremap=false})
-map('i', '<C-e>', "compe#close('<C-e>')", {silent=true, expr=true})
+map('i', '<CR>', "compe#confirm('<CR>')", {silent=true, expr=true})
 
 -- ALE -----------------------------------------------------------
 g.ale_disable_lsp = 1
