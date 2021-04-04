@@ -314,6 +314,36 @@ lspconfig.rust_analyzer.setup {                            -- Rust
     ['rust-analyzer.checkOnSave.command'] = 'clippy'
   }
 }
+require'lspconfig'.sumneko_lua.setup {                     -- Lua
+  cmd = {'/opt/lua-language-server/bin/Linux/lua-language-server', '-E', '/opt/lua-language-server/main.lua'},
+  settings = {
+    Lua = {
+      runtime = {
+        -- LuaJIT for Neovim
+        version = 'LuaJIT',
+        path = vim.split(package.path, ';'),
+      },
+      diagnostics = {
+        -- Get the language server to recognize the `vim` global
+        globals = {'vim'},
+      },
+      workspace = {
+        -- Make the server aware of Neovim runtime files
+        library = {
+          [vim.fn.expand('$VIMRUNTIME/lua')] = true,
+          [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
+        },
+      },
+      -- Do not send telemetry data
+      telemetry = {
+        enable = false,
+      }
+    }
+  }
+}
+
+-- lspfzf --------------------------------------------------------
+require'lspfzf'.setup {}
 
 -- lsp_extensions.nvim -------------------------------------------
 -- enable inlay hints for Rust
@@ -380,6 +410,7 @@ map('i', '<S-Tab>', 'v:lua.s_tab_complete()', {expr=true})
 map('s', '<S-Tab>', 'v:lua.s_tab_complete()', {expr=true})
 map('i', '<C-Space>', 'compe#complete()', {silent=true, expr=true})
 map('i', '<CR>', "compe#confirm('<CR>')", {silent=true, expr=true})
+map('i', '<C-e>', "compe#close('<C-e>')", {silent=true, expr=true})
 
 -- ALE -----------------------------------------------------------
 g.ale_disable_lsp = 1
