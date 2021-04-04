@@ -18,7 +18,6 @@ local function update_ts_parsers() cmd 'TSUpdate' end
 
 paq {'savq/paq-nvim', opt=true}    -- Let Paq manage itself
 paq 'b3nj5m1n/kommentary'
-paq 'airblade/vim-gitgutter'
 paq 'dense-analysis/ale'
 paq 'doums/barow'
 paq 'doums/coBra'
@@ -36,6 +35,8 @@ paq 'nvim-treesitter/playground'
 paq 'neovim/nvim-lspconfig'
 paq 'hrsh7th/nvim-compe'
 paq 'nvim-lua/lsp_extensions.nvim'
+paq 'nvim-lua/plenary.nvim'  -- gitsigns.nvim dep
+paq 'lewis6991/gitsigns.nvim'
 
 -- HELPERS -------------------------------------------------------
 --[[ make buffer and window option global as well
@@ -460,3 +461,27 @@ cmd 'hi! link ALEInfoSign InfoSign'
 map('', '<A-e>', '<Plug>(ale_fix)', {noremap=false})
 map('', '<A-(>', '<Plug>(ale_previous_wrap)', {noremap=false})
 map('', '<A-->', '<Plug>(ale_next_wrap)', {noremap=false})
+
+-- gitsigns.nvim -------------------------------------------------
+require'gitsigns'.setup {
+  signs = {
+    add          = {hl = 'GitAddStripe'   , text = ' '},
+    change       = {hl = 'GitChangeStripe', text = ' '},
+    delete       = {hl = 'GitDeleteStripe', text = '▶'},
+    topdelete    = {hl = 'GitDeleteStripe', text = ' '},
+    changedelete = {hl = 'GitChangeStripe', text = ' '},
+  },
+  numhl = false,
+  linehl = false,
+  keymaps = {
+    noremap = true,
+    buffer = true,
+    ['n <Leader>n'] = { expr = true, "&diff ? '<Leader>n' : '<cmd>lua require\"gitsigns\".next_hunk()<CR>'"},
+    ['n <Leader>b'] = { expr = true, "&diff ? '<Leader>b' : '<cmd>lua require\"gitsigns\".prev_hunk()<CR>'"},
+    ['n <leader>hs'] = '<cmd>lua require"gitsigns".stage_hunk()<CR>',
+    ['n <leader>hu'] = '<cmd>lua require"gitsigns".undo_stage_hunk()<CR>',
+    ['n <leader>hr'] = '<cmd>lua require"gitsigns".reset_hunk()<CR>',
+    ['n <leader>hp'] = '<cmd>lua require"gitsigns".preview_hunk()<CR>',
+    ['n <leader>hb'] = '<cmd>lua require"gitsigns".blame_line()<CR>',
+  }
+}
