@@ -66,6 +66,12 @@ local function map(mode, lhs, rhs, opts)
   end
 end
 
+-- log util
+function _G.dump(...)
+  local objects = vim.tbl_map(vim.inspect, {...})
+  print(unpack(objects))
+end
+
 -- OPTIONS -------------------------------------------------------
 opt('termguicolors', true)
 opt('number', true, 'w')
@@ -345,6 +351,7 @@ require'lspconfig'.sumneko_lua.setup {                     -- Lua
 
 -- lspfzf --------------------------------------------------------
 require'lspfzf'.setup {}
+map('n', '<A-q>', '<Plug>Diagnostics', {noremap=false})
 
 -- lsp_extensions.nvim -------------------------------------------
 -- enable inlay hints for Rust
