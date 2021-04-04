@@ -30,6 +30,7 @@ paq 'doums/sae'
 paq 'doums/barowLSP'
 paq 'doums/barowGit'
 paq 'doums/rgv'
+paq 'doums/lspfzf'
 paq {'nvim-treesitter/nvim-treesitter', run=update_ts_parsers}
 paq 'nvim-treesitter/playground'
 paq 'neovim/nvim-lspconfig'
