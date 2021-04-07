@@ -194,7 +194,6 @@ g.barow = {
     {'barowLSP#warning', 'BarowWarning'},
     {'barowLSP#info', 'BarowInfo'},
     {'barowLSP#hint', 'BarowHint'},
-    {'barowLSP#coc_status', 'Barow'},
     {'barowLSP#ale_status', 'Barow'}
   }
 }
