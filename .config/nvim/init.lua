@@ -29,13 +29,14 @@ paq 'doums/sae'
 paq 'doums/barowLSP'
 paq 'doums/barowGit'
 paq 'doums/rgv'
-paq 'doums/lspfzf'
 paq {'nvim-treesitter/nvim-treesitter', run=update_ts_parsers}
 paq 'nvim-treesitter/playground'
 paq 'neovim/nvim-lspconfig'
 paq 'hrsh7th/nvim-compe'
 paq 'nvim-lua/lsp_extensions.nvim'
-paq 'nvim-lua/plenary.nvim'  -- gitsigns.nvim dep
+paq 'nvim-lua/plenary.nvim'        -- dep of telescope.nvim, gitsigns.nvim
+paq 'nvim-lua/popup.nvim'          -- dep of telescope.nvim
+paq 'nvim-telescope/telescope.nvim'
 paq 'lewis6991/gitsigns.nvim'
 
 -- HELPERS -------------------------------------------------------
@@ -194,7 +195,6 @@ g.barow = {
     {'barowLSP#warning', 'BarowWarning'},
     {'barowLSP#info', 'BarowInfo'},
     {'barowLSP#hint', 'BarowHint'},
-    {'barowLSP#coc_status', 'Barow'},
     {'barowLSP#ale_status', 'Barow'}
   }
 }
@@ -272,16 +272,11 @@ fn.sign_define('LspDiagnosticsSignHint', {text = '▬', texthl = 'LspDiagnostics
 
 map('n', '<A-a>', '<cmd>lua vim.lsp.diagnostic.goto_prev{popup_opts={show_header=false}}<CR>')
 map('n', '<A-z>', '<cmd>lua vim.lsp.diagnostic.goto_next{popup_opts={show_header=false}}<CR>')
-map('n', '<A-CR>', '<cmd>lua vim.lsp.buf.code_action()<CR>')
 map('v', '<A-CR>', '<cmd>lua vim.lsp.buf.range_code_action()<CR>')
-map('n', '<A-b>', '<cmd>lua vim.lsp.buf.definition()<CR>')
 map('n', '<A-t>', '<cmd>lua vim.lsp.buf.type_definition()<CR>')
 map('n', '<A-d>', '<cmd>lua vim.lsp.buf.hover()<CR>')
 map('n', '<A-r>', '<cmd>lua vim.lsp.buf.rename()<CR>')
-map('n', '<A-u>', '<cmd>lua vim.lsp.buf.references()<CR>')
-map('n', '<A-s>', '<cmd>lua vim.lsp.buf.document_symbol()<CR>')
 map('n', '<A-g>', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
-map('n', '<A-w>', '<cmd>lua vim.lsp.buf.workspace_symbol("")<CR>')
 
 local function on_attach(client)
   if client.resolved_capabilities.document_range_formatting then
@@ -323,6 +318,7 @@ lspconfig.rust_analyzer.setup {                            -- Rust
   }
 }
 require'lspconfig'.sumneko_lua.setup {                     -- Lua
+  -- must be installed in /opt/lua-language-server
   cmd = {'/opt/lua-language-server/bin/Linux/lua-language-server', '-E', '/opt/lua-language-server/main.lua'},
   settings = {
     Lua = {
@@ -350,9 +346,27 @@ require'lspconfig'.sumneko_lua.setup {                     -- Lua
   }
 }
 
--- lspfzf --------------------------------------------------------
-require'lspfzf'.setup {}
-map('n', '<A-q>', '<Plug>Diagnostics', {noremap=false})
+-- telescope.nvim ------------------------------------------------
+local actions = require('telescope.actions')
+require('telescope').setup {
+  defaults = {
+    mappings = {
+      i = {
+        ['<c-x>'] = false,
+        ['<c-s>'] = actions.select_horizontal,
+        ['<esc>'] = actions.close, -- <Esc> quit in insert mode
+      },
+    },
+    borderchars = { '─', '│', '─', '│', '┌', '┐', '┘', '└' },
+  }
+}
+map('', '<C-f>', '<cmd>Telescope lsp_document_symbols<cr>')
+map('', '<C-S-f>', '<cmd>Telescope lsp_workspace_symbols<cr>')
+map('', '<A-u>', '<cmd>Telescope lsp_references<cr>')
+map('', '<A-CR>', '<cmd>Telescope lsp_code_actions<cr>')
+map('', '<A-q>', '<cmd>Telescope lsp_document_diagnostics<cr>')
+map('', '<A-S-q>', '<cmd>Telescope lsp_workspace_diagnostics<cr>')
+map('', '<A-b>', '<cmd>Telescope lsp_definitions<cr>')
 
 -- lsp_extensions.nvim -------------------------------------------
 -- enable inlay hints for Rust
