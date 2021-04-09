@@ -249,12 +249,11 @@ map('n', '<A-o>', '<Plug>RgToggle', {noremap=false})
 
 -- nvim-treesitter -----------------------------------------------
 require'nvim-treesitter.configs'.setup {
-  highlight = {
-    enable = true
-  },
-  indent = {
-    enable = true
-  },
+  ensure_installed = {'c', 'cpp', 'rust', 'yaml', 'bash', 'typescript',
+    'javascript', 'html', 'css', 'lua', 'comment', 'jsdoc', 'tsx',
+    'toml', 'json', 'graphql', 'jsonc'},
+  highlight = {enable = true},
+  indent = {enable = true},
   playground = {
     enable = true,
     updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
@@ -360,13 +359,14 @@ require('telescope').setup {
     borderchars = { '─', '│', '─', '│', '┌', '┐', '┘', '└' },
   }
 }
-map('', '<C-f>', '<cmd>Telescope lsp_document_symbols<cr>')
-map('', '<C-S-f>', '<cmd>Telescope lsp_workspace_symbols<cr>')
+map('', '<A-s>', '<cmd>Telescope lsp_document_symbols<cr>')
+map('', '<A-w>', '<cmd>Telescope lsp_workspace_symbols<cr>')
 map('', '<A-u>', '<cmd>Telescope lsp_references<cr>')
 map('', '<A-CR>', '<cmd>Telescope lsp_code_actions<cr>')
 map('', '<A-q>', '<cmd>Telescope lsp_document_diagnostics<cr>')
 map('', '<A-S-q>', '<cmd>Telescope lsp_workspace_diagnostics<cr>')
 map('', '<A-b>', '<cmd>Telescope lsp_definitions<cr>')
+cmd 'hi! link TelescopeBorder Todo'
 
 -- lsp_extensions.nvim -------------------------------------------
 -- enable inlay hints for Rust
