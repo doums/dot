@@ -28,7 +28,6 @@ paq 'doums/darcula'
 paq 'doums/sae'
 paq 'doums/barowLSP'
 paq 'doums/barowGit'
-paq 'doums/rgv'
 paq {'nvim-treesitter/nvim-treesitter', run=update_ts_parsers}
 paq 'nvim-treesitter/playground'
 paq 'neovim/nvim-lspconfig'
@@ -349,6 +348,16 @@ require'lspconfig'.sumneko_lua.setup {                     -- Lua
 local actions = require('telescope.actions')
 require('telescope').setup {
   defaults = {
+    vimgrep_arguments = {
+      'rg',
+      '--color=never',
+      '--no-heading',
+      '--with-filename',
+      '--line-number',
+      '--column',
+      '--smart-case',
+      '--hidden'
+    },
     mappings = {
       i = {
         ['<c-x>'] = false,
@@ -365,7 +374,8 @@ map('', '<A-u>', '<cmd>Telescope lsp_references<cr>')
 map('', '<A-CR>', '<cmd>Telescope lsp_code_actions<cr>')
 map('', '<A-q>', '<cmd>Telescope lsp_document_diagnostics<cr>')
 map('', '<A-S-q>', '<cmd>Telescope lsp_workspace_diagnostics<cr>')
-map('', '<A-b>', '<cmd>Telescope lsp_definitions<cr>')
+map('', '<C-b>', '<cmd>Telescope lsp_definitions<cr>')
+map('', '<C-f>', '<cmd>Telescope live_grep<cr>')
 cmd 'hi! link TelescopeBorder Todo'
 
 -- lsp_extensions.nvim -------------------------------------------

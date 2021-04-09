@@ -765,9 +765,14 @@ font:
   #print_events: false
 
 key_bindings:
-  - { key: 11,     mods: Control,       action: ResetFontSize    } # key = 0
-  - { key: K,      mods: Control|Shift,         action: ClearHistory     }
-  - { key: T,      mods: Alt,            action: SpawnNewInstance }
+  - { key: 11,     mods: Control,                 action: ResetFontSize      } # key = 0
+  - { key: K,      mods: Control|Shift,           action: ClearHistory       }
+  - { key: T,      mods: Alt,                     action: SpawnNewInstance   }
+  - { key: F,      mods: Control|Shift,           action: SearchBackward     }
+  - { key: H,      mods: Control,       mode: Vi, action: SemanticLeft       }
+  - { key: L,      mods: Control,       mode: Vi, action: SemanticRight      }
+  - { key: K,      mods: Control,       mode: Vi, action: ScrollHalfPageUp   }
+  - { key: J,      mods: Control,       mode: Vi, action: ScrollHalfPageDown }
 
 schemes:
   nord: &nord
