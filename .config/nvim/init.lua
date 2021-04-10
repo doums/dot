@@ -28,6 +28,7 @@ paq 'doums/darcula'
 paq 'doums/sae'
 paq 'doums/barowLSP'
 paq 'doums/barowGit'
+paq 'doums/lsp_status'
 paq {'nvim-treesitter/nvim-treesitter', run=update_ts_parsers}
 paq 'nvim-treesitter/playground'
 paq 'neovim/nvim-lspconfig'
@@ -194,7 +195,8 @@ g.barow = {
     {'barowLSP#warning', 'BarowWarning'},
     {'barowLSP#info', 'BarowInfo'},
     {'barowLSP#hint', 'BarowHint'},
-    {'barowLSP#ale_status', 'Barow'}
+    {'barowLSP#ale_status', 'Barow'},
+    {'barowLSP#nvim_lsp_status', 'Barow'},
   }
 }
 cmd 'hi! link StatusLine Barow'
@@ -243,9 +245,6 @@ g.nnnvi = {
 map('n', '<Tab>', '<Plug>NNNs', {noremap=false})
 map('n', '<S-Tab>', '<Plug>NNNnos', {noremap=false})
 
--- rgv -----------------------------------------------------------
-map('n', '<A-o>', '<Plug>RgToggle', {noremap=false})
-
 -- nvim-treesitter -----------------------------------------------
 require'nvim-treesitter.configs'.setup {
   ensure_installed = {'c', 'cpp', 'rust', 'yaml', 'bash', 'typescript',
@@ -262,6 +261,8 @@ require'nvim-treesitter.configs'.setup {
 
 -- LSP -----------------------------------------------------------
 local lspconfig = require'lspconfig'
+local lsp_status = require'lsp_status'
+lsp_status.setup()
 
 fn.sign_define('LspDiagnosticsSignError', {text = '▬', texthl = 'LspDiagnosticsSignError'})
 fn.sign_define('LspDiagnosticsSignWarning', {text = '▬', texthl = 'LspDiagnosticsSignWarning'})
@@ -299,7 +300,9 @@ local function on_attach(client)
       augroup END
     ]], false)
   end
+  lsp_status.on_attach(client)
 end
+
 
 vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
@@ -307,15 +310,24 @@ vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
   }
 )
 
-require'lspconfig'.clangd.setup {on_attach = on_attach}    -- C, C++
-require'lspconfig'.tsserver.setup {on_attach = on_attach}  -- TypeScript
-lspconfig.rust_analyzer.setup {                            -- Rust
+lspconfig.clangd.setup {                           -- C, C++
   on_attach = on_attach,
+  capabilities = lsp_status.capabilities
+}
+lspconfig.tsserver.setup {                         -- TypeScript
+  on_attach = on_attach,
+  capabilities = lsp_status.capabilities
+}
+lspconfig.rust_analyzer.setup {                    -- Rust
+  on_attach = on_attach,
+  capabilities = lsp_status.capabilities,
   settings = {
     ['rust-analyzer.checkOnSave.command'] = 'clippy'
   }
 }
-require'lspconfig'.sumneko_lua.setup {                     -- Lua
+lspconfig.sumneko_lua.setup {                      -- Lua
+  on_attach = on_attach,
+  capabilities = lsp_status.capabilities,
   -- must be installed in /opt/lua-language-server
   cmd = {'/opt/lua-language-server/bin/Linux/lua-language-server', '-E', '/opt/lua-language-server/main.lua'},
   settings = {
