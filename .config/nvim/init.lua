@@ -30,7 +30,7 @@ paq 'doums/barowLSP'
 paq 'doums/barowGit'
 paq 'doums/lsp_status'
 paq {'nvim-treesitter/nvim-treesitter', run=update_ts_parsers}
-paq 'nvim-treesitter/playground'
+-- paq 'nvim-treesitter/playground'
 paq 'neovim/nvim-lspconfig'
 paq 'hrsh7th/nvim-compe'
 paq 'nvim-lua/lsp_extensions.nvim'
@@ -195,8 +195,8 @@ g.barow = {
     {'barowLSP#warning', 'BarowWarning'},
     {'barowLSP#info', 'BarowInfo'},
     {'barowLSP#hint', 'BarowHint'},
-    {'barowLSP#ale_status', 'Barow'},
     {'barowLSP#nvim_lsp_status', 'Barow'},
+    {'barowLSP#ale_status', 'Barow'},
   }
 }
 cmd 'hi! link StatusLine Barow'
@@ -276,6 +276,7 @@ map('n', '<A-t>', '<cmd>lua vim.lsp.buf.type_definition()<CR>')
 map('n', '<A-d>', '<cmd>lua vim.lsp.buf.hover()<CR>')
 map('n', '<A-r>', '<cmd>lua vim.lsp.buf.rename()<CR>')
 map('n', '<A-g>', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
+map('n', '<A-f>', '<cmd>lua vim.lsp.buf.formatting()<CR>')
 
 local function on_attach(client)
   if client.resolved_capabilities.document_range_formatting then
