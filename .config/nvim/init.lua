@@ -2,6 +2,7 @@
 local fn = vim.fn
 local cmd = vim.cmd
 local g = vim.g
+local b = vim.b
 
 -- PLUGINS -------------------------------------------------------
 -- auto install paq-nvim
@@ -187,10 +188,14 @@ function _G.code_log()
   end
 end
 
+function _G.git_branch()
+  return b.gitsigns_head or ''
+end
+
 -- barow ---------------------------------------------------------
 g.barow = {
   modules = {
-    {'barowGit#branch', 'BarowHint'},
+    {'v:lua.git_branch', 'BarowHint'},
     {'barowLSP#error', 'BarowError'},
     {'barowLSP#warning', 'BarowWarning'},
     {'barowLSP#info', 'BarowInfo'},
