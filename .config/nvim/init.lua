@@ -25,13 +25,13 @@ paq 'doums/coBra'
 paq 'doums/oterm'
 paq 'doums/nnnvi'
 paq 'doums/fzfTools'
-paq 'doums/darcula'
+paq 'doums/espresso'
 paq 'doums/sae'
 paq 'doums/barowLSP'
 paq 'doums/barowGit'
 paq 'doums/lsp_status'
 paq {'nvim-treesitter/nvim-treesitter', run=update_ts_parsers}
--- paq 'nvim-treesitter/playground'
+paq 'nvim-treesitter/playground'
 paq 'neovim/nvim-lspconfig'
 paq 'hrsh7th/nvim-compe'
 paq 'nvim-lua/lsp_extensions.nvim'
@@ -99,14 +99,15 @@ opt('switchbuf', 'usetab')
 opt('scrolloff', 5, 'w')
 opt('completeopt', 'menuone,noselect')
 opt('pumheight', 10)
-opt('fillchars', 'vert: ,diff: ,fold: ', 'w')
+opt('fillchars', 'vert: ,diff: ,fold: ,eob: ', 'w')
 opt('complete', vim.bo.complete..',i', 'b')
 opt('clipboard', 'unnamedplus')
 opt('guicursor', '')
+opt('signcolumn', 'yes:2', 'w')
 
 -- VARIOUS -------------------------------------------------------
 -- color scheme
-cmd 'colorscheme darcula'
+cmd 'colorscheme espresso'
 -- nvim as man pager
 cmd 'runtime ftplugin/man.vim'
 -- map leader
@@ -203,8 +204,6 @@ g.barow = {
     {'barowLSP#ale_status', 'Barow'},
   }
 }
-cmd 'hi! link StatusLine Barow'
-cmd 'hi! link StatusLineNC BarowNC'
 
 -- kommentary ----------------------------------------------------
 g.kommentary_create_default_mappings = false
@@ -400,7 +399,7 @@ cmd 'hi! link TelescopeBorder Todo'
 vim.api.nvim_exec([[
   augroup lsp_inlay_hints
     autocmd!
-    autocmd CursorHold,BufEnter,BufWinEnter,TabEnter,BufWritePost *.rs :lua require'lsp_extensions'.inlay_hints{highlight="CodeHint", prefix=""}
+    autocmd CursorHold,BufEnter,BufWinEnter,TabEnter,BufWritePost *.rs :lua require'lsp_extensions'.inlay_hints{highlight="Hint", prefix=""}
   augroup END
 ]], false)
 
@@ -494,11 +493,11 @@ g.ale_linters = {
   sh = {'shellcheck'}
 }
 cmd 'hi! link ALEError Error'
-cmd 'hi! link ALEWarning CodeWarning'
-cmd 'hi! link ALEInfo CodeInfo'
+cmd 'hi! link ALEWarning Warning'
+cmd 'hi! link ALEInfo Information'
 cmd 'hi! link ALEErrorSign ErrorSign'
 cmd 'hi! link ALEWarningSign WarningSign'
-cmd 'hi! link ALEInfoSign InfoSign'
+cmd 'hi! link ALEInfoSign InformationSign'
 map('', '<A-e>', '<Plug>(ale_fix)', {noremap=false})
 map('', '<A-(>', '<Plug>(ale_previous_wrap)', {noremap=false})
 map('', '<A-->', '<Plug>(ale_next_wrap)', {noremap=false})
@@ -506,11 +505,11 @@ map('', '<A-->', '<Plug>(ale_next_wrap)', {noremap=false})
 -- gitsigns.nvim -------------------------------------------------
 require'gitsigns'.setup {
   signs = {
-    add          = {hl = 'GitAddStripe'   , text = ' '},
-    change       = {hl = 'GitChangeStripe', text = ' '},
-    delete       = {hl = 'GitDeleteStripe', text = '▶'},
-    topdelete    = {hl = 'GitDeleteStripe', text = ' '},
-    changedelete = {hl = 'GitChangeStripe', text = ' '},
+    add          = {hl = 'GitAddSign'   , text = '┃'},
+    change       = {hl = 'GitChangeSign', text = '┃'},
+    delete       = {hl = 'GitDeleteSign', text = '▶'},
+    topdelete    = {hl = 'GitDeleteSign', text = '▶'},
+    changedelete = {hl = 'GitChangeDeleteSign', text = '┃'},
   },
   numhl = false,
   linehl = false,
