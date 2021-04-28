@@ -20,16 +20,17 @@ local function update_ts_parsers() cmd 'TSUpdate' end
 paq {'savq/paq-nvim', opt=true}    -- Let Paq manage itself
 paq 'b3nj5m1n/kommentary'
 paq 'dense-analysis/ale'
-paq 'doums/barow'
+--[[ paq 'doums/barow'
+paq 'doums/barowLSP'
+paq 'doums/barowGit' ]]
 paq 'doums/coBra'
 paq 'doums/oterm'
 paq 'doums/nnnvi'
 paq 'doums/fzfTools'
 paq 'doums/espresso'
 paq 'doums/sae'
-paq 'doums/barowLSP'
-paq 'doums/barowGit'
 paq 'doums/lsp_status'
+paq 'doums/lens'
 paq {'nvim-treesitter/nvim-treesitter', run=update_ts_parsers}
 paq 'nvim-treesitter/playground'
 paq 'neovim/nvim-lspconfig'
@@ -39,6 +40,7 @@ paq 'nvim-lua/plenary.nvim'        -- dep of telescope.nvim, gitsigns.nvim
 paq 'nvim-lua/popup.nvim'          -- dep of telescope.nvim
 paq 'nvim-telescope/telescope.nvim'
 paq 'lewis6991/gitsigns.nvim'
+paq 'pantharshit00/vim-prisma'
 
 -- HELPERS -------------------------------------------------------
 --[[ make buffer and window option global as well
@@ -205,6 +207,37 @@ g.barow = {
   }
 }
 
+-- horizon -------------------------------------------------------
+require'horizon'.setup({
+  line = {'space', 'mode', 'space', 'buffer_name'},
+  events = {
+    space = {
+      style = {{'#432717', '#432717'}, {'#2A190E', '#2A190E'}},
+      len = 1
+    },
+    mode = {
+      map = {
+        normal = { 'n', {'#BDAE9D', '#432717', 'bold'}},
+        insert = { 'i', {'#499C54', '#432717', 'bold'}},
+        replace = { 'r', {'#C75450', '#432717', 'bold'}},
+        visual = { 'v', {'#3592C4', '#432717', 'bold'}},
+        v_line = { 'l', {'#3592C4', '#432717', 'bold'}},
+        v_block = { 'b', {'#3592C4', '#432717', 'bold'}},
+        select = { 's', {'#3592C4', '#432717', 'bold'}},
+        command = { 'c', {'#93896C', '#432717', 'bold'}},
+        shell_ex = { '!', {'#93896C', '#432717', 'bold'}},
+        terminal = { 't', {'#499C54', '#432717', 'bold'}},
+        prompt = { 'p', {'#BDAE9D', '#432717', 'bold'}},
+        inactive = { ' ', {'#2A190E', '#2A190E'}},
+      }
+    },
+    buffer_name = {
+      style = {{'#BDAE9D', '#432717'}, {'#BDAE9D', '#2A190E'}},
+    },
+  },
+  refresh_rate = 50
+})
+
 -- kommentary ----------------------------------------------------
 g.kommentary_create_default_mappings = false
 map('n', '<leader>cc', '<Plug>kommentary_line_default', {noremap=false})
@@ -231,8 +264,6 @@ g.fzfTools = {
   gitlogsel = {tab = 1},
 }
 map('n', '<C-s>', '<Plug>Ls', {noremap=false})
-map('n', '<C-b>', '<Plug>Buffers', {noremap=false})
-map('n', '<A-p>', '<Plug>Registers', {noremap=false})
 map('n', '<C-g>', '<Plug>GitLog', {noremap=false})
 map('n', '<C-g>', '<Plug>SGitLog', {noremap=false})
 
@@ -243,7 +274,8 @@ g.nnnvi = {
     ['<A-s>'] = 'split',
     ['<A-v>'] = 'vsplit',
     ['<A-a>'] = 'tabedit',
-  }
+  },
+  options = {'-s', '@'}
 }
 map('n', '<Tab>', '<Plug>NNNs', {noremap=false})
 map('n', '<S-Tab>', '<Plug>NNNnos', {noremap=false})
@@ -362,7 +394,7 @@ lspconfig.sumneko_lua.setup {                      -- Lua
 
 -- telescope.nvim ------------------------------------------------
 local actions = require('telescope.actions')
-require('telescope').setup {
+require'telescope'.setup {
   defaults = {
     vimgrep_arguments = {
       'rg',
@@ -384,14 +416,16 @@ require('telescope').setup {
     borderchars = { '─', '│', '─', '│', '┌', '┐', '┘', '└' },
   }
 }
+
 map('', '<A-s>', '<cmd>Telescope lsp_document_symbols<cr>')
 map('', '<A-w>', '<cmd>Telescope lsp_workspace_symbols<cr>')
 map('', '<A-u>', '<cmd>Telescope lsp_references<cr>')
-map('', '<A-CR>', '<cmd>Telescope lsp_code_actions<cr>')
+map('', '<A-CR>', '<cmd>lua require"lens".lsp_code_actions()<cr>')
 map('', '<A-q>', '<cmd>Telescope lsp_document_diagnostics<cr>')
 map('', '<A-S-q>', '<cmd>Telescope lsp_workspace_diagnostics<cr>')
 map('', '<A-b>', '<cmd>Telescope lsp_definitions<cr>')
 map('', '<C-f>', '<cmd>Telescope live_grep<cr>')
+map('', '<C-b>', '<cmd>lua require"lens".buffers()<cr>')
 cmd 'hi! link TelescopeBorder Todo'
 
 -- lsp_extensions.nvim -------------------------------------------
