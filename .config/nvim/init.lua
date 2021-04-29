@@ -217,7 +217,7 @@ require'horizon'.setup({
     },
     mode = {
       map = {
-        normal = { 'n', {'#BDAE9D', '#432717', 'bold'}},
+        normal = { ' ', {'#BDAE9D', '#432717', 'bold'}},
         insert = { 'i', {'#499C54', '#432717', 'bold'}},
         replace = { 'r', {'#C75450', '#432717', 'bold'}},
         visual = { 'v', {'#3592C4', '#432717', 'bold'}},
@@ -228,11 +228,12 @@ require'horizon'.setup({
         shell_ex = { '!', {'#93896C', '#432717', 'bold'}},
         terminal = { 't', {'#499C54', '#432717', 'bold'}},
         prompt = { 'p', {'#BDAE9D', '#432717', 'bold'}},
-        inactive = { ' ', {'#2A190E', '#2A190E'}},
+        no_current = { ' ', {'#2A190E', '#2A190E'}},
       }
     },
     buffer_name = {
-      style = {{'#BDAE9D', '#432717'}, {'#BDAE9D', '#2A190E'}},
+      style = {{'#BDAE9D', '#432717', 'bold,italic'}, {'#BDAE9D', '#2A190E', 'italic'}},
+      empty = nil,
     },
   },
   refresh_rate = 50
