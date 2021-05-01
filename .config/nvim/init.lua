@@ -2,7 +2,6 @@
 local fn = vim.fn
 local cmd = vim.cmd
 local g = vim.g
-local b = vim.b
 
 -- PLUGINS -------------------------------------------------------
 -- auto install paq-nvim
@@ -20,9 +19,6 @@ local function update_ts_parsers() cmd 'TSUpdate' end
 paq {'savq/paq-nvim', opt=true}    -- Let Paq manage itself
 paq 'b3nj5m1n/kommentary'
 paq 'dense-analysis/ale'
---[[ paq 'doums/barow'
-paq 'doums/barowLSP'
-paq 'doums/barowGit' ]]
 paq 'doums/coBra'
 paq 'doums/oterm'
 paq 'doums/nnnvi'
@@ -106,6 +102,7 @@ opt('complete', vim.bo.complete..',i', 'b')
 opt('clipboard', 'unnamedplus')
 opt('guicursor', '')
 opt('signcolumn', 'yes:2', 'w')
+opt('cmdheight', 2)
 
 -- VARIOUS -------------------------------------------------------
 -- color scheme
@@ -190,8 +187,12 @@ function _G.code_log()
   end
 end
 
-function _G.git_branch()
-  return b.gitsigns_head or ''
+local function hi(name, foreground, background, style)
+  local fg = 'guifg='..(foreground or 'NONE')
+  local bg = 'guibg='..(background or 'NONE')
+  local decoration = 'gui='..(style or 'NONE')
+  local hi_command = string.format('hi %s %s %s %s', name, fg, bg, decoration)
+  cmd(hi_command)
 end
 
 -- barow ---------------------------------------------------------
@@ -208,35 +209,105 @@ g.barow = {
 }
 
 -- horizon -------------------------------------------------------
+hi('StatusLineNC', '#BDAE9D', '#432717')
+local line_bg = '#432717'
 require'horizon'.setup({
-  line = {'space', 'mode', 'space', 'buffer_name'},
+  line = {'active_mark_start', 'mode', 'buffer_name', 'buffer_changed', 'read_only', 'git_branch', 'spacer', 'lsp_status', 'lsp_error', 'lsp_warning', 'lsp_information', 'lsp_hint', 'line', 'sep', 'column', 'line_percent', 'active_mark_end'},
   events = {
-    space = {
-      style = {{'#432717', '#432717'}, {'#2A190E', '#2A190E'}},
-      len = 1
-    },
     mode = {
       map = {
-        normal = { ' ', {'#BDAE9D', '#432717', 'bold'}},
-        insert = { 'i', {'#499C54', '#432717', 'bold'}},
-        replace = { 'r', {'#C75450', '#432717', 'bold'}},
-        visual = { 'v', {'#3592C4', '#432717', 'bold'}},
-        v_line = { 'l', {'#3592C4', '#432717', 'bold'}},
-        v_block = { 'b', {'#3592C4', '#432717', 'bold'}},
-        select = { 's', {'#3592C4', '#432717', 'bold'}},
-        command = { 'c', {'#93896C', '#432717', 'bold'}},
-        shell_ex = { '!', {'#93896C', '#432717', 'bold'}},
-        terminal = { 't', {'#499C54', '#432717', 'bold'}},
-        prompt = { 'p', {'#BDAE9D', '#432717', 'bold'}},
-        no_current = { ' ', {'#2A190E', '#2A190E'}},
-      }
+        normal = {' ', {'#BDAE9D', line_bg, 'bold'}},
+        insert = {'i', {'#499C54', line_bg, 'bold'}},
+        replace = {'r', {'#C75450', line_bg, 'bold'}},
+        visual = {'v', {'#3592C4', line_bg, 'bold'}},
+        v_line = {'l', {'#3592C4', line_bg, 'bold'}},
+        v_block = {'b', {'#3592C4', line_bg, 'bold'}},
+        select = {'s', {'#3592C4', line_bg, 'bold'}},
+        command = {'c', {'#93896C', line_bg, 'bold'}},
+        shell_ex = {'!', {'#93896C', line_bg, 'bold'}},
+        terminal = {'t', {'#499C54', line_bg, 'bold'}},
+        prompt = {'p', {'#BDAE9D', line_bg, 'bold'}},
+        inactive = {' ', {line_bg, line_bg}},
+      },
+      margin = {1, 1},
     },
     buffer_name = {
-      style = {{'#BDAE9D', '#432717', 'bold,italic'}, {'#BDAE9D', '#2A190E', 'italic'}},
+      style = {{'#BDAE9D', line_bg, 'bold'}},
       empty = nil,
+      margin = {1, 1},
+      prefix = '‹ ',
+      suffix = ' ›',
+    },
+    buffer_changed = {
+      style = {{'#DF824C', line_bg, 'bold'}},
+      value = '┅',
+      margin = {0, 1},
+    },
+    read_only = {
+      style = {{'#C75450', line_bg, 'bold'}},
+      value = '⏽ro⏽',
+      margin = {0, 1},
+    },
+    spacer = {
+      style = {{line_bg, line_bg}},
+    },
+    sep = {
+      style = {{'#BDAE9D', line_bg}},
+      text = '⏽',
+    },
+    line_percent = {
+      style = {{'#BDAE9D', line_bg}},
+      margin = {0, 1},
+    },
+    line = {
+      style = {{'#BDAE9D', line_bg}},
+      margin = {1},
+    },
+    column = {
+      style = {{'#BDAE9D', line_bg}},
+      left_adjusted = true,
+      margin = {0, 1},
+    },
+    git_branch = {
+      style = {{'#C5656B', line_bg}},
+      margin = {1, 1},
+      prefix = ' ',
+    },
+    lsp_status = {
+      style = {{'#C5656B', line_bg}},
+      fn = require'lsp_status'.status,
+      margin = {0, 2},
+      prefix = '→ ',
+    },
+    lsp_error = {
+      style = {{'#FF0000', line_bg, 'bold'}},
+      margin = {0, 1},
+      prefix = '×',
+    },
+    lsp_warning = {
+      style = {{'#FFFF00', line_bg, 'bold'}},
+      margin = {0, 1},
+      prefix = '•',
+    },
+    lsp_information = {
+      style = {{'#FFFFCC', line_bg}},
+      margin = {0, 1},
+      prefix = '~',
+    },
+    lsp_hint = {
+      style = {{'#F49810', line_bg}},
+      margin = {0, 1},
+      prefix = '~',
+    },
+    active_mark_start = {
+      style = {{'#DF824C', line_bg}, {line_bg, line_bg}},
+      text = '▌',
+    },
+    active_mark_end = {
+      style = {{'#DF824C', line_bg}, {line_bg, line_bg}},
+      text = '▐',
     },
   },
-  refresh_rate = 50
 })
 
 -- kommentary ----------------------------------------------------
@@ -339,7 +410,6 @@ local function on_attach(client)
   end
   lsp_status.on_attach(client)
 end
-
 
 vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
