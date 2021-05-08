@@ -11,7 +11,7 @@ if fn.empty(fn.glob(install_path)) > 0 then
 end
 
 cmd 'packadd paq-nvim'             -- Load package
-local paq = require'paq-nvim'.paq  -- Import module and bind `paq` function
+local paq = require'paq-nvim'.paq
 
 -- update treesitter parsers
 local function update_ts_parsers() cmd 'TSUpdate' end
@@ -21,7 +21,6 @@ paq 'b3nj5m1n/kommentary'
 paq 'dense-analysis/ale'
 paq 'doums/coBra'
 paq 'doums/oterm'
-paq 'doums/nnnvi'
 paq 'doums/fzfTools'
 paq 'doums/espresso'
 paq 'doums/sae'
@@ -37,6 +36,9 @@ paq 'nvim-lua/popup.nvim'          -- dep of telescope.nvim
 paq 'nvim-telescope/telescope.nvim'
 paq 'lewis6991/gitsigns.nvim'
 paq 'pantharshit00/vim-prisma'
+paq 'tweekmonster/startuptime.vim'
+paq 'kyazdani42/nvim-tree.lua'
+paq 'kyazdani42/nvim-web-devicons' -- dep of nvim-tree.lua
 
 -- HELPERS -------------------------------------------------------
 --[[ make buffer and window option global as well
@@ -73,6 +75,18 @@ function _G.dump(...)
   print(unpack(objects))
 end
 
+local function hi(name, foreground, background, style)
+  local fg = 'guifg='..(foreground or 'NONE')
+  local bg = 'guibg='..(background or 'NONE')
+  local decoration = 'gui='..(style or 'NONE')
+  local hi_command = string.format('hi %s %s %s %s', name, fg, bg, decoration)
+  cmd(hi_command)
+end
+
+local function li(target, source)
+  cmd(string.format('hi! link %s %s', target, source))
+end
+
 -- OPTIONS -------------------------------------------------------
 opt('termguicolors', true)
 opt('number', true, 'w')
@@ -103,6 +117,7 @@ opt('clipboard', 'unnamedplus')
 opt('guicursor', '')
 opt('signcolumn', 'yes:2', 'w')
 opt('cmdheight', 2)
+opt('mouse', 'a')
 
 -- VARIOUS -------------------------------------------------------
 -- color scheme
@@ -162,7 +177,7 @@ map('t', '<Leader>n', '<C-\\><C-N>')
 
 -- AUTOCOMMANDS --------------------------------------------------
 -- see https://github.com/neovim/neovim/pull/12378
-vim.api.nvim_exec([[
+cmd([[
   augroup init.lua
     autocmd!
     " whenever CursorHold is fired (nothing typed during 'updatetime') in a normal
@@ -173,7 +188,7 @@ vim.api.nvim_exec([[
     autocmd FileType * call v:lua.code_log()
     autocmd FileType man set nonumber
   augroup END
-]], false)
+]])
 
 -- FUNCTIONS -----------------------------------------------------
 function _G.code_log()
@@ -187,27 +202,6 @@ function _G.code_log()
   end
 end
 
-local function hi(name, foreground, background, style)
-  local fg = 'guifg='..(foreground or 'NONE')
-  local bg = 'guibg='..(background or 'NONE')
-  local decoration = 'gui='..(style or 'NONE')
-  local hi_command = string.format('hi %s %s %s %s', name, fg, bg, decoration)
-  cmd(hi_command)
-end
-
--- barow ---------------------------------------------------------
-g.barow = {
-  modules = {
-    {'v:lua.git_branch', 'BarowHint'},
-    {'barowLSP#error', 'BarowError'},
-    {'barowLSP#warning', 'BarowWarning'},
-    {'barowLSP#info', 'BarowInfo'},
-    {'barowLSP#hint', 'BarowHint'},
-    {'barowLSP#nvim_lsp_status', 'Barow'},
-    {'barowLSP#ale_status', 'Barow'},
-  }
-}
-
 -- horizon -------------------------------------------------------
 hi('StatusLineNC', '#BDAE9D', '#432717')
 local line_bg = '#432717'
@@ -216,87 +210,92 @@ require'horizon'.setup({
   events = {
     mode = {
       map = {
-        normal = {' ', {'#BDAE9D', line_bg, 'bold'}},
-        insert = {'i', {'#499C54', line_bg, 'bold'}},
-        replace = {'r', {'#C75450', line_bg, 'bold'}},
-        visual = {'v', {'#3592C4', line_bg, 'bold'}},
-        v_line = {'l', {'#3592C4', line_bg, 'bold'}},
-        v_block = {'b', {'#3592C4', line_bg, 'bold'}},
-        select = {'s', {'#3592C4', line_bg, 'bold'}},
-        command = {'c', {'#93896C', line_bg, 'bold'}},
-        shell_ex = {'!', {'#93896C', line_bg, 'bold'}},
-        terminal = {'t', {'#499C54', line_bg, 'bold'}},
-        prompt = {'p', {'#BDAE9D', line_bg, 'bold'}},
+        normal = {'▲', {'#BDAE9D', line_bg, 'bold'}},
+        insert = {'◆', {'#499C54', line_bg, 'bold'}},
+        replace = {'◆', {'#C75450', line_bg, 'bold'}},
+        visual = {'◆', {'#3592C4', line_bg, 'bold'}},
+        v_line = {'━', {'#3592C4', line_bg, 'bold'}},
+        v_block = {'■', {'#3592C4', line_bg, 'bold'}},
+        select = {'■', {'#3592C4', line_bg, 'bold'}},
+        command = {'▼', {'#BDAE9D', line_bg, 'bold'}},
+        shell_ex = {'●', {'#93896C', line_bg, 'bold'}},
+        terminal = {'●', {'#499C54', line_bg, 'bold'}},
+        prompt = {'▼', {'#BDAE9D', line_bg, 'bold'}},
         inactive = {' ', {line_bg, line_bg}},
       },
-      margin = {1, 1},
+      padding = {1, 1},
     },
     buffer_name = {
-      style = {{'#BDAE9D', line_bg, 'bold'}},
+      -- style = {'#BDAE9D', line_bg, 'bold'},
+      style = {'#BDAE9D', '#2A190E', 'bold'},
       empty = nil,
-      margin = {1, 1},
-      prefix = '‹ ',
-      suffix = ' ›',
+      padding = {1, 1},
+      --[[ prefix = '‹ ',
+      suffix = ' ›', ]]
+      margin = {1, 1, {line_bg, line_bg}},
+      section_start = {'', {'#2A190E', line_bg}},
+      section_end = {'', {'#2A190E', line_bg}},
+      condition = require'horizon.condition'.buffer_not_empty
     },
     buffer_changed = {
-      style = {{'#DF824C', line_bg, 'bold'}},
-      value = '┅',
-      margin = {0, 1},
+      style = {'#DF824C', line_bg, 'bold'},
+      value = '†',
+      padding = {0, 1},
     },
     read_only = {
-      style = {{'#C75450', line_bg, 'bold'}},
+      style = {'#C75450', line_bg, 'bold'},
       value = '⏽ro⏽',
-      margin = {0, 1},
+      padding = {0, 1},
     },
     spacer = {
-      style = {{line_bg, line_bg}},
+      style = {line_bg, line_bg},
     },
     sep = {
-      style = {{'#BDAE9D', line_bg}},
+      style = {'#BDAE9D', line_bg},
       text = '⏽',
     },
     line_percent = {
-      style = {{'#BDAE9D', line_bg}},
-      margin = {0, 1},
+      style = {'#BDAE9D', line_bg},
+      padding = {0, 1},
     },
     line = {
-      style = {{'#BDAE9D', line_bg}},
-      margin = {1},
+      style = {'#BDAE9D', line_bg},
+      padding = {1},
     },
     column = {
-      style = {{'#BDAE9D', line_bg}},
+      style = {'#BDAE9D', line_bg},
       left_adjusted = true,
-      margin = {0, 1},
+      padding = {0, 1},
     },
     git_branch = {
-      style = {{'#C5656B', line_bg}},
-      margin = {1, 1},
+      style = {'#C5656B', line_bg},
+      padding = {1, 1},
       prefix = ' ',
     },
     lsp_status = {
-      style = {{'#C5656B', line_bg}},
+      style = {'#C5656B', line_bg},
       fn = require'lsp_status'.status,
-      margin = {0, 2},
+      padding = {0, 2},
       prefix = '→ ',
     },
     lsp_error = {
-      style = {{'#FF0000', line_bg, 'bold'}},
-      margin = {0, 1},
+      style = {'#FF0000', line_bg, 'bold'},
+      padding = {0, 1},
       prefix = '×',
     },
     lsp_warning = {
-      style = {{'#FFFF00', line_bg, 'bold'}},
-      margin = {0, 1},
+      style = {'#FFFF00', line_bg, 'bold'},
+      padding = {0, 1},
       prefix = '•',
     },
     lsp_information = {
-      style = {{'#FFFFCC', line_bg}},
-      margin = {0, 1},
+      style = {'#FFFFCC', line_bg},
+      padding = {0, 1},
       prefix = '~',
     },
     lsp_hint = {
-      style = {{'#F49810', line_bg}},
-      margin = {0, 1},
+      style = {'#F49810', line_bg},
+      padding = {0, 1},
       prefix = '~',
     },
     active_mark_start = {
@@ -339,18 +338,63 @@ map('n', '<C-s>', '<Plug>Ls', {noremap=false})
 map('n', '<C-g>', '<Plug>GitLog', {noremap=false})
 map('n', '<C-g>', '<Plug>SGitLog', {noremap=false})
 
--- nnnvi ---------------------------------------------------------
-g.nnnvi = {
-  layout = {left = 40, min = 30},
-  maps = {
-    ['<A-s>'] = 'split',
-    ['<A-v>'] = 'vsplit',
-    ['<A-a>'] = 'tabedit',
-  },
-  options = {'-s', '@'}
+-- nvim-tree.lua -------------------------------------------------
+local tree_cb = require'nvim-tree.config'.nvim_tree_callback
+g.nvim_tree_width = 50
+g.nvim_tree_git_hl = 1
+map('n', '<Tab>', '<cmd>NvimTreeToggle<CR>')
+map('n', '<S-Tab>', '<cmd>NvimTreeFindFile<CR>')
+vim.g.nvim_tree_bindings = {
+  ['<CR>']           = tree_cb('edit'),
+  ['o']              = tree_cb('edit'),
+  ['<2-LeftMouse>']  = tree_cb('edit'),
+  ['<2-RightMouse>'] = tree_cb('cd'),
+  ['<C-]>']          = tree_cb('cd'),
+  ['<C-v>']          = tree_cb('vsplit'),
+  ['<C-s>']          = tree_cb('split'),
+  ['<C-t>']          = tree_cb('tabnew'),
+  ['<BS>']           = tree_cb('close_node'),
+  ['<S-CR>']         = tree_cb('close_node'),
+  ['<C-p>']          = tree_cb('preview'),
+  ['I']              = tree_cb('toggle_ignored'),
+  ['H']              = tree_cb('toggle_dotfiles'),
+  ['R']              = tree_cb('refresh'),
+  ['a']              = tree_cb('create'),
+  ['d']              = tree_cb('remove'),
+  ['r']              = tree_cb('rename'),
+  ['<C-r>']          = tree_cb('full_rename'),
+  ['x']              = tree_cb('cut'),
+  ['c']              = tree_cb('copy'),
+  ['p']              = tree_cb('paste'),
+  ['-']              = tree_cb('dir_up'),
+  ['q']              = tree_cb('close'),
 }
-map('n', '<Tab>', '<Plug>NNNs', {noremap=false})
-map('n', '<S-Tab>', '<Plug>NNNnos', {noremap=false})
+g.nvim_tree_show_icons = {
+  git = 0,
+  folders = 1,
+  files = 1,
+}
+g.nvim_tree_icons = {
+  default =        '󰦨',
+  symlink =        '󰌷',
+  folder = {
+    default =      '󰉋',
+    open =         '󰝰',
+    empty =        '󰉖',
+    empty_open =   '󰷏',
+    symlink =      '󰴉',
+    symlink_open = '󰝰',
+  }
+}
+li('NvimTreeRootFolder', 'Comment')
+li('NvimTreeExecFile', 'Todo')
+li('NvimTreeSpecialFile', 'Function')
+li('NvimTreeFolderIcon', 'Constant')
+li('NvimTreeImageFile', 'Normal')
+hi('NvimTreeIndentMarker', '#824d50')
+li('NvimTreeGitIgnored', 'Debug')
+li('NvimTreeGitNew', 'String')
+li('NvimTreeGitRenamed', 'TSField')
 
 -- nvim-treesitter -----------------------------------------------
 require'nvim-treesitter.configs'.setup {
@@ -385,30 +429,30 @@ map('n', '<A-r>', '<cmd>lua vim.lsp.buf.rename()<CR>')
 map('n', '<A-g>', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
 map('n', '<A-f>', '<cmd>lua vim.lsp.buf.formatting()<CR>')
 
-local function on_attach(client)
+local function on_attach(client, bufnr)
   if client.resolved_capabilities.document_range_formatting then
     map('n', '<A-f>', '<cmd>lua vim.lsp.buf.range_formatting()<CR>')
   elseif client.resolved_capabilities.document_formatting then
     map('n', '<A-f>', '<cmd>lua vim.lsp.buf.formatting()<CR>')
   end
   -- open a floating window with the diagnostics from the current cursor position
-  vim.api.nvim_exec([[
+  cmd([[
     augroup lsp_on_attach
       autocmd!
       autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics{show_header=false}
     augroup END
-  ]], false)
+  ]])
   -- highlight the symbol under the cursor
   if client.resolved_capabilities.document_highlight then
-    vim.api.nvim_exec([[
+    cmd([[
       augroup lsp_document_highlight
         autocmd!
         autocmd CursorHold,CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()
         autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
       augroup END
-    ]], false)
+    ]])
   end
-  lsp_status.on_attach(client)
+  lsp_status.on_attach(client, bufnr)
 end
 
 vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
@@ -501,12 +545,12 @@ cmd 'hi! link TelescopeBorder Todo'
 
 -- lsp_extensions.nvim -------------------------------------------
 -- enable inlay hints for Rust
-vim.api.nvim_exec([[
+cmd([[
   augroup lsp_inlay_hints
     autocmd!
     autocmd CursorHold,BufEnter,BufWinEnter,TabEnter,BufWritePost *.rs :lua require'lsp_extensions'.inlay_hints{highlight="Hint", prefix=""}
   augroup END
-]], false)
+]])
 
 -- nvim-compe ----------------------------------------------------
 require'compe'.setup {
