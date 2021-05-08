@@ -375,15 +375,14 @@ g.nvim_tree_show_icons = {
   files = 1,
 }
 g.nvim_tree_icons = {
-  default =        '󰦨',
   symlink =        '󰌷',
   folder = {
-    default =      '󰉋',
-    open =         '󰝰',
-    empty =        '󰉖',
-    empty_open =   '󰷏',
-    symlink =      '󰴉',
-    symlink_open = '󰝰',
+    default =      '▶',
+    open =         '▼',
+    empty =        '▷',
+    empty_open =   '▽',
+    symlink =      '󰌷 ▶',
+    symlink_open = '󰌷 ▼',
   }
 }
 li('NvimTreeRootFolder', 'Comment')
