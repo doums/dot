@@ -204,6 +204,7 @@ end
 
 -- horizon -------------------------------------------------------
 hi('StatusLineNC', '#BDAE9D', '#432717')
+hi('VertSplit', nil, '#2A190E')
 local line_bg = '#432717'
 require'horizon'.setup({
   line = {'active_mark_start', 'mode', 'buffer_name', 'buffer_changed', 'read_only', 'git_branch', 'spacer', 'lsp_status', 'lsp_error', 'lsp_warning', 'lsp_information', 'lsp_hint', 'line', 'sep', 'column', 'line_percent', 'active_mark_end'},
@@ -244,7 +245,7 @@ require'horizon'.setup({
     },
     read_only = {
       style = {'#C75450', line_bg, 'bold'},
-      value = '⏽ro⏽',
+      value = '',
       padding = {0, 1},
     },
     spacer = {
@@ -340,7 +341,7 @@ map('n', '<C-g>', '<Plug>SGitLog', {noremap=false})
 
 -- nvim-tree.lua -------------------------------------------------
 local tree_cb = require'nvim-tree.config'.nvim_tree_callback
-g.nvim_tree_width = 50
+g.nvim_tree_width = 40
 g.nvim_tree_git_hl = 1
 map('n', '<Tab>', '<cmd>NvimTreeToggle<CR>')
 map('n', '<S-Tab>', '<cmd>NvimTreeFindFile<CR>')
