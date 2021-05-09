@@ -224,29 +224,25 @@ require'horizon'.setup({
         prompt = {'▼', {'#BDAE9D', line_bg, 'bold'}},
         inactive = {' ', {line_bg, line_bg}},
       },
-      padding = {1, 1},
+      margin = {1, 1},
     },
     buffer_name = {
-      -- style = {'#BDAE9D', line_bg, 'bold'},
       style = {'#BDAE9D', '#2A190E', 'bold'},
       empty = nil,
       padding = {1, 1},
-      --[[ prefix = '‹ ',
-      suffix = ' ›', ]]
-      margin = {1, 1, {line_bg, line_bg}},
-      section_start = {'', {'#2A190E', line_bg}},
-      section_end = {'', {'#2A190E', line_bg}},
+      margin = {1, 1},
+      decorator = {'', '', {'#2A190E', line_bg}},
       condition = require'horizon.condition'.buffer_not_empty
     },
     buffer_changed = {
       style = {'#DF824C', line_bg, 'bold'},
       value = '†',
-      padding = {0, 1},
+      padding = {nil, 1},
     },
     read_only = {
       style = {'#C75450', line_bg, 'bold'},
       value = '',
-      padding = {0, 1},
+      padding = {nil, 1},
     },
     spacer = {
       style = {line_bg, line_bg},
@@ -257,7 +253,7 @@ require'horizon'.setup({
     },
     line_percent = {
       style = {'#BDAE9D', line_bg},
-      padding = {0, 1},
+      padding = {nil, 1},
     },
     line = {
       style = {'#BDAE9D', line_bg},
@@ -266,7 +262,7 @@ require'horizon'.setup({
     column = {
       style = {'#BDAE9D', line_bg},
       left_adjusted = true,
-      padding = {0, 1},
+      padding = {nil, 1},
     },
     git_branch = {
       style = {'#C5656B', line_bg},
@@ -276,27 +272,27 @@ require'horizon'.setup({
     lsp_status = {
       style = {'#C5656B', line_bg},
       fn = require'lsp_status'.status,
-      padding = {0, 2},
-      prefix = '→ ',
+      padding = {nil, 2},
+      prefix = '󰣪 ',
     },
     lsp_error = {
       style = {'#FF0000', line_bg, 'bold'},
-      padding = {0, 1},
+      padding = {nil, 1},
       prefix = '×',
     },
     lsp_warning = {
       style = {'#FFFF00', line_bg, 'bold'},
-      padding = {0, 1},
+      padding = {nil, 1},
       prefix = '•',
     },
     lsp_information = {
       style = {'#FFFFCC', line_bg},
-      padding = {0, 1},
+      padding = {nil, 1},
       prefix = '~',
     },
     lsp_hint = {
       style = {'#F49810', line_bg},
-      padding = {0, 1},
+      padding = {nil, 1},
       prefix = '~',
     },
     active_mark_start = {
