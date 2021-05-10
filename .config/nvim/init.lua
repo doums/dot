@@ -203,16 +203,16 @@ function _G.code_log()
   end
 end
 
--- horizon -------------------------------------------------------
+-- ponton --------------------------------------------------------
 hi('StatusLineNC', '#BDAE9D', '#432717')
 hi('VertSplit', '#2A190E', nil)
 local line_bg = '#432717'
-require'horizon'.setup({
+require'ponton'.setup({
   line = {'active_mark_start', 'mode', 'buffer_name', 'buffer_changed',
     'read_only', 'git_branch', 'spacer', 'lsp_status', 'lsp_error',
     'lsp_warning', 'lsp_information', 'lsp_hint', 'line', 'sep',
     'column', 'line_percent', 'active_mark_end'},
-  events = {
+  segments = {
     mode = {
       map = {
         normal = {'▲', {'#BDAE9D', line_bg, 'bold'}},
@@ -236,7 +236,7 @@ require'horizon'.setup({
       padding = {1, 1},
       margin = {1, 1},
       decorator = {'', '', {'#2A190E', line_bg}},
-      condition = require'horizon.condition'.buffer_not_empty
+      condition = require'ponton.condition'.buffer_not_empty
     },
     buffer_changed = {
       style = {'#DF824C', line_bg, 'bold'},
@@ -247,7 +247,7 @@ require'horizon'.setup({
       style = {'#C75450', line_bg, 'bold'},
       value = '',
       padding = {nil, 1},
-      condition = require'horizon.condition'.is_read_only
+      condition = require'ponton.condition'.is_read_only
     },
     spacer = {
       style = {line_bg, line_bg},
