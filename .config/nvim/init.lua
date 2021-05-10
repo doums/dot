@@ -111,13 +111,14 @@ opt('switchbuf', 'usetab')
 opt('scrolloff', 5, 'w')
 opt('completeopt', 'menuone,noselect')
 opt('pumheight', 10)
-opt('fillchars', 'vert: ,diff: ,fold: ,eob: ', 'w')
+opt('fillchars', 'vert:┃,diff: ,fold: ,eob: ', 'w')
 opt('complete', vim.bo.complete..',i', 'b')
 opt('clipboard', 'unnamedplus')
 opt('guicursor', '')
 opt('signcolumn', 'yes:2', 'w')
 opt('cmdheight', 2)
 opt('mouse', 'a')
+opt('statusline', ' ', 'w') -- hide the default statusline on the first frames
 
 -- VARIOUS -------------------------------------------------------
 -- color scheme
@@ -204,23 +205,26 @@ end
 
 -- horizon -------------------------------------------------------
 hi('StatusLineNC', '#BDAE9D', '#432717')
-hi('VertSplit', nil, '#2A190E')
+hi('VertSplit', '#2A190E', nil)
 local line_bg = '#432717'
 require'horizon'.setup({
-  line = {'active_mark_start', 'mode', 'buffer_name', 'buffer_changed', 'read_only', 'git_branch', 'spacer', 'lsp_status', 'lsp_error', 'lsp_warning', 'lsp_information', 'lsp_hint', 'line', 'sep', 'column', 'line_percent', 'active_mark_end'},
+  line = {'active_mark_start', 'mode', 'buffer_name', 'buffer_changed',
+    'read_only', 'git_branch', 'spacer', 'lsp_status', 'lsp_error',
+    'lsp_warning', 'lsp_information', 'lsp_hint', 'line', 'sep',
+    'column', 'line_percent', 'active_mark_end'},
   events = {
     mode = {
       map = {
         normal = {'▲', {'#BDAE9D', line_bg, 'bold'}},
-        insert = {'◆', {'#499C54', line_bg, 'bold'}},
+        insert = {'◆', {'#049B0A', line_bg, 'bold'}},
         replace = {'◆', {'#C75450', line_bg, 'bold'}},
-        visual = {'◆', {'#3592C4', line_bg, 'bold'}},
-        v_line = {'━', {'#3592C4', line_bg, 'bold'}},
-        v_block = {'■', {'#3592C4', line_bg, 'bold'}},
+        visual = {'◆', {'#43A8ED', line_bg, 'bold'}},
+        v_line = {'━', {'#43A8ED', line_bg, 'bold'}},
+        v_block = {'■', {'#43A8ED', line_bg, 'bold'}},
         select = {'■', {'#3592C4', line_bg, 'bold'}},
         command = {'▼', {'#BDAE9D', line_bg, 'bold'}},
         shell_ex = {'●', {'#93896C', line_bg, 'bold'}},
-        terminal = {'●', {'#499C54', line_bg, 'bold'}},
+        terminal = {'●', {'#049B0A', line_bg, 'bold'}},
         prompt = {'▼', {'#BDAE9D', line_bg, 'bold'}},
         inactive = {' ', {line_bg, line_bg}},
       },
@@ -243,6 +247,7 @@ require'horizon'.setup({
       style = {'#C75450', line_bg, 'bold'},
       value = '',
       padding = {nil, 1},
+      condition = require'horizon.condition'.is_read_only
     },
     spacer = {
       style = {line_bg, line_bg},
@@ -372,14 +377,14 @@ g.nvim_tree_show_icons = {
   files = 1,
 }
 g.nvim_tree_icons = {
-  symlink =        '󰌷',
+  symlink =        '󰌹',
   folder = {
     default =      '▶',
     open =         '▼',
     empty =        '▷',
     empty_open =   '▽',
-    symlink =      '󰌷 ▶',
-    symlink_open = '󰌷 ▼',
+    symlink =      '󰌹 ▶',
+    symlink_open = '󰌹 ▼',
   }
 }
 li('NvimTreeRootFolder', 'Comment')
