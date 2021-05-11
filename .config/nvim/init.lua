@@ -386,7 +386,16 @@ g.nvim_tree_icons = {
     empty_open =   '▽',
     symlink =      '󰌹 ▶',
     symlink_open = '󰌹 ▼',
-  }
+  },
+  git = {
+    unstaged =     '✗',
+    staged =       '✓',
+    unmerged =     '⏼',
+    renamed =      '→',
+    untracked =    '•',
+    deleted =      '-',
+    ignored =      '⭘',
+  },
 }
 li('NvimTreeRootFolder', 'Comment')
 li('NvimTreeExecFile', 'Todo')
@@ -395,6 +404,7 @@ li('NvimTreeFolderIcon', 'Constant')
 li('NvimTreeImageFile', 'Normal')
 li('NvimTreeGitIgnored', 'Debug')
 hi('NvimTreeGitNew', '#42905b', nil, 'italic')
+hi('NvimTreeGitStaged', '#39c064', nil, 'italic')
 hi('NvimTreeGitRenamed', '#507eae', nil, 'italic')
 hi('NvimTreeGitDeleted', '#bd5b5b', nil, 'italic')
 li('NvimTreeGitDirty', 'NvimTreeGitDeleted')
