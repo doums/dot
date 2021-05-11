@@ -344,6 +344,7 @@ map('n', '<C-g>', '<Plug>SGitLog', {noremap=false})
 local tree_cb = require'nvim-tree.config'.nvim_tree_callback
 g.nvim_tree_width = 40
 g.nvim_tree_git_hl = 1
+g.nvim_tree_width_allow_resize = 1
 map('n', '<Tab>', '<cmd>NvimTreeToggle<CR>')
 map('n', '<S-Tab>', '<cmd>NvimTreeFindFile<CR>')
 vim.g.nvim_tree_bindings = {
@@ -392,10 +393,11 @@ li('NvimTreeExecFile', 'Todo')
 li('NvimTreeSpecialFile', 'Function')
 li('NvimTreeFolderIcon', 'Constant')
 li('NvimTreeImageFile', 'Normal')
-hi('NvimTreeIndentMarker', '#824d50')
 li('NvimTreeGitIgnored', 'Debug')
-li('NvimTreeGitNew', 'String')
-li('NvimTreeGitRenamed', 'TSField')
+hi('NvimTreeGitNew', '#42905b', nil, 'italic')
+hi('NvimTreeGitRenamed', '#507eae', nil, 'italic')
+hi('NvimTreeGitDeleted', '#bd5b5b', nil, 'italic')
+li('NvimTreeGitDirty', 'NvimTreeGitDeleted')
 
 -- nvim-treesitter -----------------------------------------------
 require'nvim-treesitter.configs'.setup {
