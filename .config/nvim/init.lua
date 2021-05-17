@@ -655,7 +655,6 @@ g.ale_echo_msg_warning_str = 'W'
 g.ale_echo_msg_info_str = 'I'
 g.ale_echo_msg_format = '[%linter%][%severity%] %s'
 g.ale_linters_explicit = 1
-g.ale_fix_on_save = 0
 g.ale_completion_autoimport = 1
 g.ale_fixers = {
   javascript = {'eslint', 'prettier'},
