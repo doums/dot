@@ -1,6 +1,6 @@
 format: '%m  %c %f  %t  %b  %i  %s   %w%e  %a    %d'
 tick: 50
-pulse_tick: 50
+pulse_tick: 100
 battery:
   full_design: true
   low_level: 30
@@ -27,12 +27,10 @@ memory:
   high_label: '󰈸'
   format: '%v %l'
 mic:
-  index: 1
   label: '󰍬'
   mute_label: '󰍭'
   format: '%v %l'
 sound:
-  index: 0
   label: '󰕾'
   mute_label: '󰝟'
   format: '%v %l'
