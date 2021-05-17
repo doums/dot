@@ -27,9 +27,9 @@ paq 'doums/sae'
 paq 'doums/lsp_status'
 paq 'doums/lens'
 paq {'nvim-treesitter/nvim-treesitter', run=update_ts_parsers}
-paq 'nvim-treesitter/playground'
 paq 'neovim/nvim-lspconfig'
 paq 'hrsh7th/nvim-compe'
+paq 'norcalli/snippets.nvim'
 paq 'nvim-lua/lsp_extensions.nvim'
 paq 'nvim-lua/plenary.nvim'        -- dep of telescope.nvim, gitsigns.nvim
 paq 'nvim-lua/popup.nvim'          -- dep of telescope.nvim
@@ -119,6 +119,7 @@ opt('signcolumn', 'yes:2', 'w')
 opt('cmdheight', 2)
 opt('mouse', 'a')
 opt('statusline', ' ', 'w') -- hide the default statusline on the first frames
+opt('guifont', 'JetBrainsMono-Regular:h20')
 
 -- VARIOUS -------------------------------------------------------
 -- color scheme
@@ -203,7 +204,7 @@ function _G.code_log()
   end
 end
 
--- ponton --------------------------------------------------------
+-- ponton.nvim ---------------------------------------------------
 hi('StatusLineNC', '#BDAE9D', '#432717')
 hi('VertSplit', '#2A190E', nil)
 local line_bg = '#432717'
@@ -328,6 +329,10 @@ g.coBraPairs = {
   }
 }
 
+-- neovide -------------------------------------------------------
+g.neovide_cursor_animation_length = 0.08
+g.neovide_cursor_trail_length = 0.6
+
 -- OTerm ---------------------------------------------------------
 map('n', '<Leader>o', '<Plug>OTerm', {noremap=false})
 
@@ -416,10 +421,14 @@ require'nvim-treesitter.configs'.setup {
     'toml', 'json', 'graphql', 'jsonc'},
   highlight = {enable = true},
   indent = {enable = true},
-  playground = {
+  incremental_selection = {
     enable = true,
-    updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
-    persist_queries = false -- Whether the query persists across vim sessions
+    keymaps = {
+      init_selection = 'tn',
+      node_incremental = '<A-l>',
+      scope_incremental = '<A-j>',
+      node_decremental = '<A-h>',
+    },
   },
 }
 
@@ -474,24 +483,34 @@ vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
   }
 )
 
+local capabilities = lsp_status.capabilities
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+capabilities.textDocument.completion.completionItem.resolveSupport = {
+  properties = {
+    'documentation',
+    'detail',
+    'additionalTextEdits',
+  }
+}
+
 lspconfig.clangd.setup {                           -- C, C++
   on_attach = on_attach,
-  capabilities = lsp_status.capabilities
+  capabilities = capabilities
 }
 lspconfig.tsserver.setup {                         -- TypeScript
   on_attach = on_attach,
-  capabilities = lsp_status.capabilities
+  capabilities = capabilities
 }
 lspconfig.rust_analyzer.setup {                    -- Rust
   on_attach = on_attach,
-  capabilities = lsp_status.capabilities,
+  capabilities = capabilities,
   settings = {
-    ['rust-analyzer.checkOnSave.command'] = 'clippy'
+    ['rust-analyzer.checkOnSave.command'] = 'clippy',
   }
 }
 lspconfig.sumneko_lua.setup {                      -- Lua
   on_attach = on_attach,
-  capabilities = lsp_status.capabilities,
+  capabilities = capabilities,
   -- must be installed in /opt/lua-language-server
   cmd = {'/opt/lua-language-server/bin/Linux/lua-language-server', '-E', '/opt/lua-language-server/main.lua'},
   settings = {
@@ -554,7 +573,7 @@ map('', '<A-S-q>', '<cmd>Telescope lsp_workspace_diagnostics<cr>')
 map('', '<A-b>', '<cmd>Telescope lsp_definitions<cr>')
 map('', '<C-f>', '<cmd>Telescope live_grep<cr>')
 map('', '<C-b>', '<cmd>lua require"lens".buffers()<cr>')
-cmd 'hi! link TelescopeBorder Todo'
+cmd 'hi! link TelescopeBorder NonText'
 
 -- lsp_extensions.nvim -------------------------------------------
 -- enable inlay hints for Rust
@@ -636,7 +655,7 @@ g.ale_echo_msg_warning_str = 'W'
 g.ale_echo_msg_info_str = 'I'
 g.ale_echo_msg_format = '[%linter%][%severity%] %s'
 g.ale_linters_explicit = 1
-g.ale_fix_on_save = 1
+g.ale_fix_on_save = 0
 g.ale_completion_autoimport = 1
 g.ale_fixers = {
   javascript = {'eslint', 'prettier'},
@@ -683,7 +702,8 @@ require'gitsigns'.setup {
     ['n <leader>hs'] = '<cmd>lua require"gitsigns".stage_hunk()<CR>',
     ['n <leader>hu'] = '<cmd>lua require"gitsigns".undo_stage_hunk()<CR>',
     ['n <leader>hr'] = '<cmd>lua require"gitsigns".reset_hunk()<CR>',
+    ['n <leader>hR'] = '<cmd>lua require"gitsigns".reset_buffer()<CR>',
     ['n <leader>hp'] = '<cmd>lua require"gitsigns".preview_hunk()<CR>',
     ['n <leader>hb'] = '<cmd>lua require"gitsigns".blame_line()<CR>',
-  }
+  },
 }
