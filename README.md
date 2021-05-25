@@ -66,11 +66,15 @@ sudo systemctl enable lightdm
 ```
 https://wiki.archlinux.org/index.php/LightDM#Installation
 
-3. install the window manager Spectrwm
+3. install window managers
+#### spectrwm
 ```
 rua install spectrwm-git
 ```
 source: https://github.com/conformal/spectrwm
+
+#### dwm
+see https://github.com/doums/dwm
 
 ### mount helper and USB
 ```
