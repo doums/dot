@@ -9,7 +9,7 @@ configuration {
   display-combi: "combi";
   display-keys: "key";
   drun-display-format: "{name}";
-  drun-match-fields: "name,generic,categories,keywords"; 
+  drun-match-fields: "name,categories,keywords";
   terminal: "alacritty";
   matching: "fuzzy";
   dpi: 144;
