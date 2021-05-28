@@ -103,7 +103,7 @@ opt.scrolloff = 5
 opt.completeopt = {'menuone', 'noselect'}
 opt.pumheight = 10
 opt.fillchars = {vert = '┃', diff = ' ', fold = ' ', eob = ' '}
-opt.complete = opt.complete:append{'i'}
+opt.complete = opt.complete:append {'i'}
 opt.clipboard = 'unnamedplus'
 opt.guicursor = ''
 opt.signcolumn = 'yes:2'
@@ -595,7 +595,7 @@ require'compe'.setup {
     calc = true,
     nvim_lsp = true,
     nvim_lua = true,
-    snippets_nvim = true,
+    snippets_nvim = {priority = 100000},
   }
 }
 
@@ -643,10 +643,10 @@ require'snippets'.snippets = {
   typescript = js_log,
   typescriptreact = js_log,
   c = {
-    ptf = [[printf("$1 -> %s$0\n", $1);]]
+    printf = [[printf("$1 -> %s$0\n", $1);]]
   },
   rust = {
-    ppr = [[println!("$1 -> {:#?}", $1);]]
+    pprintln = [[println!("$1 -> {:#?}", $1);]]
   },
 }
 
