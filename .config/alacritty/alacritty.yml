@@ -777,17 +777,17 @@ key_bindings:
 schemes:
   nord: &nord
     primary:
-      # background: '#2E3440'
-      # foreground: '#D8DEE9'
-      # for jungle theme
-      # background: '#242a1b'
-      # foreground: '#a7a7a5'
-      # for dark_ocean theme
+      # background: '#2e3440'
+      # foreground: '#eceff4'
+      # dark_ocean theme
       background: '#262626'
       foreground: '#8c8c8c'
     # cursor:
-      # text: '#2E3440'
-      # cursor: '#D8DEE9'
+    #   text: '#2e3440'
+    #   cursor: '#d8dee9'
+    vi_mode_cursor:
+      text:  '#2e3440'
+      cursor: '#d08770'
     normal:
       black: '#3B4252'
       red: '#BF616A'
@@ -810,8 +810,13 @@ schemes:
       matches:
         foreground: '#eceff4'
         background: '#434c5e'
+      focused_match:
+        foreground: '#eceff4'
+        background: '#5e81ac'
       bar:
-        background: '#171717'
-        foreground: '#8c8c8c'
-
+        background: '#3b4252'
+        foreground: '#d8dee9'
+    selection:
+      text: '#eceff4'
+      background: '#434c5e'
 colors: *nord
