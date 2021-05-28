@@ -603,7 +603,8 @@ require'compe'.setup {
     buffer = true,
     calc = true,
     nvim_lsp = true,
-    nvim_lua = true
+    nvim_lua = true,
+    snippets_nvim = true,
   }
 }
 
@@ -641,6 +642,22 @@ map('s', '<S-Tab>', 'v:lua.s_tab_complete()', {expr=true})
 map('i', '<C-Space>', 'compe#complete()', {silent=true, expr=true})
 map('i', '<CR>', "compe#confirm('<CR>')", {silent=true, expr=true})
 map('i', '<C-e>', "compe#close('<C-e>')", {silent=true, expr=true})
+
+-- snippets.nvim -------------------------------------------------
+-- use <C-j> <C-k> (insert mod) to expand snippets
+require'snippets'.use_suggested_mappings()
+local js_log = {log = [[console.log('$0');]]}
+require'snippets'.snippets = {
+  javascript = js_log,
+  typescript = js_log,
+  typescriptreact = js_log,
+  c = {
+    ptf = [[printf("$1 -> %s$0\n", $1);]]
+  },
+  rust = {
+    ppr = [[println!("$1 -> {:#?}", $1);]]
+  },
+}
 
 -- ALE -----------------------------------------------------------
 g.ale_disable_lsp = 1
