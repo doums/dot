@@ -2,6 +2,7 @@
 local fn = vim.fn
 local cmd = vim.cmd
 local g = vim.g
+local opt = vim.opt
 
 -- PLUGINS -------------------------------------------------------
 -- auto install paq-nvim
@@ -41,16 +42,6 @@ paq 'kyazdani42/nvim-tree.lua'
 paq 'kyazdani42/nvim-web-devicons' -- dep of nvim-tree.lua
 
 -- HELPERS -------------------------------------------------------
---[[ make buffer and window option global as well
-     TODO use vim.opt when released
-     see https://github.com/neovim/neovim/pull/13479 ]]
-local function opt(key, value, scope)
-  scope = scope or 'o'
-  local scopes = {o = vim.o, b = vim.bo, w = vim.wo}
-  scopes[scope][key] = value
-  if scope ~= 'o' then scopes['o'][key] = value end
-end
-
 -- `t` for `termcodes`.
 local function t(str)
   return vim.api.nvim_replace_termcodes(str, true, true, true)
@@ -88,38 +79,38 @@ local function li(target, source)
 end
 
 -- OPTIONS -------------------------------------------------------
-opt('termguicolors', true)
-opt('number', true, 'w')
-opt('relativenumber', true, 'w')
-opt('showmode', false)
-opt('shortmess', 'IFaWcs')
-opt('ignorecase', true)
-opt('smartcase', true)
-opt('cindent', true, 'b')
-opt('tabstop', 2, 'b')
-opt('shiftwidth', 2, 'b')
-opt('expandtab', true, 'b')
-opt('showmatch', true)
-opt('matchtime', 3)
-opt('updatetime', 100)
-opt('splitbelow', true)
-opt('splitright', true)
-opt('foldlevelstart', 0)
-opt('hidden', true)
-opt('cursorline', true, 'w')
-opt('switchbuf', 'usetab')
-opt('scrolloff', 5, 'w')
-opt('completeopt', 'menuone,noselect')
-opt('pumheight', 10)
-opt('fillchars', 'vert:┃,diff: ,fold: ,eob: ', 'w')
-opt('complete', vim.bo.complete..',i', 'b')
-opt('clipboard', 'unnamedplus')
-opt('guicursor', '')
-opt('signcolumn', 'yes:2', 'w')
-opt('cmdheight', 2)
-opt('mouse', 'a')
-opt('statusline', ' ', 'w') -- hide the default statusline on the first frames
-opt('guifont', 'JetBrainsMono-Regular:h20')
+opt.termguicolors = true
+opt.number = true
+opt.relativenumber = true
+opt.showmode = false
+opt.shortmess = 'IFaWcs'
+opt.ignorecase = true
+opt.smartcase = true
+opt.cindent = true
+opt.tabstop = 2
+opt.shiftwidth = 2
+opt.expandtab = true
+opt.showmatch = true
+opt.matchtime = 3
+opt.updatetime = 100
+opt.splitbelow = true
+opt.splitright = true
+opt.foldlevelstart = 0
+opt.hidden = true
+opt.cursorline = true
+opt.switchbuf = 'usetab'
+opt.scrolloff = 5
+opt.completeopt = {'menuone', 'noselect'}
+opt.pumheight = 10
+opt.fillchars = {vert = '┃', diff = ' ', fold = ' ', eob = ' '}
+opt.complete = opt.complete:append{'i'}
+opt.clipboard = 'unnamedplus'
+opt.guicursor = ''
+opt.signcolumn = 'yes:2'
+opt.cmdheight = 2
+opt.mouse = 'a'
+opt.statusline = ' ' -- hide the default statusline on the first frames
+opt.guifont = 'JetBrainsMono-Regular:h20'
 
 -- VARIOUS -------------------------------------------------------
 -- color scheme
