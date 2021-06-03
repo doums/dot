@@ -99,7 +99,7 @@ opt.foldlevelstart = 0
 opt.hidden = true
 opt.cursorline = true
 opt.switchbuf = 'usetab'
-opt.scrolloff = 5
+opt.scrolloff = 1
 opt.completeopt = {'menuone', 'noselect'}
 opt.pumheight = 10
 opt.fillchars = {vert = '┃', diff = ' ', fold = ' ', eob = ' '}
@@ -376,6 +376,8 @@ g.nvim_tree_show_icons = {
 g.nvim_tree_icons = {
   symlink =        '󰌹',
   folder = {
+    arrow_open =   '▼',
+    arrow_closed = '▶',
     default =      '▶',
     open =         '▼',
     empty =        '▷',
