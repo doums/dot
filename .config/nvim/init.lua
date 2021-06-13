@@ -454,7 +454,7 @@ local function on_attach(client, bufnr)
   cmd([[
     augroup lsp_on_attach
       autocmd!
-      autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics{show_header=false}
+      autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics{show_header=false, focusable = false}
     augroup END
   ]])
   -- highlight the symbol under the cursor
