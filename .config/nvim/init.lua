@@ -40,6 +40,7 @@ paq 'pantharshit00/vim-prisma'
 paq 'tweekmonster/startuptime.vim'
 paq 'kyazdani42/nvim-tree.lua'
 paq 'kyazdani42/nvim-web-devicons' -- dep of nvim-tree.lua
+paq 'ggandor/lightspeed.nvim'
 
 -- HELPERS -------------------------------------------------------
 -- `t` for `termcodes`.
@@ -177,23 +178,9 @@ cmd([[
     " bufer (&buftype option is empty) run checktime to refresh the buffer and
     " retrieve any external changes
     autocmd CursorHold * if empty(&buftype) | checktime % | endif
-    " set stuff for some programming languages
-    autocmd FileType * call v:lua.code_log()
     autocmd FileType man set nonumber
   augroup END
 ]])
-
--- FUNCTIONS -----------------------------------------------------
-function _G.code_log()
-  if vim.bo.filetype == 'rust' then
-    map('n', '<Leader>;', 'iprintln!("{:#?}", );<Esc><Left>i', {buffer=true})
-    map('i', '<Leader>;', 'println!("{:#?}", );<Esc><Left>i', {buffer=true})
-  end
-  if vim.bo.filetype == 'javascript' or vim.bo.filetype == 'typescript' then
-    map('n', '<Leader>;', "iconsole.log('')<Esc><Left>i", {buffer=true})
-    map('i', '<Leader>;', "console.log('')<Esc><Left>i", {buffer=true})
-  end
-end
 
 -- ponton.nvim ---------------------------------------------------
 hi('StatusLineNC', '#BDAE9D', '#432717')
