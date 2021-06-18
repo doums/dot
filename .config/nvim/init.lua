@@ -19,7 +19,6 @@ local function update_ts_parsers() cmd 'TSUpdate' end
 
 paq {'savq/paq-nvim', opt=true}    -- Let Paq manage itself
 paq 'b3nj5m1n/kommentary'
-paq 'dense-analysis/ale'
 paq 'doums/coBra'
 paq 'doums/oterm'
 paq 'doums/fzfTools'
@@ -429,13 +428,12 @@ map('n', '<A-t>', '<cmd>lua vim.lsp.buf.type_definition()<CR>')
 map('n', '<A-d>', '<cmd>lua vim.lsp.buf.hover()<CR>')
 map('n', '<A-r>', '<cmd>lua vim.lsp.buf.rename()<CR>')
 map('n', '<A-g>', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
-map('n', '<A-f>', '<cmd>lua vim.lsp.buf.formatting()<CR>')
 
 local function on_attach(client, bufnr)
   if client.resolved_capabilities.document_range_formatting then
     map('n', '<A-f>', '<cmd>lua vim.lsp.buf.range_formatting()<CR>')
   elseif client.resolved_capabilities.document_formatting then
-    map('n', '<A-f>', '<cmd>lua vim.lsp.buf.formatting()<CR>')
+    map('n', '<A-e>', '<cmd>lua vim.lsp.buf.formatting()<CR>')
   end
   -- open a floating window with the diagnostics from the current cursor position
   cmd([[
@@ -482,19 +480,64 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
   }
 }
 
+local eslint = {
+  lintCommand = 'npx eslint -f unix --stdin --stdin-filename ${INPUT}',
+  lintIgnoreExitCode = true,
+  lintStdin = true,
+  lintFormats = {'%f:%l:%c: %m'},
+}
+local prettier = {
+  formatCommand = 'npx prettier --stdin-filepath ${INPUT}',
+  formatStdin = true,
+}
+
 lspconfig.clangd.setup {                           -- C, C++
   on_attach = on_attach,
   capabilities = capabilities
 }
 lspconfig.tsserver.setup {                         -- TypeScript
-  on_attach = on_attach,
-  capabilities = capabilities
+  on_attach = function(client, bufnr)
+    -- do not use tsserver for formatting (use Prettier through efm)
+    client.resolved_capabilities.document_formatting = false
+    on_attach(client, bufnr)
+  end,
+  capabilities = capabilities,
+  settings = {documentFormatting = false},
 }
 lspconfig.rust_analyzer.setup {                    -- Rust
   on_attach = on_attach,
   capabilities = capabilities,
   settings = {
     ['rust-analyzer.checkOnSave.command'] = 'clippy',
+  }
+}
+lspconfig.efm.setup {                              -- efm
+  init_options = {documentFormatting = true, codeAction = true},
+  on_attach = function()
+    map('n', '<A-e>', '<cmd>lua vim.lsp.buf.formatting()<CR>')
+  end,
+  settings = {
+    rootMarkers = {'.git/'},
+    languages = {
+      javascript = {eslint, prettier},
+      typescript = {eslint, prettier},
+      typescriptreact = {eslint, prettier},
+      yaml = {prettier},
+      json = {prettier},
+      html = {prettier},
+      scss = {prettier},
+      css = {prettier},
+      markdown = {prettier},
+      rust = {{
+        formatCommand = 'rustfmt',
+        formatStdin = true
+      }},
+      sh = {{
+        lintCommand = 'shellcheck -f gcc -x',
+        lintSource = 'shellcheck',
+        lintFormats = {'%f:%l:%c: %m'},
+      }},
+    }
   }
 }
 lspconfig.sumneko_lua.setup {                      -- Lua
@@ -647,46 +690,6 @@ require'snippets'.snippets = {
     pprintln = [[println!("$1 -> {:#?}", $1);]]
   },
 }
-
--- ALE -----------------------------------------------------------
-g.ale_disable_lsp = 1
-g.ale_sign_error = '▬'
-g.ale_sign_warning = '▬'
-g.ale_sign_info = '▬'
-g.ale_sign_style_error = '▬'
-g.ale_sign_style_warning = '▬'
-g.ale_set_highlights = 0
-g.ale_echo_msg_error_str = 'E'
-g.ale_echo_msg_warning_str = 'W'
-g.ale_echo_msg_info_str = 'I'
-g.ale_echo_msg_format = '[%linter%][%severity%] %s'
-g.ale_linters_explicit = 1
-g.ale_completion_autoimport = 1
-g.ale_fixers = {
-  javascript = {'eslint', 'prettier'},
-  json = {'eslint'},
-  typescript = {'eslint', 'prettier'},
-  typescriptreact = {'eslint', 'prettier'},
-  graphql = {'eslint'},
-  rust = {'rustfmt'}
-}
-g.ale_linters = {
-  javascript = {'eslint'},
-  json = {'eslint'},
-  typescript = {'eslint', 'tsserver'},
-  typescriptreact = {'eslint', 'tsserver'},
-  graphql = {'eslint '},
-  sh = {'shellcheck'}
-}
-cmd 'hi! link ALEError Error'
-cmd 'hi! link ALEWarning Warning'
-cmd 'hi! link ALEInfo Information'
-cmd 'hi! link ALEErrorSign ErrorSign'
-cmd 'hi! link ALEWarningSign WarningSign'
-cmd 'hi! link ALEInfoSign InformationSign'
-map('', '<A-e>', '<Plug>(ale_fix)', {noremap=false})
-map('', '<A-(>', '<Plug>(ale_previous_wrap)', {noremap=false})
-map('', '<A-->', '<Plug>(ale_next_wrap)', {noremap=false})
 
 -- gitsigns.nvim -------------------------------------------------
 require'gitsigns'.setup {
