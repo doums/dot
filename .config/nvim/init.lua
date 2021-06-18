@@ -3,6 +3,7 @@ local fn = vim.fn
 local cmd = vim.cmd
 local g = vim.g
 local opt = vim.opt
+local lsp = vim.lsp
 
 -- PLUGINS -------------------------------------------------------
 -- auto install paq-nvim
@@ -452,25 +453,17 @@ local function on_attach(client, bufnr)
       augroup END
     ]])
   end
-  -- code lens
-  if client.resolved_capabilities.code_lens then
-    cmd([[
-      augroup lsp_code_lens
-        autocmd!
-        autocmd BufEnter,CursorHold,InsertLeave <buffer> lua vim.lsp.codelens.refresh()
-      augroup END
-    ]])
-  end
   lsp_status.on_attach(client, bufnr)
 end
 
-vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
-  vim.lsp.diagnostic.on_publish_diagnostics, {
+lsp.handlers['textDocument/publishDiagnostics'] = lsp.with(
+  lsp.diagnostic.on_publish_diagnostics, {
     virtual_text = false
   }
 )
 
-local capabilities = lsp_status.capabilities
+local capabilities = lsp.protocol.make_client_capabilities()
+lsp_status.init_capabilities(capabilities)
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 capabilities.textDocument.completion.completionItem.resolveSupport = {
   properties = {
