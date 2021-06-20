@@ -52,8 +52,9 @@ local function map(mode, lhs, rhs, opts)
   opts = opts or {noremap = true}
   if opts.noremap == nil then opts.noremap = true end
   if opts.buffer then
+    local bufnr = opts.buffer
     opts.buffer = nil
-    vim.api.nvim_buf_set_keymap(0, mode, lhs, rhs, opts)
+    vim.api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, opts)
   else
     opts.buffer = nil
     vim.api.nvim_set_keymap(mode, lhs, rhs, opts)
@@ -431,13 +432,14 @@ map('n', '<A-g>', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
 
 local function on_attach(client, bufnr)
   if client.resolved_capabilities.document_range_formatting then
-    map('n', '<A-f>', '<cmd>lua vim.lsp.buf.range_formatting()<CR>')
-  elseif client.resolved_capabilities.document_formatting then
-    map('n', '<A-e>', '<cmd>lua vim.lsp.buf.formatting()<CR>')
+    map('v', '<A-f>', '<cmd>lua vim.lsp.buf.range_formatting()<CR>', {buffer=bufnr})
+  end
+  if client.resolved_capabilities.document_formatting then
+    map('n', '<A-e>', '<cmd>lua vim.lsp.buf.formatting()<CR>', {buffer=bufnr})
   end
   -- open a floating window with the diagnostics from the current cursor position
   cmd([[
-    augroup lsp_on_attach
+    augroup lsp_show_line_diagnostics
       autocmd!
       autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics{show_header=false, focusable = false}
     augroup END
@@ -464,13 +466,6 @@ lsp.handlers['textDocument/publishDiagnostics'] = lsp.with(
 local capabilities = lsp.protocol.make_client_capabilities()
 lsp_status.init_capabilities(capabilities)
 capabilities.textDocument.completion.completionItem.snippetSupport = true
-capabilities.textDocument.completion.completionItem.resolveSupport = {
-  properties = {
-    'documentation',
-    'detail',
-    'additionalTextEdits',
-  }
-}
 
 lspconfig.clangd.setup {                           -- C, C++
   on_attach = on_attach,
@@ -483,7 +478,6 @@ lspconfig.tsserver.setup {                         -- TypeScript
     on_attach(client, bufnr)
   end,
   capabilities = capabilities,
-  settings = {documentFormatting = false},
 }
 lspconfig.rust_analyzer.setup {                    -- Rust
   on_attach = on_attach,
@@ -519,7 +513,12 @@ local languages = {
   }},
 }
 lspconfig.efm.setup {                              -- efm
-  init_options = {documentFormatting = true, codeAction = true},
+  init_options = {
+    documentFormatting = true,
+    -- efm seems to not support range formatting
+    -- documentRangeFormatting = true,
+    codeAction = true,
+  },
   filetypes = vim.tbl_keys(languages),
   on_attach = on_attach,
   settings = {
