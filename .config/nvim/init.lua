@@ -7,18 +7,18 @@ local lsp = vim.lsp
 
 -- PLUGINS -------------------------------------------------------
 -- auto install paq-nvim
-local install_path = fn.stdpath('data')..'/site/pack/paqs/opt/paq-nvim'
+local install_path = fn.stdpath('data') .. '/site/pack/paqs/opt/paq-nvim'
 if fn.empty(fn.glob(install_path)) > 0 then
-  cmd('!git clone https://github.com/savq/paq-nvim.git '..install_path)
+  cmd('!git clone https://github.com/savq/paq-nvim.git ' .. install_path)
 end
 
-cmd 'packadd paq-nvim'             -- Load package
+cmd 'packadd paq-nvim' -- Load package
 local paq = require'paq-nvim'.paq
 
 -- update treesitter parsers
 local function update_ts_parsers() cmd 'TSUpdate' end
 
-paq {'savq/paq-nvim', opt=true}    -- Let Paq manage itself
+paq {'savq/paq-nvim', opt = true} -- Let Paq manage itself
 paq 'b3nj5m1n/kommentary'
 paq 'doums/coBra'
 paq 'doums/oterm'
@@ -27,12 +27,12 @@ paq 'doums/espresso'
 paq 'doums/sae'
 paq 'doums/lsp_status'
 paq 'doums/lens'
-paq {'nvim-treesitter/nvim-treesitter', run=update_ts_parsers}
+paq {'nvim-treesitter/nvim-treesitter', run = update_ts_parsers}
 paq 'neovim/nvim-lspconfig'
 paq 'hrsh7th/nvim-compe'
 paq 'norcalli/snippets.nvim'
-paq 'nvim-lua/plenary.nvim'        -- dep of telescope.nvim, gitsigns.nvim
-paq 'nvim-lua/popup.nvim'          -- dep of telescope.nvim
+paq 'nvim-lua/plenary.nvim' -- dep of telescope.nvim, gitsigns.nvim
+paq 'nvim-lua/popup.nvim' -- dep of telescope.nvim
 paq 'nvim-telescope/telescope.nvim'
 paq 'lewis6991/gitsigns.nvim'
 paq 'pantharshit00/vim-prisma'
@@ -68,9 +68,9 @@ function _G.dump(...)
 end
 
 local function hi(name, foreground, background, style)
-  local fg = 'guifg='..(foreground or 'NONE')
-  local bg = 'guibg='..(background or 'NONE')
-  local decoration = 'gui='..(style or 'NONE')
+  local fg = 'guifg=' .. (foreground or 'NONE')
+  local bg = 'guibg=' .. (background or 'NONE')
+  local decoration = 'gui=' .. (style or 'NONE')
   local hi_command = string.format('hi %s %s %s %s', name, fg, bg, decoration)
   cmd(hi_command)
 end
@@ -104,7 +104,7 @@ opt.scrolloff = 1
 opt.completeopt = {'menuone', 'noselect'}
 opt.pumheight = 10
 opt.fillchars = {vert = '┃', diff = ' ', fold = ' ', eob = ' '}
-opt.complete = opt.complete:append {'i'}
+opt.complete = opt.complete:append{'i'}
 opt.clipboard = 'unnamedplus'
 opt.guicursor = ''
 opt.signcolumn = 'yes:2'
@@ -128,13 +128,13 @@ map('', '<Down>', '<Nop>')
 map('', '<Right>', '<Nop>')
 map('', '<Left>', '<Nop>')
 -- move fast with Ctrl + hjkl
-map('', '<C-l>', '<Plug>SaeRight', {noremap=false})
-map('', '<C-h>', '<Plug>SaeLeft', {noremap=false})
+map('', '<C-l>', '<Plug>SaeRight', {noremap = false})
+map('', '<C-h>', '<Plug>SaeLeft', {noremap = false})
 map('', '<C-j>', '<C-d>')
 map('', '<C-k>', '<C-u>')
 -- move through wrapped line
-map('', 'j', 'gj', {silent=true})
-map('', 'k', 'gk', {silent=true})
+map('', 'j', 'gj', {silent = true})
+map('', 'k', 'gk', {silent = true})
 -- goto start and end of line
 map('', '<space>l', '$')
 map('', '<space>h', '0')
@@ -144,28 +144,28 @@ map('o', 'w', 'iw')
 map('v', '<Leader>f', '<Esc>:%s/\\%V')
 map('n', '<Leader>f', ':%s/')
 -- hide highlight after a search
-map('n', '<space>', ':nohlsearch<CR>', {silent=true})
+map('n', '<space>', ':nohlsearch<CR>', {silent = true})
 -- show trailing whitespaces
 map('n', '<Leader><Space>', '/\\s\\+$<CR>')
 -- tabs
 map('n', '<Leader>t', ':tabnew<CR>')
-map('', '<C-Right>', ':tabn<CR>', {silent=true})
-map('', '<C-Left>', ':tabp<CR>', {silent=true})
-map('', '<C-Up>', ':+tabmove<CR>', {silent=true})
-map('', '<C-Down>', ':-tabmove<CR>', {silent=true})
+map('', '<C-Right>', ':tabn<CR>', {silent = true})
+map('', '<C-Left>', ':tabp<CR>', {silent = true})
+map('', '<C-Up>', ':+tabmove<CR>', {silent = true})
+map('', '<C-Down>', ':-tabmove<CR>', {silent = true})
 -- windows
-map('n', '<Leader>s', ':new<CR>', {silent=true})
-map('n', '<Leader>v', ':vnew<CR>', {silent=true})
-map('n', '<Leader><S-s>', ':split<CR>', {silent=true})
-map('n', '<Leader><S-v>', ':vsplit<CR>', {silent=true})
-map('n', '<A-h>', '<C-w>h', {silent=true})
-map('n', '<A-l>', '<C-w>l', {silent=true})
-map('n', '<A-j>', '<C-w>j', {silent=true})
-map('n', '<A-k>', '<C-w>k', {silent=true})
-map('n', '<A-Up>', ':resize +4<CR>', {silent=true})
-map('n', '<A-Down>', ':resize -4<CR>', {silent=true})
-map('n', '<A-Right>', ':vertical resize +4<CR>', {silent=true})
-map('n', '<A-Left>', ':vertical resize -4<CR>', {silent=true})
+map('n', '<Leader>s', ':new<CR>', {silent = true})
+map('n', '<Leader>v', ':vnew<CR>', {silent = true})
+map('n', '<Leader><S-s>', ':split<CR>', {silent = true})
+map('n', '<Leader><S-v>', ':vsplit<CR>', {silent = true})
+map('n', '<A-h>', '<C-w>h', {silent = true})
+map('n', '<A-l>', '<C-w>l', {silent = true})
+map('n', '<A-j>', '<C-w>j', {silent = true})
+map('n', '<A-k>', '<C-w>k', {silent = true})
+map('n', '<A-Up>', ':resize +4<CR>', {silent = true})
+map('n', '<A-Down>', ':resize -4<CR>', {silent = true})
+map('n', '<A-Right>', ':vertical resize +4<CR>', {silent = true})
+map('n', '<A-Left>', ':vertical resize -4<CR>', {silent = true})
 -- terminal normal mode
 map('t', '<Leader>n', '<C-\\><C-N>')
 
@@ -187,10 +187,12 @@ hi('StatusLineNC', '#BDAE9D', '#432717')
 hi('VertSplit', '#2A190E', nil)
 local line_bg = '#432717'
 require'ponton'.setup({
-  line = {'active_mark_start', 'mode', 'buffer_name', 'buffer_changed',
-    'read_only', 'git_branch', 'spacer', 'lsp_status', 'lsp_error',
-    'lsp_warning', 'lsp_information', 'lsp_hint', 'line', 'sep',
-    'column', 'line_percent', 'active_mark_end'},
+  line = {
+    'active_mark_start', 'mode', 'buffer_name', 'buffer_changed', 'read_only',
+    'git_branch', 'spacer', 'lsp_status', 'lsp_error', 'lsp_warning',
+    'lsp_information', 'lsp_hint', 'line', 'sep', 'column', 'line_percent',
+    'active_mark_end',
+  },
   segments = {
     mode = {
       map = {
@@ -215,7 +217,7 @@ require'ponton'.setup({
       padding = {1, 1},
       margin = {1, 1},
       decorator = {'', '', {'#2A190E', line_bg}},
-      condition = require'ponton.condition'.buffer_not_empty
+      condition = require'ponton.condition'.buffer_not_empty,
     },
     buffer_changed = {
       style = {'#DF824C', line_bg, 'bold'},
@@ -226,23 +228,12 @@ require'ponton'.setup({
       style = {'#C75450', line_bg, 'bold'},
       value = '',
       padding = {nil, 1},
-      condition = require'ponton.condition'.is_read_only
+      condition = require'ponton.condition'.is_read_only,
     },
-    spacer = {
-      style = {line_bg, line_bg},
-    },
-    sep = {
-      style = {'#BDAE9D', line_bg},
-      text = '⏽',
-    },
-    line_percent = {
-      style = {'#BDAE9D', line_bg},
-      padding = {nil, 1},
-    },
-    line = {
-      style = {'#BDAE9D', line_bg},
-      padding = {1},
-    },
+    spacer = {style = {line_bg, line_bg}},
+    sep = {style = {'#BDAE9D', line_bg}, text = '⏽'},
+    line_percent = {style = {'#BDAE9D', line_bg}, padding = {nil, 1}},
+    line = {style = {'#BDAE9D', line_bg}, padding = {1}},
     column = {
       style = {'#BDAE9D', line_bg},
       left_adjusted = true,
@@ -274,11 +265,7 @@ require'ponton'.setup({
       padding = {nil, 1},
       prefix = '~',
     },
-    lsp_hint = {
-      style = {'#F49810', line_bg},
-      padding = {nil, 1},
-      prefix = '~',
-    },
+    lsp_hint = {style = {'#F49810', line_bg}, padding = {nil, 1}, prefix = '~'},
     active_mark_start = {
       style = {{'#DF824C', line_bg}, {line_bg, line_bg}},
       text = '▌',
@@ -292,19 +279,13 @@ require'ponton'.setup({
 
 -- kommentary ----------------------------------------------------
 g.kommentary_create_default_mappings = false
-map('n', '<leader>cc', '<Plug>kommentary_line_default', {noremap=false})
-map('n', '<leader>c', '<Plug>kommentary_motion_default', {noremap=false})
-map('v', '<leader>c', '<Plug>kommentary_visual_default', {noremap=false})
+map('n', '<leader>cc', '<Plug>kommentary_line_default', {noremap = false})
+map('n', '<leader>c', '<Plug>kommentary_motion_default', {noremap = false})
+map('v', '<leader>c', '<Plug>kommentary_visual_default', {noremap = false})
 
 -- coBra ---------------------------------------------------------
 g.coBraPairs = {
-  rust = {
-    {'<', '>'},
-    {'"', '"'},
-    {'{', '}'},
-    {'(', ')'},
-    {'[', ']'}
-  }
+  rust = {{'<', '>'}, {'"', '"'}, {'{', '}'}, {'(', ')'}, {'[', ']'}},
 }
 
 -- neovide -------------------------------------------------------
@@ -312,16 +293,13 @@ g.neovide_cursor_animation_length = 0.08
 g.neovide_cursor_trail_length = 0.6
 
 -- OTerm ---------------------------------------------------------
-map('n', '<Leader>o', '<Plug>OTerm', {noremap=false})
+map('n', '<Leader>o', '<Plug>OTerm', {noremap = false})
 
 -- fzfTools ------------------------------------------------------
-g.fzfTools = {
-  gitlog = {tab = 1},
-  gitlogsel = {tab = 1},
-}
-map('n', '<C-s>', '<Plug>Ls', {noremap=false})
-map('n', '<C-g>', '<Plug>GitLog', {noremap=false})
-map('n', '<C-g>', '<Plug>SGitLog', {noremap=false})
+g.fzfTools = {gitlog = {tab = 1}, gitlogsel = {tab = 1}}
+map('n', '<C-s>', '<Plug>Ls', {noremap = false})
+map('n', '<C-g>', '<Plug>GitLog', {noremap = false})
+map('n', '<C-g>', '<Plug>SGitLog', {noremap = false})
 
 -- nvim-tree.lua -------------------------------------------------
 local tree_cb = require'nvim-tree.config'.nvim_tree_callback
@@ -331,55 +309,51 @@ g.nvim_tree_width_allow_resize = 1
 map('n', '<Tab>', '<cmd>NvimTreeToggle<CR>')
 map('n', '<S-Tab>', '<cmd>NvimTreeFindFile<CR>')
 vim.g.nvim_tree_bindings = {
-  ['<CR>']           = tree_cb('edit'),
-  ['o']              = tree_cb('edit'),
-  ['<2-LeftMouse>']  = tree_cb('edit'),
+  ['<CR>'] = tree_cb('edit'),
+  ['o'] = tree_cb('edit'),
+  ['<2-LeftMouse>'] = tree_cb('edit'),
   ['<2-RightMouse>'] = tree_cb('cd'),
-  ['<C-]>']          = tree_cb('cd'),
-  ['<C-v>']          = tree_cb('vsplit'),
-  ['<C-s>']          = tree_cb('split'),
-  ['<C-t>']          = tree_cb('tabnew'),
-  ['<BS>']           = tree_cb('close_node'),
-  ['<S-CR>']         = tree_cb('close_node'),
-  ['<C-p>']          = tree_cb('preview'),
-  ['I']              = tree_cb('toggle_ignored'),
-  ['H']              = tree_cb('toggle_dotfiles'),
-  ['R']              = tree_cb('refresh'),
-  ['a']              = tree_cb('create'),
-  ['d']              = tree_cb('remove'),
-  ['r']              = tree_cb('rename'),
-  ['<C-r>']          = tree_cb('full_rename'),
-  ['x']              = tree_cb('cut'),
-  ['c']              = tree_cb('copy'),
-  ['p']              = tree_cb('paste'),
-  ['-']              = tree_cb('dir_up'),
-  ['q']              = tree_cb('close'),
+  ['<C-]>'] = tree_cb('cd'),
+  ['<C-v>'] = tree_cb('vsplit'),
+  ['<C-s>'] = tree_cb('split'),
+  ['<C-t>'] = tree_cb('tabnew'),
+  ['<BS>'] = tree_cb('close_node'),
+  ['<S-CR>'] = tree_cb('close_node'),
+  ['<C-p>'] = tree_cb('preview'),
+  ['I'] = tree_cb('toggle_ignored'),
+  ['H'] = tree_cb('toggle_dotfiles'),
+  ['R'] = tree_cb('refresh'),
+  ['a'] = tree_cb('create'),
+  ['d'] = tree_cb('remove'),
+  ['r'] = tree_cb('rename'),
+  ['<C-r>'] = tree_cb('full_rename'),
+  ['x'] = tree_cb('cut'),
+  ['c'] = tree_cb('copy'),
+  ['p'] = tree_cb('paste'),
+  ['-'] = tree_cb('dir_up'),
+  ['q'] = tree_cb('close'),
 }
-g.nvim_tree_show_icons = {
-  git = 0,
-  folders = 1,
-  files = 1,
-}
+g.nvim_tree_show_icons = {git = 0, folders = 1, files = 1}
 g.nvim_tree_icons = {
-  symlink =        '󰌹',
+  symlink = '󰌹',
   folder = {
-    arrow_open =   '▼',
+    arrow_open = '▼',
     arrow_closed = '▶',
-    default =      '▶',
-    open =         '▼',
-    empty =        '▷',
-    empty_open =   '▽',
-    symlink =      '󰌹 ▶',
+    default = '▶',
+    open = '▼',
+    empty = '▷',
+    empty_open = '▽',
+    symlink = '󰌹 ▶',
     symlink_open = '󰌹 ▼',
   },
   git = {
-    unstaged =     '✗',
-    staged =       '✓',
-    unmerged =     '⏼',
-    renamed =      '→',
-    untracked =    '•',
-    deleted =      '-',
-    ignored =      '⭘',
+    unstaged = '✗',
+    staged = '✓',
+    unmerged = '⏼',
+    renamed = '→',
+    untracked = '•',
+    deleted = '-',
+    ignored = '⭘',
   },
 }
 li('NvimTreeRootFolder', 'Comment')
@@ -396,9 +370,10 @@ li('NvimTreeGitDirty', 'NvimTreeGitDeleted')
 
 -- nvim-treesitter -----------------------------------------------
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = {'c', 'cpp', 'rust', 'yaml', 'bash', 'typescript',
-    'javascript', 'html', 'css', 'lua', 'comment', 'jsdoc', 'tsx',
-    'toml', 'json', 'graphql', 'jsonc'},
+  ensure_installed = {
+    'c', 'cpp', 'rust', 'yaml', 'bash', 'typescript', 'javascript', 'html',
+    'css', 'lua', 'comment', 'jsdoc', 'tsx', 'toml', 'json', 'graphql', 'jsonc',
+  },
   highlight = {enable = true},
   indent = {enable = true},
   incremental_selection = {
@@ -413,17 +388,23 @@ require'nvim-treesitter.configs'.setup {
 }
 
 -- LSP -----------------------------------------------------------
-local lspconfig = require'lspconfig'
-local lsp_status = require'lsp_status'
+local lspconfig = require 'lspconfig'
+local lsp_status = require 'lsp_status'
 lsp_status.setup()
 
-fn.sign_define('LspDiagnosticsSignError', {text = '▬', texthl = 'LspDiagnosticsSignError'})
-fn.sign_define('LspDiagnosticsSignWarning', {text = '▬', texthl = 'LspDiagnosticsSignWarning'})
-fn.sign_define('LspDiagnosticsSignInformation', {text = '▬', texthl = 'LspDiagnosticsSignInformation'})
-fn.sign_define('LspDiagnosticsSignHint', {text = '▬', texthl = 'LspDiagnosticsSignHint'})
+fn.sign_define('LspDiagnosticsSignError',
+               {text = '▬', texthl = 'LspDiagnosticsSignError'})
+fn.sign_define('LspDiagnosticsSignWarning',
+               {text = '▬', texthl = 'LspDiagnosticsSignWarning'})
+fn.sign_define('LspDiagnosticsSignInformation',
+               {text = '▬', texthl = 'LspDiagnosticsSignInformation'})
+fn.sign_define('LspDiagnosticsSignHint',
+               {text = '▬', texthl = 'LspDiagnosticsSignHint'})
 
-map('n', '<A-a>', '<cmd>lua vim.lsp.diagnostic.goto_prev{popup_opts={show_header=false}}<CR>')
-map('n', '<A-z>', '<cmd>lua vim.lsp.diagnostic.goto_next{popup_opts={show_header=false}}<CR>')
+map('n', '<A-a>',
+    '<cmd>lua vim.lsp.diagnostic.goto_prev{popup_opts={show_header=false}}<CR>')
+map('n', '<A-z>',
+    '<cmd>lua vim.lsp.diagnostic.goto_next{popup_opts={show_header=false}}<CR>')
 map('v', '<A-CR>', '<cmd>lua vim.lsp.buf.range_code_action()<CR>')
 map('n', '<A-t>', '<cmd>lua vim.lsp.buf.type_definition()<CR>')
 map('n', '<A-d>', '<cmd>lua vim.lsp.buf.hover()<CR>')
@@ -432,10 +413,11 @@ map('n', '<A-g>', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
 
 local function on_attach(client, bufnr)
   if client.resolved_capabilities.document_range_formatting then
-    map('v', '<A-f>', '<cmd>lua vim.lsp.buf.range_formatting()<CR>', {buffer=bufnr})
+    map('v', '<A-f>', '<cmd>lua vim.lsp.buf.range_formatting()<CR>',
+        {buffer = bufnr})
   end
   if client.resolved_capabilities.document_formatting then
-    map('n', '<A-e>', '<cmd>lua vim.lsp.buf.formatting()<CR>', {buffer=bufnr})
+    map('n', '<A-e>', '<cmd>lua vim.lsp.buf.formatting()<CR>', {buffer = bufnr})
   end
   -- open a floating window with the diagnostics from the current cursor position
   cmd([[
@@ -457,21 +439,18 @@ local function on_attach(client, bufnr)
   lsp_status.on_attach(client, bufnr)
 end
 
-lsp.handlers['textDocument/publishDiagnostics'] = lsp.with(
-  lsp.diagnostic.on_publish_diagnostics, {
-    virtual_text = false
-  }
-)
+lsp.handlers['textDocument/publishDiagnostics'] =
+  lsp.with(lsp.diagnostic.on_publish_diagnostics, {virtual_text = false})
 
 local capabilities = lsp.protocol.make_client_capabilities()
 lsp_status.init_capabilities(capabilities)
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-lspconfig.clangd.setup {                           -- C, C++
+lspconfig.clangd.setup { -- C, C++
   on_attach = on_attach,
-  capabilities = capabilities
+  capabilities = capabilities,
 }
-lspconfig.tsserver.setup {                         -- TypeScript
+lspconfig.tsserver.setup { -- TypeScript
   on_attach = function(client, bufnr)
     -- do not use tsserver for formatting (use Prettier through efm)
     client.resolved_capabilities.document_formatting = false
@@ -479,21 +458,16 @@ lspconfig.tsserver.setup {                         -- TypeScript
   end,
   capabilities = capabilities,
 }
-lspconfig.rust_analyzer.setup {                    -- Rust
+lspconfig.rust_analyzer.setup { -- Rust
   on_attach = on_attach,
   capabilities = capabilities,
-  settings = {
-    ['rust-analyzer.checkOnSave.command'] = 'clippy',
-  }
+  settings = {['rust-analyzer.checkOnSave.command'] = 'clippy'},
 }
 local eslint = {
   lintCommand = 'npx eslint -f visualstudio --stdin --stdin-filename ${INPUT}',
   lintIgnoreExitCode = true,
   lintStdin = true,
-  lintFormats = {
-    '%f(%l,%c): %tarning %m',
-    '%f(%l,%c): %rror %m'
-  },
+  lintFormats = {'%f(%l,%c): %tarning %m', '%f(%l,%c): %rror %m'},
 }
 local prettier = {
   formatCommand = 'npx prettier --stdin-filepath ${INPUT}',
@@ -509,17 +483,18 @@ local languages = {
   scss = {prettier},
   css = {prettier},
   markdown = {prettier},
-  sh = {{
-    lintCommand = 'shellcheck -f gcc -x',
-    lintSource = 'shellcheck',
-    lintFormats = {
-      '%f:%l:%c: %trror: %m',
-      '%f:%l:%c: %tarning: %m',
-      '%f:%l:%c: %tote: %m'
+  lua = {{formatCommand = 'lua-format -i', formatStdin = true}},
+  sh = {
+    {
+      lintCommand = 'shellcheck -f gcc -x',
+      lintSource = 'shellcheck',
+      lintFormats = {
+        '%f:%l:%c: %trror: %m', '%f:%l:%c: %tarning: %m', '%f:%l:%c: %tote: %m',
+      },
     },
-  }},
+  },
 }
-lspconfig.efm.setup {                              -- efm
+lspconfig.efm.setup { -- efm
   init_options = {
     documentFormatting = true,
     -- efm seems to not support range formatting
@@ -528,16 +503,16 @@ lspconfig.efm.setup {                              -- efm
   },
   filetypes = vim.tbl_keys(languages),
   on_attach = on_attach,
-  settings = {
-    rootMarkers = {'.git/'},
-    languages = languages,
-  }
+  settings = {rootMarkers = {'.git/'}, languages = languages},
 }
-lspconfig.sumneko_lua.setup {                      -- Lua
+lspconfig.sumneko_lua.setup { -- Lua
   on_attach = on_attach,
   capabilities = capabilities,
   -- must be installed in /opt/lua-language-server
-  cmd = {'/opt/lua-language-server/bin/Linux/lua-language-server', '-E', '/opt/lua-language-server/main.lua'},
+  cmd = {
+    '/opt/lua-language-server/bin/Linux/lua-language-server', '-E',
+    '/opt/lua-language-server/main.lua',
+  },
   settings = {
     Lua = {
       runtime = {
@@ -557,11 +532,9 @@ lspconfig.sumneko_lua.setup {                      -- Lua
         },
       },
       -- Do not send telemetry data
-      telemetry = {
-        enable = false,
-      }
-    }
-  }
+      telemetry = {enable = false},
+    },
+  },
 }
 
 -- telescope.nvim ------------------------------------------------
@@ -569,14 +542,8 @@ local actions = require('telescope.actions')
 require'telescope'.setup {
   defaults = {
     vimgrep_arguments = {
-      'rg',
-      '--color=never',
-      '--no-heading',
-      '--with-filename',
-      '--line-number',
-      '--column',
-      '--smart-case',
-      '--hidden'
+      'rg', '--color=never', '--no-heading', '--with-filename', '--line-number',
+      '--column', '--smart-case', '--hidden',
     },
     mappings = {
       i = {
@@ -585,8 +552,8 @@ require'telescope'.setup {
         ['<esc>'] = actions.close, -- <Esc> quit in insert mode
       },
     },
-    borderchars = { '─', '│', '─', '│', '┌', '┐', '┘', '└' },
-  }
+    borderchars = {'─', '│', '─', '│', '┌', '┐', '┘', '└'},
+  },
 }
 
 map('', '<A-s>', '<cmd>Telescope lsp_document_symbols<cr>')
@@ -621,7 +588,7 @@ require'compe'.setup {
     nvim_lsp = true,
     nvim_lua = true,
     snippets_nvim = {priority = 100000},
-  }
+  },
 }
 
 local function check_back_space()
@@ -635,9 +602,9 @@ end
 
 function _G.tab_complete()
   if fn.pumvisible() == 1 then
-    return t'<C-n>'
+    return t '<C-n>'
   elseif check_back_space() then
-    return t'<Tab>'
+    return t '<Tab>'
   else
     return fn['compe#complete']()
   end
@@ -645,19 +612,19 @@ end
 
 function _G.s_tab_complete()
   if fn.pumvisible() == 1 then
-    return t'<C-p>'
+    return t '<C-p>'
   else
-    return t'<S-Tab>'
+    return t '<S-Tab>'
   end
 end
 
-map('i', '<Tab>', 'v:lua.tab_complete()', {expr=true})
-map('s', '<Tab>', 'v:lua.tab_complete()', {expr=true})
-map('i', '<S-Tab>', 'v:lua.s_tab_complete()', {expr=true})
-map('s', '<S-Tab>', 'v:lua.s_tab_complete()', {expr=true})
-map('i', '<C-Space>', 'compe#complete()', {silent=true, expr=true})
-map('i', '<CR>', "compe#confirm('<CR>')", {silent=true, expr=true})
-map('i', '<C-e>', "compe#close('<C-e>')", {silent=true, expr=true})
+map('i', '<Tab>', 'v:lua.tab_complete()', {expr = true})
+map('s', '<Tab>', 'v:lua.tab_complete()', {expr = true})
+map('i', '<S-Tab>', 'v:lua.s_tab_complete()', {expr = true})
+map('s', '<S-Tab>', 'v:lua.s_tab_complete()', {expr = true})
+map('i', '<C-Space>', 'compe#complete()', {silent = true, expr = true})
+map('i', '<CR>', "compe#confirm('<CR>')", {silent = true, expr = true})
+map('i', '<C-e>', "compe#close('<C-e>')", {silent = true, expr = true})
 
 -- snippets.nvim -------------------------------------------------
 -- use <C-j> <C-k> (insert mod) to expand snippets
@@ -667,26 +634,22 @@ require'snippets'.snippets = {
   javascript = js_log,
   typescript = js_log,
   typescriptreact = js_log,
-  c = {
-    printf = [[printf("$1 -> %s$0\n", $1);]]
-  },
-  rust = {
-    pprintln = [[println!("$1 -> {:#?}", $1);]]
-  },
+  c = {printf = [[printf("$1 -> %s$0\n", $1);]]},
+  rust = {pprintln = [[println!("$1 -> {:#?}", $1);]]},
   lua = {
     print = [[print($0)]],
     dump = [[print(vim.inspect($0))]],
     format = [[string.format('%s', $0)]],
-  }
+  },
 }
 
 -- gitsigns.nvim -------------------------------------------------
 require'gitsigns'.setup {
   signs = {
-    add          = {hl = 'GitAddSign'   , text = '┃'},
-    change       = {hl = 'GitChangeSign', text = '┃'},
-    delete       = {hl = 'GitDeleteSign', text = '▶'},
-    topdelete    = {hl = 'GitDeleteSign', text = '▶'},
+    add = {hl = 'GitAddSign', text = '┃'},
+    change = {hl = 'GitChangeSign', text = '┃'},
+    delete = {hl = 'GitDeleteSign', text = '▶'},
+    topdelete = {hl = 'GitDeleteSign', text = '▶'},
     changedelete = {hl = 'GitChangeDeleteSign', text = '┃'},
   },
   numhl = false,
@@ -694,8 +657,14 @@ require'gitsigns'.setup {
   keymaps = {
     noremap = true,
     buffer = true,
-    ['n <Leader>n'] = { expr = true, "&diff ? '<Leader>n' : '<cmd>lua require\"gitsigns\".next_hunk()<CR>'"},
-    ['n <Leader>b'] = { expr = true, "&diff ? '<Leader>b' : '<cmd>lua require\"gitsigns\".prev_hunk()<CR>'"},
+    ['n <Leader>n'] = {
+      expr = true,
+      "&diff ? '<Leader>n' : '<cmd>lua require\"gitsigns\".next_hunk()<CR>'",
+    },
+    ['n <Leader>b'] = {
+      expr = true,
+      "&diff ? '<Leader>b' : '<cmd>lua require\"gitsigns\".prev_hunk()<CR>'",
+    },
     ['n <leader>hs'] = '<cmd>lua require"gitsigns".stage_hunk()<CR>',
     ['n <leader>hu'] = '<cmd>lua require"gitsigns".undo_stage_hunk()<CR>',
     ['n <leader>hr'] = '<cmd>lua require"gitsigns".reset_hunk()<CR>',
@@ -704,13 +673,13 @@ require'gitsigns'.setup {
     ['n <leader>hp'] = '<cmd>lua require"gitsigns".preview_hunk()<CR>',
     ['n <leader>hb'] = '<cmd>lua require"gitsigns".blame_line()<CR>',
   },
-  preview_config = {
-    border = { '', '', '', ' ', '', '', '', ' ' },
-  },
+  preview_config = {border = {'', '', '', ' ', '', '', '', ' '}},
 }
 
 -- lightspeed ----------------------------------------------------
 require'lightspeed'.setup {
-  labels = {'s', 'f', 'h', 'v', 'b', 'n', 'g', 'j', 'd', 'q',
-    'l', 'c', 'k', 't', 'u', 'r', 'i', 'a', 'o', 'e'},
+  labels = {
+    's', 'f', 'h', 'v', 'b', 'n', 'g', 'j', 'd', 'q', 'l', 'c', 'k', 't', 'u',
+    'r', 'i', 'a', 'o', 'e',
+  },
 }
