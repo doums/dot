@@ -16,7 +16,9 @@ cmd 'packadd paq-nvim' -- Load package
 local paq = require'paq-nvim'.paq
 
 -- update treesitter parsers
-local function update_ts_parsers() cmd 'TSUpdate' end
+local function update_ts_parsers()
+  cmd 'TSUpdate'
+end
 
 paq {'savq/paq-nvim', opt = true} -- Let Paq manage itself
 paq 'b3nj5m1n/kommentary'
@@ -50,7 +52,9 @@ end
 -- map with `noremap` option set to `true` by default
 local function map(mode, lhs, rhs, opts)
   opts = opts or {noremap = true}
-  if opts.noremap == nil then opts.noremap = true end
+  if opts.noremap == nil then
+    opts.noremap = true
+  end
   if opts.buffer then
     local bufnr = opts.buffer
     opts.buffer = nil
@@ -390,7 +394,12 @@ require'nvim-treesitter.configs'.setup {
 -- LSP -----------------------------------------------------------
 local lspconfig = require 'lspconfig'
 local lsp_status = require 'lsp_status'
-lsp_status.setup()
+lsp_status.setup {
+  spinner = {
+    '⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏',
+  },
+  interval = 80,
+}
 
 fn.sign_define('LspDiagnosticsSignError',
                {text = '▬', texthl = 'LspDiagnosticsSignError'})
