@@ -475,6 +475,7 @@ local prettier = {
 }
 local languages = {
   javascript = {eslint, prettier},
+  javascriptreact = {eslint, prettier},
   typescript = {eslint, prettier},
   typescriptreact = {eslint, prettier},
   yaml = {prettier},
