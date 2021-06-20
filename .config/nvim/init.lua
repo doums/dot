@@ -567,6 +567,8 @@ require'telescope'.setup {
 }
 
 map('', '<A-s>', '<cmd>Telescope lsp_document_symbols<cr>')
+map('', '<A-x>',
+    '<cmd>lua require("telescope.builtin").find_files{find_command={"fd", "-t", "f"}}<cr>')
 map('', '<A-w>', '<cmd>Telescope lsp_workspace_symbols<cr>')
 map('', '<A-u>', '<cmd>Telescope lsp_references<cr>')
 map('', '<A-CR>', '<cmd>lua require"lens".lsp_code_actions()<cr>')
