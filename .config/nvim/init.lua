@@ -16,9 +16,7 @@ cmd 'packadd paq-nvim' -- Load package
 local paq = require'paq-nvim'.paq
 
 -- update treesitter parsers
-local function update_ts_parsers()
-  cmd 'TSUpdate'
-end
+local function update_ts_parsers() cmd 'TSUpdate' end
 
 paq {'savq/paq-nvim', opt = true} -- Let Paq manage itself
 paq 'b3nj5m1n/kommentary'
@@ -52,9 +50,7 @@ end
 -- map with `noremap` option set to `true` by default
 local function map(mode, lhs, rhs, opts)
   opts = opts or {noremap = true}
-  if opts.noremap == nil then
-    opts.noremap = true
-  end
+  if opts.noremap == nil then opts.noremap = true end
   if opts.buffer then
     local bufnr = opts.buffer
     opts.buffer = nil
@@ -684,7 +680,7 @@ require'gitsigns'.setup {
 -- lightspeed ----------------------------------------------------
 require'lightspeed'.setup {
   labels = {
-    's', 'f', 'h', 'v', 'b', 'n', 'g', 'j', 'd', 'q', 'l', 'c', 'k', 't', 'u',
+    's', 'f', 'g', 'v', 'b', 'n', 'w', 'y', 'd', 'q', 'z', 'c', 'x', 't', 'u',
     'r', 'i', 'a', 'o', 'e',
   },
 }
