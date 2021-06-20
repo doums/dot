@@ -487,10 +487,13 @@ lspconfig.rust_analyzer.setup {                    -- Rust
   }
 }
 local eslint = {
-  lintCommand = 'npx eslint -f unix --stdin --stdin-filename ${INPUT}',
+  lintCommand = 'npx eslint -f visualstudio --stdin --stdin-filename ${INPUT}',
   lintIgnoreExitCode = true,
   lintStdin = true,
-  lintFormats = {'%f:%l:%c: %m'},
+  lintFormats = {
+    '%f(%l,%c): %tarning %m',
+    '%f(%l,%c): %rror %m'
+  },
 }
 local prettier = {
   formatCommand = 'npx prettier --stdin-filepath ${INPUT}',
@@ -509,7 +512,11 @@ local languages = {
   sh = {{
     lintCommand = 'shellcheck -f gcc -x',
     lintSource = 'shellcheck',
-    lintFormats = {'%f:%l:%c: %m'},
+    lintFormats = {
+      '%f:%l:%c: %trror: %m',
+      '%f:%l:%c: %tarning: %m',
+      '%f:%l:%c: %tote: %m'
+    },
   }},
 }
 lspconfig.efm.setup {                              -- efm
