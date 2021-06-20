@@ -31,7 +31,6 @@ paq {'nvim-treesitter/nvim-treesitter', run=update_ts_parsers}
 paq 'neovim/nvim-lspconfig'
 paq 'hrsh7th/nvim-compe'
 paq 'norcalli/snippets.nvim'
-paq 'nvim-lua/lsp_extensions.nvim'
 paq 'nvim-lua/plenary.nvim'        -- dep of telescope.nvim, gitsigns.nvim
 paq 'nvim-lua/popup.nvim'          -- dep of telescope.nvim
 paq 'nvim-telescope/telescope.nvim'
@@ -473,17 +472,6 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
   }
 }
 
-local eslint = {
-  lintCommand = 'npx eslint -f unix --stdin --stdin-filename ${INPUT}',
-  lintIgnoreExitCode = true,
-  lintStdin = true,
-  lintFormats = {'%f:%l:%c: %m'},
-}
-local prettier = {
-  formatCommand = 'npx prettier --stdin-filepath ${INPUT}',
-  formatStdin = true,
-}
-
 lspconfig.clangd.setup {                           -- C, C++
   on_attach = on_attach,
   capabilities = capabilities
@@ -504,33 +492,39 @@ lspconfig.rust_analyzer.setup {                    -- Rust
     ['rust-analyzer.checkOnSave.command'] = 'clippy',
   }
 }
+local eslint = {
+  lintCommand = 'npx eslint -f unix --stdin --stdin-filename ${INPUT}',
+  lintIgnoreExitCode = true,
+  lintStdin = true,
+  lintFormats = {'%f:%l:%c: %m'},
+}
+local prettier = {
+  formatCommand = 'npx prettier --stdin-filepath ${INPUT}',
+  formatStdin = true,
+}
+local languages = {
+  javascript = {eslint, prettier},
+  typescript = {eslint, prettier},
+  typescriptreact = {eslint, prettier},
+  yaml = {prettier},
+  json = {prettier},
+  html = {prettier},
+  scss = {prettier},
+  css = {prettier},
+  markdown = {prettier},
+  sh = {{
+    lintCommand = 'shellcheck -f gcc -x',
+    lintSource = 'shellcheck',
+    lintFormats = {'%f:%l:%c: %m'},
+  }},
+}
 lspconfig.efm.setup {                              -- efm
   init_options = {documentFormatting = true, codeAction = true},
-  on_attach = function()
-    map('n', '<A-e>', '<cmd>lua vim.lsp.buf.formatting()<CR>')
-  end,
+  filetypes = vim.tbl_keys(languages),
+  on_attach = on_attach,
   settings = {
     rootMarkers = {'.git/'},
-    languages = {
-      javascript = {eslint, prettier},
-      typescript = {eslint, prettier},
-      typescriptreact = {eslint, prettier},
-      yaml = {prettier},
-      json = {prettier},
-      html = {prettier},
-      scss = {prettier},
-      css = {prettier},
-      markdown = {prettier},
-      rust = {{
-        formatCommand = 'rustfmt',
-        formatStdin = true
-      }},
-      sh = {{
-        lintCommand = 'shellcheck -f gcc -x',
-        lintSource = 'shellcheck',
-        lintFormats = {'%f:%l:%c: %m'},
-      }},
-    }
+    languages = languages,
   }
 }
 lspconfig.sumneko_lua.setup {                      -- Lua
@@ -599,15 +593,6 @@ map('', '<A-b>', '<cmd>Telescope lsp_definitions<cr>')
 map('', '<C-f>', '<cmd>Telescope live_grep<cr>')
 map('', '<C-b>', '<cmd>lua require"lens".buffers()<cr>')
 cmd 'hi! link TelescopeBorder NonText'
-
--- lsp_extensions.nvim -------------------------------------------
--- enable inlay hints for Rust
-cmd([[
-  augroup lsp_inlay_hints
-    autocmd!
-    autocmd CursorHold,BufEnter,BufWinEnter,TabEnter,BufWritePost *.rs :lua require'lsp_extensions'.inlay_hints{highlight="Hint", prefix=""}
-  augroup END
-]])
 
 -- nvim-compe ----------------------------------------------------
 require'compe'.setup {
@@ -682,6 +667,11 @@ require'snippets'.snippets = {
   rust = {
     pprintln = [[println!("$1 -> {:#?}", $1);]]
   },
+  lua = {
+    print = [[print($0)]],
+    dump = [[print(vim.inspect($0))]],
+    format = [[string.format('%s', $0)]],
+  }
 }
 
 -- gitsigns.nvim -------------------------------------------------
@@ -716,5 +706,5 @@ require'gitsigns'.setup {
 -- lightspeed ----------------------------------------------------
 require'lightspeed'.setup {
   labels = {'s', 'f', 'h', 'v', 'b', 'n', 'g', 'j', 'd', 'q',
-            'l', 'c', 'k', 't', 'u', 'r', 'i', 'a', 'o', 'e'},
+    'l', 'c', 'k', 't', 'u', 'r', 'i', 'a', 'o', 'e'},
 }
