@@ -23,12 +23,12 @@ end
 paq {'savq/paq-nvim', opt = true} -- Let Paq manage itself
 paq 'b3nj5m1n/kommentary'
 paq 'doums/coBra'
-paq 'doums/oterm'
-paq 'doums/fzfTools'
+-- paq 'doums/ponton.nvim'
 paq 'doums/espresso'
 paq 'doums/sae'
 paq 'doums/lsp_status'
 paq 'doums/lens'
+-- paq 'doums/floaterm.nvim'
 paq {'nvim-treesitter/nvim-treesitter', run = update_ts_parsers}
 paq 'neovim/nvim-lspconfig'
 paq 'hrsh7th/nvim-compe'
@@ -296,14 +296,8 @@ g.coBraPairs = {
 g.neovide_cursor_animation_length = 0.08
 g.neovide_cursor_trail_length = 0.6
 
--- OTerm ---------------------------------------------------------
-map('n', '<Leader>o', '<Plug>OTerm', {noremap = false})
-
--- fzfTools ------------------------------------------------------
-g.fzfTools = {gitlog = {tab = 1}, gitlogsel = {tab = 1}}
-map('n', '<C-s>', '<Plug>Ls', {noremap = false})
-map('n', '<C-g>', '<Plug>GitLog', {noremap = false})
-map('n', '<C-g>', '<Plug>SGitLog', {noremap = false})
+-- floaterm.nvim -------------------------------------------------
+map('n', '<C-s>', [[<cmd>lua require'floaterm'.find_file()<cr>]])
 
 -- nvim-tree.lua -------------------------------------------------
 local tree_cb = require'nvim-tree.config'.nvim_tree_callback
