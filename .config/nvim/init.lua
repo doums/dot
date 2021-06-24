@@ -299,6 +299,7 @@ g.neovide_cursor_animation_length = 0.08
 g.neovide_cursor_trail_length = 0.6
 
 -- floaterm.nvim -------------------------------------------------
+require'floaterm'.setup {position = 'top', width = 1, height = 0.8}
 map('n', '<C-s>', [[<cmd>lua require'floaterm'.find_file()<cr>]])
 
 -- nvim-tree.lua -------------------------------------------------
