@@ -31,6 +31,8 @@ paq 'doums/lens'
 -- paq 'doums/floaterm.nvim'
 paq {'nvim-treesitter/nvim-treesitter', run = update_ts_parsers}
 paq 'neovim/nvim-lspconfig'
+paq 'ray-x/lsp_signature.nvim'
+paq 'simrat39/rust-tools.nvim'
 paq 'hrsh7th/nvim-compe'
 paq 'norcalli/snippets.nvim'
 paq 'nvim-lua/plenary.nvim' -- dep of telescope.nvim, gitsigns.nvim
@@ -413,6 +415,22 @@ map('n', '<A-t>', '<cmd>lua vim.lsp.buf.type_definition()<CR>')
 map('n', '<A-d>', '<cmd>lua vim.lsp.buf.hover()<CR>')
 map('n', '<A-r>', '<cmd>lua vim.lsp.buf.rename()<CR>')
 map('n', '<A-g>', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
+map('n', '<A-i>',
+    '<cmd>lua require("rust-tools.inlay_hints").toggle_inlay_hints()<CR>')
+
+hi('signatureHint', '#CA7E03', nil, 'italic')
+local signature_help_cfg = {
+  bind = true,
+  doc_lines = 2,
+  floating_window = true,
+  hint_enable = true,
+  hint_prefix = '→ ',
+  hint_scheme = 'signatureHint',
+  hi_parameter = 'Search',
+  max_height = 4,
+  max_width = 80,
+  handler_opts = {border = 'none'},
+}
 
 local function on_attach(client, bufnr)
   if client.resolved_capabilities.document_range_formatting then
@@ -440,6 +458,7 @@ local function on_attach(client, bufnr)
     ]])
   end
   lsp_status.on_attach(client, bufnr)
+  require'lsp_signature'.on_attach(signature_help_cfg)
 end
 
 lsp.handlers['textDocument/publishDiagnostics'] =
@@ -461,10 +480,21 @@ lspconfig.tsserver.setup { -- TypeScript
   end,
   capabilities = capabilities,
 }
-lspconfig.rust_analyzer.setup { -- Rust
-  on_attach = on_attach,
-  capabilities = capabilities,
-  settings = {['rust-analyzer.checkOnSave.command'] = 'clippy'},
+require('rust-tools').setup { -- Rust
+  tools = {
+    hover_with_actions = false,
+    inlay_hints = {
+      show_parameter_hints = true,
+      parameter_hints_prefix = "→ ",
+      other_hints_prefix = "→ ",
+    },
+    hover_actions = {border = 'none'},
+  },
+  server = { -- rust-analyzer server options
+    on_attach = on_attach,
+    capabilities = capabilities,
+    settings = {['rust-analyzer'] = {checkOnSave = {command = 'clippy'}}},
+  },
 }
 local eslint = {
   lintCommand = 'npx eslint -f visualstudio --stdin --stdin-filename ${INPUT}',
