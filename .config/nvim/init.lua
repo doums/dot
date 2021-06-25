@@ -664,8 +664,8 @@ map('i', '<CR>', "compe#confirm('<CR>')", {silent = true, expr = true})
 map('i', '<C-e>', "compe#close('<C-e>')", {silent = true, expr = true})
 
 -- snippets.nvim -------------------------------------------------
--- use <C-j> <C-k> (insert mod) to expand snippets
-require'snippets'.use_suggested_mappings()
+map('i', '<A-h>', [[<cmd>lua require'snippets'.expand_or_advance(1)<cr>]])
+map('i', '<A-l>', [[<cmd>lua require'snippets'.advance_snippet(-1)<cr>]])
 local js_log = {log = [[console.log('$0');]]}
 require'snippets'.snippets = {
   javascript = js_log,
