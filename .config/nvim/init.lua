@@ -26,7 +26,7 @@ paq 'doums/coBra'
 -- paq 'doums/ponton.nvim'
 paq 'doums/espresso'
 paq 'doums/sae'
-paq 'doums/lsp_status'
+paq 'doums/lsp_spinner.nvim'
 paq 'doums/lens'
 -- paq 'doums/floaterm.nvim'
 paq {'nvim-treesitter/nvim-treesitter', run = update_ts_parsers}
@@ -195,7 +195,7 @@ local line_bg = '#432717'
 require'ponton'.setup({
   line = {
     'active_mark_start', 'mode', 'buffer_name', 'buffer_changed', 'read_only',
-    'git_branch', 'spacer', 'lsp_status', 'lsp_error', 'lsp_warning',
+    'git_branch', 'spacer', 'lsp_spinner', 'lsp_error', 'lsp_warning',
     'lsp_information', 'lsp_hint', 'line', 'sep', 'column', 'line_percent',
     'active_mark_end',
   },
@@ -250,9 +250,9 @@ require'ponton'.setup({
       padding = {1, 1},
       prefix = ' ',
     },
-    lsp_status = {
+    lsp_spinner = {
       style = {'#C5656B', line_bg},
-      fn = require'lsp_status'.status,
+      fn = require'lsp_spinner'.status,
       padding = {nil, 2},
       prefix = '󰣪 ',
     },
@@ -390,8 +390,8 @@ require'nvim-treesitter.configs'.setup {
 
 -- LSP -----------------------------------------------------------
 local lspconfig = require 'lspconfig'
-local lsp_status = require 'lsp_status'
-lsp_status.setup {
+local lsp_spinner = require 'lsp_spinner'
+lsp_spinner.setup {
   spinner = {
     '⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏',
   },
@@ -458,7 +458,7 @@ local function on_attach(client, bufnr)
       augroup END
     ]])
   end
-  lsp_status.on_attach(client, bufnr)
+  lsp_spinner.on_attach(client, bufnr)
   require'lsp_signature'.on_attach(signature_help_cfg)
 end
 
@@ -466,7 +466,7 @@ lsp.handlers['textDocument/publishDiagnostics'] =
   lsp.with(lsp.diagnostic.on_publish_diagnostics, {virtual_text = false})
 
 local capabilities = lsp.protocol.make_client_capabilities()
-lsp_status.init_capabilities(capabilities)
+lsp_spinner.init_capabilities(capabilities)
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 lspconfig.clangd.setup { -- C, C++
