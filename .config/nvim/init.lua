@@ -309,6 +309,7 @@ local tree_cb = require'nvim-tree.config'.nvim_tree_callback
 g.nvim_tree_width = 40
 g.nvim_tree_git_hl = 1
 g.nvim_tree_width_allow_resize = 1
+g.nvim_tree_window_picker_chars = "HJKLFDSQ"
 map('n', '<Tab>', '<cmd>NvimTreeToggle<CR>')
 map('n', '<S-Tab>', '<cmd>NvimTreeFindFile<CR>')
 vim.g.nvim_tree_bindings = {
@@ -370,6 +371,7 @@ hi('NvimTreeGitStaged', '#39c064', nil, 'italic')
 hi('NvimTreeGitRenamed', '#507eae', nil, 'italic')
 hi('NvimTreeGitDeleted', '#bd5b5b', nil, 'italic')
 li('NvimTreeGitDirty', 'NvimTreeGitDeleted')
+li('NvimTreeWindowPicker', 'NormalFloat')
 
 -- nvim-treesitter -----------------------------------------------
 require'nvim-treesitter.configs'.setup {
