@@ -117,7 +117,7 @@ opt.signcolumn = 'yes:2'
 opt.cmdheight = 2
 opt.mouse = 'a'
 opt.statusline = ' ' -- hide the default statusline on the first frames
-opt.guifont = 'JetBrainsMono-Regular:h20'
+opt.guifont = 'JetBrains Mono:h16'
 
 -- VARIOUS -------------------------------------------------------
 -- color scheme
@@ -295,7 +295,8 @@ g.coBraPairs = {
 }
 
 -- neovide -------------------------------------------------------
-g.neovide_cursor_animation_length = 0.08
+g.neovide_refresh_rate = 144
+g.neovide_cursor_animation_length = 0.02
 g.neovide_cursor_trail_length = 0.6
 
 -- floaterm.nvim -------------------------------------------------
