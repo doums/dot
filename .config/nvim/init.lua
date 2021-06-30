@@ -371,7 +371,7 @@ hi('NvimTreeGitStaged', '#39c064', nil, 'italic')
 hi('NvimTreeGitRenamed', '#507eae', nil, 'italic')
 hi('NvimTreeGitDeleted', '#bd5b5b', nil, 'italic')
 li('NvimTreeGitDirty', 'NvimTreeGitDeleted')
-li('NvimTreeWindowPicker', 'NormalFloat')
+hi('NvimTreeWindowPicker', '#BDAE9D', '#2A190E', 'bold')
 
 -- nvim-treesitter -----------------------------------------------
 require'nvim-treesitter.configs'.setup {
