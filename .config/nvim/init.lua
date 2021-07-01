@@ -594,6 +594,8 @@ require'telescope'.setup {
         ['<esc>'] = actions.close, -- <Esc> quit in insert mode
       },
     },
+    prompt_prefix = "▶ ",
+    selection_caret = "▶ ",
     borderchars = {'─', '│', '─', '│', '┌', '┐', '┘', '└'},
   },
 }
