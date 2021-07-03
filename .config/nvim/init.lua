@@ -112,12 +112,12 @@ opt.pumheight = 10
 opt.fillchars = {vert = '┃', diff = ' ', fold = ' ', eob = ' '}
 opt.complete = opt.complete:append{'i'}
 opt.clipboard = 'unnamedplus'
-opt.guicursor = ''
 opt.signcolumn = 'yes:2'
 opt.cmdheight = 2
 opt.mouse = 'a'
 opt.statusline = ' ' -- hide the default statusline on the first frames
 opt.guifont = 'JetBrains Mono:h16'
+opt.guicursor = 'a:block'
 
 -- VARIOUS -------------------------------------------------------
 -- color scheme
