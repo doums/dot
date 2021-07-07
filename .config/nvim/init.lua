@@ -492,7 +492,7 @@ require('rust-tools').setup { -- Rust
   tools = {
     hover_with_actions = false,
     inlay_hints = {
-      show_parameter_hints = true,
+      autoSetHints = false,
       parameter_hints_prefix = "→ ",
       other_hints_prefix = "→ ",
     },

@@ -28,17 +28,17 @@ gm convert $bg_lock -scale 10% -scale 1000% -colorspace Gray -gamma 0.6 \
   -draw 'gravity Center text 0,0 locked' \
   $bg_lock
 options="
---insidecolor=ffffff1c
---ringcolor=ffffff3e
---linecolor=ffffff00
---keyhlcolor=00000080
---ringvercolor=00000000
---separatorcolor=22222260
---insidevercolor=0000001c
---ringwrongcolor=00000055
---insidewrongcolor=0000001c
---verifcolor=00000000
---wrongcolor=00000000
---layoutcolor=00000000"
+--inside-color=ffffff1c
+--ring-color=ffffff3e
+--line-color=ffffff00
+--keyhl-color=00000080
+--ringver-color=212121ff
+--separator-color=22222260
+--insidever-color=0000001c
+--ringwrong-color=c62828c8
+--insidewrong-color=0000001c
+--verif-color=00000000
+--wrong-color=00000000
+--layout-color=00000000"
 mapfile -t options <<< "$options"
 i3lock -i "$bg_lock" "${options[@]}" "$@"
