@@ -30,6 +30,7 @@ paq 'doums/lsp_spinner.nvim'
 paq 'doums/lens'
 -- paq 'doums/floaterm.nvim'
 paq {'nvim-treesitter/nvim-treesitter', run = update_ts_parsers}
+paq 'nvim-treesitter/playground'
 paq 'neovim/nvim-lspconfig'
 paq 'ray-x/lsp_signature.nvim'
 paq 'simrat39/rust-tools.nvim'
@@ -73,11 +74,13 @@ function _G.dump(...)
   print(unpack(objects))
 end
 
-local function hi(name, foreground, background, style)
+local function hi(name, foreground, background, style, special)
   local fg = 'guifg=' .. (foreground or 'NONE')
   local bg = 'guibg=' .. (background or 'NONE')
   local decoration = 'gui=' .. (style or 'NONE')
-  local hi_command = string.format('hi %s %s %s %s', name, fg, bg, decoration)
+  local sp = 'guisp=' .. (special or foreground or 'NONE')
+  local hi_command = string.format('hi %s %s %s %s %s', name, fg, bg,
+                                   decoration, sp)
   cmd(hi_command)
 end
 
@@ -117,7 +120,9 @@ opt.cmdheight = 2
 opt.mouse = 'a'
 opt.statusline = ' ' -- hide the default statusline on the first frames
 opt.guifont = 'JetBrains Mono:h16'
-opt.guicursor = 'a:block'
+opt.guicursor = 'a:block-Caret'
+opt.spelllang = 'en_us'
+opt.spelloptions = 'camel'
 
 -- VARIOUS -------------------------------------------------------
 -- color scheme
@@ -126,6 +131,8 @@ cmd 'colorscheme espresso'
 cmd 'runtime ftplugin/man.vim'
 -- map leader
 g.mapleader = ','
+-- highlight group for guicursor
+hi('Caret', '#2A211C', '#889AFF', 'bold')
 
 -- MAPPINGS ------------------------------------------------------
 -- c'est en forgeant que l'on devient forgeron
@@ -174,10 +181,13 @@ map('n', '<A-Right>', ':vertical resize +4<CR>', {silent = true})
 map('n', '<A-Left>', ':vertical resize -4<CR>', {silent = true})
 -- terminal normal mode
 map('t', '<Leader>n', '<C-\\><C-N>')
+-- toggle spell check
+map('n', '<F4>', [[:lua vim.opt.spell = not vim.opt.spell:get()<CR>]],
+    {silent = true})
 
 -- AUTOCOMMANDS --------------------------------------------------
 -- see https://github.com/neovim/neovim/pull/12378
-cmd([[
+cmd [[
   augroup init.lua
     autocmd!
     " whenever CursorHold is fired (nothing typed during 'updatetime') in a normal
@@ -185,8 +195,9 @@ cmd([[
     " retrieve any external changes
     autocmd CursorHold * if empty(&buftype) | checktime % | endif
     autocmd FileType man set nonumber
+    autocmd TextYankPost * silent! lua vim.highlight.on_yank()
   augroup END
-]])
+]]
 
 -- ponton.nvim ---------------------------------------------------
 hi('StatusLineNC', '#BDAE9D', '#432717')
@@ -298,6 +309,10 @@ g.coBraPairs = {
 g.neovide_refresh_rate = 144
 g.neovide_cursor_animation_length = 0.02
 g.neovide_cursor_trail_length = 0.6
+if g.neovide then
+  hi('Error', nil, nil, 'undercurl', '#FF6767')
+  hi('SpellBad', nil, nil, 'undercurl', '#659C6B')
+end
 
 -- floaterm.nvim -------------------------------------------------
 require'floaterm'.setup {position = 'top', width = 1, height = 0.8}
@@ -631,6 +646,7 @@ require'compe'.setup {
     path = true,
     buffer = true,
     calc = true,
+    spell = true,
     nvim_lsp = true,
     nvim_lua = true,
     snippets_nvim = {priority = 100000},
