@@ -123,6 +123,7 @@ opt.guifont = 'JetBrains Mono:h16'
 opt.guicursor = 'a:block-Caret'
 opt.spelllang = 'en_us'
 opt.spelloptions = 'camel'
+opt.colorcolumn = '66'
 
 -- VARIOUS -------------------------------------------------------
 -- color scheme
