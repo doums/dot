@@ -312,6 +312,7 @@ g.neovide_cursor_trail_length = 0.6
 if g.neovide then
   hi('Error', nil, nil, 'undercurl', '#FF6767')
   hi('SpellBad', nil, nil, 'undercurl', '#659C6B')
+  hi('Hint', nil, nil, 'undercurl', '#4E4F4F')
 end
 
 -- floaterm.nvim -------------------------------------------------
@@ -397,7 +398,7 @@ require'nvim-treesitter.configs'.setup {
     'c', 'cpp', 'rust', 'yaml', 'bash', 'typescript', 'javascript', 'html',
     'css', 'lua', 'comment', 'jsdoc', 'tsx', 'toml', 'json', 'graphql', 'jsonc',
   },
-  highlight = {enable = true},
+  highlight = {enable = true, custom_captures = {todo = "Todo"}},
   indent = {enable = true},
   incremental_selection = {
     enable = true,
