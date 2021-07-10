@@ -4,6 +4,7 @@ local cmd = vim.cmd
 local g = vim.g
 local opt = vim.opt
 local lsp = vim.lsp
+local api = vim.api
 
 -- PLUGINS -------------------------------------------------------
 -- auto install paq-nvim
@@ -49,7 +50,7 @@ paq 'ggandor/lightspeed.nvim'
 -- HELPERS -------------------------------------------------------
 -- `t` for `termcodes`.
 local function t(str)
-  return vim.api.nvim_replace_termcodes(str, true, true, true)
+  return api.nvim_replace_termcodes(str, true, true, true)
 end
 
 -- map with `noremap` option set to `true` by default
@@ -61,10 +62,10 @@ local function map(mode, lhs, rhs, opts)
   if opts.buffer then
     local bufnr = opts.buffer
     opts.buffer = nil
-    vim.api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, opts)
+    api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, opts)
   else
     opts.buffer = nil
-    vim.api.nvim_set_keymap(mode, lhs, rhs, opts)
+    api.nvim_set_keymap(mode, lhs, rhs, opts)
   end
 end
 
@@ -564,6 +565,9 @@ lspconfig.efm.setup { -- efm
   on_attach = on_attach,
   settings = {rootMarkers = {'.git/'}, languages = languages},
 }
+local runtime_path = vim.split(package.path, ';')
+table.insert(runtime_path, 'lua/?.lua')
+table.insert(runtime_path, 'lua/?/init.lua')
 lspconfig.sumneko_lua.setup { -- Lua
   on_attach = on_attach,
   capabilities = capabilities,
@@ -574,23 +578,12 @@ lspconfig.sumneko_lua.setup { -- Lua
   },
   settings = {
     Lua = {
-      runtime = {
-        -- LuaJIT for Neovim
-        version = 'LuaJIT',
-        path = vim.split(package.path, ';'),
-      },
-      diagnostics = {
-        -- Get the language server to recognize the `vim` global
-        globals = {'vim'},
-      },
+      runtime = {version = 'LuaJIT', path = runtime_path},
+      diagnostics = {globals = {'vim'}},
       workspace = {
-        -- Make the server aware of Neovim runtime files
-        library = {
-          [vim.fn.expand('$VIMRUNTIME/lua')] = true,
-          [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
-        },
+        library = api.nvim_get_runtime_file("", true),
+        preloadFileSize = 120,
       },
-      -- Do not send telemetry data
       telemetry = {enable = false},
     },
   },
