@@ -24,7 +24,7 @@ paq {'savq/paq-nvim', opt = true} -- Let Paq manage itself
 paq 'b3nj5m1n/kommentary'
 paq 'doums/coBra'
 -- paq 'doums/ponton.nvim'
-paq 'doums/espresso'
+-- paq 'doums/espresso'
 paq 'doums/sae'
 paq 'doums/lsp_spinner.nvim'
 paq 'doums/lens'
@@ -326,17 +326,16 @@ local tree_cb = require'nvim-tree.config'.nvim_tree_callback
 g.nvim_tree_width = 40
 g.nvim_tree_git_hl = 1
 g.nvim_tree_auto_resize = 0
+g.nvim_tree_disable_default_keybindings = 1
 g.nvim_tree_window_picker_chars = "HLJKFQDS"
 map('n', '<Tab>', '<cmd>NvimTreeToggle<CR>')
 map('n', '<S-Tab>', '<cmd>NvimTreeFindFile<CR>')
 g.nvim_tree_bindings = {
-  {key = {"<CR>", "o", "<2-LeftMouse>"}, cb = tree_cb("edit")},
-  {key = {"<2-RightMouse>", "<C-}>"}, cb = tree_cb("cd")},
+  {key = {"<CR>", "<2-LeftMouse>"}, cb = tree_cb("edit")},
+  {key = {"<2-RightMouse>", "<C-]>"}, cb = tree_cb("cd")},
   {key = "<C-v>", cb = tree_cb("vsplit")},
   {key = "<C-s>", cb = tree_cb("split")},
   {key = "<C-t>", cb = tree_cb("tabnew")},
-  {key = "<", cb = tree_cb("prev_sibling")},
-  {key = ">", cb = tree_cb("next_sibling")},
   {key = "P", cb = tree_cb("parent_node")},
   {key = "<BS>", cb = tree_cb("close_node")},
   {key = "<S-CR>", cb = tree_cb("close_node")},
@@ -347,14 +346,14 @@ g.nvim_tree_bindings = {
   {key = "H", cb = tree_cb("toggle_dotfiles")},
   {key = "R", cb = tree_cb("refresh")}, {key = "a", cb = tree_cb("create")},
   {key = "d", cb = tree_cb("remove")}, {key = "r", cb = tree_cb("rename")},
-  {key = "<C->", cb = tree_cb("full_rename")}, {key = "x", cb = tree_cb("cut")},
-  {key = "c", cb = tree_cb("copy")}, {key = "p", cb = tree_cb("paste")},
-  {key = "y", cb = tree_cb("copy_name")},
+  {key = "<C-r>", cb = tree_cb("full_rename")},
+  {key = "x", cb = tree_cb("cut")}, {key = "c", cb = tree_cb("copy")},
+  {key = "p", cb = tree_cb("paste")}, {key = "y", cb = tree_cb("copy_name")},
   {key = "Y", cb = tree_cb("copy_path")},
   {key = "gy", cb = tree_cb("copy_absolute_path")},
-  {key = "[c", cb = tree_cb("prev_git_item")},
-  {key = "}c", cb = tree_cb("next_git_item")},
-  {key = "-", cb = tree_cb("dir_up")}, {key = "q", cb = tree_cb("close")},
+  {key = "-", cb = tree_cb("dir_up")},
+  {key = "o", cb = tree_cb("system_open")},
+  {key = "q", cb = tree_cb("close")},
   {key = "g?", cb = tree_cb("toggle_help")},
 }
 g.nvim_tree_show_icons = {git = 0, folders = 1, files = 1}
