@@ -109,6 +109,7 @@ opt.splitright = true
 opt.foldlevelstart = 0
 opt.hidden = true
 opt.cursorline = true
+opt.cursorlineopt = {'number', 'screenline'}
 opt.switchbuf = 'usetab'
 opt.scrolloff = 1
 opt.completeopt = {'menuone', 'noselect'}
@@ -328,34 +329,32 @@ g.nvim_tree_width = 40
 g.nvim_tree_git_hl = 1
 g.nvim_tree_auto_resize = 0
 g.nvim_tree_disable_default_keybindings = 1
-g.nvim_tree_window_picker_chars = "HLJKFQDS"
+g.nvim_tree_window_picker_chars = 'HLJKFQDS'
 map('n', '<Tab>', '<cmd>NvimTreeToggle<CR>')
 map('n', '<S-Tab>', '<cmd>NvimTreeFindFile<CR>')
 g.nvim_tree_bindings = {
-  {key = {"<CR>", "<2-LeftMouse>"}, cb = tree_cb("edit")},
-  {key = {"<2-RightMouse>", "<C-]>"}, cb = tree_cb("cd")},
-  {key = "<C-v>", cb = tree_cb("vsplit")},
-  {key = "<C-s>", cb = tree_cb("split")},
-  {key = "<C-t>", cb = tree_cb("tabnew")},
-  {key = "P", cb = tree_cb("parent_node")},
-  {key = "<BS>", cb = tree_cb("close_node")},
-  {key = "<S-CR>", cb = tree_cb("close_node")},
-  {key = "<Tab>", cb = tree_cb("preview")},
-  {key = "K", cb = tree_cb("first_sibling")},
-  {key = "J", cb = tree_cb("last_sibling")},
-  {key = "I", cb = tree_cb("toggle_ignored")},
-  {key = "H", cb = tree_cb("toggle_dotfiles")},
-  {key = "R", cb = tree_cb("refresh")}, {key = "a", cb = tree_cb("create")},
-  {key = "d", cb = tree_cb("remove")}, {key = "r", cb = tree_cb("rename")},
-  {key = "<C-r>", cb = tree_cb("full_rename")},
-  {key = "x", cb = tree_cb("cut")}, {key = "c", cb = tree_cb("copy")},
-  {key = "p", cb = tree_cb("paste")}, {key = "y", cb = tree_cb("copy_name")},
-  {key = "Y", cb = tree_cb("copy_path")},
-  {key = "gy", cb = tree_cb("copy_absolute_path")},
-  {key = "-", cb = tree_cb("dir_up")},
-  {key = "o", cb = tree_cb("system_open")},
-  {key = "q", cb = tree_cb("close")},
-  {key = "g?", cb = tree_cb("toggle_help")},
+  {key = {'<CR>', '<2-LeftMouse>'}, cb = tree_cb('edit')},
+  {key = {'<2-RightMouse>', '<C-]>'}, cb = tree_cb('cd')},
+  {key = '<C-v>', cb = tree_cb('vsplit')},
+  {key = '<C-s>', cb = tree_cb('split')},
+  {key = '<C-t>', cb = tree_cb('tabnew')},
+  {key = 'P', cb = tree_cb('parent_node')},
+  {key = '<BS>', cb = tree_cb('close_node')},
+  {key = '<S-CR>', cb = tree_cb('close_node')},
+  {key = '<Tab>', cb = tree_cb('preview')},
+  {key = 'K', cb = tree_cb('first_sibling')},
+  {key = 'J', cb = tree_cb('last_sibling')},
+  {key = 'I', cb = tree_cb('toggle_ignored')},
+  {key = 'H', cb = tree_cb('toggle_dotfiles')},
+  {key = 'R', cb = tree_cb('refresh')}, {key = 'a', cb = tree_cb('create')},
+  {key = 'd', cb = tree_cb('remove')}, {key = 'r', cb = tree_cb('rename')},
+  {key = '<C-r>', cb = tree_cb('full_rename')},
+  {key = 'x', cb = tree_cb('cut')}, {key = 'c', cb = tree_cb('copy')},
+  {key = 'p', cb = tree_cb('paste')}, {key = 'y', cb = tree_cb('copy_name')},
+  {key = 'Y', cb = tree_cb('copy_path')},
+  {key = 'gy', cb = tree_cb('copy_absolute_path')},
+  {key = '-', cb = tree_cb('dir_up')}, {key = 'o', cb = tree_cb('system_open')},
+  {key = 'q', cb = tree_cb('close')}, {key = 'g?', cb = tree_cb('toggle_help')},
 }
 g.nvim_tree_show_icons = {git = 0, folders = 1, files = 1}
 g.nvim_tree_icons = {
@@ -399,7 +398,7 @@ require'nvim-treesitter.configs'.setup {
     'c', 'cpp', 'rust', 'yaml', 'bash', 'typescript', 'javascript', 'html',
     'css', 'lua', 'comment', 'jsdoc', 'tsx', 'toml', 'json', 'graphql', 'jsonc',
   },
-  highlight = {enable = true, custom_captures = {todo = "Todo"}},
+  highlight = {enable = true, custom_captures = {todo = 'Todo'}},
   indent = {enable = true},
   incremental_selection = {
     enable = true,
@@ -510,8 +509,8 @@ require('rust-tools').setup { -- Rust
     hover_with_actions = false,
     inlay_hints = {
       autoSetHints = false,
-      parameter_hints_prefix = "→ ",
-      other_hints_prefix = "→ ",
+      parameter_hints_prefix = '→ ',
+      other_hints_prefix = '→ ',
     },
     hover_actions = {border = 'none'},
   },
@@ -578,10 +577,13 @@ lspconfig.sumneko_lua.setup { -- Lua
   settings = {
     Lua = {
       runtime = {version = 'LuaJIT', path = runtime_path},
-      diagnostics = {globals = {'vim'}},
+      diagnostics = {
+        -- Get the language server to recognize the `vim` global
+        globals = {'vim'},
+      },
       workspace = {
-        library = api.nvim_get_runtime_file("", true),
-        preloadFileSize = 120,
+        -- Make the server aware of Neovim runtime files
+        library = api.nvim_get_runtime_file('', true),
       },
       telemetry = {enable = false},
     },
@@ -603,8 +605,8 @@ require'telescope'.setup {
         ['<esc>'] = actions.close, -- <Esc> quit in insert mode
       },
     },
-    prompt_prefix = "▶ ",
-    selection_caret = "▶ ",
+    prompt_prefix = '▶ ',
+    selection_caret = '▶ ',
     borderchars = {'─', '│', '─', '│', '┌', '┐', '┘', '└'},
   },
 }
