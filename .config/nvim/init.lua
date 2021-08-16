@@ -25,11 +25,11 @@ paq {'savq/paq-nvim', opt = true} -- Let Paq manage itself
 paq 'b3nj5m1n/kommentary'
 paq 'doums/coBra'
 -- paq 'doums/ponton.nvim'
--- paq 'doums/espresso'
+paq 'doums/espresso'
 paq 'doums/sae'
 paq 'doums/lsp_spinner.nvim'
 paq 'doums/lens'
--- paq 'doums/floaterm.nvim'
+paq 'doums/floaterm.nvim'
 paq {'nvim-treesitter/nvim-treesitter', run = update_ts_parsers}
 paq 'nvim-treesitter/playground'
 paq 'neovim/nvim-lspconfig'
