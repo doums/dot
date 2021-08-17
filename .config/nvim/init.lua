@@ -60,6 +60,7 @@ paq 'tweekmonster/startuptime.vim'
 paq 'kyazdani42/nvim-tree.lua'
 paq 'kyazdani42/nvim-web-devicons' -- dep of nvim-tree.lua
 paq 'ggandor/lightspeed.nvim'
+paq 'AckslD/nvim-neoclip.lua'
 
 -- HELPERS -------------------------------------------------------
 -- `t` for `termcodes`.
@@ -764,3 +765,8 @@ require'lightspeed'.setup {
     'r', 'i', 'a', 'o', 'e',
   },
 }
+hi('LightspeedCursor', '#212121', '#aeea00', 'bold')
+
+-- nvim-neoclip.lua ----------------------------------------------
+require'neoclip'.setup()
+map('', '<A-c>', [[:lua require('telescope').extensions.neoclip.default()<cr>]], {silent=true})
