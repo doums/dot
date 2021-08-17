@@ -1,3 +1,17 @@
+--[[ External dependencies
+
+for LSP
+  * clangd, language server for C/C++ (Arch Linux package clangd)
+  * efm, run linters and formatters (Arch Linux package efm-langserver)
+  * TypeScript Language Server (npm i -g typescript-language-server)
+  * rust-analyzer (https://rust-analyzer.github.io/manual.html#rustup)
+  * shellcheck, shell script static analysis tool (AUR shellcheck-bin)
+  * LuaFormatter (https://github.com/Koihik/LuaFormatter)
+  * lua-language-server, must be installed in /opt/lua-language-server
+
+others: git, ripgrep, fzf, node, npm
+-- ]]
+
 -- ALIASES -------------------------------------------------------
 local fn = vim.fn
 local cmd = vim.cmd
@@ -569,7 +583,6 @@ table.insert(runtime_path, 'lua/?/init.lua')
 lspconfig.sumneko_lua.setup { -- Lua
   on_attach = on_attach,
   capabilities = capabilities,
-  -- must be installed in /opt/lua-language-server
   cmd = {
     '/opt/lua-language-server/bin/Linux/lua-language-server', '-E',
     '/opt/lua-language-server/main.lua',
