@@ -36,7 +36,7 @@ paq 'neovim/nvim-lspconfig'
 paq 'ray-x/lsp_signature.nvim'
 paq 'simrat39/rust-tools.nvim'
 paq 'hrsh7th/nvim-compe'
-paq 'norcalli/snippets.nvim'
+paq 'L3MON4D3/LuaSnip'
 paq 'nvim-lua/plenary.nvim' -- dep of telescope.nvim, gitsigns.nvim
 paq 'nvim-lua/popup.nvim' -- dep of telescope.nvim
 paq 'nvim-telescope/telescope.nvim'
@@ -624,7 +624,8 @@ map('', '<C-f>', '<cmd>Telescope live_grep<cr>')
 map('', '<C-b>', '<cmd>lua require"lens".buffers()<cr>')
 cmd 'hi! link TelescopeBorder NonText'
 
--- nvim-compe ----------------------------------------------------
+-- nvim-compe & LuaSnip ------------------------------------------
+local luasnip = require 'luasnip'
 require'compe'.setup {
   enabled = true,
   autocomplete = true,
@@ -645,7 +646,7 @@ require'compe'.setup {
     spell = true,
     nvim_lsp = true,
     nvim_lua = true,
-    snippets_nvim = {priority = 100000},
+    luasnip = {priority = 100000},
   },
 }
 
@@ -661,6 +662,8 @@ end
 function _G.tab_complete()
   if fn.pumvisible() == 1 then
     return t '<C-n>'
+  elseif luasnip and luasnip.expand_or_jumpable() then
+    return t '<Plug>luasnip-expand-or-jump'
   elseif check_back_space() then
     return t '<Tab>'
   else
@@ -671,6 +674,8 @@ end
 function _G.s_tab_complete()
   if fn.pumvisible() == 1 then
     return t '<C-p>'
+  elseif luasnip and luasnip.jumpable(-1) then
+    return t '<Plug>luasnip-jump-prev'
   else
     return t '<S-Tab>'
   end
@@ -683,21 +688,26 @@ map('s', '<S-Tab>', 'v:lua.s_tab_complete()', {expr = true})
 map('i', '<C-Space>', 'compe#complete()', {silent = true, expr = true})
 map('i', '<CR>', "compe#confirm('<CR>')", {silent = true, expr = true})
 map('i', '<C-e>', "compe#close('<C-e>')", {silent = true, expr = true})
+map('i', '<A-h>', '<Plug>luasnip-next-choice')
+map('s', '<A-h>', '<Plug>luasnip-next-choice')
 
--- snippets.nvim -------------------------------------------------
-map('i', '<A-h>', [[<cmd>lua require'snippets'.expand_or_advance(1)<cr>]])
-map('i', '<A-l>', [[<cmd>lua require'snippets'.advance_snippet(-1)<cr>]])
-local js_log = {log = [[console.log('$0');]]}
-require'snippets'.snippets = {
-  javascript = js_log,
-  typescript = js_log,
-  typescriptreact = js_log,
-  c = {printf = [[printf("$1 -> %s$0\n", $1);]]},
-  rust = {pprintln = [[println!("$1 -> {:#?}", $1);]]},
+-- snippets
+local ps = luasnip.parser.parse_snippet
+local js_log = ps({trig = 'log', name = 'console log'}, 'console.log($0);')
+luasnip.snippets = {
+  javascript = {js_log},
+  typescript = {js_log},
+  typescriptreact = {js_log},
+  c = {ps('printf', [[printf("$1 -> %s$0\n", $1);]])},
+  rust = {
+    ps({trig = 'pprintln', name = 'pretty print debug'},
+       [[println!("$1 -> {:#?}", $1);]]),
+  },
   lua = {
-    print = [[print($0)]],
-    dump = [[print(vim.inspect($0))]],
-    format = [[string.format('%s', $0)]],
+    ps('print', [[print($0)]]),
+    ps({trig = 'dump', name = 'print with vim.inspect'},
+       [[print(vim.inspect($0))]]),
+    ps({trig = 'format', name = 'string format'}, [[string.format('%s', $0)]]),
   },
 }
 
