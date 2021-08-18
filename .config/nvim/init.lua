@@ -38,7 +38,7 @@ end
 paq {'savq/paq-nvim', opt = true} -- Let Paq manage itself
 paq 'b3nj5m1n/kommentary'
 paq 'doums/coBra'
--- paq 'doums/ponton.nvim'
+paq 'doums/ponton.nvim'
 paq 'doums/espresso'
 paq 'doums/sae'
 paq 'doums/lsp_spinner.nvim'
@@ -56,11 +56,11 @@ paq 'nvim-lua/popup.nvim' -- dep of telescope.nvim
 paq 'nvim-telescope/telescope.nvim'
 paq 'lewis6991/gitsigns.nvim'
 paq 'pantharshit00/vim-prisma'
-paq 'tweekmonster/startuptime.vim'
 paq 'kyazdani42/nvim-tree.lua'
 paq 'kyazdani42/nvim-web-devicons' -- dep of nvim-tree.lua
 paq 'ggandor/lightspeed.nvim'
 paq 'AckslD/nvim-neoclip.lua'
+-- paq 'henriquehbr/nvim-startup.lua'
 
 -- HELPERS -------------------------------------------------------
 -- `t` for `termcodes`.
