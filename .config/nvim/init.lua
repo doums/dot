@@ -9,7 +9,7 @@ for LSP
   * LuaFormatter (https://github.com/Koihik/LuaFormatter)
   * lua-language-server, must be installed in /opt/lua-language-server
 
--- for coq_nvim: python-virtualenv (Arch Linux package) --
+for coq_nvim: python-virtualenv (Arch Linux package)
 
 others: git, ripgrep, fzf, node, npm
 -- ]]
@@ -52,8 +52,13 @@ paq 'nvim-treesitter/playground'
 paq 'neovim/nvim-lspconfig'
 paq 'ray-x/lsp_signature.nvim'
 paq 'simrat39/rust-tools.nvim'
-paq 'hrsh7th/nvim-compe'
--- paq {'ms-jpq/coq_nvim', branch = 'coq'}
+--[[ paq 'hrsh7th/nvim-cmp'
+paq 'hrsh7th/cmp-buffer'
+paq 'hrsh7th/cmp-nvim-lua'
+paq 'hrsh7th/cmp-nvim-lsp'
+paq 'hrsh7th/cmp-path'
+paq 'saadparwaiz1/cmp_luasnip' ]]
+paq {'ms-jpq/coq_nvim', branch = 'coq'}
 paq 'L3MON4D3/LuaSnip'
 paq 'nvim-lua/plenary.nvim' -- dep of telescope.nvim, gitsigns.nvim
 paq 'nvim-lua/popup.nvim' -- dep of telescope.nvim
@@ -643,7 +648,7 @@ map('', '<C-f>', '<cmd>Telescope live_grep<cr>')
 map('', '<C-b>', '<cmd>lua require"lens".buffers()<cr>')
 cmd 'hi! link TelescopeBorder NonText'
 
---[[ -- coq_nvim ------------------------------------------------------
+-- coq_nvim ------------------------------------------------------
 g.coq_settings = {
   auto_start = 'shut-up',
   ['keymap.jump_to_mark'] = '<A-tab>',
@@ -654,76 +659,67 @@ g.coq_settings = {
   ['clients.tags.parent_scope'] = ' ↓',
   ['clients.tags.path_sep'] = ' → ',
   ['display.pum.ellipsis'] = '…',
-} ]]
-
--- nvim-compe & LuaSnip ------------------------------------------
-local luasnip = require 'luasnip'
-require'compe'.setup {
-  enabled = true,
-  autocomplete = true,
-  debug = false,
-  min_length = 1,
-  preselect = 'enable',
-  throttle_time = 80,
-  source_timeout = 200,
-  incomplete_delay = 400,
-  max_abbr_width = 100,
-  max_kind_width = 100,
-  max_menu_width = 100,
-  documentation = true,
-  source = {
-    path = true,
-    buffer = true,
-    calc = true,
-    spell = true,
-    nvim_lsp = true,
-    nvim_lua = true,
-    luasnip = {priority = 100000},
-  },
 }
+
+--[[ -- nvim-cmp & LuaSnip ------------------------------------------
+local cmp = require('cmp')
+local luasnip = require('luasnip')
 
 local function check_back_space()
   local col = fn.col('.') - 1
-  if col == 0 or fn.getline('.'):sub(col, col):match('%s') then
-    return true
-  else
-    return false
-  end
+  return col == 0 or fn.getline('.'):sub(col, col):match('%s') ~= nil
 end
 
-function _G.tab_complete()
+local tab_key = cmp.mapping(function(fallback)
   if fn.pumvisible() == 1 then
-    return t '<C-n>'
-  elseif luasnip and luasnip.expand_or_jumpable() then
-    return t '<Plug>luasnip-expand-or-jump'
+    fn.feedkeys(t('<C-n>'), 'n')
+  elseif luasnip.expand_or_jumpable() then
+    fn.feedkeys(t('<Plug>luasnip-expand-or-jump'), '')
   elseif check_back_space() then
-    return t '<Tab>'
+    fn.feedkeys(t('<tab>'), 'n')
   else
-    return fn['compe#complete']()
+    fallback()
   end
-end
+end, {'i', 's'})
 
-function _G.s_tab_complete()
+local stab_key = cmp.mapping(function(fallback)
   if fn.pumvisible() == 1 then
-    return t '<C-p>'
-  elseif luasnip and luasnip.jumpable(-1) then
-    return t '<Plug>luasnip-jump-prev'
+    fn.feedkeys(t('<C-p>'), 'n')
+  elseif luasnip.jumpable(-1) then
+    fn.feedkeys(t('<Plug>luasnip-jump-prev'), '')
   else
-    return t '<S-Tab>'
+    fallback()
   end
-end
+end, {'i', 's'})
 
-map('i', '<Tab>', 'v:lua.tab_complete()', {expr = true})
-map('s', '<Tab>', 'v:lua.tab_complete()', {expr = true})
-map('i', '<S-Tab>', 'v:lua.s_tab_complete()', {expr = true})
-map('s', '<S-Tab>', 'v:lua.s_tab_complete()', {expr = true})
-map('i', '<C-Space>', 'compe#complete()', {silent = true, expr = true})
-map('i', '<CR>', "compe#confirm('<CR>')", {silent = true, expr = true})
-map('i', '<C-e>', "compe#close('<C-e>')", {silent = true, expr = true})
-map('i', '<A-h>', '<Plug>luasnip-next-choice')
-map('s', '<A-h>', '<Plug>luasnip-next-choice')
+cmp.setup {
+  mapping = {
+    ['<tab>'] = tab_key,
+    ['<S-tab>'] = stab_key,
+    ['<M-m>'] = cmp.mapping.scroll_docs(-4),
+    ['<M-ù>'] = cmp.mapping.scroll_docs(4),
+    ['<C-space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.close(),
+    ['<cr>'] = cmp.mapping.confirm({
+      behavior = cmp.ConfirmBehavior.Replace,
+      select = true,
+    }),
+  },
+  snippet = {
+    expand = function(args)
+      luasnip.lsp_expand(args.body)
+    end,
+  },
+  completion = {completeopt = 'menu,menuone,noinsert'},
+  sources = {
+    {name = 'buffer'}, {name = 'path'}, {name = 'nvim_lua'},
+    {name = 'nvim_lsp'}, {name = 'luasnip'},
+  },
+  documentation = {border = {'', '', '', ' ', '', '', '', ' '}},
+} ]]
 
--- snippets
+-- LuaSnip -------------------------------------------------------
+local luasnip = require('luasnip')
 local ps = luasnip.parser.parse_snippet
 local js_log = ps({trig = 'log', name = 'console log'}, 'console.log($0);')
 luasnip.snippets = {
@@ -742,6 +738,8 @@ luasnip.snippets = {
     ps({trig = 'format', name = 'string format'}, [[string.format('%s', $0)]]),
   },
 }
+map('i', '<A-h>', '<Plug>luasnip-next-choice')
+map('s', '<A-h>', '<Plug>luasnip-next-choice')
 
 -- gitsigns.nvim -------------------------------------------------
 require'gitsigns'.setup {
