@@ -654,6 +654,7 @@ g.coq_settings = {
   ['keymap.jump_to_mark'] = '<A-tab>',
   ['display.pum.kind_context'] = {'∙', '∙'},
   ['display.pum.source_context'] = {'⏽', '⏽'},
+  ['display.pum.fast_close'] = false,
   ['clients.tree_sitter.enabled'] = false,
   ['clients.tmux.enabled'] = false,
   ['clients.tags.parent_scope'] = ' ↓',
