@@ -9,6 +9,8 @@ for LSP
   * LuaFormatter (https://github.com/Koihik/LuaFormatter)
   * lua-language-server, must be installed in /opt/lua-language-server
 
+-- for coq_nvim: python-virtualenv (Arch Linux package) --
+
 others: git, ripgrep, fzf, node, npm
 -- ]]
 
@@ -24,7 +26,8 @@ local api = vim.api
 -- auto install paq-nvim
 local install_path = fn.stdpath('data') .. '/site/pack/paqs/opt/paq-nvim'
 if fn.empty(fn.glob(install_path)) > 0 then
-  cmd('!git clone https://github.com/savq/paq-nvim.git ' .. install_path)
+  cmd('!git clone --depth=1 https://github.com/savq/paq-nvim.git ' ..
+        install_path)
 end
 
 cmd 'packadd paq-nvim' -- Load package
@@ -50,6 +53,7 @@ paq 'neovim/nvim-lspconfig'
 paq 'ray-x/lsp_signature.nvim'
 paq 'simrat39/rust-tools.nvim'
 paq 'hrsh7th/nvim-compe'
+-- paq {'ms-jpq/coq_nvim', branch = 'coq'}
 paq 'L3MON4D3/LuaSnip'
 paq 'nvim-lua/plenary.nvim' -- dep of telescope.nvim, gitsigns.nvim
 paq 'nvim-lua/popup.nvim' -- dep of telescope.nvim
@@ -429,6 +433,7 @@ require'nvim-treesitter.configs'.setup {
 -- LSP -----------------------------------------------------------
 local lspconfig = require 'lspconfig'
 local lsp_spinner = require 'lsp_spinner'
+local lsp_signature = require 'lsp_signature'
 lsp_spinner.setup {
   spinner = {
     '⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏',
@@ -483,7 +488,7 @@ local function on_attach(client, bufnr)
   cmd([[
     augroup lsp_show_line_diagnostics
       autocmd!
-      autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics{show_header=false, focusable = false}
+      autocmd CursorHold * lua vim.lsp.diagnostic.show_position_diagnostics{show_header=false, focusable = false}
     augroup END
   ]])
   -- highlight the symbol under the cursor
@@ -497,7 +502,7 @@ local function on_attach(client, bufnr)
     ]])
   end
   lsp_spinner.on_attach(client, bufnr)
-  require'lsp_signature'.on_attach(signature_help_cfg)
+  lsp_signature.on_attach(signature_help_cfg)
 end
 
 lsp.handlers['textDocument/publishDiagnostics'] =
@@ -524,7 +529,7 @@ require('rust-tools').setup { -- Rust
     hover_with_actions = false,
     inlay_hints = {
       autoSetHints = false,
-      parameter_hints_prefix = '→ ',
+      parameter_hints_prefix = '← ',
       other_hints_prefix = '→ ',
     },
     hover_actions = {border = 'none'},
@@ -637,6 +642,19 @@ map('', '<A-b>', '<cmd>Telescope lsp_definitions<cr>')
 map('', '<C-f>', '<cmd>Telescope live_grep<cr>')
 map('', '<C-b>', '<cmd>lua require"lens".buffers()<cr>')
 cmd 'hi! link TelescopeBorder NonText'
+
+--[[ -- coq_nvim ------------------------------------------------------
+g.coq_settings = {
+  auto_start = 'shut-up',
+  ['keymap.jump_to_mark'] = '<A-tab>',
+  ['display.pum.kind_context'] = {'∙', '∙'},
+  ['display.pum.source_context'] = {'⏽', '⏽'},
+  ['clients.tree_sitter.enabled'] = false,
+  ['clients.tmux.enabled'] = false,
+  ['clients.tags.parent_scope'] = ' ↓',
+  ['clients.tags.path_sep'] = ' → ',
+  ['display.pum.ellipsis'] = '…',
+} ]]
 
 -- nvim-compe & LuaSnip ------------------------------------------
 local luasnip = require 'luasnip'
@@ -769,4 +787,5 @@ hi('LightspeedCursor', '#212121', '#aeea00', 'bold')
 
 -- nvim-neoclip.lua ----------------------------------------------
 require'neoclip'.setup()
-map('', '<A-c>', [[:lua require('telescope').extensions.neoclip.default()<cr>]], {silent=true})
+map('', '<A-c>', [[:lua require('telescope').extensions.neoclip.default()<cr>]],
+    {silent = true})
