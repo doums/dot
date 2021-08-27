@@ -655,6 +655,7 @@ g.coq_settings = {
   ['display.pum.kind_context'] = {'∙', '∙'},
   ['display.pum.source_context'] = {'⏽', '⏽'},
   ['display.pum.fast_close'] = false,
+  ['display.preview.border'] = {'', '', '', ' ', '', '', '', ' '},
   ['clients.tree_sitter.enabled'] = false,
   ['clients.tmux.enabled'] = false,
   ['clients.tags.parent_scope'] = ' ↓',
