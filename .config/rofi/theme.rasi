@@ -10,7 +10,7 @@ window {
   location: north;
   padding: 30px;
   y-offset: 400px;
-  width: 700px;
+  width: 600px;
 }
 
 mainbox {
@@ -25,24 +25,37 @@ entry {
   padding: 10px 20px;
   placeholder: "Search";
   placeholder-color: #6e6e6e;
+  cursor: text;
 }
 
 element {
   padding: 10px 20px;
+  cursor: pointer;
 }
 
 element-icon {
   size: 32px;
   margin: 0px 15px 0px 0px;
+  cursor: pointer;
 }
 
 element-text {
   highlight: bold;
+  cursor: pointer;
+  vertical-align: 0.5;
 }
 
 element selected {
   text-color: #dadada;
   highlight: bold #dadada;
+  background-color: #2d2d2d;
+}
+
+element-icon selected {
+  background-color: #2d2d2d;
+}
+
+element-text selected {
   background-color: #2d2d2d;
 }
 
@@ -60,6 +73,9 @@ listview {
 
 button {
   padding: 10px 0;
+  cursor: pointer;
+  horizontal-align: 0.5;
+  text-color: #8f8f8f;
 }
 
 button selected {
