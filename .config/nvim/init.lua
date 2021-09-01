@@ -59,7 +59,7 @@ paq 'hrsh7th/cmp-nvim-lsp'
 paq 'hrsh7th/cmp-path'
 paq 'saadparwaiz1/cmp_luasnip' ]]
 paq {'ms-jpq/coq_nvim', branch = 'coq'}
-paq 'L3MON4D3/LuaSnip'
+-- paq 'L3MON4D3/LuaSnip'
 paq 'nvim-lua/plenary.nvim' -- dep of telescope.nvim, gitsigns.nvim
 paq 'nvim-lua/popup.nvim' -- dep of telescope.nvim
 paq 'nvim-telescope/telescope.nvim'
@@ -150,6 +150,8 @@ opt.guicursor = 'a:block-Caret'
 opt.spelllang = 'en_us'
 opt.spelloptions = 'camel'
 opt.colorcolumn = '66'
+opt.textwidth = 66
+opt.formatoptions = opt.formatoptions:append('lv')
 
 -- VARIOUS -------------------------------------------------------
 -- color scheme
@@ -652,7 +654,7 @@ cmd 'hi! link TelescopeBorder NonText'
 g.coq_settings = {
   auto_start = 'shut-up',
   ['keymap.jump_to_mark'] = '<A-tab>',
-  ['display.pum.kind_context'] = {'∙', '∙'},
+  ['display.pum.kind_context'] = {'[', ']'},
   ['display.pum.source_context'] = {'⏽', '⏽'},
   ['display.pum.fast_close'] = false,
   ['display.preview.border'] = {'', '', '', ' ', '', '', '', ' '},
@@ -661,6 +663,7 @@ g.coq_settings = {
   ['clients.tags.parent_scope'] = ' ↓',
   ['clients.tags.path_sep'] = ' → ',
   ['display.pum.ellipsis'] = '…',
+  ['display.icons.mode'] = 'none',
 }
 
 --[[ -- nvim-cmp & LuaSnip ------------------------------------------
@@ -719,29 +722,6 @@ cmp.setup {
   },
   documentation = {border = {'', '', '', ' ', '', '', '', ' '}},
 } ]]
-
--- LuaSnip -------------------------------------------------------
-local luasnip = require('luasnip')
-local ps = luasnip.parser.parse_snippet
-local js_log = ps({trig = 'log', name = 'console log'}, 'console.log($0);')
-luasnip.snippets = {
-  javascript = {js_log},
-  typescript = {js_log},
-  typescriptreact = {js_log},
-  c = {ps('printf', [[printf("$1 -> %s$0\n", $1);]])},
-  rust = {
-    ps({trig = 'pprintln', name = 'pretty print debug'},
-       [[println!("$1 -> {:#?}", $1);]]),
-  },
-  lua = {
-    ps('print', [[print($0)]]),
-    ps({trig = 'dump', name = 'print with vim.inspect'},
-       [[print(vim.inspect($0))]]),
-    ps({trig = 'format', name = 'string format'}, [[string.format('%s', $0)]]),
-  },
-}
-map('i', '<A-h>', '<Plug>luasnip-next-choice')
-map('s', '<A-h>', '<Plug>luasnip-next-choice')
 
 -- gitsigns.nvim -------------------------------------------------
 require'gitsigns'.setup {
