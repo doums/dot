@@ -52,14 +52,14 @@ paq 'nvim-treesitter/playground'
 paq 'neovim/nvim-lspconfig'
 paq 'ray-x/lsp_signature.nvim'
 paq 'simrat39/rust-tools.nvim'
---[[ paq 'hrsh7th/nvim-cmp'
+paq 'hrsh7th/nvim-cmp'
 paq 'hrsh7th/cmp-buffer'
 paq 'hrsh7th/cmp-nvim-lua'
 paq 'hrsh7th/cmp-nvim-lsp'
 paq 'hrsh7th/cmp-path'
-paq 'saadparwaiz1/cmp_luasnip' ]]
-paq {'ms-jpq/coq_nvim', branch = 'coq'}
--- paq 'L3MON4D3/LuaSnip'
+paq 'saadparwaiz1/cmp_luasnip'
+paq 'L3MON4D3/LuaSnip'
+-- paq {'ms-jpq/coq_nvim', branch = 'coq'}
 paq 'nvim-lua/plenary.nvim' -- dep of telescope.nvim, gitsigns.nvim
 paq 'nvim-lua/popup.nvim' -- dep of telescope.nvim
 paq 'nvim-telescope/telescope.nvim'
@@ -333,6 +333,7 @@ map('v', '<leader>c', '<Plug>kommentary_visual_default', {noremap = false})
 g.coBraPairs = {
   rust = {{'<', '>'}, {'"', '"'}, {'{', '}'}, {'(', ')'}, {'[', ']'}},
 }
+g.coBraDisableCRMap = true
 
 -- neovide -------------------------------------------------------
 g.neovide_refresh_rate = 144
@@ -481,6 +482,7 @@ local signature_help_cfg = {
   max_height = 4,
   max_width = 80,
   handler_opts = {border = 'none'},
+  padding = ' ',
 }
 
 local function on_attach(client, bufnr)
@@ -651,7 +653,7 @@ map('', '<C-b>', '<cmd>lua require"lens".buffers()<cr>')
 cmd 'hi! link TelescopeBorder NonText'
 
 -- coq_nvim ------------------------------------------------------
-g.coq_settings = {
+--[[ g.coq_settings = {
   auto_start = 'shut-up',
   ['keymap.jump_to_mark'] = '<A-tab>',
   ['display.pum.kind_context'] = {'[', ']'},
@@ -664,9 +666,9 @@ g.coq_settings = {
   ['clients.tags.path_sep'] = ' → ',
   ['display.pum.ellipsis'] = '…',
   ['display.icons.mode'] = 'none',
-}
+} ]]
 
---[[ -- nvim-cmp & LuaSnip ------------------------------------------
+-- nvim-cmp & LuaSnip ------------------------------------------
 local cmp = require('cmp')
 local luasnip = require('luasnip')
 
@@ -717,11 +719,42 @@ cmp.setup {
   },
   completion = {completeopt = 'menu,menuone,noinsert'},
   sources = {
-    {name = 'buffer'}, {name = 'path'}, {name = 'nvim_lua'},
-    {name = 'nvim_lsp'}, {name = 'luasnip'},
+    {name = 'luasnip'}, {name = 'nvim_lsp'}, {name = 'nvim_lua'},
+    {name = 'path'}, {name = 'buffer'},
   },
   documentation = {border = {'', '', '', ' ', '', '', '', ' '}},
-} ]]
+  formatting = {
+    format = function(entry, vim_item)
+      vim_item.menu = ({
+        buffer = "[Buffer]",
+        nvim_lsp = "[LSP]",
+        luasnip = "[LuaSnip]",
+        nvim_lua = "[Lua]",
+        path = "[Path]",
+      })[entry.source.name]
+      return vim_item
+    end,
+  },
+}
+
+local ps = luasnip.parser.parse_snippet
+local js_log = ps({trig = 'log', name = 'console log'}, 'console.log($0);')
+luasnip.snippets = {
+  javascript = {js_log},
+  typescript = {js_log},
+  typescriptreact = {js_log},
+  c = {ps('printf', [[printf("$1 -> %s$0\n", $1);]])},
+  rust = {
+    ps({trig = 'pprintln', name = 'pretty print debug'},
+       [[println!("$1 -> {:#?}", $1);]]),
+  },
+  lua = {
+    ps('print', [[print($0)]]),
+    ps({trig = 'dump', name = 'print with vim.inspect'},
+       [[print(vim.inspect($0))]]),
+    ps({trig = 'format', name = 'string format'}, [[string.format('%s', $0)]]),
+  },
+}
 
 -- gitsigns.nvim -------------------------------------------------
 require'gitsigns'.setup {
