@@ -52,6 +52,7 @@ paq 'nvim-treesitter/playground'
 paq 'neovim/nvim-lspconfig'
 paq 'ray-x/lsp_signature.nvim'
 paq 'simrat39/rust-tools.nvim'
+paq 'folke/trouble.nvim'
 paq 'hrsh7th/nvim-cmp'
 paq 'hrsh7th/cmp-buffer'
 paq 'hrsh7th/cmp-nvim-lua'
@@ -311,7 +312,7 @@ require'ponton'.setup({
       padding = {nil, 1},
       prefix = '~',
     },
-    lsp_hint = {style = {'#F49810', line_bg}, padding = {nil, 1}, prefix = '~'},
+    lsp_hint = {style = {'#F49810', line_bg}, padding = {nil, 1}, prefix = '¬'},
     active_mark_start = {
       style = {{'#DF824C', line_bg}, {line_bg, line_bg}},
       text = '▌',
@@ -618,9 +619,32 @@ lspconfig.sumneko_lua.setup { -- Lua
   },
 }
 
+-- Trouble -------------------------------------------------------
+require('trouble').setup {
+  height = 12,
+  indent_lines = false,
+  action_keys = {
+    open_split = {'<c-s>'}, -- open buffer in new split
+    close_folds = {'<bs>'}, -- close all folds
+  },
+  signs = {
+    error = '×',
+    warning = '•',
+    hint = '¬',
+    information = '~',
+    other = "╍",
+  },
+}
+map('n', '<A-x>', '<cmd>Trouble<cr>', {silent = true})
+map('n', '<A-w>', '<cmd>Trouble lsp_workspace_diagnostics<cr>', {silent = true})
+map('n', '<A-q>', '<cmd>Trouble lsp_document_diagnostics<cr>', {silent = true})
+map('n', '<A-u>', '<cmd>Trouble lsp_references<cr>', {silent = true})
+map('n', '<A-b>', '<cmd>Trouble lsp_definitions<cr>', {silent = true})
+cmd 'hi! link TroubleCount Number'
+
 -- telescope.nvim ------------------------------------------------
 local actions = require('telescope.actions')
-require'telescope'.setup {
+require('telescope').setup {
   defaults = {
     vimgrep_arguments = {
       'rg', '--color=never', '--no-heading', '--with-filename', '--line-number',
@@ -640,14 +664,10 @@ require'telescope'.setup {
 }
 
 map('', '<A-s>', '<cmd>Telescope lsp_document_symbols<cr>')
-map('', '<A-x>',
+map('', '<leader>x',
     '<cmd>lua require("telescope.builtin").find_files{find_command={"fd", "-t", "f"}}<cr>')
-map('', '<A-w>', '<cmd>Telescope lsp_workspace_symbols<cr>')
-map('', '<A-u>', '<cmd>Telescope lsp_references<cr>')
+map('', '<Leader>w', '<cmd>Telescope lsp_workspace_symbols<cr>')
 map('', '<A-CR>', '<cmd>lua require"lens".lsp_code_actions()<cr>')
-map('', '<A-q>', '<cmd>Telescope lsp_document_diagnostics<cr>')
-map('', '<A-S-q>', '<cmd>Telescope lsp_workspace_diagnostics<cr>')
-map('', '<A-b>', '<cmd>Telescope lsp_definitions<cr>')
 map('', '<C-f>', '<cmd>Telescope live_grep<cr>')
 map('', '<C-b>', '<cmd>lua require"lens".buffers()<cr>')
 cmd 'hi! link TelescopeBorder NonText'
