@@ -484,6 +484,7 @@ local signature_help_cfg = {
   max_width = 80,
   handler_opts = {border = 'none'},
   padding = ' ',
+  toggle_key = '<C-q>',
 }
 
 local function on_attach(client, bufnr)
@@ -512,7 +513,7 @@ local function on_attach(client, bufnr)
     ]])
   end
   lsp_spinner.on_attach(client, bufnr)
-  lsp_signature.on_attach(signature_help_cfg)
+  lsp_signature.on_attach(signature_help_cfg, bufnr)
 end
 
 lsp.handlers['textDocument/publishDiagnostics'] =
@@ -621,7 +622,7 @@ lspconfig.sumneko_lua.setup { -- Lua
 
 -- Trouble -------------------------------------------------------
 require('trouble').setup {
-  height = 12,
+  height = 8,
   indent_lines = false,
   action_keys = {
     open_split = {'<c-s>'}, -- open buffer in new split
@@ -639,7 +640,6 @@ map('n', '<A-x>', '<cmd>Trouble<cr>', {silent = true})
 map('n', '<A-w>', '<cmd>Trouble lsp_workspace_diagnostics<cr>', {silent = true})
 map('n', '<A-q>', '<cmd>Trouble lsp_document_diagnostics<cr>', {silent = true})
 map('n', '<A-u>', '<cmd>Trouble lsp_references<cr>', {silent = true})
-map('n', '<A-b>', '<cmd>Trouble lsp_definitions<cr>', {silent = true})
 cmd 'hi! link TroubleCount Number'
 
 -- telescope.nvim ------------------------------------------------
@@ -667,6 +667,7 @@ map('', '<A-s>', '<cmd>Telescope lsp_document_symbols<cr>')
 map('', '<leader>x',
     '<cmd>lua require("telescope.builtin").find_files{find_command={"fd", "-t", "f"}}<cr>')
 map('', '<Leader>w', '<cmd>Telescope lsp_workspace_symbols<cr>')
+map('', '<A-b>', '<cmd>Telescope lsp_definitions<cr>')
 map('', '<A-CR>', '<cmd>lua require"lens".lsp_code_actions()<cr>')
 map('', '<C-f>', '<cmd>Telescope live_grep<cr>')
 map('', '<C-b>', '<cmd>lua require"lens".buffers()<cr>')
@@ -817,6 +818,8 @@ require'lightspeed'.setup {
   },
 }
 hi('LightspeedCursor', '#212121', '#aeea00', 'bold')
+api.nvim_del_keymap('v', 'x')
+api.nvim_del_keymap('n', 't')
 
 -- nvim-neoclip.lua ----------------------------------------------
 require'neoclip'.setup()
