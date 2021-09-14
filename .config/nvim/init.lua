@@ -358,6 +358,7 @@ g.nvim_tree_git_hl = 1
 g.nvim_tree_auto_resize = 0
 g.nvim_tree_disable_default_keybindings = 1
 g.nvim_tree_window_picker_chars = 'HLJKFQDS'
+g.nvim_tree_window_picker_exclude = {filetype = {'Trouble', 'qf'}}
 map('n', '<Tab>', '<cmd>NvimTreeToggle<CR>')
 map('n', '<S-Tab>', '<cmd>NvimTreeFindFile<CR>')
 g.nvim_tree_bindings = {
@@ -818,7 +819,6 @@ require'lightspeed'.setup {
   },
 }
 hi('LightspeedCursor', '#212121', '#aeea00', 'bold')
-api.nvim_del_keymap('v', 'x')
 api.nvim_del_keymap('n', 't')
 
 -- nvim-neoclip.lua ----------------------------------------------
