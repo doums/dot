@@ -353,38 +353,11 @@ map('n', '<M-f>', [[<cmd>lua require'floaterm'.rg()<cr>]])
 
 -- nvim-tree.lua -------------------------------------------------
 local tree_cb = require'nvim-tree.config'.nvim_tree_callback
-g.nvim_tree_width = 40
 g.nvim_tree_git_hl = 1
-g.nvim_tree_auto_resize = 0
-g.nvim_tree_disable_default_keybindings = 1
 g.nvim_tree_window_picker_chars = 'HLJKFQDS'
 g.nvim_tree_window_picker_exclude = {filetype = {'Trouble', 'qf'}}
 map('n', '<Tab>', '<cmd>NvimTreeToggle<CR>')
 map('n', '<S-Tab>', '<cmd>NvimTreeFindFile<CR>')
-g.nvim_tree_bindings = {
-  {key = {'<CR>', '<2-LeftMouse>'}, cb = tree_cb('edit')},
-  {key = {'<2-RightMouse>', '<C-]>'}, cb = tree_cb('cd')},
-  {key = '<C-v>', cb = tree_cb('vsplit')},
-  {key = '<C-s>', cb = tree_cb('split')},
-  {key = '<C-t>', cb = tree_cb('tabnew')},
-  {key = 'P', cb = tree_cb('parent_node')},
-  {key = '<BS>', cb = tree_cb('close_node')},
-  {key = '<S-CR>', cb = tree_cb('close_node')},
-  {key = '<Tab>', cb = tree_cb('preview')},
-  {key = 'K', cb = tree_cb('first_sibling')},
-  {key = 'J', cb = tree_cb('last_sibling')},
-  {key = 'I', cb = tree_cb('toggle_ignored')},
-  {key = 'H', cb = tree_cb('toggle_dotfiles')},
-  {key = 'R', cb = tree_cb('refresh')}, {key = 'a', cb = tree_cb('create')},
-  {key = 'd', cb = tree_cb('remove')}, {key = 'r', cb = tree_cb('rename')},
-  {key = '<C-r>', cb = tree_cb('full_rename')},
-  {key = 'x', cb = tree_cb('cut')}, {key = 'c', cb = tree_cb('copy')},
-  {key = 'p', cb = tree_cb('paste')}, {key = 'y', cb = tree_cb('copy_name')},
-  {key = 'Y', cb = tree_cb('copy_path')},
-  {key = 'gy', cb = tree_cb('copy_absolute_path')},
-  {key = '-', cb = tree_cb('dir_up')}, {key = 'o', cb = tree_cb('system_open')},
-  {key = 'q', cb = tree_cb('close')}, {key = 'g?', cb = tree_cb('toggle_help')},
-}
 g.nvim_tree_show_icons = {git = 0, folders = 1, files = 1}
 g.nvim_tree_icons = {
   symlink = '󰌹',
@@ -398,14 +371,42 @@ g.nvim_tree_icons = {
     symlink = '󰌹 ▶',
     symlink_open = '󰌹 ▼',
   },
-  git = {
-    unstaged = '✗',
-    staged = '✓',
-    unmerged = '⏼',
-    renamed = '→',
-    untracked = '•',
-    deleted = '-',
-    ignored = '⭘',
+}
+require'nvim-tree'.setup {
+  hijack_cursor = true,
+  view = {
+    width = 40,
+    mappings = {
+      custom_only = true,
+      list = {
+        {key = {'<CR>', '<2-LeftMouse>'}, cb = tree_cb('edit')},
+        {key = {'<2-RightMouse>', '<C-]>'}, cb = tree_cb('cd')},
+        {key = '<C-v>', cb = tree_cb('vsplit')},
+        {key = '<C-s>', cb = tree_cb('split')},
+        {key = '<C-t>', cb = tree_cb('tabnew')},
+        {key = '<BS>', cb = tree_cb('close_node')},
+        {key = '<S-CR>', cb = tree_cb('close_node')},
+        {key = '<Tab>', cb = tree_cb('preview')},
+        {key = 'K', cb = tree_cb('first_sibling')},
+        {key = 'J', cb = tree_cb('last_sibling')},
+        {key = 'I', cb = tree_cb('toggle_ignored')},
+        {key = 'H', cb = tree_cb('toggle_dotfiles')},
+        {key = 'R', cb = tree_cb('refresh')},
+        {key = 'a', cb = tree_cb('create')},
+        {key = 'd', cb = tree_cb('remove')},
+        {key = 'r', cb = tree_cb('rename')},
+        {key = '<C-r>', cb = tree_cb('full_rename')},
+        {key = 'x', cb = tree_cb('cut')}, {key = 'c', cb = tree_cb('copy')},
+        {key = 'p', cb = tree_cb('paste')},
+        {key = 'y', cb = tree_cb('copy_name')},
+        {key = 'Y', cb = tree_cb('copy_path')},
+        {key = 'gy', cb = tree_cb('copy_absolute_path')},
+        {key = '-', cb = tree_cb('dir_up')},
+        {key = 'o', cb = tree_cb('system_open')},
+        {key = 'q', cb = tree_cb('close')},
+        {key = 'g?', cb = tree_cb('toggle_help')},
+      },
+    },
   },
 }
 li('NvimTreeRootFolder', 'Comment')
@@ -451,14 +452,14 @@ lsp_spinner.setup {
   interval = 80,
 }
 
-fn.sign_define('LspDiagnosticsSignError',
-               {text = '▬', texthl = 'LspDiagnosticsSignError'})
-fn.sign_define('LspDiagnosticsSignWarning',
-               {text = '▬', texthl = 'LspDiagnosticsSignWarning'})
-fn.sign_define('LspDiagnosticsSignInformation',
-               {text = '▬', texthl = 'LspDiagnosticsSignInformation'})
-fn.sign_define('LspDiagnosticsSignHint',
-               {text = '▬', texthl = 'LspDiagnosticsSignHint'})
+fn.sign_define('DiagnosticSignError',
+               {text = '▬', texthl = 'DiagnosticSignError'})
+fn.sign_define('DiagnosticSignWarn',
+               {text = '▬', texthl = 'DiagnosticSignWarn'})
+fn.sign_define('DiagnosticSignInfo',
+               {text = '▬', texthl = 'DiagnosticSignInfo'})
+fn.sign_define('DiagnosticSignHint',
+               {text = '▬', texthl = 'DiagnosticSignHint'})
 
 map('n', '<A-a>',
     '<cmd>lua vim.lsp.diagnostic.goto_prev{popup_opts={show_header=false}}<CR>')
