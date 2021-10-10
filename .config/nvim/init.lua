@@ -758,8 +758,8 @@ cmp.setup {
 }
 li('CmpItemAbbr', 'Pmenu')
 li('CmpItemAbbrDeprecated', 'Pmenu')
-li('CmpItemAbbrMatch', 'Pmenu')
-li('CmpItemAbbrMatchFuzzy', 'Pmenu')
+hi('CmpItemAbbrMatch', '#CA7E03', '#432717', 'bold')
+hi('CmpItemAbbrMatchFuzzy', '#CA7E03', '#432717', 'bold')
 li('CmpItemKind', 'Pmenu')
 li('CmpItemMenu', 'Pmenu')
 
