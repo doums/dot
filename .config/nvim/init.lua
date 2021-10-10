@@ -73,11 +73,6 @@ paq 'AckslD/nvim-neoclip.lua'
 -- paq 'henriquehbr/nvim-startup.lua'
 
 -- HELPERS -------------------------------------------------------
--- `t` for `termcodes`.
-local function t(str)
-  return api.nvim_replace_termcodes(str, true, true, true)
-end
-
 -- map with `noremap` option set to `true` by default
 local function map(mode, lhs, rhs, opts)
   opts = opts or {noremap = true}
@@ -695,28 +690,30 @@ cmd 'hi! link TelescopeBorder NonText'
 local cmp = require('cmp')
 local luasnip = require('luasnip')
 
-local function check_back_space()
-  local col = fn.col('.') - 1
-  return col == 0 or fn.getline('.'):sub(col, col):match('%s') ~= nil
+local function has_word_before()
+  local line, col = unpack(api.nvim_win_get_cursor(0))
+  return col ~= 0 and
+           api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col)
+             :match('%s') == nil
 end
 
 local tab_key = cmp.mapping(function(fallback)
-  if fn.pumvisible() == 1 then
-    fn.feedkeys(t('<C-n>'), 'n')
+  if cmp.visible() then
+    cmp.select_next_item()
   elseif luasnip.expand_or_jumpable() then
-    fn.feedkeys(t('<Plug>luasnip-expand-or-jump'), '')
-  elseif check_back_space() then
-    fn.feedkeys(t('<tab>'), 'n')
+    luasnip.expand_or_jump()
+  elseif has_word_before() then
+    cmp.complete()
   else
     fallback()
   end
 end, {'i', 's'})
 
 local stab_key = cmp.mapping(function(fallback)
-  if fn.pumvisible() == 1 then
-    fn.feedkeys(t('<C-p>'), 'n')
+  if cmp.visible() then
+    cmp.select_prev_item()
   elseif luasnip.jumpable(-1) then
-    fn.feedkeys(t('<Plug>luasnip-jump-prev'), '')
+    luasnip.jump(-1)
   else
     fallback()
   end
@@ -759,6 +756,12 @@ cmp.setup {
     end,
   },
 }
+li('CmpItemAbbr', 'Pmenu')
+li('CmpItemAbbrDeprecated', 'Pmenu')
+li('CmpItemAbbrMatch', 'Pmenu')
+li('CmpItemAbbrMatchFuzzy', 'Pmenu')
+li('CmpItemKind', 'Pmenu')
+li('CmpItemMenu', 'Pmenu')
 
 local ps = luasnip.parser.parse_snippet
 local js_log = ps({trig = 'log', name = 'console log'}, 'console.log($0);')
