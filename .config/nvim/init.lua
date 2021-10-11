@@ -827,5 +827,5 @@ api.nvim_del_keymap('n', 't')
 
 -- nvim-neoclip.lua ----------------------------------------------
 require'neoclip'.setup()
-map('', '<A-c>', [[:lua require('telescope').extensions.neoclip.default()<cr>]],
+map('', '<A-c>', [[:lua require('telescope').extensions.neoclip.plus()<cr>]],
     {silent = true})
