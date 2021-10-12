@@ -168,8 +168,8 @@ map('', '<Left>', '<Nop>')
 -- move fast with Ctrl + hjkl
 map('', '<C-l>', '<Plug>SaeRight', {noremap = false})
 map('', '<C-h>', '<Plug>SaeLeft', {noremap = false})
-map('', '<C-j>', '<C-d>')
-map('', '<C-k>', '<C-u>')
+map('', '<C-j>', opt.scroll:get() .. "<C-e>", {noremap = true})
+map('', '<C-k>', opt.scroll:get() .. "<C-y>", {noremap = true})
 -- move through wrapped line
 map('', 'j', 'gj', {silent = true})
 map('', 'k', 'gk', {silent = true})
@@ -500,15 +500,15 @@ local function on_attach(client, bufnr)
     augroup END
   ]])
   -- highlight the symbol under the cursor
-  if client.resolved_capabilities.document_highlight then
-    cmd([[
+  --[[ if client.resolved_capabilities.document_highlight then
+     cmd([[
       augroup lsp_document_highlight
         autocmd!
         autocmd CursorHold,CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()
         autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
       augroup END
-    ]])
-  end
+    \]\])
+  end ]]
   lsp_spinner.on_attach(client, bufnr)
   lsp_signature.on_attach(signature_help_cfg, bufnr)
 end
@@ -767,7 +767,9 @@ local ps = luasnip.parser.parse_snippet
 local js_log = ps({trig = 'log', name = 'console log'}, 'console.log($0);')
 luasnip.snippets = {
   javascript = {js_log},
-  typescript = {js_log},
+  typescript = {
+    js_log, ps('eslint-disable-next-line', [[// eslint-disable-next-line $0]]),
+  },
   typescriptreact = {js_log},
   c = {ps('printf', [[printf("$1 -> %s$0\n", $1);]])},
   rust = {
@@ -829,3 +831,5 @@ api.nvim_del_keymap('n', 't')
 require'neoclip'.setup()
 map('', '<A-c>', [[:lua require('telescope').extensions.neoclip.plus()<cr>]],
     {silent = true})
+
+-- require'cobra'.setup()
