@@ -126,7 +126,6 @@ opt.matchtime = 3
 opt.updatetime = 100
 opt.splitbelow = true
 opt.splitright = true
-opt.foldlevelstart = 0
 opt.hidden = true
 opt.cursorline = true
 opt.cursorlineopt = {'number', 'screenline'}
@@ -148,6 +147,9 @@ opt.spelloptions = 'camel'
 opt.colorcolumn = '66'
 opt.textwidth = 66
 opt.formatoptions = opt.formatoptions:append('lv')
+opt.foldmethod = 'expr'
+opt.foldexpr = 'nvim_treesitter#foldexpr()'
+opt.foldlevelstart = 99
 
 -- VARIOUS -------------------------------------------------------
 -- color scheme
@@ -168,8 +170,8 @@ map('', '<Left>', '<Nop>')
 -- move fast with Ctrl + hjkl
 map('', '<C-l>', '<Plug>SaeRight', {noremap = false})
 map('', '<C-h>', '<Plug>SaeLeft', {noremap = false})
-map('', '<C-j>', opt.scroll:get() .. "<C-e>", {noremap = true})
-map('', '<C-k>', opt.scroll:get() .. "<C-y>", {noremap = true})
+map('', '<C-j>', '<C-d>')
+map('', '<C-k>', '<C-u>')
 -- move through wrapped line
 map('', 'j', 'gj', {silent = true})
 map('', 'k', 'gk', {silent = true})
@@ -369,6 +371,16 @@ g.nvim_tree_icons = {
 }
 require'nvim-tree'.setup {
   hijack_cursor = true,
+  auto_close = true,
+  diagnostics = {
+    enable = true,
+    icons = {
+      hint = '',
+      info = '',
+      warning = '',
+      error = "×",
+    }
+  },
   view = {
     width = 40,
     mappings = {
@@ -416,6 +428,7 @@ hi('NvimTreeGitRenamed', '#507eae', nil, 'italic')
 hi('NvimTreeGitDeleted', '#bd5b5b', nil, 'italic')
 li('NvimTreeGitDirty', 'NvimTreeGitDeleted')
 hi('NvimTreeWindowPicker', '#BDAE9D', '#2A190E', 'bold')
+hi('NvimTreeLspDiagnosticsError', '#FF0000', nil, 'bold')
 
 -- nvim-treesitter -----------------------------------------------
 require'nvim-treesitter.configs'.setup {
