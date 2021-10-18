@@ -26,56 +26,57 @@ local api = vim.api
 -- auto install paq-nvim
 local install_path = fn.stdpath('data') .. '/site/pack/paqs/opt/paq-nvim'
 if fn.empty(fn.glob(install_path)) > 0 then
-  cmd('!git clone --depth=1 https://github.com/savq/paq-nvim.git ' ..
-        install_path)
+  cmd(
+    '!git clone --depth=1 https://github.com/savq/paq-nvim.git ' .. install_path
+  )
 end
 
-cmd 'packadd paq-nvim' -- Load package
-local paq = require'paq-nvim'.paq
+cmd('packadd paq-nvim') -- Load package
+local paq = require('paq-nvim').paq
 
 -- update treesitter parsers
 local function update_ts_parsers()
-  cmd 'TSUpdate'
+  cmd('TSUpdate')
 end
 
-paq {'savq/paq-nvim', opt = true} -- Let Paq manage itself
-paq 'b3nj5m1n/kommentary'
-paq 'doums/coBra'
-paq 'doums/ponton.nvim'
-paq 'doums/espresso'
-paq 'doums/sae'
-paq 'doums/lsp_spinner.nvim'
-paq 'doums/lens'
-paq 'doums/floaterm.nvim'
-paq {'nvim-treesitter/nvim-treesitter', run = update_ts_parsers}
-paq 'nvim-treesitter/playground'
-paq 'neovim/nvim-lspconfig'
-paq 'ray-x/lsp_signature.nvim'
-paq 'simrat39/rust-tools.nvim'
-paq 'folke/trouble.nvim'
-paq 'hrsh7th/nvim-cmp'
-paq 'hrsh7th/cmp-buffer'
-paq 'hrsh7th/cmp-nvim-lua'
-paq 'hrsh7th/cmp-nvim-lsp'
-paq 'hrsh7th/cmp-path'
-paq 'saadparwaiz1/cmp_luasnip'
-paq 'L3MON4D3/LuaSnip'
+paq({ 'savq/paq-nvim', opt = true }) -- Let Paq manage itself
+paq('b3nj5m1n/kommentary')
+paq('doums/coBra')
+paq('doums/ponton.nvim')
+paq('doums/espresso')
+paq('doums/sae')
+paq('doums/lsp_spinner.nvim')
+paq('doums/lens')
+paq('doums/floaterm.nvim')
+paq({ 'nvim-treesitter/nvim-treesitter', run = update_ts_parsers })
+paq('nvim-treesitter/playground')
+paq('neovim/nvim-lspconfig')
+paq('ray-x/lsp_signature.nvim')
+paq('simrat39/rust-tools.nvim')
+paq('folke/trouble.nvim')
+paq('hrsh7th/nvim-cmp')
+paq('hrsh7th/cmp-buffer')
+paq('hrsh7th/cmp-nvim-lua')
+paq('hrsh7th/cmp-nvim-lsp')
+paq('hrsh7th/cmp-path')
+paq('saadparwaiz1/cmp_luasnip')
+paq('L3MON4D3/LuaSnip')
 -- paq {'ms-jpq/coq_nvim', branch = 'coq'}
-paq 'nvim-lua/plenary.nvim' -- dep of telescope.nvim, gitsigns.nvim
-paq 'nvim-lua/popup.nvim' -- dep of telescope.nvim
-paq 'nvim-telescope/telescope.nvim'
-paq 'lewis6991/gitsigns.nvim'
-paq 'pantharshit00/vim-prisma'
-paq 'kyazdani42/nvim-tree.lua'
-paq 'kyazdani42/nvim-web-devicons' -- dep of nvim-tree.lua
-paq 'ggandor/lightspeed.nvim'
-paq 'AckslD/nvim-neoclip.lua'
+paq('nvim-lua/plenary.nvim') -- dep of telescope.nvim, gitsigns.nvim
+paq('nvim-lua/popup.nvim') -- dep of telescope.nvim
+paq('nvim-telescope/telescope.nvim')
+paq('lewis6991/gitsigns.nvim')
+paq('pantharshit00/vim-prisma')
+paq('kyazdani42/nvim-tree.lua')
+paq('kyazdani42/nvim-web-devicons') -- dep of nvim-tree.lua
+paq('ggandor/lightspeed.nvim')
+paq('AckslD/nvim-neoclip.lua')
 -- paq 'henriquehbr/nvim-startup.lua'
 
 -- HELPERS -------------------------------------------------------
 -- map with `noremap` option set to `true` by default
 local function map(mode, lhs, rhs, opts)
-  opts = opts or {noremap = true}
+  opts = opts or { noremap = true }
   if opts.noremap == nil then
     opts.noremap = true
   end
@@ -91,7 +92,7 @@ end
 
 -- log util
 function _G.dump(...)
-  local objects = vim.tbl_map(vim.inspect, {...})
+  local objects = vim.tbl_map(vim.inspect, { ... })
   print(unpack(objects))
 end
 
@@ -100,8 +101,14 @@ local function hi(name, foreground, background, style, special)
   local bg = 'guibg=' .. (background or 'NONE')
   local decoration = 'gui=' .. (style or 'NONE')
   local sp = 'guisp=' .. (special or foreground or 'NONE')
-  local hi_command = string.format('hi %s %s %s %s %s', name, fg, bg,
-                                   decoration, sp)
+  local hi_command = string.format(
+    'hi %s %s %s %s %s',
+    name,
+    fg,
+    bg,
+    decoration,
+    sp
+  )
   cmd(hi_command)
 end
 
@@ -128,13 +135,13 @@ opt.splitbelow = true
 opt.splitright = true
 opt.hidden = true
 opt.cursorline = true
-opt.cursorlineopt = {'number', 'screenline'}
+opt.cursorlineopt = { 'number', 'screenline' }
 opt.switchbuf = 'usetab'
 opt.scrolloff = 1
-opt.completeopt = {'menuone', 'noselect'}
+opt.completeopt = { 'menuone', 'noselect' }
 opt.pumheight = 10
-opt.fillchars = {vert = '┃', diff = ' ', fold = ' ', eob = ' '}
-opt.complete = opt.complete:append{'i'}
+opt.fillchars = { vert = '┃', diff = ' ', fold = ' ', eob = ' ' }
+opt.complete = opt.complete:append({ 'i' })
 opt.clipboard = 'unnamedplus'
 opt.signcolumn = 'yes:2'
 opt.cmdheight = 2
@@ -153,9 +160,9 @@ opt.foldlevelstart = 99
 
 -- VARIOUS -------------------------------------------------------
 -- color scheme
-cmd 'colorscheme espresso'
+cmd('colorscheme espresso')
 -- nvim as man pager
-cmd 'runtime ftplugin/man.vim'
+cmd('runtime ftplugin/man.vim')
 -- map leader
 g.mapleader = ','
 -- highlight group for guicursor
@@ -168,13 +175,13 @@ map('', '<Down>', '<Nop>')
 map('', '<Right>', '<Nop>')
 map('', '<Left>', '<Nop>')
 -- move fast with Ctrl + hjkl
-map('', '<C-l>', '<Plug>SaeRight', {noremap = false})
-map('', '<C-h>', '<Plug>SaeLeft', {noremap = false})
+map('', '<C-l>', '<Plug>SaeRight', { noremap = false })
+map('', '<C-h>', '<Plug>SaeLeft', { noremap = false })
 map('', '<C-j>', '<C-d>')
 map('', '<C-k>', '<C-u>')
 -- move through wrapped line
-map('', 'j', 'gj', {silent = true})
-map('', 'k', 'gk', {silent = true})
+map('', 'j', 'gj', { silent = true })
+map('', 'k', 'gk', { silent = true })
 -- goto start and end of line
 map('', '<space>l', '$')
 map('', '<space>h', '0')
@@ -184,37 +191,41 @@ map('o', 'w', 'iw')
 map('v', '<Leader>f', '<Esc>:%s/\\%V')
 map('n', '<Leader>f', ':%s/')
 -- hide highlight after a search
-map('n', '<space>', ':nohlsearch<CR>', {silent = true})
+map('n', '<space>', ':nohlsearch<CR>', { silent = true })
 -- show trailing whitespaces
 map('n', '<Leader><Space>', '/\\s\\+$<CR>')
 -- tabs
 map('n', '<Leader>t', ':tabnew<CR>')
-map('', '<C-Right>', ':tabn<CR>', {silent = true})
-map('', '<C-Left>', ':tabp<CR>', {silent = true})
-map('', '<C-Up>', ':+tabmove<CR>', {silent = true})
-map('', '<C-Down>', ':-tabmove<CR>', {silent = true})
+map('', '<C-Right>', ':tabn<CR>', { silent = true })
+map('', '<C-Left>', ':tabp<CR>', { silent = true })
+map('', '<C-Up>', ':+tabmove<CR>', { silent = true })
+map('', '<C-Down>', ':-tabmove<CR>', { silent = true })
 -- windows
-map('n', '<Leader>s', ':new<CR>', {silent = true})
-map('n', '<Leader>v', ':vnew<CR>', {silent = true})
-map('n', '<Leader><S-s>', ':split<CR>', {silent = true})
-map('n', '<Leader><S-v>', ':vsplit<CR>', {silent = true})
-map('n', '<A-h>', '<C-w>h', {silent = true})
-map('n', '<A-l>', '<C-w>l', {silent = true})
-map('n', '<A-j>', '<C-w>j', {silent = true})
-map('n', '<A-k>', '<C-w>k', {silent = true})
-map('n', '<A-Up>', ':resize +4<CR>', {silent = true})
-map('n', '<A-Down>', ':resize -4<CR>', {silent = true})
-map('n', '<A-Right>', ':vertical resize +4<CR>', {silent = true})
-map('n', '<A-Left>', ':vertical resize -4<CR>', {silent = true})
+map('n', '<Leader>s', ':new<CR>', { silent = true })
+map('n', '<Leader>v', ':vnew<CR>', { silent = true })
+map('n', '<Leader><S-s>', ':split<CR>', { silent = true })
+map('n', '<Leader><S-v>', ':vsplit<CR>', { silent = true })
+map('n', '<A-h>', '<C-w>h', { silent = true })
+map('n', '<A-l>', '<C-w>l', { silent = true })
+map('n', '<A-j>', '<C-w>j', { silent = true })
+map('n', '<A-k>', '<C-w>k', { silent = true })
+map('n', '<A-Up>', ':resize +4<CR>', { silent = true })
+map('n', '<A-Down>', ':resize -4<CR>', { silent = true })
+map('n', '<A-Right>', ':vertical resize +4<CR>', { silent = true })
+map('n', '<A-Left>', ':vertical resize -4<CR>', { silent = true })
 -- terminal normal mode
 map('t', '<Leader>n', '<C-\\><C-N>')
 -- toggle spell check
-map('n', '<F4>', [[:lua vim.opt.spell = not vim.opt.spell:get()<CR>]],
-    {silent = true})
+map(
+  'n',
+  '<F4>',
+  [[:lua vim.opt.spell = not vim.opt.spell:get()<CR>]],
+  { silent = true }
+)
 
 -- AUTOCOMMANDS --------------------------------------------------
 -- see https://github.com/neovim/neovim/pull/12378
-cmd [[
+cmd([[
   augroup init.lua
     autocmd!
     " whenever CursorHold is fired (nothing typed during 'updatetime') in a normal
@@ -224,98 +235,115 @@ cmd [[
     autocmd FileType man set nonumber
     autocmd TextYankPost * silent! lua vim.highlight.on_yank()
   augroup END
-]]
+]])
 
 -- ponton.nvim ---------------------------------------------------
 hi('StatusLineNC', '#BDAE9D', '#432717')
 hi('VertSplit', '#2A190E', nil)
 local line_bg = '#432717'
-require'ponton'.setup({
+require('ponton').setup({
   line = {
-    'active_mark_start', 'mode', 'buffer_name', 'buffer_changed', 'read_only',
-    'git_branch', 'spacer', 'lsp_spinner', 'lsp_error', 'lsp_warning',
-    'lsp_information', 'lsp_hint', 'line', 'sep', 'column', 'line_percent',
+    'active_mark_start',
+    'mode',
+    'buffer_name',
+    'buffer_changed',
+    'read_only',
+    'git_branch',
+    'spacer',
+    'lsp_spinner',
+    'lsp_error',
+    'lsp_warning',
+    'lsp_information',
+    'lsp_hint',
+    'line',
+    'sep',
+    'column',
+    'line_percent',
     'active_mark_end',
   },
   segments = {
     mode = {
       map = {
-        normal = {'▲', {'#BDAE9D', line_bg, 'bold'}},
-        insert = {'◆', {'#049B0A', line_bg, 'bold'}},
-        replace = {'◆', {'#C75450', line_bg, 'bold'}},
-        visual = {'◆', {'#43A8ED', line_bg, 'bold'}},
-        v_line = {'━', {'#43A8ED', line_bg, 'bold'}},
-        v_block = {'■', {'#43A8ED', line_bg, 'bold'}},
-        select = {'■', {'#3592C4', line_bg, 'bold'}},
-        command = {'▼', {'#BDAE9D', line_bg, 'bold'}},
-        shell_ex = {'●', {'#93896C', line_bg, 'bold'}},
-        terminal = {'●', {'#049B0A', line_bg, 'bold'}},
-        prompt = {'▼', {'#BDAE9D', line_bg, 'bold'}},
-        inactive = {' ', {line_bg, line_bg}},
+        normal = { '▲', { '#BDAE9D', line_bg, 'bold' } },
+        insert = { '◆', { '#049B0A', line_bg, 'bold' } },
+        replace = { '◆', { '#C75450', line_bg, 'bold' } },
+        visual = { '◆', { '#43A8ED', line_bg, 'bold' } },
+        v_line = { '━', { '#43A8ED', line_bg, 'bold' } },
+        v_block = { '■', { '#43A8ED', line_bg, 'bold' } },
+        select = { '■', { '#3592C4', line_bg, 'bold' } },
+        command = { '▼', { '#BDAE9D', line_bg, 'bold' } },
+        shell_ex = { '●', { '#93896C', line_bg, 'bold' } },
+        terminal = { '●', { '#049B0A', line_bg, 'bold' } },
+        prompt = { '▼', { '#BDAE9D', line_bg, 'bold' } },
+        inactive = { ' ', { line_bg, line_bg } },
       },
-      margin = {1, 1},
+      margin = { 1, 1 },
     },
     buffer_name = {
-      style = {'#BDAE9D', '#2A190E', 'bold'},
+      style = { '#BDAE9D', '#2A190E', 'bold' },
       empty = nil,
-      padding = {1, 1},
-      margin = {1, 1},
-      decorator = {'', '', {'#2A190E', line_bg}},
-      condition = require'ponton.condition'.buffer_not_empty,
+      padding = { 1, 1 },
+      margin = { 1, 1 },
+      decorator = { '', '', { '#2A190E', line_bg } },
+      condition = require('ponton.condition').buffer_not_empty,
     },
     buffer_changed = {
-      style = {'#DF824C', line_bg, 'bold'},
+      style = { '#DF824C', line_bg, 'bold' },
       value = '†',
-      padding = {nil, 1},
+      padding = { nil, 1 },
     },
     read_only = {
-      style = {'#C75450', line_bg, 'bold'},
+      style = { '#C75450', line_bg, 'bold' },
       value = '',
-      padding = {nil, 1},
-      condition = require'ponton.condition'.is_read_only,
+      padding = { nil, 1 },
+      condition = require('ponton.condition').is_read_only,
     },
-    spacer = {style = {line_bg, line_bg}},
-    sep = {style = {'#BDAE9D', line_bg}, text = '⏽'},
-    line_percent = {style = {'#BDAE9D', line_bg}, padding = {nil, 1}},
-    line = {style = {'#BDAE9D', line_bg}, padding = {1}},
+    spacer = { style = { line_bg, line_bg } },
+    sep = { style = { '#BDAE9D', line_bg }, text = '⏽' },
+    line_percent = { style = { '#BDAE9D', line_bg }, padding = { nil, 1 } },
+    line = { style = { '#BDAE9D', line_bg }, padding = { 1 } },
     column = {
-      style = {'#BDAE9D', line_bg},
+      style = { '#BDAE9D', line_bg },
       left_adjusted = true,
-      padding = {nil, 1},
+      padding = { nil, 1 },
     },
     git_branch = {
-      style = {'#C5656B', line_bg},
-      padding = {1, 1},
+      style = { '#C5656B', line_bg },
+      padding = { 1, 1 },
       prefix = ' ',
     },
     lsp_spinner = {
-      style = {'#C5656B', line_bg},
-      fn = require'lsp_spinner'.status,
-      padding = {nil, 2},
+      style = { '#C5656B', line_bg },
+      fn = require('lsp_spinner').status,
+      padding = { nil, 2 },
       prefix = '󰣪 ',
     },
     lsp_error = {
-      style = {'#FF0000', line_bg, 'bold'},
-      padding = {nil, 1},
+      style = { '#FF0000', line_bg, 'bold' },
+      padding = { nil, 1 },
       prefix = '×',
     },
     lsp_warning = {
-      style = {'#FFFF00', line_bg, 'bold'},
-      padding = {nil, 1},
+      style = { '#FFFF00', line_bg, 'bold' },
+      padding = { nil, 1 },
       prefix = '•',
     },
     lsp_information = {
-      style = {'#FFFFCC', line_bg},
-      padding = {nil, 1},
+      style = { '#FFFFCC', line_bg },
+      padding = { nil, 1 },
       prefix = '~',
     },
-    lsp_hint = {style = {'#F49810', line_bg}, padding = {nil, 1}, prefix = '¬'},
+    lsp_hint = {
+      style = { '#F49810', line_bg },
+      padding = { nil, 1 },
+      prefix = '¬',
+    },
     active_mark_start = {
-      style = {{'#DF824C', line_bg}, {line_bg, line_bg}},
+      style = { { '#DF824C', line_bg }, { line_bg, line_bg } },
       text = '▌',
     },
     active_mark_end = {
-      style = {{'#DF824C', line_bg}, {line_bg, line_bg}},
+      style = { { '#DF824C', line_bg }, { line_bg, line_bg } },
       text = '▐',
     },
   },
@@ -323,13 +351,19 @@ require'ponton'.setup({
 
 -- kommentary ----------------------------------------------------
 g.kommentary_create_default_mappings = false
-map('n', '<leader>cc', '<Plug>kommentary_line_default', {noremap = false})
-map('n', '<leader>c', '<Plug>kommentary_motion_default', {noremap = false})
-map('v', '<leader>c', '<Plug>kommentary_visual_default', {noremap = false})
+map('n', '<leader>cc', '<Plug>kommentary_line_default', { noremap = false })
+map('n', '<leader>c', '<Plug>kommentary_motion_default', { noremap = false })
+map('v', '<leader>c', '<Plug>kommentary_visual_default', { noremap = false })
 
 -- coBra ---------------------------------------------------------
 g.coBraPairs = {
-  rust = {{'<', '>'}, {'"', '"'}, {'{', '}'}, {'(', ')'}, {'[', ']'}},
+  rust = {
+    { '<', '>' },
+    { '"', '"' },
+    { '{', '}' },
+    { '(', ')' },
+    { '[', ']' },
+  },
 }
 g.coBraDisableCRMap = true
 
@@ -344,18 +378,18 @@ if g.neovide then
 end
 
 -- floaterm.nvim -------------------------------------------------
-require'floaterm'.setup {position = 'top', width = 1, height = 0.8}
+require('floaterm').setup({ position = 'top', width = 1, height = 0.8 })
 map('n', '<C-s>', [[<cmd>lua require'floaterm'.find_file()<cr>]])
 map('n', '<M-f>', [[<cmd>lua require'floaterm'.rg()<cr>]])
 
 -- nvim-tree.lua -------------------------------------------------
-local tree_cb = require'nvim-tree.config'.nvim_tree_callback
+local tree_cb = require('nvim-tree.config').nvim_tree_callback
 g.nvim_tree_git_hl = 1
 g.nvim_tree_window_picker_chars = 'HLJKFQDS'
-g.nvim_tree_window_picker_exclude = {filetype = {'Trouble', 'qf'}}
+g.nvim_tree_window_picker_exclude = { filetype = { 'Trouble', 'qf' } }
 map('n', '<Tab>', '<cmd>NvimTreeToggle<CR>')
 map('n', '<S-Tab>', '<cmd>NvimTreeFindFile<CR>')
-g.nvim_tree_show_icons = {git = 0, folders = 1, files = 1}
+g.nvim_tree_show_icons = { git = 0, folders = 1, files = 1 }
 g.nvim_tree_icons = {
   symlink = '󰌹',
   folder = {
@@ -369,7 +403,7 @@ g.nvim_tree_icons = {
     symlink_open = '󰌹 ▼',
   },
 }
-require'nvim-tree'.setup {
+require('nvim-tree').setup({
   hijack_cursor = true,
   auto_close = true,
   diagnostics = {
@@ -378,44 +412,45 @@ require'nvim-tree'.setup {
       hint = '',
       info = '',
       warning = '',
-      error = "×",
-    }
+      error = '×',
+    },
   },
   view = {
     width = 40,
     mappings = {
       custom_only = true,
       list = {
-        {key = {'<CR>', '<2-LeftMouse>'}, cb = tree_cb('edit')},
-        {key = {'<2-RightMouse>', '<C-]>'}, cb = tree_cb('cd')},
-        {key = '<C-v>', cb = tree_cb('vsplit')},
-        {key = '<C-s>', cb = tree_cb('split')},
-        {key = '<C-t>', cb = tree_cb('tabnew')},
-        {key = '<BS>', cb = tree_cb('close_node')},
-        {key = '<S-CR>', cb = tree_cb('close_node')},
-        {key = '<Tab>', cb = tree_cb('preview')},
-        {key = 'K', cb = tree_cb('first_sibling')},
-        {key = 'J', cb = tree_cb('last_sibling')},
-        {key = 'I', cb = tree_cb('toggle_ignored')},
-        {key = 'H', cb = tree_cb('toggle_dotfiles')},
-        {key = 'R', cb = tree_cb('refresh')},
-        {key = 'a', cb = tree_cb('create')},
-        {key = 'd', cb = tree_cb('remove')},
-        {key = 'r', cb = tree_cb('rename')},
-        {key = '<C-r>', cb = tree_cb('full_rename')},
-        {key = 'x', cb = tree_cb('cut')}, {key = 'c', cb = tree_cb('copy')},
-        {key = 'p', cb = tree_cb('paste')},
-        {key = 'y', cb = tree_cb('copy_name')},
-        {key = 'Y', cb = tree_cb('copy_path')},
-        {key = 'gy', cb = tree_cb('copy_absolute_path')},
-        {key = '-', cb = tree_cb('dir_up')},
-        {key = 'o', cb = tree_cb('system_open')},
-        {key = 'q', cb = tree_cb('close')},
-        {key = 'g?', cb = tree_cb('toggle_help')},
+        { key = { '<CR>', '<2-LeftMouse>' }, cb = tree_cb('edit') },
+        { key = { '<2-RightMouse>', '<C-]>' }, cb = tree_cb('cd') },
+        { key = '<C-v>', cb = tree_cb('vsplit') },
+        { key = '<C-s>', cb = tree_cb('split') },
+        { key = '<C-t>', cb = tree_cb('tabnew') },
+        { key = '<BS>', cb = tree_cb('close_node') },
+        { key = '<S-CR>', cb = tree_cb('close_node') },
+        { key = '<Tab>', cb = tree_cb('preview') },
+        { key = 'K', cb = tree_cb('first_sibling') },
+        { key = 'J', cb = tree_cb('last_sibling') },
+        { key = 'I', cb = tree_cb('toggle_ignored') },
+        { key = 'H', cb = tree_cb('toggle_dotfiles') },
+        { key = 'R', cb = tree_cb('refresh') },
+        { key = 'a', cb = tree_cb('create') },
+        { key = 'd', cb = tree_cb('remove') },
+        { key = 'r', cb = tree_cb('rename') },
+        { key = '<C-r>', cb = tree_cb('full_rename') },
+        { key = 'x', cb = tree_cb('cut') },
+        { key = 'c', cb = tree_cb('copy') },
+        { key = 'p', cb = tree_cb('paste') },
+        { key = 'y', cb = tree_cb('copy_name') },
+        { key = 'Y', cb = tree_cb('copy_path') },
+        { key = 'gy', cb = tree_cb('copy_absolute_path') },
+        { key = '-', cb = tree_cb('dir_up') },
+        { key = 'o', cb = tree_cb('system_open') },
+        { key = 'q', cb = tree_cb('close') },
+        { key = 'g?', cb = tree_cb('toggle_help') },
       },
     },
   },
-}
+})
 li('NvimTreeRootFolder', 'Comment')
 li('NvimTreeExecFile', 'Todo')
 li('NvimTreeSpecialFile', 'Function')
@@ -431,13 +466,28 @@ hi('NvimTreeWindowPicker', '#BDAE9D', '#2A190E', 'bold')
 hi('NvimTreeLspDiagnosticsError', '#FF0000', nil, 'bold')
 
 -- nvim-treesitter -----------------------------------------------
-require'nvim-treesitter.configs'.setup {
+require('nvim-treesitter.configs').setup({
   ensure_installed = {
-    'c', 'cpp', 'rust', 'yaml', 'bash', 'typescript', 'javascript', 'html',
-    'css', 'lua', 'comment', 'jsdoc', 'tsx', 'toml', 'json', 'graphql', 'jsonc',
+    'c',
+    'cpp',
+    'rust',
+    'yaml',
+    'bash',
+    'typescript',
+    'javascript',
+    'html',
+    'css',
+    'lua',
+    'comment',
+    'jsdoc',
+    'tsx',
+    'toml',
+    'json',
+    'graphql',
+    'jsonc',
   },
-  highlight = {enable = true, custom_captures = {todo = 'Todo'}},
-  indent = {enable = true},
+  highlight = { enable = true, custom_captures = { todo = 'Todo' } },
+  indent = { enable = true },
   incremental_selection = {
     enable = true,
     keymaps = {
@@ -447,39 +497,65 @@ require'nvim-treesitter.configs'.setup {
       node_decremental = '<A-h>',
     },
   },
-}
+})
 
 -- LSP -----------------------------------------------------------
-local lspconfig = require 'lspconfig'
-local lsp_spinner = require 'lsp_spinner'
-local lsp_signature = require 'lsp_signature'
-lsp_spinner.setup {
+local lspconfig = require('lspconfig')
+local lsp_spinner = require('lsp_spinner')
+local lsp_signature = require('lsp_signature')
+lsp_spinner.setup({
   spinner = {
-    '⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏',
+    '⠋',
+    '⠙',
+    '⠹',
+    '⠸',
+    '⠼',
+    '⠴',
+    '⠦',
+    '⠧',
+    '⠇',
+    '⠏',
   },
   interval = 80,
-}
+})
 
-fn.sign_define('DiagnosticSignError',
-               {text = '▬', texthl = 'DiagnosticSignError'})
-fn.sign_define('DiagnosticSignWarn',
-               {text = '▬', texthl = 'DiagnosticSignWarn'})
-fn.sign_define('DiagnosticSignInfo',
-               {text = '▬', texthl = 'DiagnosticSignInfo'})
-fn.sign_define('DiagnosticSignHint',
-               {text = '▬', texthl = 'DiagnosticSignHint'})
+fn.sign_define(
+  'DiagnosticSignError',
+  { text = '▬', texthl = 'DiagnosticSignError' }
+)
+fn.sign_define(
+  'DiagnosticSignWarn',
+  { text = '▬', texthl = 'DiagnosticSignWarn' }
+)
+fn.sign_define(
+  'DiagnosticSignInfo',
+  { text = '▬', texthl = 'DiagnosticSignInfo' }
+)
+fn.sign_define(
+  'DiagnosticSignHint',
+  { text = '▬', texthl = 'DiagnosticSignHint' }
+)
 
-map('n', '<A-a>',
-    '<cmd>lua vim.lsp.diagnostic.goto_prev{popup_opts={show_header=false}}<CR>')
-map('n', '<A-z>',
-    '<cmd>lua vim.lsp.diagnostic.goto_next{popup_opts={show_header=false}}<CR>')
+map(
+  'n',
+  '<A-a>',
+  '<cmd>lua vim.lsp.diagnostic.goto_prev{popup_opts={show_header=false}}<CR>'
+)
+map(
+  'n',
+  '<A-z>',
+  '<cmd>lua vim.lsp.diagnostic.goto_next{popup_opts={show_header=false}}<CR>'
+)
 map('v', '<A-CR>', '<cmd>lua vim.lsp.buf.range_code_action()<CR>')
 map('n', '<A-t>', '<cmd>lua vim.lsp.buf.type_definition()<CR>')
 map('n', '<A-d>', '<cmd>lua vim.lsp.buf.hover()<CR>')
 map('n', '<A-r>', '<cmd>lua vim.lsp.buf.rename()<CR>')
 map('n', '<A-g>', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
-map('n', '<A-i>',
-    '<cmd>lua require("rust-tools.inlay_hints").toggle_inlay_hints()<CR>')
+map(
+  'n',
+  '<A-i>',
+  '<cmd>lua require("rust-tools.inlay_hints").toggle_inlay_hints()<CR>'
+)
 
 hi('signatureHint', '#CA7E03', nil, 'italic')
 local signature_help_cfg = {
@@ -492,18 +568,27 @@ local signature_help_cfg = {
   hi_parameter = 'Search',
   max_height = 4,
   max_width = 80,
-  handler_opts = {border = 'none'},
+  handler_opts = { border = 'none' },
   padding = ' ',
   toggle_key = '<C-q>',
 }
 
 local function on_attach(client, bufnr)
   if client.resolved_capabilities.document_range_formatting then
-    map('v', '<A-f>', '<cmd>lua vim.lsp.buf.range_formatting()<CR>',
-        {buffer = bufnr})
+    map(
+      'v',
+      '<A-f>',
+      '<cmd>lua vim.lsp.buf.range_formatting()<CR>',
+      { buffer = bufnr }
+    )
   end
   if client.resolved_capabilities.document_formatting then
-    map('n', '<A-e>', '<cmd>lua vim.lsp.buf.formatting()<CR>', {buffer = bufnr})
+    map(
+      'n',
+      '<A-e>',
+      '<cmd>lua vim.lsp.buf.formatting()<CR>',
+      { buffer = bufnr }
+    )
   end
   -- open a floating window with the diagnostics from the current cursor position
   cmd([[
@@ -513,39 +598,41 @@ local function on_attach(client, bufnr)
     augroup END
   ]])
   -- highlight the symbol under the cursor
-  --[[ if client.resolved_capabilities.document_highlight then
-     cmd([[
+  if client.resolved_capabilities.document_highlight then
+    cmd([[
       augroup lsp_document_highlight
         autocmd!
         autocmd CursorHold,CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()
         autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
       augroup END
-    \]\])
-  end ]]
+    ]])
+  end
   lsp_spinner.on_attach(client, bufnr)
   lsp_signature.on_attach(signature_help_cfg, bufnr)
 end
 
-lsp.handlers['textDocument/publishDiagnostics'] =
-  lsp.with(lsp.diagnostic.on_publish_diagnostics, {virtual_text = false})
+lsp.handlers['textDocument/publishDiagnostics'] = lsp.with(
+  lsp.diagnostic.on_publish_diagnostics,
+  { virtual_text = false }
+)
 
 local capabilities = lsp.protocol.make_client_capabilities()
 lsp_spinner.init_capabilities(capabilities)
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-lspconfig.clangd.setup { -- C, C++
+lspconfig.clangd.setup({ -- C, C++
   on_attach = on_attach,
   capabilities = capabilities,
-}
-lspconfig.tsserver.setup { -- TypeScript
+})
+lspconfig.tsserver.setup({ -- TypeScript
   on_attach = function(client, bufnr)
     -- do not use tsserver for formatting (use Prettier through efm)
     client.resolved_capabilities.document_formatting = false
     on_attach(client, bufnr)
   end,
   capabilities = capabilities,
-}
-require('rust-tools').setup { -- Rust
+})
+require('rust-tools').setup({ -- Rust
   tools = {
     hover_with_actions = false,
     inlay_hints = {
@@ -553,47 +640,51 @@ require('rust-tools').setup { -- Rust
       parameter_hints_prefix = '← ',
       other_hints_prefix = '→ ',
     },
-    hover_actions = {border = 'none'},
+    hover_actions = { border = 'none' },
   },
   server = { -- rust-analyzer server options
     on_attach = on_attach,
     capabilities = capabilities,
-    settings = {['rust-analyzer'] = {checkOnSave = {command = 'clippy'}}},
+    settings = {
+      ['rust-analyzer'] = { checkOnSave = { command = 'clippy' } },
+    },
   },
-}
+})
 local eslint = {
   lintCommand = 'npx eslint -f visualstudio --stdin --stdin-filename ${INPUT}',
   lintIgnoreExitCode = true,
   lintStdin = true,
-  lintFormats = {'%f(%l,%c): %tarning %m', '%f(%l,%c): %rror %m'},
+  lintFormats = { '%f(%l,%c): %tarning %m', '%f(%l,%c): %rror %m' },
 }
 local prettier = {
   formatCommand = 'npx prettier --stdin-filepath ${INPUT}',
   formatStdin = true,
 }
 local languages = {
-  javascript = {eslint, prettier},
-  javascriptreact = {eslint, prettier},
-  typescript = {eslint, prettier},
-  typescriptreact = {eslint, prettier},
-  yaml = {prettier},
-  json = {prettier},
-  html = {prettier},
-  scss = {prettier},
-  css = {prettier},
-  markdown = {prettier},
-  lua = {{formatCommand = 'lua-format -i', formatStdin = true}},
+  javascript = { eslint, prettier },
+  javascriptreact = { eslint, prettier },
+  typescript = { eslint, prettier },
+  typescriptreact = { eslint, prettier },
+  yaml = { prettier },
+  json = { prettier },
+  html = { prettier },
+  scss = { prettier },
+  css = { prettier },
+  markdown = { prettier },
+  lua = { { formatCommand = 'stylua -', formatStdin = true } },
   sh = {
     {
       lintCommand = 'shellcheck -f gcc -x',
       lintSource = 'shellcheck',
       lintFormats = {
-        '%f:%l:%c: %trror: %m', '%f:%l:%c: %tarning: %m', '%f:%l:%c: %tote: %m',
+        '%f:%l:%c: %trror: %m',
+        '%f:%l:%c: %tarning: %m',
+        '%f:%l:%c: %tote: %m',
       },
     },
   },
 }
-lspconfig.efm.setup { -- efm
+lspconfig.efm.setup({ -- efm
   init_options = {
     documentFormatting = true,
     -- efm seems to not support range formatting
@@ -602,63 +693,80 @@ lspconfig.efm.setup { -- efm
   },
   filetypes = vim.tbl_keys(languages),
   on_attach = on_attach,
-  settings = {rootMarkers = {'.git/'}, languages = languages},
-}
+  settings = { rootMarkers = { '.git/' }, languages = languages },
+})
 local runtime_path = vim.split(package.path, ';')
 table.insert(runtime_path, 'lua/?.lua')
 table.insert(runtime_path, 'lua/?/init.lua')
-lspconfig.sumneko_lua.setup { -- Lua
+lspconfig.sumneko_lua.setup({ -- Lua
   on_attach = on_attach,
   capabilities = capabilities,
   cmd = {
-    '/opt/lua-language-server/bin/Linux/lua-language-server', '-E',
+    '/opt/lua-language-server/bin/Linux/lua-language-server',
+    '-E',
     '/opt/lua-language-server/main.lua',
   },
   settings = {
     Lua = {
-      runtime = {version = 'LuaJIT', path = runtime_path},
+      runtime = { version = 'LuaJIT', path = runtime_path },
       diagnostics = {
         -- Get the language server to recognize the `vim` global
-        globals = {'vim'},
+        globals = { 'vim' },
       },
       workspace = {
         -- Make the server aware of Neovim runtime files
         library = api.nvim_get_runtime_file('', true),
       },
-      telemetry = {enable = false},
+      telemetry = { enable = false },
     },
   },
-}
+})
 
 -- Trouble -------------------------------------------------------
-require('trouble').setup {
+require('trouble').setup({
   height = 8,
   indent_lines = false,
   action_keys = {
-    open_split = {'<c-s>'}, -- open buffer in new split
-    close_folds = {'<bs>'}, -- close all folds
+    open_split = { '<c-s>' }, -- open buffer in new split
+    close_folds = { '<bs>' }, -- close all folds
   },
   signs = {
     error = '×',
     warning = '•',
     hint = '¬',
     information = '~',
-    other = "╍",
+    other = '╍',
   },
-}
-map('n', '<A-x>', '<cmd>Trouble<cr>', {silent = true})
-map('n', '<A-w>', '<cmd>Trouble lsp_workspace_diagnostics<cr>', {silent = true})
-map('n', '<A-q>', '<cmd>Trouble lsp_document_diagnostics<cr>', {silent = true})
-map('n', '<A-u>', '<cmd>Trouble lsp_references<cr>', {silent = true})
-cmd 'hi! link TroubleCount Number'
+})
+map('n', '<A-x>', '<cmd>Trouble<cr>', { silent = true })
+map(
+  'n',
+  '<A-w>',
+  '<cmd>Trouble lsp_workspace_diagnostics<cr>',
+  { silent = true }
+)
+map(
+  'n',
+  '<A-q>',
+  '<cmd>Trouble lsp_document_diagnostics<cr>',
+  { silent = true }
+)
+map('n', '<A-u>', '<cmd>Trouble lsp_references<cr>', { silent = true })
+cmd('hi! link TroubleCount Number')
 
 -- telescope.nvim ------------------------------------------------
 local actions = require('telescope.actions')
-require('telescope').setup {
+require('telescope').setup({
   defaults = {
     vimgrep_arguments = {
-      'rg', '--color=never', '--no-heading', '--with-filename', '--line-number',
-      '--column', '--smart-case', '--hidden',
+      'rg',
+      '--color=never',
+      '--no-heading',
+      '--with-filename',
+      '--line-number',
+      '--column',
+      '--smart-case',
+      '--hidden',
     },
     mappings = {
       i = {
@@ -669,19 +777,22 @@ require('telescope').setup {
     },
     prompt_prefix = '▶ ',
     selection_caret = '▶ ',
-    borderchars = {'─', '│', '─', '│', '┌', '┐', '┘', '└'},
+    borderchars = { '─', '│', '─', '│', '┌', '┐', '┘', '└' },
   },
-}
+})
 
 map('', '<A-s>', '<cmd>Telescope lsp_document_symbols<cr>')
-map('', '<leader>x',
-    '<cmd>lua require("telescope.builtin").find_files{find_command={"fd", "-t", "f"}}<cr>')
+map(
+  '',
+  '<leader>x',
+  '<cmd>lua require("telescope.builtin").find_files{find_command={"fd", "-t", "f"}}<cr>'
+)
 map('', '<Leader>w', '<cmd>Telescope lsp_workspace_symbols<cr>')
 map('', '<A-b>', '<cmd>Telescope lsp_definitions<cr>')
 map('', '<A-CR>', '<cmd>lua require"lens".lsp_code_actions()<cr>')
 map('', '<C-f>', '<cmd>Telescope live_grep<cr>')
 map('', '<C-b>', '<cmd>lua require"lens".buffers()<cr>')
-cmd 'hi! link TelescopeBorder NonText'
+cmd('hi! link TelescopeBorder NonText')
 
 -- coq_nvim ------------------------------------------------------
 --[[ g.coq_settings = {
@@ -705,9 +816,11 @@ local luasnip = require('luasnip')
 
 local function has_word_before()
   local line, col = unpack(api.nvim_win_get_cursor(0))
-  return col ~= 0 and
-           api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col)
-             :match('%s') == nil
+  return col ~= 0
+    and api.nvim_buf_get_lines(0, line - 1, line, true)[1]
+        :sub(col, col)
+        :match('%s')
+      == nil
 end
 
 local tab_key = cmp.mapping(function(fallback)
@@ -720,7 +833,10 @@ local tab_key = cmp.mapping(function(fallback)
   else
     fallback()
   end
-end, {'i', 's'})
+end, {
+  'i',
+  's',
+})
 
 local stab_key = cmp.mapping(function(fallback)
   if cmp.visible() then
@@ -730,9 +846,12 @@ local stab_key = cmp.mapping(function(fallback)
   else
     fallback()
   end
-end, {'i', 's'})
+end, {
+  'i',
+  's',
+})
 
-cmp.setup {
+cmp.setup({
   mapping = {
     ['<tab>'] = tab_key,
     ['<S-tab>'] = stab_key,
@@ -750,25 +869,28 @@ cmp.setup {
       luasnip.lsp_expand(args.body)
     end,
   },
-  completion = {completeopt = 'menu,menuone,noinsert'},
+  completion = { completeopt = 'menu,menuone,noinsert' },
   sources = {
-    {name = 'luasnip'}, {name = 'nvim_lsp'}, {name = 'nvim_lua'},
-    {name = 'path'}, {name = 'buffer'},
+    { name = 'luasnip' },
+    { name = 'nvim_lsp' },
+    { name = 'nvim_lua' },
+    { name = 'path' },
+    { name = 'buffer' },
   },
-  documentation = {border = {'', '', '', ' ', '', '', '', ' '}},
+  documentation = { border = { '', '', '', ' ', '', '', '', ' ' } },
   formatting = {
     format = function(entry, vim_item)
       vim_item.menu = ({
-        buffer = "[Buffer]",
-        nvim_lsp = "[LSP]",
-        luasnip = "[LuaSnip]",
-        nvim_lua = "[Lua]",
-        path = "[Path]",
+        buffer = '[Buffer]',
+        nvim_lsp = '[LSP]',
+        luasnip = '[LuaSnip]',
+        nvim_lua = '[Lua]',
+        path = '[Path]',
       })[entry.source.name]
       return vim_item
     end,
   },
-}
+})
 li('CmpItemAbbr', 'Pmenu')
 li('CmpItemAbbrDeprecated', 'Pmenu')
 hi('CmpItemAbbrMatch', '#CA7E03', '#432717', 'bold')
@@ -777,34 +899,39 @@ li('CmpItemKind', 'Pmenu')
 li('CmpItemMenu', 'Pmenu')
 
 local ps = luasnip.parser.parse_snippet
-local js_log = ps({trig = 'log', name = 'console log'}, 'console.log($0);')
+local js_log = ps({ trig = 'log', name = 'console log' }, 'console.log($0);')
 luasnip.snippets = {
-  javascript = {js_log},
+  javascript = { js_log },
   typescript = {
-    js_log, ps('eslint-disable-next-line', [[// eslint-disable-next-line $0]]),
+    js_log,
+    ps('eslint-disable-next-line', [[// eslint-disable-next-line $0]]),
   },
-  typescriptreact = {js_log},
-  c = {ps('printf', [[printf("$1 -> %s$0\n", $1);]])},
+  typescriptreact = { js_log },
+  c = { ps('printf', [[printf("$1 -> %s$0\n", $1);]]) },
   rust = {
-    ps({trig = 'pprintln', name = 'pretty print debug'},
-       [[println!("$1 -> {:#?}", $1);]]),
+    ps(
+      { trig = 'pprintln', name = 'pretty print debug' },
+      [[println!("$1 -> {:#?}", $1);]]
+    ),
   },
   lua = {
     ps('print', [[print($0)]]),
-    ps({trig = 'dump', name = 'print with vim.inspect'},
-       [[print(vim.inspect($0))]]),
-    ps({trig = 'format', name = 'string format'}, [[string.format('%s', $0)]]),
+    ps(
+      { trig = 'dump', name = 'print with vim.inspect' },
+      [[print(vim.inspect($0))]]
+    ),
+    ps({ trig = 'format', name = 'string format' }, [[string.format('%s', $0)]]),
   },
 }
 
 -- gitsigns.nvim -------------------------------------------------
-require'gitsigns'.setup {
+require('gitsigns').setup({
   signs = {
-    add = {hl = 'GitAddSign', text = '┃'},
-    change = {hl = 'GitChangeSign', text = '┃'},
-    delete = {hl = 'GitDeleteSign', text = '▶'},
-    topdelete = {hl = 'GitDeleteSign', text = '▶'},
-    changedelete = {hl = 'GitChangeDeleteSign', text = '┃'},
+    add = { hl = 'GitAddSign', text = '┃' },
+    change = { hl = 'GitChangeSign', text = '┃' },
+    delete = { hl = 'GitDeleteSign', text = '▶' },
+    topdelete = { hl = 'GitDeleteSign', text = '▶' },
+    changedelete = { hl = 'GitChangeDeleteSign', text = '┃' },
   },
   numhl = false,
   linehl = false,
@@ -813,11 +940,11 @@ require'gitsigns'.setup {
     buffer = true,
     ['n <Leader>n'] = {
       expr = true,
-      "&diff ? '<Leader>n' : '<cmd>lua require\"gitsigns\".next_hunk()<CR>'",
+      [[&diff ? '<Leader>n' : '<cmd>lua require"gitsigns".next_hunk()<CR>']],
     },
     ['n <Leader>b'] = {
       expr = true,
-      "&diff ? '<Leader>b' : '<cmd>lua require\"gitsigns\".prev_hunk()<CR>'",
+      [[&diff ? '<Leader>b' : '<cmd>lua require"gitsigns".prev_hunk()<CR>']],
     },
     ['n <leader>hs'] = '<cmd>lua require"gitsigns".stage_hunk()<CR>',
     ['n <leader>hu'] = '<cmd>lua require"gitsigns".undo_stage_hunk()<CR>',
@@ -827,22 +954,44 @@ require'gitsigns'.setup {
     ['n <leader>hp'] = '<cmd>lua require"gitsigns".preview_hunk()<CR>',
     ['n <leader>hb'] = '<cmd>lua require"gitsigns".blame_line()<CR>',
   },
-  preview_config = {border = {'', '', '', ' ', '', '', '', ' '}},
-}
+  preview_config = { border = { '', '', '', ' ', '', '', '', ' ' } },
+})
 
 -- lightspeed ----------------------------------------------------
-require'lightspeed'.setup {
+require('lightspeed').setup({
   labels = {
-    's', 'f', 'g', 'v', 'b', 'n', 'w', 'y', 'd', 'q', 'z', 'c', 'x', 't', 'u',
-    'r', 'i', 'a', 'o', 'e',
+    's',
+    'f',
+    'g',
+    'v',
+    'b',
+    'n',
+    'w',
+    'y',
+    'd',
+    'q',
+    'z',
+    'c',
+    'x',
+    't',
+    'u',
+    'r',
+    'i',
+    'a',
+    'o',
+    'e',
   },
-}
+})
 hi('LightspeedCursor', '#212121', '#aeea00', 'bold')
 api.nvim_del_keymap('n', 't')
 
 -- nvim-neoclip.lua ----------------------------------------------
-require'neoclip'.setup()
-map('', '<A-c>', [[:lua require('telescope').extensions.neoclip.plus()<cr>]],
-    {silent = true})
+require('neoclip').setup()
+map(
+  '',
+  '<A-c>',
+  [[:lua require('telescope').extensions.neoclip.plus()<cr>]],
+  { silent = true }
+)
 
 -- require'cobra'.setup()
