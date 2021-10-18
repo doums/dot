@@ -6,7 +6,7 @@ for LSP
   * TypeScript Language Server (npm i -g typescript-language-server)
   * rust-analyzer (https://rust-analyzer.github.io/manual.html#rustup)
   * shellcheck, shell script static analysis tool (AUR shellcheck-bin)
-  * LuaFormatter (https://github.com/Koihik/LuaFormatter)
+  * StyLua, Lua code formatter (cargo install stylua)
   * lua-language-server, must be installed in /opt/lua-language-server
 
 for coq_nvim: python-virtualenv (Arch Linux package)
