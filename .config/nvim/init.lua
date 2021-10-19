@@ -2,12 +2,12 @@
 
 for LSP
   * clangd, language server for C/C++ (Arch Linux package clangd)
-  * efm, run linters and formatters (Arch Linux package efm-langserver)
   * TypeScript Language Server (npm i -g typescript-language-server)
   * rust-analyzer (https://rust-analyzer.github.io/manual.html#rustup)
   * shellcheck, shell script static analysis tool (AUR shellcheck-bin)
   * StyLua, Lua code formatter (cargo install stylua)
   * lua-language-server, must be installed in /opt/lua-language-server
+  * ESLint and Prettier (npm i -g eslint prettier)
 
 for coq_nvim: python-virtualenv (Arch Linux package)
 
@@ -32,46 +32,47 @@ if fn.empty(fn.glob(install_path)) > 0 then
 end
 
 cmd('packadd paq-nvim') -- Load package
-local paq = require('paq-nvim').paq
 
 -- update treesitter parsers
 local function update_ts_parsers()
   cmd('TSUpdate')
 end
-
-paq({ 'savq/paq-nvim', opt = true }) -- Let Paq manage itself
-paq('b3nj5m1n/kommentary')
-paq('doums/coBra')
-paq('doums/ponton.nvim')
-paq('doums/espresso')
-paq('doums/sae')
-paq('doums/lsp_spinner.nvim')
-paq('doums/lens')
-paq('doums/floaterm.nvim')
-paq({ 'nvim-treesitter/nvim-treesitter', run = update_ts_parsers })
-paq('nvim-treesitter/playground')
-paq('neovim/nvim-lspconfig')
-paq('ray-x/lsp_signature.nvim')
-paq('simrat39/rust-tools.nvim')
-paq('folke/trouble.nvim')
-paq('hrsh7th/nvim-cmp')
-paq('hrsh7th/cmp-buffer')
-paq('hrsh7th/cmp-nvim-lua')
-paq('hrsh7th/cmp-nvim-lsp')
-paq('hrsh7th/cmp-path')
-paq('saadparwaiz1/cmp_luasnip')
-paq('L3MON4D3/LuaSnip')
--- paq {'ms-jpq/coq_nvim', branch = 'coq'}
-paq('nvim-lua/plenary.nvim') -- dep of telescope.nvim, gitsigns.nvim
-paq('nvim-lua/popup.nvim') -- dep of telescope.nvim
-paq('nvim-telescope/telescope.nvim')
-paq('lewis6991/gitsigns.nvim')
-paq('pantharshit00/vim-prisma')
-paq('kyazdani42/nvim-tree.lua')
-paq('kyazdani42/nvim-web-devicons') -- dep of nvim-tree.lua
-paq('ggandor/lightspeed.nvim')
-paq('AckslD/nvim-neoclip.lua')
--- paq 'henriquehbr/nvim-startup.lua'
+require('paq')({
+  { 'savq/paq-nvim', opt = true }, -- Let Paq manage itself
+  'b3nj5m1n/kommentary',
+  'doums/coBra',
+  'doums/ponton.nvim',
+  'doums/espresso',
+  'doums/sae',
+  'doums/lsp_spinner.nvim',
+  'doums/lens',
+  'doums/floaterm.nvim',
+  { 'nvim-treesitter/nvim-treesitter', run = update_ts_parsers },
+  'nvim-treesitter/playground',
+  'neovim/nvim-lspconfig',
+  'jose-elias-alvarez/null-ls.nvim',
+  'ray-x/lsp_signature.nvim',
+  'simrat39/rust-tools.nvim',
+  'folke/trouble.nvim',
+  'hrsh7th/nvim-cmp',
+  'hrsh7th/cmp-buffer',
+  'hrsh7th/cmp-nvim-lua',
+  'hrsh7th/cmp-nvim-lsp',
+  'hrsh7th/cmp-path',
+  'saadparwaiz1/cmp_luasnip',
+  'L3MON4D3/LuaSnip',
+  -- paq {'ms-jpq/coq_nvim', branch = 'coq'}
+  'nvim-lua/plenary.nvim', -- dep of telescope.nvim, gitsigns.nvim, null-ls.nvim
+  'nvim-lua/popup.nvim', -- dep of telescope.nvim
+  'nvim-telescope/telescope.nvim',
+  'lewis6991/gitsigns.nvim',
+  'pantharshit00/vim-prisma',
+  'kyazdani42/nvim-tree.lua',
+  'kyazdani42/nvim-web-devicons', -- dep of nvim-tree.lua
+  'ggandor/lightspeed.nvim',
+  'AckslD/nvim-neoclip.lua',
+  -- paq 'henriquehbr/nvim-startup.lua'
+})
 
 -- HELPERS -------------------------------------------------------
 -- map with `noremap` option set to `true` by default
@@ -499,6 +500,19 @@ require('nvim-treesitter.configs').setup({
   },
 })
 
+-- null-ls.nvim --------------------------------------------------
+local null_ls = require('null-ls')
+null_ls.config({
+  diagnostics_format = '[#{s}] #{m}',
+  sources = {
+    null_ls.builtins.diagnostics.eslint,
+    null_ls.builtins.diagnostics.shellcheck,
+    null_ls.builtins.formatting.prettier,
+    null_ls.builtins.formatting.stylua,
+    null_ls.builtins.formatting.prismaFmt,
+  },
+})
+
 -- LSP -----------------------------------------------------------
 local lspconfig = require('lspconfig')
 local lsp_spinner = require('lsp_spinner')
@@ -626,10 +640,18 @@ lspconfig.clangd.setup({ -- C, C++
 })
 lspconfig.tsserver.setup({ -- TypeScript
   on_attach = function(client, bufnr)
-    -- do not use tsserver for formatting (use Prettier through efm)
+    -- do not use tsserver for formatting (use Prettier through null-ls)
     client.resolved_capabilities.document_formatting = false
     on_attach(client, bufnr)
   end,
+  capabilities = capabilities,
+})
+require('lspconfig').prismals.setup({
+  on_attach = on_attach,
+  capabilities = capabilities,
+})
+require('lspconfig')['null-ls'].setup({
+  on_attach = on_attach,
   capabilities = capabilities,
 })
 require('rust-tools').setup({ -- Rust
@@ -649,51 +671,6 @@ require('rust-tools').setup({ -- Rust
       ['rust-analyzer'] = { checkOnSave = { command = 'clippy' } },
     },
   },
-})
-local eslint = {
-  lintCommand = 'npx eslint -f visualstudio --stdin --stdin-filename ${INPUT}',
-  lintIgnoreExitCode = true,
-  lintStdin = true,
-  lintFormats = { '%f(%l,%c): %tarning %m', '%f(%l,%c): %rror %m' },
-}
-local prettier = {
-  formatCommand = 'npx prettier --stdin-filepath ${INPUT}',
-  formatStdin = true,
-}
-local languages = {
-  javascript = { eslint, prettier },
-  javascriptreact = { eslint, prettier },
-  typescript = { eslint, prettier },
-  typescriptreact = { eslint, prettier },
-  yaml = { prettier },
-  json = { prettier },
-  html = { prettier },
-  scss = { prettier },
-  css = { prettier },
-  markdown = { prettier },
-  lua = { { formatCommand = 'stylua -', formatStdin = true } },
-  sh = {
-    {
-      lintCommand = 'shellcheck -f gcc -x',
-      lintSource = 'shellcheck',
-      lintFormats = {
-        '%f:%l:%c: %trror: %m',
-        '%f:%l:%c: %tarning: %m',
-        '%f:%l:%c: %tote: %m',
-      },
-    },
-  },
-}
-lspconfig.efm.setup({ -- efm
-  init_options = {
-    documentFormatting = true,
-    -- efm seems to not support range formatting
-    -- documentRangeFormatting = true,
-    codeAction = true,
-  },
-  filetypes = vim.tbl_keys(languages),
-  on_attach = on_attach,
-  settings = { rootMarkers = { '.git/' }, languages = languages },
 })
 local runtime_path = vim.split(package.path, ';')
 table.insert(runtime_path, 'lua/?.lua')
