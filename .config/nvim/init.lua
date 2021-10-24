@@ -549,16 +549,8 @@ fn.sign_define(
   { text = '▬', texthl = 'DiagnosticSignHint' }
 )
 
-map(
-  'n',
-  '<A-a>',
-  '<cmd>lua vim.lsp.diagnostic.goto_prev{popup_opts={show_header=false}}<CR>'
-)
-map(
-  'n',
-  '<A-z>',
-  '<cmd>lua vim.lsp.diagnostic.goto_next{popup_opts={show_header=false}}<CR>'
-)
+map('n', '<A-a>', '<cmd>lua vim.lsp.diagnostic.goto_prev({float=false})<CR>')
+map('n', '<A-z>', '<cmd>lua vim.lsp.diagnostic.goto_next({float=false})<CR>')
 map('v', '<A-CR>', '<cmd>lua vim.lsp.buf.range_code_action()<CR>')
 map('n', '<A-t>', '<cmd>lua vim.lsp.buf.type_definition()<CR>')
 map('n', '<A-d>', '<cmd>lua vim.lsp.buf.hover()<CR>')
