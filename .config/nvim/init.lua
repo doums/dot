@@ -503,7 +503,6 @@ require('nvim-treesitter.configs').setup({
 -- null-ls.nvim --------------------------------------------------
 local null_ls = require('null-ls')
 null_ls.config({
-  diagnostics_format = '[#{s}] #{m}',
   sources = {
     null_ls.builtins.diagnostics.eslint,
     null_ls.builtins.diagnostics.shellcheck,
@@ -587,6 +586,27 @@ local signature_help_cfg = {
   toggle_key = '<C-q>',
 }
 
+local function format_diagnostic(diagnostic)
+  local severity_map = {
+    [vim.diagnostic.severity.ERROR] = '×',
+    [vim.diagnostic.severity.WARN] = '•',
+    [vim.diagnostic.severity.INFO] = '~',
+    [vim.diagnostic.severity.HINT] = '¬',
+  }
+  return string.format(
+    '%s %s (%s)',
+    severity_map[diagnostic.severity],
+    diagnostic.message,
+    diagnostic.source
+  )
+end
+
+-- vim.diagnostic config
+vim.diagnostic.config({
+  virtual_text = false,
+  float = { show_header = false, format = format_diagnostic },
+})
+
 local function on_attach(client, bufnr)
   if client.resolved_capabilities.document_range_formatting then
     map(
@@ -608,7 +628,7 @@ local function on_attach(client, bufnr)
   cmd([[
     augroup lsp_show_line_diagnostics
       autocmd!
-      autocmd CursorHold * lua vim.lsp.diagnostic.show_position_diagnostics{show_header=false, focusable = false}
+      autocmd CursorHold * lua vim.diagnostic.open_float(null, {focusable=false, scope="cursor"})
     augroup END
   ]])
   -- highlight the symbol under the cursor
@@ -624,11 +644,6 @@ local function on_attach(client, bufnr)
   lsp_spinner.on_attach(client, bufnr)
   lsp_signature.on_attach(signature_help_cfg, bufnr)
 end
-
-lsp.handlers['textDocument/publishDiagnostics'] = lsp.with(
-  lsp.diagnostic.on_publish_diagnostics,
-  { virtual_text = false }
-)
 
 local capabilities = lsp.protocol.make_client_capabilities()
 lsp_spinner.init_capabilities(capabilities)
