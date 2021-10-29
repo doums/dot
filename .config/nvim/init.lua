@@ -45,7 +45,6 @@ require('paq')({
   'doums/espresso',
   'doums/sae',
   'doums/lsp_spinner.nvim',
-  'doums/lens',
   'doums/floaterm.nvim',
   { 'nvim-treesitter/nvim-treesitter', run = update_ts_parsers },
   'nvim-treesitter/playground',
@@ -186,6 +185,10 @@ map('', 'k', 'gk', { silent = true })
 -- goto start and end of line
 map('', '<space>l', '$')
 map('', '<space>h', '0')
+-- command line
+map('c', '<A-Right>', '<C-Right>')
+map('c', '<A-Left>', '<C-Left>')
+map('c', '<A-BS>', '<C-w>')
 -- work inner by default
 map('o', 'w', 'iw')
 -- search and replace
@@ -765,6 +768,19 @@ require('telescope').setup({
   },
 })
 
+_G.dropdown_theme = require('telescope.themes').get_dropdown({
+  layout_config = { width = 0.8, height = 15 },
+  prompt = ' ',
+  previewer = false,
+  prompt_title = '',
+  border = true,
+  borderchars = {
+    prompt = { '─', '│', ' ', '│', '┌', '┐', '┘', '└' },
+    results = { '─', '│', '─', '│', '├', '┤', '┘', '└' },
+    preview = { '─', '│', '─', '│', '┌', '┐', '┘', '└' },
+  },
+})
+
 map('', '<A-s>', '<cmd>Telescope lsp_document_symbols<cr>')
 map(
   '',
@@ -773,9 +789,13 @@ map(
 )
 map('', '<Leader>w', '<cmd>Telescope lsp_workspace_symbols<cr>')
 map('', '<A-b>', '<cmd>Telescope lsp_definitions<cr>')
-map('', '<A-CR>', '<cmd>lua require"lens".lsp_code_actions()<cr>')
+map(
+  '',
+  '<A-CR>',
+  [[<cmd>lua require('telescope.builtin').lsp_code_actions(_G.dropdown_theme)<cr>]]
+)
 map('', '<C-f>', '<cmd>Telescope live_grep<cr>')
-map('', '<C-b>', '<cmd>lua require"lens".buffers()<cr>')
+map('', '<C-b>', [[<cmd>lua require('telescope.builtin').buffers(_G.dropdown_theme)<cr>]])
 cmd('hi! link TelescopeBorder NonText')
 
 -- coq_nvim ------------------------------------------------------
