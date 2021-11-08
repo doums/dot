@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=xmonad
+Comment=A dynamically tiling X11 window manager that is written and configured in Haskell.
+Type=Application
+Exec=/home/pierre/.local/bin/launch_xmonad.sh
+Keywords=tiling;window;manager;wm;
