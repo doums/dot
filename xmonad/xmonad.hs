@@ -141,6 +141,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,                 xK_Return),                windows W.swapMaster)
     , ((modm .|. shiftMask,   xK_j),                     windows W.swapDown)
     , ((modm .|. shiftMask,   xK_k),                     windows W.swapUp)
+    , ((modm,                 xK_s),                     toggleSmartSpacing)
     , ((modm,                 xK_f),                     withFocused $ windows . W.sink)
     , ((modm,                 xK_Left),                  prevWS)
     , ((modm,                 xK_Right),                 nextWS)
@@ -242,6 +243,7 @@ myManageHook = insertPosition Below Newer <+> composeAll
     , className =? "feh"               --> doFloat
     , className =? "Galculator"        --> doFloat
     , className =? "TeamSpeak 3"       --> doFloat
+    , title     =? "win0"              --> doFloat
     , resource  =? "desktop_window"    --> doIgnore ]
 
 ------------------------------------------------------------------------
@@ -282,6 +284,8 @@ myStartupHook = do
 
 ------------------------------------------------------------------------
 -- xmobarPP
+
+-- doc https://xmonad.github.io/xmonad-docs/xmonad-contrib/XMonad-Hooks-StatusBar-PP.html
 --
 myXmobarPP :: PP
 myXmobarPP = def
@@ -293,19 +297,11 @@ myXmobarPP = def
     , ppHiddenNoWindows  = stone . wrap " " ""
     , ppVisibleNoWindows = Just $  stone . wrap "❯" ""
     , ppUrgent           = stone . wrap (red "⚡") ""
-    , ppLayout           = white
-    , ppOrder            = \[ws, l, w] -> [ws, l] -- \[ws, l, _, wins] -> [ws, l, wins]
-    , ppExtras           = [] -- [logTitles formatFocused formatUnfocused]
+    , ppLayout           = white . wrap (stone "⌈") (stone "⌋")
+    , ppOrder            = \[ws, l, w] -> [ws, l]
+    , ppExtras           = []
     }
   where
-    -- formatFocused   = wrap (white    "[") (white    "]") . magenta . ppWindow
-    -- formatUnfocused = wrap (lowWhite "[") (lowWhite "]") . blue    . ppWindow
-
-    -- | Windows should have *some* title, which should not not exceed a
-    -- sane length.
-    -- ppWindow :: String -> String
-    -- ppWindow = xmobarRaw . (\w -> if null w then "untitled" else w) . shorten 30
-
     stone, red, white :: String -> String
     white    = xmobarColor "#ffffff" ""
     red      = xmobarColor "#bf616a" ""
