@@ -201,10 +201,16 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
-myLayout = smartBorders $ avoidStruts $ spacingWithEdge mySpacing $ tiled ||| Mirror tiled ||| Full
+myLayout = renamed [CutWordsLeft 1]
+           $ smartBorders
+           $ avoidStruts
+           $ spacingWithEdge mySpacing
+           $ tiled ||| mirror ||| full
   where
      -- default tiling algorithm partitions the screen into two panes
-     tiled   = Tall nmaster delta ratio
+     tiled   = renamed [Replace "→"] (Tall nmaster delta ratio)
+     mirror  = renamed [Replace "↓"] (Mirror tiled)
+     full    = renamed [Replace "■"] Full
 
      -- The default number of windows in the master pane
      nmaster = 1
@@ -287,6 +293,7 @@ myXmobarPP = def
     , ppHiddenNoWindows  = stone . wrap " " ""
     , ppVisibleNoWindows = Just $  stone . wrap "❯" ""
     , ppUrgent           = stone . wrap (red "⚡") ""
+    , ppLayout           = white
     , ppOrder            = \[ws, l, w] -> [ws, l] -- \[ws, l, _, wins] -> [ws, l, wins]
     , ppExtras           = [] -- [logTitles formatFocused formatUnfocused]
     }
