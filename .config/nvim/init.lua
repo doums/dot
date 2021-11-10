@@ -878,7 +878,7 @@ cmp.setup({
       luasnip.lsp_expand(args.body)
     end,
   },
-  completion = { completeopt = 'menu,menuone,noinsert', keyword_length = 0 },
+  completion = { completeopt = 'menu,menuone,noinsert' },
   sources = {
     { name = 'luasnip' },
     { name = 'nvim_lsp' },
