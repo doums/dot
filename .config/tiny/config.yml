@@ -1,0 +1,194 @@
+# Servers to auto-connect
+servers:
+    - addr: irc.eu.libera.chat
+      port: 6697
+      tls: true
+      realname: diep
+      nicks: [diep]
+
+      # (optional) Server alias for display in tab line
+      # alias: OFTC
+
+      # Channels to automatically join
+      join:
+          - "#archlinux"
+          - "#archlinux-aur"
+
+      # Three authentication methods: pass, sasl, and nickserv_ident
+      # These are optional and you probably only need one of these, delete
+      # others.
+
+      # Server or nick password
+      # pass: 'hunter2'
+
+      # SASL authentication
+      sasl:
+        username: 'diep'
+        password: 'xxx' # TODO replace with the real password
+
+      # Identify nick by sending a message to NickServ:
+      # (useful when `pass` or `sasl` fields above are not used)
+      # nickserv_ident: 'hunter2'
+
+# Defaults used when connecting to servers via the /connect command
+defaults:
+    nicks: [diep]
+    realname: diep
+    join: ["#archlinux"]
+    tls: true
+
+# Where to put log files
+log_dir: "/home/pierre/tiny_logs"
+
+# (Optional) Limits the maximum number of messages stored for each UI tab. Defaults to unlimited.
+# scrollback: 512
+
+# (Optional) UI layout: 'compact' or 'aligned'. Defaults to 'compact'.
+# layout: compact
+
+# (Optional) Nick length in 'aligned' layout. Default is 12.
+# max_nick_length: 12
+
+# Color theme based on 256 colors. Colors can be defined as color indices
+# (0-255) or with their names.
+#
+# Below are the defaults. You can delete them if you don't want to change
+# anything.
+#
+# Accepted color names are:
+# default (0), black (0), maroon (1), green (2), olive (3), navy (4),
+# purple (5), teal (6), silver (7), gray (8), red (9), lime (10),
+# yellow (11), blue (12), magenta (13), cyan (14), white (15)
+#
+# Attributes can be combined (e.g [bold, underline]), and valid values are bold
+# and underline.
+colors:
+    nick: [1, 2, 3, 4, 5, 6, 7, 14, 15]
+
+    clear:
+        fg: default
+        bg: default
+
+    user_msg:
+        fg: black
+        bg: default
+
+    err_msg:
+        fg: 1
+        bg: default
+        attrs: [bold, underline]
+
+    topic:
+        fg: 5
+        bg: default
+        attrs: [bold]
+
+    cursor:
+        fg: black
+        bg: default
+
+    join:
+        fg: 2
+        bg: default
+        attrs: [bold]
+
+    part:
+        fg: 1
+        bg: default
+        attrs: [bold]
+
+    nick_change:
+        fg: 4
+        bg: default
+        attrs: [bold]
+
+    faded:
+        fg: 8
+        bg: default
+
+    exit_dialogue:
+        fg: 3 
+        bg: default
+
+    highlight:
+        fg: 6
+        bg: default
+        attrs: [bold]
+
+    completion:
+        fg: 14
+        bg: default
+
+    timestamp:
+        fg: 14
+        bg: default
+
+    tab_active:
+        fg: 4
+        bg: default
+        attrs: [bold]
+
+    tab_normal:
+        fg: 8
+        bg: default
+
+    tab_new_msg:
+        fg: 2
+        bg: default
+
+    tab_highlight:
+        fg: 2
+        bg: default
+        attrs: [bold]
+
+# Custom key mappings (optional)
+# [key_name]: [key_action]
+# Set a key to "disable" to disable it
+key_map:
+    ### Defaults ###
+    # ctrl_c: exit
+    # ctrl_x: run_editor
+
+    # alt_1: 
+    #     tab_goto: 1
+    # alt_2: 
+    #     tab_goto: 2
+    # alt_3: 
+    #     tab_goto: 3
+    # alt_4: 
+    #     tab_goto: 4
+    # alt_5: 
+    #     tab_goto: 5
+    # alt_6: 
+    #     tab_goto: 6
+    # alt_7: 
+    #     tab_goto: 7
+    # alt_8: 
+    #     tab_goto: 8
+    # alt_9: 
+    #     tab_goto: 9
+    # alt_0: 
+    #     tab_goto: 0
+    alt_l:     tab_next
+    alt_h:     tab_prev
+
+    ctrl_k:    messages_scroll_up
+    ctrl_j:    messages_scroll_down
+    alt_k:     messages_page_up
+    alt_j:     messages_page_down
+    # pgup:       messages_page_up
+    # pgdown:     messages_page_down
+    # home:       messages_scroll_top
+    # end:        messages_scroll_bottom
+
+    # left:       input_move_curs_left
+    # right:      input_move_curs_right
+    # ctrl_a:     input_move_curs_start
+    # ctrl_e:     input_move_curs_end
+    # ctrl_left:  input_move_word_left
+    # ctrl_right: input_move_word_right
+    # ctrl_k:     input_delete_to_end
+    ctrl_w:     input_delete_prev_word
+    # backspace:  input_delete_prev_char
+    # del:        input_delete_next_char
+    # tab:        input_auto_complete
