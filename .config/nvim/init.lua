@@ -555,7 +555,7 @@ fn.sign_define(
 map('n', '<A-a>', '<cmd>lua vim.lsp.diagnostic.goto_prev({float=false})<CR>')
 map('n', '<A-z>', '<cmd>lua vim.lsp.diagnostic.goto_next({float=false})<CR>')
 map('v', '<A-CR>', '<cmd>lua vim.lsp.buf.range_code_action()<CR>')
-map('n', '<A-t>', '<cmd>lua vim.lsp.buf.type_definition()<CR>')
+map('n', '<A-S-b>', '<cmd>lua vim.lsp.buf.type_definition()<CR>')
 map('n', '<A-d>', '<cmd>lua vim.lsp.buf.hover()<CR>')
 map('n', '<A-r>', '<cmd>lua vim.lsp.buf.rename()<CR>')
 map('n', '<A-g>', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
@@ -795,7 +795,11 @@ map(
   [[<cmd>lua require('telescope.builtin').lsp_code_actions(_G.dropdown_theme)<cr>]]
 )
 map('', '<C-f>', '<cmd>Telescope live_grep<cr>')
-map('', '<C-b>', [[<cmd>lua require('telescope.builtin').buffers(_G.dropdown_theme)<cr>]])
+map(
+  '',
+  '<C-b>',
+  [[<cmd>lua require('telescope.builtin').buffers(_G.dropdown_theme)<cr>]]
+)
 cmd('hi! link TelescopeBorder NonText')
 
 -- coq_nvim ------------------------------------------------------
@@ -839,6 +843,7 @@ local tab_key = cmp.mapping(function(fallback)
   end
 end, {
   'i',
+  'c',
   's',
 })
 
@@ -852,28 +857,28 @@ local stab_key = cmp.mapping(function(fallback)
   end
 end, {
   'i',
-  's',
+  'c',
 })
 
 cmp.setup({
   mapping = {
     ['<tab>'] = tab_key,
     ['<S-tab>'] = stab_key,
-    ['<M-m>'] = cmp.mapping.scroll_docs(-4),
-    ['<M-ù>'] = cmp.mapping.scroll_docs(4),
-    ['<C-space>'] = cmp.mapping.complete(),
-    ['<C-e>'] = cmp.mapping.close(),
-    ['<cr>'] = cmp.mapping.confirm({
-      behavior = cmp.ConfirmBehavior.Replace,
-      select = true,
+    ['<M-p>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+    ['<M-o>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+    ['<C-space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+    ['<C-e>'] = cmp.mapping({
+      i = cmp.mapping.abort(),
+      c = cmp.mapping.close(),
     }),
+    ['<cr>'] = cmp.mapping.confirm({ select = true }),
   },
   snippet = {
     expand = function(args)
       luasnip.lsp_expand(args.body)
     end,
   },
-  completion = { completeopt = 'menu,menuone,noinsert' },
+  completion = { completeopt = 'menu,menuone,noinsert', keyword_length = 0 },
   sources = {
     { name = 'luasnip' },
     { name = 'nvim_lsp' },
@@ -885,11 +890,11 @@ cmp.setup({
   formatting = {
     format = function(entry, vim_item)
       vim_item.menu = ({
-        buffer = '[Buffer]',
-        nvim_lsp = '[LSP]',
-        luasnip = '[LuaSnip]',
-        nvim_lua = '[Lua]',
-        path = '[Path]',
+        buffer = '⌈buf⌋',
+        nvim_lsp = '⌈lsp⌋',
+        luasnip = '⌈snip⌋',
+        nvim_lua = '⌈lua⌋',
+        path = '⌈path⌋',
       })[entry.source.name]
       return vim_item
     end,
@@ -997,5 +1002,3 @@ map(
   [[:lua require('telescope').extensions.neoclip.plus()<cr>]],
   { silent = true }
 )
-
--- require'cobra'.setup()
