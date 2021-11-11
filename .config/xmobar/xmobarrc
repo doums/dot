@@ -1,7 +1,6 @@
 Config { font = "xft:JetBrainsMono Nerd Font:pixelsize=22:antialias=true"
        , additionalFonts = []
        , borderColor = "#262626"
-       , border = NoBorder
        , bgColor = "#262626"
        , fgColor = "#8c8c8c"
        , alpha = 255
@@ -14,7 +13,7 @@ Config { font = "xft:JetBrainsMono Nerd Font:pixelsize=22:antialias=true"
        , hideOnStart = False
        , iconRoot = "."
        , allDesktops = True
-       , overrideRedirect = False
+       , overrideRedirect = True
        , commands = [ Run CommandReader "baru" "status"
                     , Run XMonadLog
                     ]

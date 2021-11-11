@@ -35,6 +35,7 @@ import XMonad.Hooks.InsertPosition
 -- Utils
 import XMonad.Util.Cursor
 import XMonad.Util.SpawnOnce
+import qualified XMonad.Util.Hacks as Hacks
 
 -- XF86 keys
 import Graphics.X11.ExtraTypes.XF86
@@ -255,7 +256,7 @@ myManageHook = insertPosition Below Newer <+> composeAll
 -- return (All True) if the default handler is to be run afterwards. To
 -- combine event hooks use mappend or mconcat from Data.Monoid.
 --
-myEventHook = mempty
+myEventHook = Hacks.trayerAboveXmobarEventHook
 
 ------------------------------------------------------------------------
 -- Status bars and logging
@@ -280,7 +281,7 @@ myStartupHook = do
     spawnOnce "redshift -c /home/pierre/.config/redshift/redshift.conf"
     spawnOnce "dunst -c /home/pierre/.config/dunst/dunstrc"
     spawnOnce "udiskie"
-    spawnOnce "bato"
+    spawnOnce "trayer -l --align left --distancefrom left --distance 420 --monitor primary --widthtype request --height 28 --transparent true --alpha 0 --tint 0x262626 --expand true --iconspacing 4 --SetPartialStrut true --SetDockType true"
 
 ------------------------------------------------------------------------
 -- xmobarPP

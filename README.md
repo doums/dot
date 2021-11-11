@@ -165,6 +165,14 @@ sudo pacman -S udisks2 udiskie
 
 source: https://wiki.archlinux.org/index.php/Udisks
 
+##### system tray
+
+Install trayer
+
+```shell
+sudo pacman -S trayer
+```
+
 ## Design porn
 
 ### gtk theme, Adapta
