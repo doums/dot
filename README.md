@@ -157,14 +157,6 @@ stack install
 
 source:https://xmobar.org/#from-source
 
-### mount helper and USB
-
-```shell
-sudo pacman -S udisks2 udiskie
-```
-
-source: https://wiki.archlinux.org/index.php/Udisks
-
 ##### system tray
 
 Install trayer
@@ -172,6 +164,14 @@ Install trayer
 ```shell
 sudo pacman -S trayer
 ```
+
+### mount helper and USB
+
+```shell
+sudo pacman -S udisks2 udiskie
+```
+
+source: https://wiki.archlinux.org/index.php/Udisks
 
 ## Design porn
 
