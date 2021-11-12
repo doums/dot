@@ -24,6 +24,8 @@ import XMonad.Actions.WithAll (killAll)
 import XMonad.Layout.Spacing
 import XMonad.Layout.NoBorders
 import XMonad.Layout.Renamed
+import XMonad.Layout.BinaryColumn
+import XMonad.Layout.PerWorkspace
 
 -- Hooks
 import XMonad.Hooks.ManageDocks
@@ -207,11 +209,13 @@ myLayout = renamed [CutWordsLeft 1]
            $ smartBorders
            $ avoidStruts
            $ spacingWithEdge mySpacing
-           $ tiled ||| mirror ||| full
+           $ onWorkspace "3" (column ||| mirror)
+           $ tiled ||| mirror ||| column ||| full
   where
      -- default tiling algorithm partitions the screen into two panes
      tiled   = renamed [Replace "→"] (Tall nmaster delta ratio)
      mirror  = renamed [Replace "↓"] (Mirror tiled)
+     column = renamed [Replace "≡"] (BinaryColumn 1.5 124)
      full    = renamed [Replace "■"] Full
 
      -- The default number of windows in the master pane
