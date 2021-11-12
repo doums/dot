@@ -5,11 +5,10 @@ for LSP
   * TypeScript Language Server (npm i -g typescript-language-server)
   * rust-analyzer (https://rust-analyzer.github.io/manual.html#rustup)
   * shellcheck, shell script static analysis tool (AUR shellcheck-bin)
-  * StyLua, Lua code formatter (cargo install stylua)
+  * StyLua, Lua code formatter (AUR stylua)
   * lua-language-server, must be installed in /opt/lua-language-server
   * ESLint and Prettier (npm i -g eslint prettier)
-
-for coq_nvim: python-virtualenv (Arch Linux package)
+  * Prisma LSP (npm i -g @prisma/language-server)
 
 others: git, ripgrep, fzf, node, npm
 -- ]]
