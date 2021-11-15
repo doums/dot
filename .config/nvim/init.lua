@@ -990,7 +990,18 @@ require('lightspeed').setup({
     'e',
   },
 })
-hi('LightspeedCursor', '#212121', '#aeea00', 'bold')
+hi('LightspeedCursor', '#212121', '#f49810', 'bold')
+hi('LightspeedLabel', '#f49810', nil, 'bold,underline')
+hi('LightspeedLabelOverlapped', '#f49810', nil, 'underline')
+hi('LightspeedShortcut', '#212121', '#f49810', 'bold,underline')
+hi('LightspeedOneCharMatch', '#212121', '#f49810', 'bold')
+hi('LightspeedGreyWash', '#80807f')
+hi('LightspeedUnlabeledMatch', '#ddddff', nil, 'bold')
+hi('LightspeedPendingOpArea', '#212121', '#f49810')
+hi('LightspeedLabelDistant', '#aa4e00', nil, 'bold,underline')
+hi('LightspeedLabelDistantOverlapped', '#aa4e00', nil, 'underline')
+hi('LightspeedMaskedChar', '#906526')
+
 api.nvim_del_keymap('n', 't')
 
 -- nvim-neoclip.lua ----------------------------------------------
