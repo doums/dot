@@ -519,18 +519,7 @@ local lspconfig = require('lspconfig')
 local lsp_spinner = require('lsp_spinner')
 local lsp_signature = require('lsp_signature')
 lsp_spinner.setup({
-  spinner = {
-    '⠋',
-    '⠙',
-    '⠹',
-    '⠸',
-    '⠼',
-    '⠴',
-    '⠦',
-    '⠧',
-    '⠇',
-    '⠏',
-  },
+  spinner = { '▪', '■', '□', '▫' },
   interval = 80,
 })
 
@@ -598,7 +587,7 @@ end
 -- vim.diagnostic config
 vim.diagnostic.config({
   virtual_text = false,
-  float = { show_header = false, format = format_diagnostic },
+  float = { show_header = false, format = format_diagnostic, prefix = '' },
 })
 
 local function on_attach(client, bufnr)
@@ -622,7 +611,7 @@ local function on_attach(client, bufnr)
   cmd([[
     augroup lsp_show_line_diagnostics
       autocmd!
-      autocmd CursorHold * lua vim.diagnostic.open_float(null, {focusable=false, scope="cursor"})
+      autocmd CursorHold * lua vim.diagnostic.open_float(nil, {focusable=false, scope="cursor"})
     augroup END
   ]])
   -- highlight the symbol under the cursor
@@ -928,7 +917,10 @@ luasnip.snippets = {
       { trig = 'dump', name = 'print with vim.inspect' },
       [[print(vim.inspect($0))]]
     ),
-    ps({ trig = 'format', name = 'string format' }, [[string.format('%s', $0)]]),
+    ps(
+      { trig = 'format', name = 'string format' },
+      [[string.format('%s', $0)]]
+    ),
   },
 }
 
