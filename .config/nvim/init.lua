@@ -384,6 +384,11 @@ end
 require('floaterm').setup({ position = 'top', width = 1, height = 0.8 })
 map('n', '<C-s>', [[<cmd>lua require'floaterm'.find_file()<cr>]])
 map('n', '<M-f>', [[<cmd>lua require'floaterm'.rg()<cr>]])
+map(
+  'n',
+  '<M-t>',
+  [[<cmd>lua require'floaterm'.open({ position = 'bottom', width = 1, height = 0.4 })<cr>]]
+)
 
 -- nvim-tree.lua -------------------------------------------------
 local tree_cb = require('nvim-tree.config').nvim_tree_callback
