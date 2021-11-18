@@ -324,12 +324,12 @@ require('ponton').setup({
     lsp_error = {
       style = { '#FF0000', line_bg, 'bold' },
       padding = { nil, 1 },
-      prefix = '×',
+      prefix = '✕',
     },
     lsp_warning = {
       style = { '#FFFF00', line_bg, 'bold' },
       padding = { nil, 1 },
-      prefix = '•',
+      prefix = '▲',
     },
     lsp_information = {
       style = { '#FFFFCC', line_bg },
@@ -339,7 +339,7 @@ require('ponton').setup({
     lsp_hint = {
       style = { '#F49810', line_bg },
       padding = { nil, 1 },
-      prefix = '¬',
+      prefix = '•',
     },
     active_mark_start = {
       style = { { '#DF824C', line_bg }, { line_bg, line_bg } },
@@ -381,13 +381,17 @@ if g.neovide then
 end
 
 -- floaterm.nvim -------------------------------------------------
-require('floaterm').setup({ position = 'top', width = 1, height = 0.8 })
+require('floaterm').setup({
+  layout = 'top',
+  width = 1,
+  height = 0.8,
+})
 map('n', '<C-s>', [[<cmd>lua require'floaterm'.find_file()<cr>]])
 map('n', '<M-f>', [[<cmd>lua require'floaterm'.rg()<cr>]])
 map(
   'n',
   '<M-t>',
-  [[<cmd>lua require'floaterm'.open({ position = 'bottom', width = 1, height = 0.4 })<cr>]]
+  [[<cmd>lua require'floaterm'.open({layout='bottom', width=1, height=0.4, bg_color='#211a16', row=1, win_api={border={ ' ', ' ', ' ', '', '', '', '', '' }}})<cr>]]
 )
 
 -- nvim-tree.lua -------------------------------------------------
@@ -420,7 +424,7 @@ require('nvim-tree').setup({
       hint = '',
       info = '',
       warning = '',
-      error = '×',
+      error = '✕',
     },
   },
   view = {
@@ -575,24 +579,27 @@ local signature_help_cfg = {
 }
 
 local function format_diagnostic(diagnostic)
+  return string.format('%s (%s)', diagnostic.message, diagnostic.source)
+end
+
+local function prefix_diagnostic(diagnostic)
   local severity_map = {
-    [vim.diagnostic.severity.ERROR] = '×',
-    [vim.diagnostic.severity.WARN] = '•',
-    [vim.diagnostic.severity.INFO] = '~',
-    [vim.diagnostic.severity.HINT] = '¬',
+    [vim.diagnostic.severity.ERROR] = { '✕ ', 'ErrorSign' },
+    [vim.diagnostic.severity.WARN] = { '▲ ', 'WarningSign' },
+    [vim.diagnostic.severity.INFO] = { '~ ', 'InformationSign' },
+    [vim.diagnostic.severity.HINT] = { '• ', 'HintSign' },
   }
-  return string.format(
-    '%s %s (%s)',
-    severity_map[diagnostic.severity],
-    diagnostic.message,
-    diagnostic.source
-  )
+  return unpack(severity_map[diagnostic.severity])
 end
 
 -- vim.diagnostic config
 vim.diagnostic.config({
   virtual_text = false,
-  float = { show_header = false, format = format_diagnostic, prefix = '' },
+  float = {
+    header = false,
+    format = format_diagnostic,
+    prefix = prefix_diagnostic,
+  },
 })
 
 local function on_attach(client, bufnr)
@@ -711,10 +718,10 @@ require('trouble').setup({
     close_folds = { '<bs>' }, -- close all folds
   },
   signs = {
-    error = '×',
-    warning = '•',
-    hint = '¬',
+    error = '✕',
+    warning = '▲',
     information = '~',
+    hint = '•',
     other = '╍',
   },
 })
