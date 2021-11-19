@@ -554,7 +554,6 @@ fn.sign_define(
 map('n', '<A-a>', '<cmd>lua vim.lsp.diagnostic.goto_prev({float=false})<CR>')
 map('n', '<A-z>', '<cmd>lua vim.lsp.diagnostic.goto_next({float=false})<CR>')
 map('v', '<A-CR>', '<cmd>lua vim.lsp.buf.range_code_action()<CR>')
-map('n', '<A-S-b>', '<cmd>lua vim.lsp.buf.type_definition()<CR>')
 map('n', '<A-d>', '<cmd>lua vim.lsp.buf.hover()<CR>')
 map('n', '<A-r>', '<cmd>lua vim.lsp.buf.rename()<CR>')
 map('n', '<A-g>', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
@@ -764,7 +763,7 @@ require('telescope').setup({
         ['<esc>'] = actions.close, -- <Esc> quit in insert mode
       },
     },
-    prompt_prefix = '▶ ',
+    prompt_prefix = '› ',
     selection_caret = '▶ ',
     borderchars = { '─', '│', '─', '│', '┌', '┐', '┘', '└' },
   },
@@ -791,6 +790,7 @@ map(
 )
 map('', '<Leader>w', '<cmd>Telescope lsp_workspace_symbols<cr>')
 map('', '<A-b>', '<cmd>Telescope lsp_definitions<cr>')
+map('', '<A-S-b>', '<cmd>Telescope lsp_type_definitions<cr>')
 map(
   '',
   '<A-CR>',
