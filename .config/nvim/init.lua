@@ -393,7 +393,7 @@ map('n', '<M-t>', [[<cmd>lua require'floaterm'.open({row=1})<cr>]])
 map(
   'n',
   '<M-n>',
-  [[<cmd>lua require'floaterm'.open({layout='center',height=0.7,width=0.6,command='nnn',win_api={border=0}})<cr>]]
+  [[<cmd>lua require'floaterm'.open({name='nnn',layout='center',height=0.7,width=0.6,command='nnn',win_api={border=0}})<cr>]]
 )
 
 -- nvim-tree.lua -------------------------------------------------
