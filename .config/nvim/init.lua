@@ -386,10 +386,15 @@ require('floaterm').setup({
   width = 1,
   height = 0.4,
   bg_color = '#211a16',
-  row = 1,
   win_api = { border = { ' ', ' ', ' ', '', '', '', '', '' } },
 })
-map('n', '<M-t>', [[<cmd>lua require('floaterm').open()<cr>]])
+
+map('n', '<M-t>', [[<cmd>lua require'floaterm'.open({row=1})<cr>]])
+map(
+  'n',
+  '<M-n>',
+  [[<cmd>lua require'floaterm'.open({layout='center',height=0.7,width=0.6,command='nnn',win_api={border=0}})<cr>]]
+)
 
 -- nvim-tree.lua -------------------------------------------------
 local tree_cb = require('nvim-tree.config').nvim_tree_callback
