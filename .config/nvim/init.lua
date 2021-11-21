@@ -383,17 +383,17 @@ end
 -- floaterm.nvim -------------------------------------------------
 require('floaterm').setup({
   layout = 'bottom',
-  width = 1,
+  width = 0.8,
   height = 0.4,
   bg_color = '#211a16',
-  win_api = { border = { ' ', ' ', ' ', '', '', '', '', '' } },
+  row = 2,
 })
 
-map('n', '<M-t>', [[<cmd>lua require'floaterm'.open({row=1})<cr>]])
+map('n', '<M-t>', [[<cmd>lua require'floaterm'.open()<cr>]])
 map(
   'n',
   '<M-n>',
-  [[<cmd>lua require'floaterm'.open({name='nnn',layout='center',height=0.7,width=0.6,command='nnn',win_api={border=0}})<cr>]]
+  [[<cmd>lua require'floaterm'.open({name='nnn',layout='center',height=0.7,width=0.6,command='nnn'})<cr>]]
 )
 
 -- nvim-tree.lua -------------------------------------------------
@@ -551,18 +551,6 @@ fn.sign_define(
   { text = '▬', texthl = 'DiagnosticSignHint' }
 )
 
-map('n', '<A-a>', '<cmd>lua vim.lsp.diagnostic.goto_prev({float=false})<CR>')
-map('n', '<A-z>', '<cmd>lua vim.lsp.diagnostic.goto_next({float=false})<CR>')
-map('v', '<A-CR>', '<cmd>lua vim.lsp.buf.range_code_action()<CR>')
-map('n', '<A-d>', '<cmd>lua vim.lsp.buf.hover()<CR>')
-map('n', '<A-r>', '<cmd>lua vim.lsp.buf.rename()<CR>')
-map('n', '<A-g>', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
-map(
-  'n',
-  '<A-i>',
-  '<cmd>lua require("rust-tools.inlay_hints").toggle_inlay_hints()<CR>'
-)
-
 hi('signatureHint', '#CA7E03', nil, 'italic')
 local signature_help_cfg = {
   bind = true,
@@ -604,21 +592,34 @@ vim.diagnostic.config({
 })
 
 local function on_attach(client, bufnr)
+  local bufopt = { buffer = bufnr }
+  map(
+    'n',
+    '<A-a>',
+    '<cmd>lua vim.lsp.diagnostic.goto_prev({float=false})<CR>',
+    bufopt
+  )
+  map(
+    'n',
+    '<A-z>',
+    '<cmd>lua vim.lsp.diagnostic.goto_next({float=false})<CR>',
+    bufopt
+  )
+  map('v', '<A-CR>', '<cmd>lua vim.lsp.buf.range_code_action()<CR>', bufopt)
+  map('n', '<A-d>', '<cmd>lua vim.lsp.buf.hover()<CR>', bufopt)
+  map('n', '<A-g>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', bufopt)
+  map(
+    'n',
+    '<A-i>',
+    '<cmd>lua require("rust-tools.inlay_hints").toggle_inlay_hints()<CR>',
+    bufopt
+  )
+  map('n', '<A-r>', '<cmd>lua vim.lsp.buf.rename()<CR>', bufopt)
   if client.resolved_capabilities.document_range_formatting then
-    map(
-      'v',
-      '<A-f>',
-      '<cmd>lua vim.lsp.buf.range_formatting()<CR>',
-      { buffer = bufnr }
-    )
+    map('v', '<A-f>', '<cmd>lua vim.lsp.buf.range_formatting()<CR>', bufopt)
   end
   if client.resolved_capabilities.document_formatting then
-    map(
-      'n',
-      '<A-e>',
-      '<cmd>lua vim.lsp.buf.formatting()<CR>',
-      { buffer = bufnr }
-    )
+    map('n', '<A-e>', '<cmd>lua vim.lsp.buf.formatting()<CR>', bufopt)
   end
   -- open a floating window with the diagnostics from the current cursor position
   cmd([[
