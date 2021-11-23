@@ -51,7 +51,6 @@ require('paq')({
   'jose-elias-alvarez/null-ls.nvim',
   'ray-x/lsp_signature.nvim',
   'simrat39/rust-tools.nvim',
-  'folke/trouble.nvim',
   'hrsh7th/nvim-cmp',
   'hrsh7th/cmp-buffer',
   'hrsh7th/cmp-nvim-lua',
@@ -383,10 +382,9 @@ end
 -- floaterm.nvim -------------------------------------------------
 require('floaterm').setup({
   layout = 'bottom',
-  width = 0.8,
+  width = 1,
   height = 0.4,
   bg_color = '#211a16',
-  row = 2,
 })
 
 map('n', '<M-t>', [[<cmd>lua require'floaterm'.open()<cr>]])
@@ -711,38 +709,6 @@ lspconfig.sumneko_lua.setup({ -- Lua
   },
 })
 
--- Trouble -------------------------------------------------------
-require('trouble').setup({
-  height = 8,
-  indent_lines = false,
-  action_keys = {
-    open_split = { '<c-s>' }, -- open buffer in new split
-    close_folds = { '<bs>' }, -- close all folds
-  },
-  signs = {
-    error = '✕',
-    warning = '▲',
-    information = '~',
-    hint = '•',
-    other = '╍',
-  },
-})
-map('n', '<A-x>', '<cmd>Trouble<cr>', { silent = true })
-map(
-  'n',
-  '<A-w>',
-  '<cmd>Trouble lsp_workspace_diagnostics<cr>',
-  { silent = true }
-)
-map(
-  'n',
-  '<A-q>',
-  '<cmd>Trouble lsp_document_diagnostics<cr>',
-  { silent = true }
-)
-map('n', '<A-u>', '<cmd>Trouble lsp_references<cr>', { silent = true })
-cmd('hi! link TroubleCount Number')
-
 -- telescope.nvim ------------------------------------------------
 local actions = require('telescope.actions')
 require('telescope').setup({
@@ -764,8 +730,8 @@ require('telescope').setup({
         ['<esc>'] = actions.close, -- <Esc> quit in insert mode
       },
     },
-    prompt_prefix = '› ',
-    selection_caret = '▶ ',
+    prompt_prefix = '→ ',
+    selection_caret = '❱ ',
     borderchars = { '─', '│', '─', '│', '┌', '┐', '┘', '└' },
   },
 })
@@ -790,8 +756,11 @@ map(
   '<cmd>lua require("telescope.builtin").find_files{find_command={"fd", "-t", "f"}}<cr>'
 )
 map('', '<Leader>w', '<cmd>Telescope lsp_workspace_symbols<cr>')
+map('', '<A-u>', '<cmd>Telescope lsp_references<cr>')
 map('', '<A-b>', '<cmd>Telescope lsp_definitions<cr>')
 map('', '<A-S-b>', '<cmd>Telescope lsp_type_definitions<cr>')
+map('', '<A-q>', '<cmd>Telescope lsp_document_diagnostics<cr>')
+map('', '<A-S-q>', '<cmd>Telescope lsp_workspace_diagnostics<cr>')
 map(
   '',
   '<A-CR>',
