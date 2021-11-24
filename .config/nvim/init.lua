@@ -419,6 +419,8 @@ require('floaterm').setup({
   bg_color = '#211a16',
 })
 
+require('oterm').setup({ layout = 'hsplit' })
+
 map('n', '<M-t>', [[<cmd>lua require'floaterm'.open()<cr>]])
 map(
   'n',
