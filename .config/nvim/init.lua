@@ -40,7 +40,7 @@ require('paq')({
   { 'savq/paq-nvim', opt = true }, -- Let Paq manage itself
   'b3nj5m1n/kommentary',
   'doums/coBra',
-  'doums/ponton.nvim',
+  -- 'doums/ponton.nvim',
   'doums/espresso',
   'doums/sae',
   'doums/lsp_spinner.nvim',
@@ -243,6 +243,7 @@ cmd([[
 hi('StatusLineNC', '#BDAE9D', '#432717')
 hi('VertSplit', '#2A190E', nil)
 local line_bg = '#432717'
+local ponton_cdt = require('ponton.condition')
 require('ponton').setup({
   line = {
     'active_mark_start',
@@ -274,8 +275,8 @@ require('ponton').setup({
         v_block = { '■', { '#43A8ED', line_bg, 'bold' } },
         select = { '■', { '#3592C4', line_bg, 'bold' } },
         command = { '▼', { '#BDAE9D', line_bg, 'bold' } },
-        shell_ex = { '●', { '#93896C', line_bg, 'bold' } },
-        terminal = { '●', { '#049B0A', line_bg, 'bold' } },
+        shell_ex = { '≡', { '#93896C', line_bg, 'bold' } },
+        terminal = { '≡', { '#049B0A', line_bg, 'bold' } },
         prompt = { '▼', { '#BDAE9D', line_bg, 'bold' } },
         inactive = { ' ', { line_bg, line_bg } },
       },
@@ -287,7 +288,10 @@ require('ponton').setup({
       padding = { 1, 1 },
       margin = { 1, 1 },
       decorator = { '', '', { '#2A190E', line_bg } },
-      condition = require('ponton.condition').buffer_not_empty,
+      conditions = {
+        ponton_cdt.buffer_not_empty,
+        { ponton_cdt.filetype_not, 'NvimTree' },
+      },
     },
     buffer_changed = {
       style = { '#DF824C', line_bg, 'bold' },
@@ -298,16 +302,44 @@ require('ponton').setup({
       style = { '#C75450', line_bg, 'bold' },
       value = '',
       padding = { nil, 1 },
-      condition = require('ponton.condition').is_read_only,
+      conditions = {
+        ponton_cdt.is_read_only,
+        ponton_cdt.is_normal_buf,
+      },
     },
     spacer = { style = { line_bg, line_bg } },
-    sep = { style = { '#BDAE9D', line_bg }, text = '⏽' },
-    line_percent = { style = { '#BDAE9D', line_bg }, padding = { nil, 1 } },
-    line = { style = { '#BDAE9D', line_bg }, padding = { 1 } },
+    sep = {
+      style = { '#BDAE9D', line_bg },
+      text = '⏽',
+      conditions = {
+        { ponton_cdt.filetype_not, 'NvimTree' },
+        { ponton_cdt.buftype_not, 'terminal' },
+      },
+    },
+    line_percent = {
+      style = { '#BDAE9D', line_bg },
+      padding = { nil, 1 },
+      conditions = {
+        { ponton_cdt.filetype_not, 'NvimTree' },
+        { ponton_cdt.buftype_not, 'terminal' },
+      },
+    },
+    line = {
+      style = { '#BDAE9D', line_bg },
+      padding = { 1 },
+      conditions = {
+        { ponton_cdt.filetype_not, 'NvimTree' },
+        { ponton_cdt.buftype_not, 'terminal' },
+      },
+    },
     column = {
       style = { '#BDAE9D', line_bg },
       left_adjusted = true,
       padding = { nil, 1 },
+      conditions = {
+        { ponton_cdt.filetype_not, 'NvimTree' },
+        { ponton_cdt.buftype_not, 'terminal' },
+      },
     },
     git_branch = {
       style = { '#C5656B', line_bg },
@@ -342,11 +374,11 @@ require('ponton').setup({
     },
     active_mark_start = {
       style = { { '#DF824C', line_bg }, { line_bg, line_bg } },
-      text = '▌',
+      text = '❱',
     },
     active_mark_end = {
       style = { { '#DF824C', line_bg }, { line_bg, line_bg } },
-      text = '▐',
+      text = '❰',
     },
   },
 })
