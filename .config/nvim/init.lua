@@ -40,7 +40,7 @@ require('paq')({
   { 'savq/paq-nvim', opt = true }, -- Let Paq manage itself
   'b3nj5m1n/kommentary',
   'doums/coBra',
-  -- 'doums/ponton.nvim',
+  'doums/ponton.nvim',
   'doums/espresso',
   'doums/sae',
   'doums/lsp_spinner.nvim',
@@ -275,8 +275,8 @@ require('ponton').setup({
         v_block = { '■', { '#43A8ED', line_bg, 'bold' } },
         select = { '■', { '#3592C4', line_bg, 'bold' } },
         command = { '▼', { '#BDAE9D', line_bg, 'bold' } },
-        shell_ex = { '≡', { '#93896C', line_bg, 'bold' } },
-        terminal = { '≡', { '#049B0A', line_bg, 'bold' } },
+        shell_ex = { '▶', { '#93896C', line_bg, 'bold' } },
+        terminal = { '▶', { '#049B0A', line_bg, 'bold' } },
         prompt = { '▼', { '#BDAE9D', line_bg, 'bold' } },
         inactive = { ' ', { line_bg, line_bg } },
       },
@@ -419,9 +419,14 @@ require('floaterm').setup({
   bg_color = '#211a16',
 })
 
-require('oterm').setup({ layout = 'hsplit' })
+hi('otermSplit', '#2A190E', '#211a16')
+require('oterm').setup({
+  bg_color = '#211a16',
+  split_hl = 'otermSplit',
+})
 
-map('n', '<M-t>', [[<cmd>lua require'floaterm'.open()<cr>]])
+map('n', '<M-t>', [[<cmd>lua require'oterm'.open()<cr>]])
+map('n', '<M-y>', [[<cmd>lua require'oterm'.open({layout='vsplit'})<cr>]])
 map(
   'n',
   '<M-n>',
