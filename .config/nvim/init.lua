@@ -982,6 +982,8 @@ require('gitsigns').setup({
 
 -- lightspeed ----------------------------------------------------
 require('lightspeed').setup({
+  exit_after_idle_msecs = { unlabeled = 1500 },
+  safe_labels = {'s', 'f', 'n', 'u', 'r', 't', 'b'},
   labels = {
     's',
     'f',
@@ -1005,7 +1007,7 @@ require('lightspeed').setup({
     'e',
   },
 })
-hi('LightspeedCursor', '#212121', '#f49810', 'bold')
+hi('LightspeedCursor', '#FFFFFF', '#be3f09', 'bold')
 hi('LightspeedLabel', '#f49810', nil, 'bold,underline')
 hi('LightspeedLabelOverlapped', '#f49810', nil, 'underline')
 hi('LightspeedShortcut', '#212121', '#f49810', 'bold,underline')
