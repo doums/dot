@@ -986,8 +986,8 @@ require('lightspeed').setup({
   exit_after_idle_msecs = { unlabeled = 1500 },
   safe_labels = { 's', 'f', 'n', 'u', 't', 'b', 'g', 'S', 'F',
     'L', 'N', 'H', 'G', 'M', 'U', 'T', 'Z' },
-  labels = { 's', 'f', 'n', 'g', 'v', 'b', 'w', 'y', 'd', 'q',
-    'z', 'c', 'x', 't', 'u', 'r', 'i', 'a', 'o', 'e' },
+  labels = { 's', 'f', 'n', 'g', 'h', 'v', 'b', 'w', 'y', 'd',
+    'q', 'z', 'c', 'x', 't', 'u', 'r', 'i', 'a', 'o', 'e' },
 })
 -- stylua: ignore end
 hi('LightspeedCursor', '#FFFFFF', '#be3f09', 'bold')
