@@ -981,32 +981,15 @@ require('gitsigns').setup({
 })
 
 -- lightspeed ----------------------------------------------------
+-- stylua: ignore start
 require('lightspeed').setup({
   exit_after_idle_msecs = { unlabeled = 1500 },
-  safe_labels = {'s', 'f', 'n', 'u', 'r', 't', 'b'},
-  labels = {
-    's',
-    'f',
-    'g',
-    'v',
-    'b',
-    'n',
-    'w',
-    'y',
-    'd',
-    'q',
-    'z',
-    'c',
-    'x',
-    't',
-    'u',
-    'r',
-    'i',
-    'a',
-    'o',
-    'e',
-  },
+  safe_labels = { 's', 'f', 'n', 'u', 't', 'b', 'g', 'S', 'F',
+    'L', 'N', 'H', 'G', 'M', 'U', 'T', 'Z' },
+  labels = { 's', 'f', 'n', 'g', 'v', 'b', 'w', 'y', 'd', 'q',
+    'z', 'c', 'x', 't', 'u', 'r', 'i', 'a', 'o', 'e' },
 })
+-- stylua: ignore end
 hi('LightspeedCursor', '#FFFFFF', '#be3f09', 'bold')
 hi('LightspeedLabel', '#f49810', nil, 'bold,underline')
 hi('LightspeedLabelOverlapped', '#f49810', nil, 'underline')
