@@ -9,13 +9,12 @@ configuration {
   display-combi: "combi";
   display-keys: "key";
   drun-display-format: "{name}";
-  drun-match-fields: "name,categories,keywords";
+  drun-match-fields: "name";
   terminal: "alacritty";
   matching: "fuzzy";
   dpi: 144;
   scroll-method: 1;
   window-format: "{c} - {t}";
-  theme: "theme.rasi";
   ssh-command: "alacritty -e 'ssh {host}'";
   run-shell-command: "alacritty -e '{cmd}'";
   icon-theme: "Paper";
@@ -24,3 +23,5 @@ configuration {
   kb-row-up: "Up,Alt+k";
   kb-row-down: "Down,Alt+j";
 }
+
+@theme "theme.rasi"
