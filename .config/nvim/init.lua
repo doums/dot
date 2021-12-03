@@ -660,19 +660,13 @@ local function on_attach(client, bufnr)
   end
   -- open a floating window with the diagnostics from the current cursor position
   cmd([[
-    augroup lsp_show_line_diagnostics
-      autocmd!
-      autocmd CursorHold * lua vim.diagnostic.open_float(nil, {focusable=false, scope="cursor"})
-    augroup END
+    autocmd CursorHold * lua vim.diagnostic.open_float(nil, {focusable=false, scope="cursor"})
   ]])
   -- highlight the symbol under the cursor
   if client.resolved_capabilities.document_highlight then
     cmd([[
-      augroup lsp_document_highlight
-        autocmd!
-        autocmd CursorHold,CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()
-        autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-      augroup END
+      autocmd CursorHold,CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()
+      autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
     ]])
   end
   lsp_spinner.on_attach(client, bufnr)
