@@ -42,7 +42,7 @@ require('paq')({
   { 'savq/paq-nvim', opt = true }, -- Let Paq manage itself
   'b3nj5m1n/kommentary',
   'doums/coBra',
-  -- 'doums/ponton.nvim',
+  'doums/ponton.nvim',
   'doums/espresso',
   'doums/sae',
   'doums/lsp_spinner.nvim',
@@ -662,13 +662,13 @@ local function on_attach(client, bufnr)
   end
   -- open a floating window with the diagnostics from the current cursor position
   cmd([[
-  autocmd CursorHold * lua vim.diagnostic.open_float(nil, {focusable=false, scope="cursor"})
+    autocmd CursorHold * lua vim.diagnostic.open_float(nil, {focusable=false, scope="cursor"})
   ]])
   -- highlight the symbol under the cursor
   if client.resolved_capabilities.document_highlight then
     cmd([[
-    autocmd CursorHold,CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()
-    autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+      autocmd CursorHold,CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()
+      autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
     ]])
   end
   lsp_spinner.on_attach(client, bufnr)
