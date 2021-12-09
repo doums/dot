@@ -10,8 +10,6 @@ for LSP
   * ESLint and Prettier (npm i -g eslint prettier)
   * Prisma LSP (npm i -g @prisma/language-server)
 
-npm i -g typescript typescript-language-server eslint prettier @prisma/language-server
-
 others: git, ripgrep, fzf, node, npm
 -- ]]
 
@@ -240,6 +238,12 @@ cmd([[
     autocmd TextYankPost * silent! lua vim.highlight.on_yank()
   augroup END
 ]])
+
+-- vassal.nvim ---------------------------------------------------
+require('vassal').commands({
+  [[npm i -g typescript typescript-language-server eslint prettier @prisma/language-server]],
+  'cd /opt/lua-language-server/ && ./update.sh',
+})
 
 -- ponton.nvim ---------------------------------------------------
 hi('StatusLineNC', '#BDAE9D', '#432717')
