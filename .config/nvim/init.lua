@@ -45,6 +45,7 @@ require('paq')({
   'doums/sae',
   'doums/lsp_spinner.nvim',
   'doums/floaterm.nvim',
+  'doums/vassal.nvim',
   { 'nvim-treesitter/nvim-treesitter', run = update_ts_parsers },
   'nvim-treesitter/playground',
   'neovim/nvim-lspconfig',
@@ -666,7 +667,7 @@ local function on_attach(client, bufnr)
   end
   -- open a floating window with the diagnostics from the current cursor position
   cmd([[
-    autocmd CursorHold * lua vim.diagnostic.open_float(nil, {focusable=false, scope="cursor"})
+    autocmd CursorHold * lua vim.diagnostic.open_float({focusable=false, scope="cursor"})
   ]])
   -- highlight the symbol under the cursor
   if client.resolved_capabilities.document_highlight then
