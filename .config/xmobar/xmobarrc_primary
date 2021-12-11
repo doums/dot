@@ -15,9 +15,9 @@ Config { font = "xft:JetBrainsMono Nerd Font:pixelsize=22:antialias=true"
        , allDesktops = True
        , overrideRedirect = True
        , commands = [ Run CommandReader "baru" "status"
-                    , Run XMonadLog
+                    , Run XPropertyLog "_XMONAD_LOG_1"
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "%XMonadLog% }{ %status% "
+       , template = "%_XMONAD_LOG_1% }{ %status% "
        }

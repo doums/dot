@@ -209,7 +209,7 @@ myLayout = renamed [CutWordsLeft 1]
            $ smartBorders
            $ avoidStruts
            $ spacingWithEdge mySpacing
-           $ onWorkspace "3" (column ||| mirror)
+           $ onWorkspace "3" (column ||| tiled ||| full)
            $ tiled ||| mirror ||| column ||| full
   where
      -- default tiling algorithm partitions the screen into two panes
@@ -285,6 +285,7 @@ myStartupHook = do
     spawnOnce "redshift -c /home/pierre/.config/redshift/redshift.conf"
     spawnOnce "dunst -c /home/pierre/.config/dunst/dunstrc"
     spawnOnce "udiskie"
+    -- spawnOnce "bato"
     spawnOnce "trayer -l --align left --distancefrom left --distance 420 --monitor primary --widthtype request --height 28 --transparent true --alpha 0 --tint 0x262626 --expand true --iconspacing 4 --SetPartialStrut true --SetDockType true"
 
 ------------------------------------------------------------------------
@@ -312,6 +313,14 @@ myXmobarPP = def
     red      = xmobarColor "#bf616a" ""
     stone    = xmobarColor "#8c8c8c" ""
 
+xmobarPrimary   = statusBarPropTo "_XMONAD_LOG_1" "xmobar -x 0 ~/.config/xmobar/xmobarrc_primary" (pure myXmobarPP)
+xmobarSecondary = statusBarPropTo "_XMONAD_LOG_2" "xmobar -x 1 ~/.config/xmobar/xmobarrc_secondary" (pure myXmobarPP)
+
+barSpawner :: ScreenId -> IO StatusBarConfig
+barSpawner 0 = pure $ xmobarPrimary
+barSpawner 1 = pure $ xmobarSecondary
+barSpawner _ = mempty -- nothing on the rest of the screens
+
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.
 
@@ -322,7 +331,7 @@ main = xmonad
      . docks
      . ewmhFullscreen
      . ewmh
-     . withSB (statusBarProp "xmobar" (pure myXmobarPP))
+     . dynamicSBs barSpawner
      $ myConfig
 
 -- A structure containing your configuration settings, overriding

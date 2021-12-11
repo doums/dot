@@ -1,0 +1,21 @@
+Config { font = "xft:JetBrainsMono Nerd Font:pixelsize=22:antialias=true"
+       , additionalFonts = []
+       , borderColor = "#262626"
+       , bgColor = "#262626"
+       , fgColor = "#8c8c8c"
+       , alpha = 255
+       , position = Bottom
+       , textOffset = -1
+       , iconOffset = -1
+       , lowerOnStart = True
+       , pickBroadest = False
+       , persistent = False
+       , hideOnStart = False
+       , iconRoot = "."
+       , allDesktops = True
+       , overrideRedirect = True
+       , commands = [ Run XPropertyLog "_XMONAD_LOG_2" ]
+       , sepChar = "%"
+       , alignSep = "}{"
+       , template = "%_XMONAD_LOG_2% }{ "
+       }
