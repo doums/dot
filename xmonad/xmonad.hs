@@ -210,12 +210,11 @@ myLayout = renamed [CutWordsLeft 1]
            $ avoidStruts
            $ spacingWithEdge mySpacing
            $ onWorkspace "3" (column ||| tiled ||| full)
-           $ tiled ||| mirror ||| column ||| full
+           $ tiled ||| mirror ||| full
   where
-     -- default tiling algorithm partitions the screen into two panes
      tiled   = renamed [Replace "→"] (Tall nmaster delta ratio)
      mirror  = renamed [Replace "↓"] (Mirror tiled)
-     column = renamed [Replace "≡"] (BinaryColumn 1.5 124)
+     column  = renamed [Replace "≡"] (BinaryColumn 1.6 124)
      full    = renamed [Replace "■"] Full
 
      -- The default number of windows in the master pane
