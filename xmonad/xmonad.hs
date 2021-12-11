@@ -100,7 +100,7 @@ stone = "#8c8c8c"
 
 -- dmenu args
 --
-dmenuFn = "'JetBrains Mono:pixelsize=22:antialias=true'"
+dmenuFn = "'JetBrains Mono:pixelsize=20:antialias=true'"
 dDarkGrey = "\\#262626"
 dNearBlack = "\\#0d0d0d"
 dStone = "\\#8c8c8c"
@@ -243,13 +243,14 @@ myLayout = renamed [CutWordsLeft 1]
 -- 'className' and 'resource' are used below.
 --
 myManageHook = insertPosition Below Newer <+> composeAll
-    [ className =? "Gimp"              --> doFloat
-    , className =? "jetbrains-toolbox" --> doIgnore
-    , className =? "feh"               --> doFloat
-    , className =? "Galculator"        --> doFloat
-    , className =? "TeamSpeak 3"       --> doFloat
-    , title     =? "win0"              --> doFloat
-    , resource  =? "desktop_window"    --> doIgnore ]
+    [ className =? "Gimp"               --> doFloat
+    , className =? "jetbrains-toolbox"  --> doIgnore
+    , className =? "feh"                --> doFloat
+    , className =? "Galculator"         --> doFloat
+    , className =? "TeamSpeak 3"        --> doFloat
+    , title     =? "win0"               --> doFloat
+    , title     =? "Contrôle du volume" --> doFloat
+    , resource  =? "desktop_window"     --> doIgnore ]
 
 ------------------------------------------------------------------------
 -- Event handling
