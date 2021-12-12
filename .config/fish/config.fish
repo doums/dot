@@ -36,7 +36,8 @@ set -x XDG_SESSION_TYPE X11
 set -x PATH $PATH $HOME/.cargo/bin
 set -x PATH $PATH $HOME/.gem/ruby/2.7.0/bin
 set -x fish_emoji_width 2
-set -x PATH /opt/node/bin $PATH
+#set -x PATH /opt/node_aos/bin $PATH
+set -x PATH /opt/node16/bin $PATH
 set -x PATH /home/pierre/.yarn/bin $PATH
 set -x PATH $HOME/.local/bin $PATH
 set -x PATH $HOME/.local/jetbrains $PATH
@@ -49,7 +50,7 @@ set -x XDG_DATA_DIRS /home/pierre/.local/share/flatpak/exports/share:/var/lib/fl
 set -x NNN_OPTS QAex
 set -x NNN_COLORS 2341
 set -x NNN_PLUG 't:-_bat $nnn;f:-_|firefox $nnn*'
-set -x NNN_BMS 'h:~;d:~/Documents;r:/;a:~/Documents/aos/aos-app/'
+set -x NNN_BMS 'h:~;d:~/Documents;r:/;m:/run/media/pierre'
 set -x NNN_FCOLORS '0505040a00060e0801030301'
 set -x XDG_CONFIG_HOME $HOME/.config
 set -x DENO_INSTALL $HOME/.deno
