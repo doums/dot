@@ -1,0 +1,14 @@
+! layout = keycodes
+  k7 = k7
+
+! model = types
+  k7 = k7
+
+! model = compat
+  k7 = k7
+
+! model = symbols
+  k7 = k7
+
+! model = geometry
+  k7 = pc(pc104)
