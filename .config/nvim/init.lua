@@ -537,6 +537,7 @@ require('nvim-treesitter.configs').setup({
     'css',
     'lua',
     'comment',
+    'markdown',
     'jsdoc',
     'tsx',
     'toml',
@@ -554,18 +555,6 @@ require('nvim-treesitter.configs').setup({
       scope_incremental = '<A-j>',
       node_decremental = '<A-h>',
     },
-  },
-})
-
--- null-ls.nvim --------------------------------------------------
-local null_ls = require('null-ls')
-null_ls.config({
-  sources = {
-    null_ls.builtins.diagnostics.eslint,
-    null_ls.builtins.diagnostics.shellcheck,
-    null_ls.builtins.formatting.prettier,
-    null_ls.builtins.formatting.stylua,
-    null_ls.builtins.formatting.prismaFmt,
   },
 })
 
@@ -640,13 +629,13 @@ local function on_attach(client, bufnr)
   map(
     'n',
     '<A-a>',
-    '<cmd>lua vim.lsp.diagnostic.goto_prev({float=false})<CR>',
+    '<cmd>lua vim.diagnostic.goto_prev({float=false})<CR>',
     bufopt
   )
   map(
     'n',
     '<A-z>',
-    '<cmd>lua vim.lsp.diagnostic.goto_next({float=false})<CR>',
+    '<cmd>lua vim.diagnostic.goto_next({float=false})<CR>',
     bufopt
   )
   map('v', '<A-CR>', '<cmd>lua vim.lsp.buf.range_code_action()<CR>', bufopt)
@@ -700,7 +689,16 @@ require('lspconfig').prismals.setup({
   on_attach = on_attach,
   capabilities = capabilities,
 })
-require('lspconfig')['null-ls'].setup({
+-- null-ls.nvim
+local null_ls = require('null-ls')
+null_ls.setup({
+  sources = {
+    null_ls.builtins.diagnostics.eslint,
+    null_ls.builtins.diagnostics.shellcheck,
+    null_ls.builtins.formatting.prettier,
+    null_ls.builtins.formatting.stylua,
+    null_ls.builtins.formatting.prismaFmt,
+  },
   on_attach = on_attach,
   capabilities = capabilities,
 })
