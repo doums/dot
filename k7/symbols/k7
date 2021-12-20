@@ -2,31 +2,31 @@ default xkb_symbols "k7" {
 
     name[group1]="Custom Azerty FR";
 
-    key  <ESC> {         [         Escape ] };
+    key  <ESC> {[ Escape ]};
     key <AE01> {
         type= "THREE_LEVEL",
         [ ampersand, 1, onesuperior ]
     };
     key <AE02> {
-        type= "THREE_LEVEL",
-        [ eacute, 2, twosuperior ]
+        type= "FOUR_LEVEL",
+        [ eacute, 2, twosuperior, Eacute ]
     };
     key <AE03> {
         type= "THREE_LEVEL",
         [ quotedbl, 3, numbersign ]
     };
-    key <AE04> { [ apostrophe, 4 ] };
-    key <AE05> { [ percent, 5 ] };
-    key <AE06> { [ minus, 6 ] };
+    key <AE04> {[ apostrophe, 4 ]};
+    key <AE05> {[ percent, 5 ]};
+    key <AE06> {[ minus, 6 ]};
     key <AE07> {
-        type= "THREE_LEVEL",
-        [ egrave, 7, grave ]
+        type= "FOUR_LEVEL",
+        [ egrave, 7, grave, Egrave ]
     };
     key <AE08> {
         type= "THREE_LEVEL",
         [ underscore, 8, section ]
     };
-    key <AE09> {         [   parenleft,                   9 ] };
+    key <AE09> {[ parenleft, 9 ]};
     key <AE10> {
         type= "THREE_LEVEL",
         [ parenright, 0, at ]
@@ -36,44 +36,44 @@ default xkb_symbols "k7" {
     key <BKSP> {         [       BackSpace,       BackSpace ] };
     key  <TAB> {         [             Tab,    ISO_Left_Tab ] };
     key <AD01> {
-        type= "ALPHABETIC",
-        symbols[Group1]= [ a, A ]
+        type= "FOUR_LEVEL_ALPHABETIC",
+        [ a, A, agrave, Agrave ]
     };
     key <AD02> {
         type= "ALPHABETIC",
-        symbols[Group1]= [               z,               Z ]
+        [               z,               Z ]
     };
     key <AD03> {
-        type= "ALPHABETIC",
-        symbols[Group1]= [ e, E ]
+        type= "FOUR_LEVEL_ALPHABETIC",
+        [ e, E, ecircumflex, Ecircumflex ]
     };
     key <AD04> {
         type= "ALPHABETIC",
-        symbols[Group1]= [ r, R ]
+        [ r, R ]
     };
     key <AD05> {
         type= "ALPHABETIC",
-        symbols[Group1]= [               t,               T ]
+        [               t,               T ]
     };
     key <AD06> {
         type= "ALPHABETIC",
-        symbols[Group1]= [               y,               Y ]
+        [               y,               Y ]
     };
     key <AD07> {
         type= "ALPHABETIC",
-        symbols[Group1]= [ u, U ]
+        [ u, U ]
     };
     key <AD08> {
-        type= "ALPHABETIC",
-        symbols[Group1]= [               i,               I ]
+        type= "FOUR_LEVEL_ALPHABETIC",
+        [ i, I, icircumflex, Icircumflex ]
     };
     key <AD09> {
-        type= "ALPHABETIC",
-        symbols[Group1]= [               o,               O ]
+        type= "FOUR_LEVEL_ALPHABETIC",
+        [ o, O, ocircumflex, Ocircumflex ]
     };
     key <AD10> {
         type= "ALPHABETIC",
-        symbols[Group1]= [               p,               P ]
+        [               p,               P ]
     };
     key <AD11> {         [     bracketleft,       braceleft ] };
     key <AD12> {         [    bracketright,      braceright ] };
@@ -81,129 +81,129 @@ default xkb_symbols "k7" {
     key <LCTL> {         [       Control_L ] };
     key <AC01> {
         type= "ALPHABETIC",
-        symbols[Group1]= [               q,               Q ]
+        [               q,               Q ]
     };
     key <AC02> {
         type= "ALPHABETIC",
-        symbols[Group1]= [               s,               S ]
+        [               s,               S ]
     };
     key <AC03> {
         type= "ALPHABETIC",
-        symbols[Group1]= [               d,               D ]
+        [               d,               D ]
     };
     key <AC04> {
         type= "ALPHABETIC",
-        symbols[Group1]= [               f,               F ]
+        [               f,               F ]
     };
     key <AC05> {
         type= "ALPHABETIC",
-        symbols[Group1]= [               g,               G ]
+        [               g,               G ]
     };
     key <AC06> {
         type= "ALPHABETIC",
-        symbols[Group1]= [               h,               H ]
+        [               h,               H ]
     };
     key <AC07> {
         type= "ALPHABETIC",
-        symbols[Group1]= [               j,               J ]
+        [               j,               J ]
     };
     key <AC08> {
         type= "ALPHABETIC",
-        symbols[Group1]= [               k,               K ]
+        [               k,               K ]
     };
     key <AC09> {
         type= "ALPHABETIC",
-        symbols[Group1]= [               l,               L ]
+        [               l,               L ]
     };
     key <AC10> {
         type= "ALPHABETIC",
-        symbols[Group1]= [               m,               M ]
+        [               m,               M ]
     };
-    key <AC11> {[ ugrave, percent ]};
-    key <TLDE> {         [           grave,      asciitilde ] };
+    key <AC11> {[ ugrave, dollar ]};
+    key <TLDE> {         [ dead_circumflex, dead_diaeresis ] };
     key <LFSH> {         [         Shift_L ] };
     key <BKSL> {         [       backslash,             bar ] };
     key <AB01> {
         type= "ALPHABETIC",
-        symbols[Group1]= [               w,               W ]
+        [               w,               W ]
     };
     key <AB02> {
         type= "ALPHABETIC",
-        symbols[Group1]= [               x,               X ]
+        [               x,               X ]
     };
     key <AB03> {
         type= "FOUR_LEVEL_ALPHABETIC",
-        symbols[Group1]= [ c, C, ccedilla, ccedilla ]
+        [ c, C, ccedilla, Ccedilla ]
     };
     key <AB04> {
         type= "ALPHABETIC",
-        symbols[Group1]= [               v,               V ]
+        [               v,               V ]
     };
     key <AB05> {
         type= "ALPHABETIC",
-        symbols[Group1]= [               b,               B ]
+        [               b,               B ]
     };
     key <AB06> {
         type= "ALPHABETIC",
-        symbols[Group1]= [               n,               N ]
+        [               n,               N ]
     };
     key <AB07> {
         type= "THREE_LEVEL",
-        symbols[Group1]= [ comma, question, less ]
+        [ comma, question, less ]
     };
     key <AB08> {
         type= "THREE_LEVEL",
-        symbols[Group1]= [ semicolon, period, greater ]
+        [ semicolon, period, greater ]
     };
     key <AB09> {[ colon, slash ]};
     key <AB10> {[ exclam, slash ]};
     key <RTSH> {         [         Shift_R ] };
     key <KPMU> {
         type= "CTRL+ALT",
-        symbols[Group1]= [     KP_Multiply,     KP_Multiply,     KP_Multiply,     KP_Multiply,   XF86ClearGrab ]
+        [     KP_Multiply,     KP_Multiply,     KP_Multiply,     KP_Multiply,   XF86ClearGrab ]
     };
     key <LALT> {         [           Alt_L,          Meta_L ] };
     key <SPCE> {         [           space ] };
     key <CAPS> {         [       Caps_Lock ] };
     key <FK01> {
         type= "CTRL+ALT",
-        symbols[Group1]= [              F1,              F1,              F1,              F1, XF86Switch_VT_1 ]
+        [              F1,              F1,              F1,              F1, XF86Switch_VT_1 ]
     };
     key <FK02> {
         type= "CTRL+ALT",
-        symbols[Group1]= [              F2,              F2,              F2,              F2, XF86Switch_VT_2 ]
+        [              F2,              F2,              F2,              F2, XF86Switch_VT_2 ]
     };
     key <FK03> {
         type= "CTRL+ALT",
-        symbols[Group1]= [              F3,              F3,              F3,              F3, XF86Switch_VT_3 ]
+        [              F3,              F3,              F3,              F3, XF86Switch_VT_3 ]
     };
     key <FK04> {
         type= "CTRL+ALT",
-        symbols[Group1]= [              F4,              F4,              F4,              F4, XF86Switch_VT_4 ]
+        [              F4,              F4,              F4,              F4, XF86Switch_VT_4 ]
     };
     key <FK05> {
         type= "CTRL+ALT",
-        symbols[Group1]= [              F5,              F5,              F5,              F5, XF86Switch_VT_5 ]
+        [              F5,              F5,              F5,              F5, XF86Switch_VT_5 ]
     };
     key <FK06> {
         type= "CTRL+ALT",
-        symbols[Group1]= [              F6,              F6,              F6,              F6, XF86Switch_VT_6 ]
+        [              F6,              F6,              F6,              F6, XF86Switch_VT_6 ]
     };
     key <FK07> {
         type= "CTRL+ALT",
-        symbols[Group1]= [              F7,              F7,              F7,              F7, XF86Switch_VT_7 ]
+        [              F7,              F7,              F7,              F7, XF86Switch_VT_7 ]
     };
     key <FK08> {
         type= "CTRL+ALT",
-        symbols[Group1]= [              F8,              F8,              F8,              F8, XF86Switch_VT_8 ]
+        [              F8,              F8,              F8,              F8, XF86Switch_VT_8 ]
     };
     key <FK09> {
         type= "CTRL+ALT",
-        symbols[Group1]= [              F9,              F9,              F9,              F9, XF86Switch_VT_9 ]
+        [              F9,              F9,              F9,              F9, XF86Switch_VT_9 ]
     };
     key <FK10> {
         type= "CTRL+ALT",
-        symbols[Group1]= [             F10,             F10,             F10,             F10, XF86Switch_VT_10 ]
+        [             F10,             F10,             F10,             F10, XF86Switch_VT_10 ]
     };
     key <NMLK> {         [        Num_Lock ] };
     key <SCLK> {         [     Scroll_Lock ] };
@@ -212,14 +212,14 @@ default xkb_symbols "k7" {
     key  <KP9> {         [        KP_Prior,            KP_9 ] };
     key <KPSU> {
         type= "CTRL+ALT",
-        symbols[Group1]= [     KP_Subtract,     KP_Subtract,     KP_Subtract,     KP_Subtract,  XF86Prev_VMode ]
+        [     KP_Subtract,     KP_Subtract,     KP_Subtract,     KP_Subtract,  XF86Prev_VMode ]
     };
     key  <KP4> {         [         KP_Left,            KP_4 ] };
     key  <KP5> {         [        KP_Begin,            KP_5 ] };
     key  <KP6> {         [        KP_Right,            KP_6 ] };
     key <KPAD> {
         type= "CTRL+ALT",
-        symbols[Group1]= [          KP_Add,          KP_Add,          KP_Add,          KP_Add,  XF86Next_VMode ]
+        [          KP_Add,          KP_Add,          KP_Add,          KP_Add,  XF86Next_VMode ]
     };
     key  <KP1> {         [          KP_End,            KP_1 ] };
     key  <KP2> {         [         KP_Down,            KP_2 ] };
@@ -228,19 +228,19 @@ default xkb_symbols "k7" {
     key <KPDL> {         [       KP_Delete,      KP_Decimal ] };
     key <LVL3> {
         type= "ONE_LEVEL",
-        symbols[Group1]= [ ISO_Level3_Shift ]
+        [ ISO_Level3_Shift ]
     };
     key <LSGT> {
         type= "FOUR_LEVEL",
-        symbols[Group1]= [            less,         greater,             bar,       brokenbar ]
+        [            less,         greater,             bar,       brokenbar ]
     };
     key <FK11> {
         type= "CTRL+ALT",
-        symbols[Group1]= [             F11,             F11,             F11,             F11, XF86Switch_VT_11 ]
+        [             F11,             F11,             F11,             F11, XF86Switch_VT_11 ]
     };
     key <FK12> {
         type= "CTRL+ALT",
-        symbols[Group1]= [             F12,             F12,             F12,             F12, XF86Switch_VT_12 ]
+        [             F12,             F12,             F12,             F12, XF86Switch_VT_12 ]
     };
     key <KATA> {         [        Katakana ] };
     key <HIRA> {         [        Hiragana ] };
@@ -251,15 +251,15 @@ default xkb_symbols "k7" {
     key <RCTL> {         [       Control_R ] };
     key <KPDV> {
         type= "CTRL+ALT",
-        symbols[Group1]= [       KP_Divide,       KP_Divide,       KP_Divide,       KP_Divide,      XF86Ungrab ]
+        [       KP_Divide,       KP_Divide,       KP_Divide,       KP_Divide,      XF86Ungrab ]
     };
     key <PRSC> {
         type= "PC_ALT_LEVEL2",
-        symbols[Group1]= [           Print,         Sys_Req ]
+        [           Print,         Sys_Req ]
     };
     key <RALT> {
         type= "ONE_LEVEL",
-        symbols[Group1]= [ ISO_Level3_Shift ]
+        [ ISO_Level3_Shift ]
     };
     key <LNFD> {         [        Linefeed ] };
     key <HOME> {         [            Home ] };
@@ -280,7 +280,7 @@ default xkb_symbols "k7" {
     key <I126> {         [       plusminus ] };
     key <PAUS> {
         type= "PC_CONTROL_LEVEL2",
-        symbols[Group1]= [           Pause,           Break ]
+        [           Pause,           Break ]
     };
     key <I128> {         [     XF86LaunchA ] };
     key <I129> {         [      KP_Decimal,      KP_Decimal ] };
