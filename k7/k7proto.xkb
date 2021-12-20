@@ -1131,35 +1131,53 @@ xkb_symbols "pc+us+inet(evdev)" {
     name[group1]="English (US)";
 
     key  <ESC> {         [         Escape ] };
-    key <AE01> {         [      exclam,                   1 ] };
-    key <AE02> {         [          at,                   2 ] };
-    key <AE03> {         [  numbersign,                   3 ] };
-    key <AE04> {         [      dollar,                   4 ] };
-    key <AE05> {         [     percent,                   5 ] };
-    key <AE06> {         [ asciicircum,                   6 ] };
-    key <AE07> {         [   ampersand,                   7 ] };
-    key <AE08> {         [    asterisk,                   8 ] };
+    key <AE01> {
+        type= "THREE_LEVEL",
+        [ ampersand, 1, onesuperior ]
+    };
+    key <AE02> {
+        type= "THREE_LEVEL",
+        [ eacute, 2, twosuperior ]
+    };
+    key <AE03> {
+        type= "THREE_LEVEL",
+        [ quotedbl, 3, numbersign ]
+    };
+    key <AE04> { [ apostrophe, 4 ] };
+    key <AE05> { [ percent, 5 ] };
+    key <AE06> { [ minus, 6 ] };
+    key <AE07> {
+        type= "THREE_LEVEL",
+        [ egrave, 7, grave ]
+    };
+    key <AE08> {
+        type= "THREE_LEVEL",
+        [ underscore, 8, section ]
+    };
     key <AE09> {         [   parenleft,                   9 ] };
-    key <AE10> {         [  parenright,                   0 ] };
-    key <AE11> {         [           minus,      underscore ] };
+    key <AE10> {
+        type= "THREE_LEVEL",
+        [ parenright, 0, at ]
+    };
+    key <AE11> {         [    asterisk,      degree ] };
     key <AE12> {         [           equal,            plus ] };
     key <BKSP> {         [       BackSpace,       BackSpace ] };
     key  <TAB> {         [             Tab,    ISO_Left_Tab ] };
     key <AD01> {
-        type= "FOUR_LEVEL_ALPHABETIC",
-        symbols[Group1]= [ a, A, agrave, agrave ]
+        type= "ALPHABETIC",
+        symbols[Group1]= [ a, A ]
     };
     key <AD02> {
         type= "ALPHABETIC",
         symbols[Group1]= [               z,               Z ]
     };
     key <AD03> {
-        type= "FOUR_LEVEL_ALPHABETIC",
-        symbols[Group1]= [ e, E, eacute, eacute ]
+        type= "ALPHABETIC",
+        symbols[Group1]= [ e, E ]
     };
     key <AD04> {
-        type= "FOUR_LEVEL_ALPHABETIC",
-        symbols[Group1]= [ r, R, egrave, egrave ]
+        type= "ALPHABETIC",
+        symbols[Group1]= [ r, R ]
     };
     key <AD05> {
         type= "ALPHABETIC",
@@ -1170,8 +1188,8 @@ xkb_symbols "pc+us+inet(evdev)" {
         symbols[Group1]= [               y,               Y ]
     };
     key <AD07> {
-        type= "FOUR_LEVEL_ALPHABETIC",
-        symbols[Group1]= [ u, U, ugrave, ugrave ]
+        type= "ALPHABETIC",
+        symbols[Group1]= [ u, U ]
     };
     key <AD08> {
         type= "ALPHABETIC",
@@ -1229,10 +1247,7 @@ xkb_symbols "pc+us+inet(evdev)" {
         type= "ALPHABETIC",
         symbols[Group1]= [               m,               M ]
     };
-    key <AC11> {
-        type= "FOUR_LEVEL",
-        symbols[Group1]= [      apostrophe,        quotedbl, grave ]
-    };
+    key <AC11> {[ ugrave, percent ]};
     key <TLDE> {         [           grave,      asciitilde ] };
     key <LFSH> {         [         Shift_L ] };
     key <BKSL> {         [       backslash,             bar ] };
@@ -1260,10 +1275,16 @@ xkb_symbols "pc+us+inet(evdev)" {
         type= "ALPHABETIC",
         symbols[Group1]= [               n,               N ]
     };
-    key <AB07> {         [           comma,            less ] };
-    key <AB08> {         [          period,         greater ] };
-    key <AB09> {         [           colon,       semicolon ] };
-    key <AB10> {         [           slash,        question ] };
+    key <AB07> {
+        type= "THREE_LEVEL",
+        symbols[Group1]= [ comma, question, less ]
+    };
+    key <AB08> {
+        type= "THREE_LEVEL",
+        symbols[Group1]= [ semicolon, period, greater ]
+    };
+    key <AB09> {[ colon, slash ]};
+    key <AB10> {[ exclam, backslash ]};
     key <RTSH> {         [         Shift_R ] };
     key <KPMU> {
         type= "CTRL+ALT",
@@ -1378,7 +1399,7 @@ xkb_symbols "pc+us+inet(evdev)" {
     key <DOWN> {         [            Down ] };
     key <PGDN> {         [            Next ] };
     key  <INS> {         [          Insert ] };
-    key <DELE> {         [          Delete ] };
+    key <DELE> {         [      asciitilde ] };
     key <MUTE> {         [   XF86AudioMute ] };
     key <VOL-> {         [ XF86AudioLowerVolume ] };
     key <VOL+> {         [ XF86AudioRaiseVolume ] };
