@@ -156,7 +156,7 @@ default xkb_symbols "k7" {
         symbols[Group1]= [ semicolon, period, greater ]
     };
     key <AB09> {[ colon, slash ]};
-    key <AB10> {[ exclam, backslash ]};
+    key <AB10> {[ exclam, slash ]};
     key <RTSH> {         [         Shift_R ] };
     key <KPMU> {
         type= "CTRL+ALT",
