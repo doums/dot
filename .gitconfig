@@ -1,0 +1,49 @@
+[user]
+	email = dommerc.pierre@gmail.com
+	name = pierre
+[pull]
+	rebase = false
+[init]
+	defaultBranch = main
+[core]
+  pager = delta
+[interactive]
+  diffFilter = delta --color-only
+[delta]
+  navigate                      = true
+  syntax-theme                  = Nord
+  minus-style                   = white "#713a3f"
+  minus-non-emph-style          = white "#713a3f"
+  minus-emph-style              = brightwhite red
+  minus-empty-line-marker-style = white "#713a3f"
+  plus-style                    = white "#4d5942"
+  plus-non-emph-style           = white "#4d5942"
+  plus-emph-style               = brightwhite "#54713b"
+  plus-empty-line-marker-style  = white "#4d5942"
+  whitespace-error-style        = white magenta
+  file-decoration-style         = black ul bold
+  hunk-header-style             = normal
+  hunk-header-decoration-style  = black box bold
+  hunk-label                    = ""
+  file-added-label              = ✓
+  file-modified-label           = ~
+  file-removed-label            = ✕
+  file-renamed-label            = ⍨
+  file-copied-label             = ≔
+  merge-conflict-begin-symbol   = ▼
+  merge-conflict-end-symbol     = ▲
+  right-arrow                   = "→  "
+  line-numbers                  = true
+  max-line-length               = 512
+  line-numbers-left-format      = {nm:^4}╎
+  line-numbers-left-style       = black
+  line-numbers-right-style      = black
+  line-numbers-minus-style      = red
+  line-numbers-zero-style       = black
+  line-numbers-plus-style       = green
+  merge-conflict-theirs-diff-header-decoration-style = black box
+  merge-conflict-ours-diff-header-decoration-style   = black box
+[merge]
+  conflictstyle = diff3
+[diff]
+  colorMoved = default

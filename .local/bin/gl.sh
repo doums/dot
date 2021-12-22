@@ -18,18 +18,30 @@ if ! git status > /dev/null; then
   exit 1
 fi
 
+if delta --version &> /dev/null; then
+  use_delta=true
+fi
+
 if [ ! "$1" ]; then
+  preview="git show --color --abbrev-commit --pretty=medium --date=format:%c {1}"
+  if [ $use_delta ]; then
+    preview="$preview | delta -s"
+  fi
   output=$(git log --oneline --decorate=short | fzf \
-    --preview="git show --color --abbrev-commit --pretty=medium --date=format:%c {1}" \
-    --preview-window=right:70%:noborder \
+    --preview="$preview" \
+    --preview-window=up,80%,noborder,border-bottom \
     --header="git log" | awk '{print $1}')
   git show "$output"
-  else
-    git log --oneline --parents --decorate=short --diff-filter=a -- "$1" | fzf \
-    --with-nth=3.. \
-    --preview="git show --color --abbrev-commit -s --pretty=medium --date=format:%c {1} \
-    && echo -e \n \
-    && git diff -p --color {2} {1} -- $1" \
-    --preview-window=right:70%:noborder \
-    --header="git log $1"
+else
+  preview="git show --color --abbrev-commit -s --pretty=medium --date=format:%c {1} \
+  && echo -e \n \
+  && git diff --color {2} {1} -- $1"
+  if [ $use_delta ]; then
+    preview="$preview | delta"
+  fi
+  git log --oneline --parents --decorate=short --diff-filter=a -- "$1" | fzf \
+  --with-nth=3.. \
+  --preview="$preview" \
+  --preview-window=right:70%:noborder \
+  --header="git log $1"
 fi
