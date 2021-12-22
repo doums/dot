@@ -32,7 +32,7 @@
   file-copied-label             = ≔
   merge-conflict-begin-symbol   = ▼
   merge-conflict-end-symbol     = ▲
-  right-arrow                   = "→  "
+  right-arrow                   = →
   line-numbers                  = true
   max-line-length               = 512
   line-numbers-left-format      = {nm:^4}╎
