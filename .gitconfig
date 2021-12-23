@@ -2,9 +2,13 @@
 	email = dommerc.pierre@gmail.com
 	name = pierre
 [pull]
-	rebase = false
+	rebase = true
 [init]
 	defaultBranch = main
+[merge]
+  conflictstyle = diff3
+[diff]
+  colorMoved = default
 [core]
   pager = delta
 [interactive]
@@ -43,7 +47,5 @@
   line-numbers-plus-style       = green
   merge-conflict-theirs-diff-header-decoration-style = black box
   merge-conflict-ours-diff-header-decoration-style   = black box
-[merge]
-  conflictstyle = diff3
-[diff]
-  colorMoved = default
+  # transform the styles that git emits for color-moved sections
+  map-styles = bold purple => syntax "#4d3d4a", bold cyan => syntax "#2a3c41"
