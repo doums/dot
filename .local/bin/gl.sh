@@ -20,12 +20,13 @@ fi
 
 if delta --version &> /dev/null; then
   use_delta=true
+  delta_command="delta -s -w ${FZF_PREVIEW_COLUMNS:-$COLUMNS}"
 fi
 
 if [ ! "$1" ]; then
   preview="git show --color --abbrev-commit --pretty=medium --date=format:%c {1}"
   if [ $use_delta ]; then
-    preview="$preview | delta -s"
+    preview="$preview | $delta_command"
   fi
   output=$(git log --oneline --decorate=short | fzf \
     --preview="$preview" \
@@ -37,11 +38,11 @@ else
   && echo -e \n \
   && git diff --color {2} {1} -- $1"
   if [ $use_delta ]; then
-    preview="$preview | delta"
+    preview="$preview | $delta_command"
   fi
   git log --oneline --parents --decorate=short --diff-filter=a -- "$1" | fzf \
   --with-nth=3.. \
   --preview="$preview" \
-  --preview-window=right:70%:noborder \
+  --preview-window=up,80%,noborder,border-bottom \
   --header="git log $1"
 fi
