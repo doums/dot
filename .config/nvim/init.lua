@@ -9,6 +9,7 @@ for LSP
   * lua-language-server, must be installed in /opt/lua-language-server
   * ESLint and Prettier (npm i -g eslint prettier)
   * Prisma LSP (npm i -g @prisma/language-server)
+  * LTEX LS https://github.com/valentjn/ltex-ls/releases
 
 others: git, ripgrep, fzf, node, npm
 -- ]]
@@ -40,7 +41,7 @@ require('paq')({
   { 'savq/paq-nvim', opt = true }, -- Let Paq manage itself
   'b3nj5m1n/kommentary',
   'doums/coBra',
-  'doums/ponton.nvim',
+  -- 'doums/ponton.nvim',
   'doums/espresso',
   'doums/sae',
   'doums/lsp_spinner.nvim',
@@ -57,9 +58,10 @@ require('paq')({
   'hrsh7th/cmp-nvim-lua',
   'hrsh7th/cmp-nvim-lsp',
   'hrsh7th/cmp-path',
+  'f3fora/cmp-spell',
   'saadparwaiz1/cmp_luasnip',
   'L3MON4D3/LuaSnip',
-  -- paq {'ms-jpq/coq_nvim', branch = 'coq'}
+  -- 'brymer-meneses/grammar-guard.nvim',
   'nvim-lua/plenary.nvim', -- dep of telescope.nvim, gitsigns.nvim, null-ls.nvim
   'nvim-lua/popup.nvim', -- dep of telescope.nvim
   'nvim-telescope/telescope.nvim',
@@ -295,10 +297,9 @@ require('ponton').setup({
       padding = { 1, 1 },
       margin = { 1, 1 },
       decorator = { '', '', { '#2A190E', line_bg } },
-      conditions = {
+      --[[ conditions = {
         ponton_cdt.buffer_not_empty,
-        { ponton_cdt.filetype_not, 'NvimTree' },
-      },
+      }, ]]
     },
     buffer_changed = {
       style = { '#DF824C', line_bg, 'bold' },
@@ -318,35 +319,19 @@ require('ponton').setup({
     sep = {
       style = { '#BDAE9D', line_bg },
       text = '⏽',
-      conditions = {
-        { ponton_cdt.filetype_not, 'NvimTree' },
-        { ponton_cdt.buftype_not, 'terminal' },
-      },
     },
     line_percent = {
       style = { '#BDAE9D', line_bg },
       padding = { nil, 1 },
-      conditions = {
-        { ponton_cdt.filetype_not, 'NvimTree' },
-        { ponton_cdt.buftype_not, 'terminal' },
-      },
     },
     line = {
       style = { '#BDAE9D', line_bg },
       padding = { 1 },
-      conditions = {
-        { ponton_cdt.filetype_not, 'NvimTree' },
-        { ponton_cdt.buftype_not, 'terminal' },
-      },
     },
     column = {
       style = { '#BDAE9D', line_bg },
       left_adjusted = true,
       padding = { nil, 1 },
-      conditions = {
-        { ponton_cdt.filetype_not, 'NvimTree' },
-        { ponton_cdt.buftype_not, 'terminal' },
-      },
     },
     git_branch = {
       style = { '#C5656B', line_bg },
@@ -558,6 +543,9 @@ require('nvim-treesitter.configs').setup({
   },
 })
 
+-- grammar-guard.nvim --------------------------------------------
+require('grammar-guard').init()
+
 -- LSP -----------------------------------------------------------
 local lspconfig = require('lspconfig')
 local lsp_spinner = require('lsp_spinner')
@@ -746,6 +734,25 @@ lspconfig.sumneko_lua.setup({ -- Lua
     },
   },
 })
+lspconfig.grammar_guard.setup({
+  cmd = { '/opt/ltex-ls/bin/ltex-ls' },
+  settings = {
+    ltex = {
+      enabled = { 'tex', 'markdown' },
+      language = 'en',
+      diagnosticSeverity = 'information',
+      setenceCacheSize = 2000,
+      additionalRules = {
+        enablePickyRules = true,
+        motherTongue = 'en',
+      },
+      trace = { server = 'verbose' },
+      dictionary = {},
+      disabledRules = {},
+      hiddenFalsePositives = {},
+    },
+  },
+})
 
 -- telescope.nvim ------------------------------------------------
 local actions = require('telescope.actions')
@@ -895,6 +902,7 @@ cmp.setup({
     { name = 'nvim_lua' },
     { name = 'path' },
     { name = 'buffer' },
+    { name = 'spell' },
   },
   documentation = { border = { '', '', '', ' ', '', '', '', ' ' } },
   formatting = {
@@ -905,6 +913,7 @@ cmp.setup({
         luasnip = '⌈snip⌋',
         nvim_lua = '⌈lua⌋',
         path = '⌈path⌋',
+        spell = '⌈spell⌋',
       })[entry.source.name]
       return vim_item
     end,
