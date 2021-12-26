@@ -10,7 +10,6 @@ for LSP
   * ESLint and Prettier (npm i -g eslint prettier)
   * Prisma LSP (npm i -g @prisma/language-server)
   * LTEX LS https://github.com/valentjn/ltex-ls/releases
-  * cspell https://github.com/streetsidesoftware/cspell (npm install -g cspell)
 
 others: git, ripgrep, fzf, node, npm
 -- ]]
@@ -244,7 +243,7 @@ cmd([[
 
 -- vassal.nvim ---------------------------------------------------
 require('vassal').commands({
-  [[npm i -g typescript typescript-language-server eslint prettier @prisma/language-server cspell]],
+  [[npm i -g typescript typescript-language-server eslint prettier @prisma/language-server]],
   'cd /opt/lua-language-server/ && ./update.sh',
 })
 
@@ -694,7 +693,6 @@ null_ls.setup({
     null_ls.builtins.formatting.stylua,
     null_ls.builtins.formatting.prismaFmt,
     null_ls.builtins.completion.spell,
-    null_ls.builtins.diagnostics.cspell,
   },
   on_attach = on_attach,
   capabilities = capabilities,
