@@ -10,6 +10,7 @@ for LSP
   * ESLint and Prettier (npm i -g eslint prettier)
   * Prisma LSP (npm i -g @prisma/language-server)
   * LTEX LS https://github.com/valentjn/ltex-ls/releases
+  * cspell https://github.com/streetsidesoftware/cspell (npm install -g cspell)
 
 others: git, ripgrep, fzf, node, npm
 -- ]]
@@ -58,7 +59,6 @@ require('paq')({
   'hrsh7th/cmp-nvim-lua',
   'hrsh7th/cmp-nvim-lsp',
   'hrsh7th/cmp-path',
-  'f3fora/cmp-spell',
   'saadparwaiz1/cmp_luasnip',
   'L3MON4D3/LuaSnip',
   -- 'brymer-meneses/grammar-guard.nvim',
@@ -244,7 +244,7 @@ cmd([[
 
 -- vassal.nvim ---------------------------------------------------
 require('vassal').commands({
-  [[npm i -g typescript typescript-language-server eslint prettier @prisma/language-server]],
+  [[npm i -g typescript typescript-language-server eslint prettier @prisma/language-server cspell]],
   'cd /opt/lua-language-server/ && ./update.sh',
 })
 
@@ -613,6 +613,13 @@ vim.diagnostic.config({
 })
 
 local function on_attach(client, bufnr)
+  local bufname = api.nvim_buf_get_name(bufnr)
+  if string.match(bufname, '/?%.env') then
+    vim.diagnostic.disable(bufnr)
+    vim.diagnostic.reset(nil, bufnr)
+    lsp.buf_detach_client(bufnr, client.id)
+    return
+  end
   local bufopt = { buffer = bufnr }
   map(
     'n',
@@ -686,6 +693,8 @@ null_ls.setup({
     null_ls.builtins.formatting.prettier,
     null_ls.builtins.formatting.stylua,
     null_ls.builtins.formatting.prismaFmt,
+    null_ls.builtins.completion.spell,
+    null_ls.builtins.diagnostics.cspell,
   },
   on_attach = on_attach,
   capabilities = capabilities,
@@ -819,22 +828,6 @@ map(
 )
 cmd('hi! link TelescopeBorder NonText')
 
--- coq_nvim ------------------------------------------------------
---[[ g.coq_settings = {
-  auto_start = 'shut-up',
-  ['keymap.jump_to_mark'] = '<A-tab>',
-  ['display.pum.kind_context'] = {'[', ']'},
-  ['display.pum.source_context'] = {'⏽', '⏽'},
-  ['display.pum.fast_close'] = false,
-  ['display.preview.border'] = {'', '', '', ' ', '', '', '', ' '},
-  ['clients.tree_sitter.enabled'] = false,
-  ['clients.tmux.enabled'] = false,
-  ['clients.tags.parent_scope'] = ' ↓',
-  ['clients.tags.path_sep'] = ' → ',
-  ['display.pum.ellipsis'] = '…',
-  ['display.icons.mode'] = 'none',
-} ]]
-
 -- nvim-cmp & LuaSnip ------------------------------------------
 local cmp = require('cmp')
 local luasnip = require('luasnip')
@@ -902,7 +895,6 @@ cmp.setup({
     { name = 'nvim_lua' },
     { name = 'path' },
     { name = 'buffer' },
-    { name = 'spell' },
   },
   documentation = { border = { '', '', '', ' ', '', '', '', ' ' } },
   formatting = {
@@ -913,7 +905,6 @@ cmp.setup({
         luasnip = '⌈snip⌋',
         nvim_lua = '⌈lua⌋',
         path = '⌈path⌋',
-        spell = '⌈spell⌋',
       })[entry.source.name]
       return vim_item
     end,
