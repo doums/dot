@@ -17,7 +17,10 @@ default xkb_symbols "k7" {
     };
     key <AE04> {[ apostrophe, 4 ]};
     key <AE05> {[ percent, 5 ]};
-    key <AE06> {[ minus, 6 ]};
+    key <AE06> {
+        type= "THREE_LEVEL",
+        [ minus, 6, dead_circumflex ]
+    };
     key <AE07> {
         type= "FOUR_LEVEL",
         [ egrave, 7, grave, Egrave ]
@@ -33,7 +36,7 @@ default xkb_symbols "k7" {
     };
     key <AE11> {[ asterisk, degree ]};
     key <AE12> {[ equal, plus ]};
-    key <BKSP> {[ BackSpace, BackSpace ]};
+    key <BKSP> {[ BackSpace, Delete ]};
     key <TAB> {[ Tab, ISO_Left_Tab ]};
     key <AD01> {
         type= "FOUR_LEVEL_ALPHABETIC",

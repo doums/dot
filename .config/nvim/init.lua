@@ -239,6 +239,8 @@ cmd([[
     autocmd CursorHold * if empty(&buftype) | checktime % | endif
     autocmd FileType man set nonumber
     autocmd TextYankPost * silent! lua vim.highlight.on_yank()
+    " disable diagnostics in .env file
+    autocmd BufRead,BufNewFile .env lua vim.diagnostic.disable(<abuf>)
   augroup END
 ]])
 
@@ -613,13 +615,6 @@ vim.diagnostic.config({
 })
 
 local function on_attach(client, bufnr)
-  local bufname = api.nvim_buf_get_name(bufnr)
-  if string.match(bufname, '/?%.env') then
-    vim.diagnostic.disable(bufnr)
-    vim.diagnostic.reset(nil, bufnr)
-    lsp.buf_detach_client(bufnr, client.id)
-    return
-  end
   local bufopt = { buffer = bufnr }
   map(
     'n',
@@ -766,6 +761,7 @@ lspconfig.grammar_guard.setup({
 require('trouble').setup({
   height = 8,
   indent_lines = false,
+  padding = false,
   action_keys = {
     open_split = { '<c-s>' }, -- open buffer in new split
     close_folds = { '<bs>' }, -- close all folds
