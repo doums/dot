@@ -34,7 +34,9 @@ if [ ! "$1" ]; then
     --preview="$preview" \
     --preview-window=up,80%,noborder,border-bottom \
     --header="git log" | awk '{print $1}')
-  git show "$output"
+  if [ -n "$output" ]; then
+    git show "$output"
+  fi
 else
   preview="git show --color --abbrev-commit -s --pretty=medium --date=format:%c {1} \
   && echo -e \n \
