@@ -4,6 +4,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+# gl, enhanced git log
+
 if ! fzf --version &> /dev/null; then
   printf "%s\n" "fzf not found"
   exit 1
