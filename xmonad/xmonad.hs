@@ -125,6 +125,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,                 xK_q),                     spawn ("session.sh" ++ dmenuArgs))
     , ((modm .|. controlMask, xK_q),                     spawn "xmonad --recompile; xmonad --restart")
     , ((modm,                 xK_d),                     spawn ("set_dp.sh" ++ dmenuArgs))
+    , ((modm,                 xK_p),                     spawn ("restart_picom.sh"))
     , ((0,                    xF86XK_MonBrightnessUp),   spawn "pral.sh light_up")
     , ((0,                    xF86XK_MonBrightnessDown), spawn "pral.sh light_down")
     , ((0,                    xF86XK_AudioRaiseVolume),  spawn "pral.sh sink_up")
