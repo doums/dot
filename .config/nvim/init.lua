@@ -46,6 +46,7 @@ require('paq')({
   'doums/sae',
   'doums/lsp_spinner.nvim',
   'doums/floaterm.nvim',
+  'doums/oterm.nvim',
   'doums/vassal.nvim',
   { 'nvim-treesitter/nvim-treesitter', run = update_ts_parsers },
   'nvim-treesitter/playground',
@@ -61,7 +62,7 @@ require('paq')({
   'saadparwaiz1/cmp_luasnip',
   'L3MON4D3/LuaSnip',
   'folke/trouble.nvim',
-  -- 'brymer-meneses/grammar-guard.nvim',
+  'brymer-meneses/grammar-guard.nvim',
   'nvim-lua/plenary.nvim', -- dep of telescope.nvim, gitsigns.nvim, null-ls.nvim
   'nvim-lua/popup.nvim', -- dep of telescope.nvim
   'nvim-telescope/telescope.nvim',
@@ -359,7 +360,7 @@ require('ponton').setup({
     lsp_information = {
       style = { '#FFFFCC', line_bg },
       padding = { nil, 1 },
-      prefix = '~',
+      prefix = '╸',
     },
     lsp_hint = {
       style = { '#F49810', line_bg },
@@ -559,19 +560,19 @@ lsp_spinner.setup({
 
 fn.sign_define(
   'DiagnosticSignError',
-  { text = '▬', texthl = 'DiagnosticSignError' }
+  { text = '✗', texthl = 'DiagnosticSignError' }
 )
 fn.sign_define(
   'DiagnosticSignWarn',
-  { text = '▬', texthl = 'DiagnosticSignWarn' }
+  { text = '▲', texthl = 'DiagnosticSignWarn' }
 )
 fn.sign_define(
   'DiagnosticSignInfo',
-  { text = '▬', texthl = 'DiagnosticSignInfo' }
+  { text = '╸', texthl = 'DiagnosticSignInfo' }
 )
 fn.sign_define(
   'DiagnosticSignHint',
-  { text = '▬', texthl = 'DiagnosticSignHint' }
+  { text = '•', texthl = 'DiagnosticSignHint' }
 )
 
 hi('signatureHint', '#CA7E03', nil, 'italic')
@@ -596,9 +597,9 @@ end
 
 local function prefix_diagnostic(diagnostic)
   local severity_map = {
-    [vim.diagnostic.severity.ERROR] = { '✕ ', 'ErrorSign' },
+    [vim.diagnostic.severity.ERROR] = { '✕ ', 'DiagnosticSignError' },
     [vim.diagnostic.severity.WARN] = { '▲ ', 'WarningSign' },
-    [vim.diagnostic.severity.INFO] = { '~ ', 'InformationSign' },
+    [vim.diagnostic.severity.INFO] = { '╸ ', 'InformationSign' },
     [vim.diagnostic.severity.HINT] = { '• ', 'HintSign' },
   }
   return unpack(severity_map[diagnostic.severity])
@@ -607,6 +608,7 @@ end
 -- vim.diagnostic config
 vim.diagnostic.config({
   virtual_text = false,
+  severity_sort = true,
   float = {
     header = false,
     format = format_diagnostic,
@@ -685,11 +687,13 @@ null_ls.setup({
   sources = {
     null_ls.builtins.diagnostics.eslint,
     null_ls.builtins.diagnostics.shellcheck,
+    null_ls.builtins.diagnostics.cspell,
     null_ls.builtins.formatting.prettier,
     null_ls.builtins.formatting.stylua,
     null_ls.builtins.formatting.prismaFmt,
     null_ls.builtins.completion.spell,
   },
+  fallback_severity = vim.diagnostic.severity.HINT,
   on_attach = on_attach,
   capabilities = capabilities,
 })
@@ -741,7 +745,7 @@ lspconfig.grammar_guard.setup({
   cmd = { '/opt/ltex-ls/bin/ltex-ls' },
   settings = {
     ltex = {
-      enabled = { 'tex', 'markdown' },
+      enabled = { 'tex', 'markdown', 'plaintext', 'typescript' },
       language = 'en',
       diagnosticSeverity = 'information',
       setenceCacheSize = 2000,
@@ -769,7 +773,7 @@ require('trouble').setup({
   signs = {
     error = '✕',
     warning = '▲',
-    information = '~',
+    information = '╸',
     hint = '•',
     other = '╍',
   },

@@ -170,7 +170,6 @@ default xkb_symbols "hhkb" {
     key <MUTE> {[ XF86AudioMute ]};
     key <VOL-> {[ XF86AudioLowerVolume ]};
     key <VOL+> {[ XF86AudioRaiseVolume ]};
-    key <POWR> {[ XF86PowerOff ]};
     key <PAUS> {
         type= "CONTROL_LEVEL",
         [ Pause, Break ]
