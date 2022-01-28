@@ -2,14 +2,15 @@
 
 for LSP
   * clangd, language server for C/C++ (Arch Linux package clangd)
-  * TypeScript Language Server (npm i -g typescript-language-server)
+  * TypeScript Language Server (npm package - typescript-language-server)
   * rust-analyzer (https://rust-analyzer.github.io/manual.html#rustup)
   * shellcheck, shell script static analysis tool (AUR shellcheck-bin)
   * StyLua, Lua code formatter (AUR stylua)
   * lua-language-server, must be installed in /opt/lua-language-server
-  * ESLint and Prettier (npm i -g eslint prettier)
-  * Prisma LSP (npm i -g @prisma/language-server)
+  * ESLint and Prettier (npm packages - eslint prettier)
+  * Prisma LSP (npm package - @prisma/language-server)
   * LTEX LS https://github.com/valentjn/ltex-ls/releases
+  * cspell (npm package)
 
 others: git, ripgrep, fzf, node, npm
 -- ]]
@@ -247,7 +248,7 @@ cmd([[
 
 -- vassal.nvim ---------------------------------------------------
 require('vassal').commands({
-  [[npm i -g typescript typescript-language-server eslint prettier @prisma/language-server]],
+  [[npm i -g typescript typescript-language-server eslint prettier @prisma/language-server cspell]],
   'cd /opt/lua-language-server/ && ./update.sh',
 })
 
