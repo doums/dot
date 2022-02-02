@@ -248,6 +248,7 @@ myManageHook = insertPosition Below Newer <+> composeAll
     , className =? "feh"                --> doFloat
     , className =? "Galculator"         --> doFloat
     , className =? "TeamSpeak 3"        --> doFloat
+    , className =? "Insomnia"           --> doFloat
     , title     =? "win0"               --> doFloat
     , title     =? "Contrôle du volume" --> doFloat
     , resource  =? "desktop_window"     --> doIgnore ]
