@@ -723,7 +723,7 @@ lspconfig.sumneko_lua.setup({ -- Lua
   on_attach = on_attach,
   capabilities = capabilities,
   cmd = {
-    '/opt/lua-language-server/bin/Linux/lua-language-server',
+    '/opt/lua-language-server/bin/lua-language-server',
     '-E',
     '/opt/lua-language-server/main.lua',
   },
