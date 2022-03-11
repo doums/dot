@@ -24,7 +24,6 @@ import XMonad.Actions.WithAll (killAll)
 import XMonad.Layout.Spacing
 import XMonad.Layout.NoBorders
 import XMonad.Layout.Renamed
-import XMonad.Layout.BinaryColumn
 import XMonad.Layout.PerWorkspace
 
 -- Hooks
@@ -125,6 +124,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,                 xK_q),                     spawn ("session.sh" ++ dmenuArgs))
     , ((modm .|. controlMask, xK_q),                     spawn "xmonad --recompile; xmonad --restart")
     , ((modm,                 xK_d),                     spawn ("set_dp.sh" ++ dmenuArgs))
+    , ((modm,                 xK_v),                     spawn ("clipmenu -b -i -p '◧'" ++ dmenuArgs))
     , ((modm,                 xK_p),                     spawn ("restart_picom.sh"))
     , ((0,                    xF86XK_MonBrightnessUp),   spawn "pral.sh light_up")
     , ((0,                    xF86XK_MonBrightnessDown), spawn "pral.sh light_down")
@@ -210,12 +210,10 @@ myLayout = renamed [CutWordsLeft 1]
            $ smartBorders
            $ avoidStruts
            $ spacingWithEdge mySpacing
-           $ onWorkspace "3" (column ||| tiled ||| full)
            $ tiled ||| mirror ||| full
   where
      tiled   = renamed [Replace "→"] (Tall nmaster delta ratio)
      mirror  = renamed [Replace "↓"] (Mirror tiled)
-     column  = renamed [Replace "≡"] (BinaryColumn 1.6 124)
      full    = renamed [Replace "■"] Full
 
      -- The default number of windows in the master pane
@@ -289,6 +287,7 @@ myStartupHook = do
     spawnOnce "dunst -c /home/pierre/.config/dunst/dunstrc"
     spawnOnce "udiskie"
     -- spawnOnce "bato"
+    spawnOnce "clipmenud"
     spawnOnce "trayer -l --align left --distancefrom left --distance 420 --monitor primary --widthtype request --height 28 --transparent true --alpha 0 --tint 0x262626 --expand true --iconspacing 4 --SetPartialStrut true --SetDockType true"
 
 ------------------------------------------------------------------------
