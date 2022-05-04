@@ -240,7 +240,6 @@ myLayout = renamed [CutWordsLeft 1]
 -- To match on the WM_NAME, you can use 'title' in the same way that
 -- 'className' and 'resource' are used below.
 --
---
 myManageHook = fmap not willFloat --> insertPosition Below Newer <+> composeAll
     [ className =? "Gimp"               --> doFloat
     , className =? "jetbrains-toolbox"  --> doIgnore
