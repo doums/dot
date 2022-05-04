@@ -22,6 +22,7 @@ local g = vim.g
 local opt = vim.opt
 local lsp = vim.lsp
 local api = vim.api
+local map = vim.keymap.set
 
 -- PLUGINS -------------------------------------------------------
 -- auto install paq-nvim
@@ -77,22 +78,6 @@ require('paq')({
 })
 
 -- HELPERS -------------------------------------------------------
--- map with `noremap` option set to `true` by default
-local function map(mode, lhs, rhs, opts)
-  opts = opts or { noremap = true }
-  if opts.noremap == nil then
-    opts.noremap = true
-  end
-  if opts.buffer then
-    local bufnr = opts.buffer
-    opts.buffer = nil
-    api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, opts)
-  else
-    opts.buffer = nil
-    api.nvim_set_keymap(mode, lhs, rhs, opts)
-  end
-end
-
 -- log util
 function _G.dump(...)
   local objects = vim.tbl_map(vim.inspect, { ... })
@@ -143,13 +128,14 @@ opt.switchbuf = 'usetab'
 opt.scrolloff = 1
 opt.completeopt = { 'menuone', 'noselect' }
 opt.pumheight = 10
-opt.fillchars = { vert = '┃', diff = ' ', fold = ' ', eob = ' ' }
+opt.fillchars = { diff = ' ', fold = ' ', eob = ' ', vert = ' ' }
 opt.complete = opt.complete:append({ 'i' })
 opt.clipboard = 'unnamedplus'
 opt.signcolumn = 'yes:2'
 opt.cmdheight = 2
 opt.mouse = 'a'
 opt.statusline = ' ' -- hide the default statusline on the first frames
+opt.laststatus = 3
 opt.guifont = 'JetBrains Mono:h16'
 opt.guicursor = 'a:block-Caret'
 opt.spelllang = 'en_us'
@@ -170,6 +156,7 @@ cmd('runtime ftplugin/man.vim')
 g.mapleader = ','
 -- highlight group for guicursor
 hi('Caret', '#2A211C', '#889AFF', 'bold')
+hi('WinSeparator', '#332a25', '#332a25')
 
 -- MAPPINGS ------------------------------------------------------
 -- c'est en forgeant que l'on devient forgeron
@@ -178,8 +165,8 @@ map('', '<Down>', '<Nop>')
 map('', '<Right>', '<Nop>')
 map('', '<Left>', '<Nop>')
 -- move fast with Ctrl + hjkl
-map('', '<C-l>', '<Plug>SaeRight', { noremap = false })
-map('', '<C-h>', '<Plug>SaeLeft', { noremap = false })
+map('', '<C-l>', '<Plug>SaeRight', { remap = true })
+map('', '<C-h>', '<Plug>SaeLeft', { remap = true })
 map('', '<C-j>', '<C-d>')
 map('', '<C-k>', '<C-u>')
 -- move through wrapped line
@@ -231,20 +218,42 @@ map(
 )
 
 -- AUTOCOMMANDS --------------------------------------------------
--- see https://github.com/neovim/neovim/pull/12378
-cmd([[
-  augroup init.lua
-    autocmd!
-    " whenever CursorHold is fired (nothing typed during 'updatetime') in a normal
-    " bufer (&buftype option is empty) run checktime to refresh the buffer and
-    " retrieve any external changes
-    autocmd CursorHold * if empty(&buftype) | checktime % | endif
-    autocmd FileType man set nonumber
-    autocmd TextYankPost * silent! lua vim.highlight.on_yank()
-    " disable diagnostics in .env file
-    autocmd BufRead,BufNewFile .env lua vim.diagnostic.disable(<abuf>)
-  augroup END
-]])
+local group_id = api.nvim_create_augroup('InitLua', {})
+-- whenever CursorHold is fired (nothing typed during
+-- `updatetime`) in a normal buffer (&buftype option is empty) run
+-- `checktime` to refresh the buffer and retrieve any external
+-- changes
+api.nvim_create_autocmd('CursorHold', {
+  group = group_id,
+  pattern = '*',
+  callback = function()
+    if not opt.buftype:get() then
+      cmd('checktime %')
+    end
+  end,
+})
+-- disable diagnostics in .env file
+api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
+  group = group_id,
+  pattern = '.env',
+  callback = function(arg)
+    vim.diagnostic.disable(arg.buf)
+  end,
+})
+-- hide column numbers when viewing man pages
+api.nvim_create_autocmd('FileType', {
+  group = group_id,
+  pattern = 'man',
+  command = 'set nonumber',
+})
+-- highlight the selection when yanking
+api.nvim_create_autocmd('TextYankPost', {
+  group = group_id,
+  pattern = '*',
+  callback = function()
+    vim.highlight.on_yank()
+  end,
+})
 
 -- vassal.nvim ---------------------------------------------------
 require('vassal').commands({
@@ -301,9 +310,9 @@ require('ponton').setup({
       padding = { 1, 1 },
       margin = { 1, 1 },
       decorator = { '', '', { '#2A190E', line_bg } },
-      --[[ conditions = {
+      conditions = {
         ponton_cdt.buffer_not_empty,
-      }, ]]
+      },
     },
     buffer_changed = {
       style = { '#DF824C', line_bg, 'bold' },
@@ -381,9 +390,9 @@ require('ponton').setup({
 
 -- kommentary ----------------------------------------------------
 g.kommentary_create_default_mappings = false
-map('n', '<leader>cc', '<Plug>kommentary_line_default', { noremap = false })
-map('n', '<leader>c', '<Plug>kommentary_motion_default', { noremap = false })
-map('v', '<leader>c', '<Plug>kommentary_visual_default', { noremap = false })
+map('n', '<leader>cc', '<Plug>kommentary_line_default', { remap = true })
+map('n', '<leader>c', '<Plug>kommentary_motion_default', { remap = true })
+map('v', '<leader>c', '<Plug>kommentary_visual_default', { remap = true })
 
 -- coBra ---------------------------------------------------------
 g.coBraPairs = {
@@ -432,8 +441,6 @@ map(
 -- nvim-tree.lua -------------------------------------------------
 local tree_cb = require('nvim-tree.config').nvim_tree_callback
 g.nvim_tree_git_hl = 1
-g.nvim_tree_window_picker_chars = 'HLJKFQDS'
-g.nvim_tree_window_picker_exclude = { filetype = { 'Trouble', 'qf' } }
 map('n', '<Tab>', '<cmd>NvimTreeToggle<CR>')
 map('n', '<S-Tab>', '<cmd>NvimTreeFindFile<CR>')
 g.nvim_tree_show_icons = { git = 0, folders = 1, files = 1 }
@@ -452,7 +459,6 @@ g.nvim_tree_icons = {
 }
 require('nvim-tree').setup({
   hijack_cursor = true,
-  auto_close = true,
   diagnostics = {
     enable = true,
     icons = {
@@ -460,6 +466,14 @@ require('nvim-tree').setup({
       info = '',
       warning = '',
       error = '✕',
+    },
+  },
+  actions = {
+    open_file = {
+      window_picker = {
+        exclude = { filetype = { 'Trouble', 'qf' } },
+        chars = 'HLJKFQDS',
+      },
     },
   },
   view = {
@@ -619,6 +633,8 @@ vim.diagnostic.config({
 
 local function on_attach(client, bufnr)
   local bufopt = { buffer = bufnr }
+  map('n', '<A-b>', '<cmd>lua vim.lsp.buf.definition()<CR>', bufopt)
+  map('n', '<A-S-b>', '<cmd>lua vim.lsp.buf.type_definition()<CR>', bufopt)
   map(
     'n',
     '<A-a>',
@@ -641,23 +657,29 @@ local function on_attach(client, bufnr)
     bufopt
   )
   map('n', '<A-r>', '<cmd>lua vim.lsp.buf.rename()<CR>', bufopt)
-  if client.resolved_capabilities.document_range_formatting then
-    map('v', '<A-f>', '<cmd>lua vim.lsp.buf.range_formatting()<CR>', bufopt)
-  end
-  if client.resolved_capabilities.document_formatting then
-    map('n', '<A-e>', '<cmd>lua vim.lsp.buf.formatting()<CR>', bufopt)
-  end
+  map('v', '<A-f>', '<cmd>lua vim.lsp.buf.range_formatting()<CR>', bufopt)
+  map('n', '<A-e>', '<cmd>lua vim.lsp.buf.format({async = true})<CR>', bufopt)
   -- open a floating window with the diagnostics from the current cursor position
-  cmd([[
-    autocmd CursorHold * lua vim.diagnostic.open_float({focusable=false, scope="cursor"})
-  ]])
+  api.nvim_create_autocmd('CursorHold', {
+    pattern = '*',
+    callback = function()
+      vim.diagnostic.open_float({ focusable = false, scope = 'cursor' })
+    end,
+  })
   -- highlight the symbol under the cursor
-  if client.resolved_capabilities.document_highlight then
-    cmd([[
-      autocmd CursorHold,CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()
-      autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-    ]])
-  end
+  api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+    pattern = '<buffer>',
+    callback = function()
+      lsp.buf.document_highlight()
+    end,
+  })
+  api.nvim_create_autocmd('CursorMoved', {
+    pattern = '<buffer>',
+    callback = function()
+      lsp.buf.clear_references()
+    end,
+  })
+
   lsp_spinner.on_attach(client, bufnr)
   lsp_signature.on_attach(signature_help_cfg, bufnr)
 end
@@ -791,8 +813,8 @@ map(
   '<cmd>TroubleToggle document_diagnostics<cr>',
   { silent = true }
 )
-map('n', '<A-b>', '<cmd>Trouble lsp_definitions<cr>')
-map('n', '<A-S-b>', '<cmd>Trouble lsp_type_definitions<cr>')
+--[[ map('n', '<A-b>', '<cmd>Trouble lsp_definitions<cr>')
+map('n', '<A-S-b>', '<cmd>Trouble lsp_type_definitions<cr>') ]]
 map('n', '<A-u>', '<cmd>Trouble lsp_references<cr>', { silent = true })
 cmd('hi! link TroubleCount Number')
 cmd('hi! link TroubleText Fg')
@@ -926,7 +948,11 @@ cmp.setup({
     { name = 'path' },
     { name = 'buffer' },
   },
-  documentation = { border = { '', '', '', ' ', '', '', '', ' ' } },
+  window = {
+    completion = cmp.config.window.bordered(false),
+    documentation = cmp.config.window.bordered(false),
+  },
+  -- documentation = { border = { '', '', '', ' ', '', '', '', ' ' } },
   formatting = {
     format = function(entry, vim_item)
       vim_item.menu = ({
