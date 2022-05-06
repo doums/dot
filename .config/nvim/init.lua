@@ -44,7 +44,7 @@ require('paq')({
   'b3nj5m1n/kommentary',
   'doums/coBra',
   -- 'doums/ponton.nvim',
-  'doums/espresso',
+  -- 'doums/espresso',
   'doums/sae',
   'doums/lsp_spinner.nvim',
   'doums/floaterm.nvim',
@@ -84,20 +84,16 @@ function _G.dump(...)
   print(unpack(objects))
 end
 
-local function hi(name, foreground, background, style, special)
-  local fg = 'guifg=' .. (foreground or 'NONE')
-  local bg = 'guibg=' .. (background or 'NONE')
-  local decoration = 'gui=' .. (style or 'NONE')
-  local sp = 'guisp=' .. (special or foreground or 'NONE')
-  local hi_command = string.format(
-    'hi %s %s %s %s %s',
-    name,
-    fg,
-    bg,
-    decoration,
-    sp
-  )
-  cmd(hi_command)
+local function hl(name, fg, bg, style, sp)
+  local hl_map = { fg = fg, bg = bg, sp = sp }
+  if type(style) == 'string' then
+    hl_map[style] = 1
+  elseif type(style) == 'table' then
+    for _, v in ipairs(style) do
+      hl_map[v] = 1
+    end
+  end
+  api.nvim_set_hl(0, name, hl_map)
 end
 
 local function li(target, source)
@@ -155,8 +151,8 @@ cmd('runtime ftplugin/man.vim')
 -- map leader
 g.mapleader = ','
 -- highlight group for guicursor
-hi('Caret', '#2A211C', '#889AFF', 'bold')
-hi('WinSeparator', '#332a25', '#332a25')
+hl('Caret', '#2A211C', '#889AFF', 'bold')
+hl('WinSeparator', '#332a25', '#332a25')
 
 -- MAPPINGS ------------------------------------------------------
 -- c'est en forgeant que l'on devient forgeron
@@ -262,8 +258,9 @@ require('vassal').commands({
 })
 
 -- ponton.nvim ---------------------------------------------------
-hi('StatusLineNC', '#BDAE9D', '#432717')
-hi('VertSplit', '#2A190E', nil)
+hl('StatusLine', nil, '#432717')
+hl('StatusLineNC', '#BDAE9D', '#432717')
+hl('VertSplit', '#2A190E', nil)
 local line_bg = '#432717'
 local ponton_cdt = require('ponton.condition')
 require('ponton').setup({
@@ -312,6 +309,7 @@ require('ponton').setup({
       decorator = { '', '', { '#2A190E', line_bg } },
       conditions = {
         ponton_cdt.buffer_not_empty,
+        ponton_cdt.filetype_not('NvimTree'),
       },
     },
     buffer_changed = {
@@ -406,16 +404,6 @@ g.coBraPairs = {
 }
 g.coBraDisableCRMap = true
 
--- neovide -------------------------------------------------------
-g.neovide_refresh_rate = 144
-g.neovide_cursor_animation_length = 0.02
-g.neovide_cursor_trail_length = 0.6
-if g.neovide then
-  hi('Error', nil, nil, 'undercurl', '#FF6767')
-  hi('SpellBad', nil, nil, 'undercurl', '#659C6B')
-  hi('Hint', nil, nil, 'undercurl', '#4E4F4F')
-end
-
 -- floaterm.nvim -------------------------------------------------
 require('floaterm').setup({
   layout = 'bottom',
@@ -424,7 +412,7 @@ require('floaterm').setup({
   bg_color = '#211a16',
 })
 
-hi('otermSplit', '#2A190E', '#211a16')
+hl('otermSplit', '#2A190E', '#211a16')
 require('oterm').setup({
   bg_color = '#211a16',
   split_hl = 'otermSplit',
@@ -518,13 +506,13 @@ li('NvimTreeSpecialFile', 'Function')
 li('NvimTreeFolderIcon', 'Constant')
 li('NvimTreeImageFile', 'Normal')
 li('NvimTreeGitIgnored', 'Debug')
-hi('NvimTreeGitNew', '#42905b', nil, 'italic')
-hi('NvimTreeGitStaged', '#39c064', nil, 'italic')
-hi('NvimTreeGitRenamed', '#507eae', nil, 'italic')
-hi('NvimTreeGitDeleted', '#bd5b5b', nil, 'italic')
+hl('NvimTreeGitNew', '#42905b', nil, 'italic')
+hl('NvimTreeGitStaged', '#39c064', nil, 'italic')
+hl('NvimTreeGitRenamed', '#507eae', nil, 'italic')
+hl('NvimTreeGitDeleted', '#bd5b5b', nil, 'italic')
 li('NvimTreeGitDirty', 'NvimTreeGitDeleted')
-hi('NvimTreeWindowPicker', '#BDAE9D', '#2A190E', 'bold')
-hi('NvimTreeLspDiagnosticsError', '#FF0000', nil, 'bold')
+hl('NvimTreeWindowPicker', '#BDAE9D', '#2A190E', 'bold')
+hl('NvimTreeLspDiagnosticsError', '#FF0000', nil, 'bold')
 
 -- nvim-treesitter -----------------------------------------------
 require('nvim-treesitter.configs').setup({
@@ -590,7 +578,7 @@ fn.sign_define(
   { text = '•', texthl = 'DiagnosticSignHint' }
 )
 
-hi('signatureHint', '#CA7E03', nil, 'italic')
+hl('signatureHint', '#CA7E03', nil, 'italic')
 local signature_help_cfg = {
   bind = true,
   doc_lines = 2,
@@ -667,19 +655,20 @@ local function on_attach(client, bufnr)
     end,
   })
   -- highlight the symbol under the cursor
-  api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
-    pattern = '<buffer>',
-    callback = function()
-      lsp.buf.document_highlight()
-    end,
-  })
-  api.nvim_create_autocmd('CursorMoved', {
-    pattern = '<buffer>',
-    callback = function()
-      lsp.buf.clear_references()
-    end,
-  })
-
+  if client.server_capabilities.document_highlight then
+    api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+      pattern = '<buffer>',
+      callback = function()
+        lsp.buf.document_highlight()
+      end,
+    })
+    api.nvim_create_autocmd('CursorMoved', {
+      pattern = '<buffer>',
+      callback = function()
+        lsp.buf.clear_references()
+      end,
+    })
+  end
   lsp_spinner.on_attach(client, bufnr)
   lsp_signature.on_attach(signature_help_cfg, bufnr)
 end
@@ -695,7 +684,7 @@ lspconfig.clangd.setup({ -- C, C++
 lspconfig.tsserver.setup({ -- TypeScript
   on_attach = function(client, bufnr)
     -- do not use tsserver for formatting (use Prettier through null-ls)
-    client.resolved_capabilities.document_formatting = false
+    client.server_capabilities.document_formatting = false
     on_attach(client, bufnr)
   end,
   capabilities = capabilities,
@@ -816,9 +805,9 @@ map(
 --[[ map('n', '<A-b>', '<cmd>Trouble lsp_definitions<cr>')
 map('n', '<A-S-b>', '<cmd>Trouble lsp_type_definitions<cr>') ]]
 map('n', '<A-u>', '<cmd>Trouble lsp_references<cr>', { silent = true })
-cmd('hi! link TroubleCount Number')
-cmd('hi! link TroubleText Fg')
-cmd('hi! link TroubleLocation NonText')
+li('TroubleCount', 'Number')
+li('TroubleText', 'Fg')
+li('TroubleLocation', 'NonText')
 
 -- telescope.nvim ------------------------------------------------
 local actions = require('telescope.actions')
@@ -878,7 +867,7 @@ map(
   '<C-b>',
   [[<cmd>lua require('telescope.builtin').buffers(_G.dropdown_theme)<cr>]]
 )
-cmd('hi! link TelescopeBorder NonText')
+li('TelescopeBorder', 'NonText')
 
 -- nvim-cmp & LuaSnip ------------------------------------------
 local cmp = require('cmp')
@@ -949,10 +938,9 @@ cmp.setup({
     { name = 'buffer' },
   },
   window = {
-    completion = cmp.config.window.bordered(false),
-    documentation = cmp.config.window.bordered(false),
+    completion = { border = '' },
+    documentation = { border = { '', '', '', ' ', '', '', '', ' ' } },
   },
-  -- documentation = { border = { '', '', '', ' ', '', '', '', ' ' } },
   formatting = {
     format = function(entry, vim_item)
       vim_item.menu = ({
@@ -966,10 +954,20 @@ cmp.setup({
     end,
   },
 })
+-- `/` cmdline setup.
+--[[ cmp.setup.cmdline('/', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = {
+    { name = 'buffer' },
+  },
+  view = {
+    { name = 'wildmenu', separator = '|' },
+  },
+}) ]]
 li('CmpItemAbbr', 'Pmenu')
 li('CmpItemAbbrDeprecated', 'Pmenu')
-hi('CmpItemAbbrMatch', '#CA7E03', '#432717', 'bold')
-hi('CmpItemAbbrMatchFuzzy', '#CA7E03', '#432717', 'bold')
+hl('CmpItemAbbrMatch', '#CA7E03', '#432717', 'bold')
+hl('CmpItemAbbrMatchFuzzy', '#CA7E03', '#432717', 'bold')
 li('CmpItemKind', 'Pmenu')
 li('CmpItemMenu', 'Pmenu')
 
@@ -1045,17 +1043,17 @@ require('lightspeed').setup({
     'q', 'z', 'c', 'x', 't', 'u', 'r', 'i', 'a', 'o', 'e' },
 })
 -- stylua: ignore end
-hi('LightspeedCursor', '#FFFFFF', '#be3f09', 'bold')
-hi('LightspeedLabel', '#f49810', nil, 'bold,underline')
-hi('LightspeedLabelOverlapped', '#f49810', nil, 'underline')
-hi('LightspeedShortcut', '#212121', '#f49810', 'bold,underline')
-hi('LightspeedOneCharMatch', '#212121', '#f49810', 'bold')
-hi('LightspeedGreyWash', '#80807f')
-hi('LightspeedUnlabeledMatch', '#ddddff', nil, 'bold')
-hi('LightspeedPendingOpArea', '#212121', '#f49810')
-hi('LightspeedLabelDistant', '#aa4e00', nil, 'bold,underline')
-hi('LightspeedLabelDistantOverlapped', '#aa4e00', nil, 'underline')
-hi('LightspeedMaskedChar', '#906526')
+hl('LightspeedCursor', '#212121', '#ebff00', 'bold')
+hl('LightspeedLabel', '#f49810', nil, { 'bold', 'underline' })
+hl('LightspeedLabelOverlapped', '#f49810', nil, 'underline')
+hl('LightspeedShortcut', '#212121', '#f49810', { 'bold', 'underline' })
+hl('LightspeedOneCharMatch', '#212121', '#f49810', 'bold')
+hl('LightspeedGreyWash', '#80807f')
+hl('LightspeedUnlabeledMatch', '#ddddff', nil, 'bold')
+hl('LightspeedPendingOpArea', '#212121', '#f49810')
+hl('LightspeedLabelDistant', '#aa4e00', nil, { 'bold', 'underline' })
+hl('LightspeedLabelDistantOverlapped', '#aa4e00', nil, 'underline')
+hl('LightspeedMaskedChar', '#906526')
 
 api.nvim_del_keymap('n', 't')
 
