@@ -44,7 +44,7 @@ require('paq')({
   'b3nj5m1n/kommentary',
   'doums/coBra',
   -- 'doums/ponton.nvim',
-  -- 'doums/espresso',
+  'doums/espresso',
   'doums/sae',
   'doums/lsp_spinner.nvim',
   'doums/floaterm.nvim',
@@ -287,9 +287,9 @@ require('ponton').setup({
   segments = {
     mode = {
       map = {
-        normal = { '▲', { '#BDAE9D', line_bg, 'bold' } },
-        insert = { '◆', { '#049B0A', line_bg, 'bold' } },
-        replace = { '◆', { '#C75450', line_bg, 'bold' } },
+        normal = { ' ', { line_bg, line_bg } },
+        insert = { '▲', { '#049B0A', line_bg, 'bold' } },
+        replace = { '▲', { '#C75450', line_bg, 'bold' } },
         visual = { '◆', { '#43A8ED', line_bg, 'bold' } },
         v_line = { '━', { '#43A8ED', line_bg, 'bold' } },
         v_block = { '■', { '#43A8ED', line_bg, 'bold' } },
@@ -319,7 +319,7 @@ require('ponton').setup({
     },
     buffer_changed = {
       style = { '#DF824C', line_bg, 'bold' },
-      value = '†',
+      value = '✶',
       padding = { nil, 1 },
     },
     read_only = {
