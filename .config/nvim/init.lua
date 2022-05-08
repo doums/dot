@@ -265,7 +265,7 @@ local line_bg = '#432717'
 local ponton_cdt = require('ponton.condition')
 require('ponton').setup({
   line = {
-    'active_mark_start',
+    'void',
     'mode',
     'buffer_name',
     'buffer_changed',
@@ -281,7 +281,8 @@ require('ponton').setup({
     'sep',
     'column',
     'line_percent',
-    'active_mark_end',
+    --[[ 'active_mark_start',
+    'active_mark_end', ]]
   },
   segments = {
     mode = {
@@ -301,15 +302,19 @@ require('ponton').setup({
       },
       margin = { 1, 1 },
     },
+    void = {
+      style = { nil, line_bg },
+      length = '20%',
+    },
     buffer_name = {
-      style = { '#BDAE9D', '#2A190E', 'bold' },
+      style = { '#BDAE9D', line_bg, 'bold' },
       empty = nil,
       padding = { 1, 1 },
       margin = { 1, 1 },
-      decorator = { '', '', { '#2A190E', line_bg } },
+      decorator = { '❮❰', '❱❯', { '#DF824C', line_bg } },
       conditions = {
         ponton_cdt.buffer_not_empty,
-        ponton_cdt.filetype_not('NvimTree'),
+        { ponton_cdt.filetype_not, { 'NvimTree', 'Trouble' } },
       },
     },
     buffer_changed = {
@@ -330,59 +335,69 @@ require('ponton').setup({
     sep = {
       style = { '#BDAE9D', line_bg },
       text = '⏽',
+      conditions = { { ponton_cdt.filetype_not, { 'NvimTree', 'Trouble' } } },
     },
     line_percent = {
       style = { '#BDAE9D', line_bg },
       padding = { nil, 1 },
+      conditions = { { ponton_cdt.filetype_not, { 'NvimTree', 'Trouble' } } },
     },
     line = {
       style = { '#BDAE9D', line_bg },
       padding = { 1 },
+      conditions = { { ponton_cdt.filetype_not, { 'NvimTree', 'Trouble' } } },
     },
     column = {
       style = { '#BDAE9D', line_bg },
       left_adjusted = true,
       padding = { nil, 1 },
+      conditions = { { ponton_cdt.filetype_not, { 'NvimTree', 'Trouble' } } },
     },
     git_branch = {
       style = { '#C5656B', line_bg },
       padding = { 1, 1 },
       prefix = ' ',
+      conditions = { { ponton_cdt.filetype_not, 'NvimTree' } },
     },
     lsp_spinner = {
       style = { '#C5656B', line_bg },
       fn = require('lsp_spinner').status,
       padding = { nil, 2 },
       prefix = '󰣪 ',
+      conditions = { { ponton_cdt.filetype_not, 'NvimTree' } },
     },
     lsp_error = {
       style = { '#FF0000', line_bg, 'bold' },
       padding = { nil, 1 },
       prefix = '✕',
+      conditions = { { ponton_cdt.filetype_not, 'NvimTree' } },
     },
     lsp_warning = {
       style = { '#FFFF00', line_bg, 'bold' },
       padding = { nil, 1 },
       prefix = '▲',
+      conditions = { { ponton_cdt.filetype_not, 'NvimTree' } },
     },
     lsp_information = {
       style = { '#FFFFCC', line_bg },
       padding = { nil, 1 },
       prefix = '╸',
+      conditions = { { ponton_cdt.filetype_not, 'NvimTree' } },
     },
     lsp_hint = {
       style = { '#F49810', line_bg },
       padding = { nil, 1 },
       prefix = '•',
+      conditions = { { ponton_cdt.filetype_not, 'NvimTree' } },
     },
-    active_mark_start = {
+    --[[ active_mark_start = {
       style = { { '#DF824C', line_bg }, { line_bg, line_bg } },
       text = '❱',
     },
     active_mark_end = {
       style = { { '#DF824C', line_bg }, { line_bg, line_bg } },
       text = '❰',
-    },
+    }, ]]
   },
 })
 
