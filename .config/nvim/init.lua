@@ -662,6 +662,7 @@ local function on_attach(client, bufnr)
   map('n', '<A-r>', '<cmd>lua vim.lsp.buf.rename()<CR>', bufopt)
   map('v', '<A-f>', '<cmd>lua vim.lsp.buf.range_formatting()<CR>', bufopt)
   map('n', '<A-e>', '<cmd>lua vim.lsp.buf.format({async = true})<CR>', bufopt)
+  map('n', '<A-CR>', '<cmd>lua vim.lsp.buf.code_action()<CR>', bufopt)
   -- open a floating window with the diagnostics from the current cursor position
   api.nvim_create_autocmd('CursorHold', {
     pattern = '*',
