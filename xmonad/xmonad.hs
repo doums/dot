@@ -88,7 +88,7 @@ myWorkspaceKeys = [ xK_ampersand
                   , xK_e
                   , xK_apostrophe
                   , xK_r
-                  , xK_parenleft ]
+                  , xK_percent ]
 
 -- colors
 --
