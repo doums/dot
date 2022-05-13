@@ -262,7 +262,9 @@ hl('StatusLine', nil, '#432717')
 hl('StatusLineNC', '#BDAE9D', '#432717')
 local line_bg = '#432717'
 local ponton_cdt = require('ponton.condition')
-local cdts = { { ponton_cdt.filetype_not, { 'NvimTree', 'Trouble' } } }
+local cdts = {
+  { ponton_cdt.filetype_not, { 'NvimTree', 'Trouble', 'TelescopePrompt' } },
+}
 require('ponton').setup({
   line = {
     'void',
