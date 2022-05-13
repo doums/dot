@@ -124,7 +124,7 @@ opt.switchbuf = 'usetab'
 opt.scrolloff = 1
 opt.completeopt = { 'menuone', 'noselect' }
 opt.pumheight = 10
-opt.fillchars = { diff = ' ', fold = ' ', eob = ' ', vert = ' ' }
+opt.fillchars = { diff = ' ', fold = ' ', eob = ' ', vert = ' ', horiz = ' ' }
 opt.complete = opt.complete:append({ 'i' })
 opt.clipboard = 'unnamedplus'
 opt.signcolumn = 'yes:2'
@@ -260,9 +260,9 @@ require('vassal').commands({
 -- ponton.nvim ---------------------------------------------------
 hl('StatusLine', nil, '#432717')
 hl('StatusLineNC', '#BDAE9D', '#432717')
-hl('VertSplit', '#2A190E', nil)
 local line_bg = '#432717'
 local ponton_cdt = require('ponton.condition')
+local cdts = { { ponton_cdt.filetype_not, { 'NvimTree', 'Trouble' } } }
 require('ponton').setup({
   line = {
     'void',
@@ -288,8 +288,8 @@ require('ponton').setup({
     mode = {
       map = {
         normal = { ' ', { line_bg, line_bg } },
-        insert = { '▲', { '#049B0A', line_bg, 'bold' } },
-        replace = { '▲', { '#C75450', line_bg, 'bold' } },
+        insert = { '▲', { '#69ff00', line_bg, 'bold' } },
+        replace = { '▲', { '#69ff00', line_bg, 'bold' } },
         visual = { '◆', { '#43A8ED', line_bg, 'bold' } },
         v_line = { '━', { '#43A8ED', line_bg, 'bold' } },
         v_block = { '■', { '#43A8ED', line_bg, 'bold' } },
@@ -318,7 +318,7 @@ require('ponton').setup({
       },
     },
     buffer_changed = {
-      style = { '#DF824C', line_bg, 'bold' },
+      style = { '#a3f307', line_bg, 'bold' },
       value = '✶',
       padding = { nil, 1 },
     },
@@ -335,60 +335,60 @@ require('ponton').setup({
     sep = {
       style = { '#BDAE9D', line_bg },
       text = '⏽',
-      conditions = { { ponton_cdt.filetype_not, { 'NvimTree', 'Trouble' } } },
+      conditions = cdts,
     },
     line_percent = {
       style = { '#BDAE9D', line_bg },
       padding = { nil, 1 },
-      conditions = { { ponton_cdt.filetype_not, { 'NvimTree', 'Trouble' } } },
+      conditions = cdts,
     },
     line = {
       style = { '#BDAE9D', line_bg },
       padding = { 1 },
-      conditions = { { ponton_cdt.filetype_not, { 'NvimTree', 'Trouble' } } },
+      conditions = cdts,
     },
     column = {
       style = { '#BDAE9D', line_bg },
       left_adjusted = true,
       padding = { nil, 1 },
-      conditions = { { ponton_cdt.filetype_not, { 'NvimTree', 'Trouble' } } },
+      conditions = cdts,
     },
     git_branch = {
       style = { '#C5656B', line_bg },
       padding = { 1, 1 },
       prefix = ' ',
-      conditions = { { ponton_cdt.filetype_not, 'NvimTree' } },
+      conditions = cdts,
     },
     lsp_spinner = {
       style = { '#C5656B', line_bg },
       fn = require('lsp_spinner').status,
       padding = { nil, 2 },
       prefix = '󰣪 ',
-      conditions = { { ponton_cdt.filetype_not, 'NvimTree' } },
+      conditions = cdts,
     },
     lsp_error = {
       style = { '#FF0000', line_bg, 'bold' },
       padding = { nil, 1 },
       prefix = '✕',
-      conditions = { { ponton_cdt.filetype_not, 'NvimTree' } },
+      conditions = cdts,
     },
     lsp_warning = {
       style = { '#FFFF00', line_bg, 'bold' },
       padding = { nil, 1 },
       prefix = '▲',
-      conditions = { { ponton_cdt.filetype_not, 'NvimTree' } },
+      conditions = cdts,
     },
     lsp_information = {
       style = { '#FFFFCC', line_bg },
       padding = { nil, 1 },
       prefix = '╸',
-      conditions = { { ponton_cdt.filetype_not, 'NvimTree' } },
+      conditions = cdts,
     },
     lsp_hint = {
       style = { '#F49810', line_bg },
       padding = { nil, 1 },
       prefix = '•',
-      conditions = { { ponton_cdt.filetype_not, 'NvimTree' } },
+      conditions = cdts,
     },
     --[[ active_mark_start = {
       style = { { '#DF824C', line_bg }, { line_bg, line_bg } },
@@ -528,6 +528,7 @@ hl('NvimTreeGitDeleted', '#bd5b5b', nil, 'italic')
 li('NvimTreeGitDirty', 'NvimTreeGitDeleted')
 hl('NvimTreeWindowPicker', '#BDAE9D', '#2A190E', 'bold')
 hl('NvimTreeLspDiagnosticsError', '#FF0000', nil, 'bold')
+li('NvimTreeWinSeparator', 'WinSeparator')
 
 -- nvim-treesitter -----------------------------------------------
 require('nvim-treesitter.configs').setup({
@@ -615,10 +616,10 @@ end
 
 local function prefix_diagnostic(diagnostic)
   local severity_map = {
-    [vim.diagnostic.severity.ERROR] = { '✕ ', 'DiagnosticSignError' },
-    [vim.diagnostic.severity.WARN] = { '▲ ', 'WarningSign' },
+    [vim.diagnostic.severity.ERROR] = { '╸ ', 'DiagnosticSignError' },
+    [vim.diagnostic.severity.WARN] = { '╸ ', 'WarningSign' },
     [vim.diagnostic.severity.INFO] = { '╸ ', 'InformationSign' },
-    [vim.diagnostic.severity.HINT] = { '• ', 'HintSign' },
+    [vim.diagnostic.severity.HINT] = { '╸ ', 'HintSign' },
   }
   return unpack(severity_map[diagnostic.severity])
 end
@@ -691,7 +692,7 @@ end
 
 local capabilities = lsp.protocol.make_client_capabilities()
 lsp_spinner.init_capabilities(capabilities)
-capabilities.textDocument.completion.completionItem.snippetSupport = true
+require('cmp_nvim_lsp').update_capabilities(capabilities)
 
 lspconfig.clangd.setup({ -- C, C++
   on_attach = on_attach,
@@ -719,7 +720,6 @@ null_ls.setup({
     null_ls.builtins.formatting.prettier,
     null_ls.builtins.formatting.stylua,
     null_ls.builtins.formatting.prismaFmt,
-    null_ls.builtins.completion.spell,
   },
   fallback_severity = vim.diagnostic.severity.HINT,
   on_attach = on_attach,
@@ -872,11 +872,6 @@ map(
   '<cmd>lua require("telescope.builtin").find_files{find_command={"fd", "-t", "f"}}<cr>'
 )
 map('', '<Leader>w', '<cmd>Telescope lsp_workspace_symbols<cr>')
-map(
-  '',
-  '<A-CR>',
-  [[<cmd>lua require('telescope.builtin').lsp_code_actions(_G.dropdown_theme)<cr>]]
-)
 map('', '<C-f>', '<cmd>Telescope live_grep<cr>')
 map(
   '',
@@ -885,9 +880,9 @@ map(
 )
 li('TelescopeBorder', 'NonText')
 
--- nvim-cmp & LuaSnip ------------------------------------------
+-- nvim-cmp ------------------------------------------------------
 local cmp = require('cmp')
-local luasnip = require('luasnip')
+local ls = require('luasnip')
 
 local function has_word_before()
   local line, col = unpack(api.nvim_win_get_cursor(0))
@@ -901,8 +896,8 @@ end
 local tab_key = cmp.mapping(function(fallback)
   if cmp.visible() then
     cmp.select_next_item()
-  elseif luasnip.expand_or_jumpable() then
-    luasnip.expand_or_jump()
+  elseif ls.expand_or_jumpable() then
+    ls.expand_or_jump()
   elseif has_word_before() then
     cmp.complete()
   else
@@ -917,8 +912,8 @@ end, {
 local stab_key = cmp.mapping(function(fallback)
   if cmp.visible() then
     cmp.select_prev_item()
-  elseif luasnip.jumpable(-1) then
-    luasnip.jump(-1)
+  elseif ls.jumpable(-1) then
+    ls.jump(-1)
   else
     fallback()
   end
@@ -931,6 +926,14 @@ cmp.setup({
   mapping = {
     ['<tab>'] = tab_key,
     ['<S-tab>'] = stab_key,
+    ['<Down>'] = cmp.mapping(
+      cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
+      { 'i' }
+    ),
+    ['<Up>'] = cmp.mapping(
+      cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
+      { 'i' }
+    ),
     ['<M-p>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
     ['<M-o>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
     ['<C-space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
@@ -942,7 +945,7 @@ cmp.setup({
   },
   snippet = {
     expand = function(args)
-      luasnip.lsp_expand(args.body)
+      ls.lsp_expand(args.body)
     end,
   },
   completion = { completeopt = 'menu,menuone,noinsert' },
@@ -954,7 +957,7 @@ cmp.setup({
     { name = 'buffer' },
   },
   window = {
-    completion = { border = '' },
+    completion = { border = nil },
     documentation = { border = { '', '', '', ' ', '', '', '', ' ' } },
   },
   formatting = {
@@ -987,34 +990,45 @@ hl('CmpItemAbbrMatchFuzzy', '#CA7E03', '#432717', 'bold')
 li('CmpItemKind', 'Pmenu')
 li('CmpItemMenu', 'Pmenu')
 
-local ps = luasnip.parser.parse_snippet
-local js_log = ps({ trig = 'log', name = 'console log' }, 'console.log($0);')
-luasnip.snippets = {
-  javascript = { js_log },
-  typescript = {
-    js_log,
-    ps('eslint-disable-next-line', [[// eslint-disable-next-line $0]]),
-  },
-  typescriptreact = { js_log },
-  c = { ps('printf', [[printf("$1 -> %s$0\n", $1);]]) },
-  rust = {
-    ps(
-      { trig = 'pprintln', name = 'pretty print debug' },
-      [[println!("$1 -> {:#?}", $1);]]
-    ),
-  },
-  lua = {
-    ps('print', [[print($0)]]),
-    ps(
-      { trig = 'dump', name = 'print with vim.inspect' },
-      [[print(vim.inspect($0))]]
-    ),
-    ps(
-      { trig = 'format', name = 'string format' },
-      [[string.format('%s', $0)]]
-    ),
-  },
+-- LuaSnip -------------------------------------------------------
+local s = ls.snippet
+local fmta = require('luasnip.extras.fmt').fmta
+local i = ls.insert_node
+local ts_snippets = {
+  s('log', fmta('console.log(<>);', i(1))),
+  s('if', fmta('if (<>) {\n\t<>\n}', { i(1), i(2) })),
+  s('ei', fmta('else if (<>) {\n\t<>\n}', { i(1), i(2) })),
+  s('el', fmta('else {\n\t<>\n}', i(1))),
+  s('tl', fmta('`${<>}`', i(1))),
+  s(
+    'fn',
+    fmta(
+      'function <> (<>) {\n\t<>\n}',
+      { i(1, 'name'), i(2, 'args'), i(3, 'body') }
+    )
+  ),
+  s(
+    'fna',
+    fmta(
+      'const <> = (<>) =>> {\n\t<>\n};',
+      { i(1, 'name'), i(2, 'args'), i(3, 'body') }
+    )
+  ),
+  s(
+    'tc',
+    fmta(
+      'try {\n\t<>\n} catch (<>: any) {\n\t<>\n}',
+      { i(1, 'body'), i(2, 'e'), i(3) }
+    )
+  ),
 }
+ls.add_snippets('typescript', ts_snippets)
+ls.add_snippets('typescriptreact', ts_snippets)
+ls.add_snippets('lua', {
+  s('prt', fmta([[print(<>)]], i(1))),
+  s('prti', fmta([[print(vim.inspect(<>))]], i(1))),
+  s('fmt', fmta([[string.format('%s', <>)]], i(1))),
+})
 
 -- gitsigns.nvim -------------------------------------------------
 require('gitsigns').setup({
@@ -1057,6 +1071,7 @@ require('lightspeed').setup({
     'L', 'N', 'H', 'G', 'M', 'U', 'T', 'Z' },
   labels = { 's', 'f', 'n', 'g', 'h', 'v', 'b', 'w', 'y', 'd',
     'q', 'z', 'c', 'x', 't', 'u', 'r', 'i', 'a', 'o', 'e' },
+  repeat_ft_with_target_char = true
 })
 -- stylua: ignore end
 hl('LightspeedCursor', '#212121', '#ebff00', 'bold')
