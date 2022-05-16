@@ -215,15 +215,12 @@ map(
 
 -- AUTOCOMMANDS --------------------------------------------------
 local group_id = api.nvim_create_augroup('InitLua', {})
--- whenever CursorHold is fired (nothing typed during
--- `updatetime`) in a normal buffer (&buftype option is empty) run
--- `checktime` to refresh the buffer and retrieve any external
--- changes
+-- retrieve any external changes and refresh the buffer
 api.nvim_create_autocmd('CursorHold', {
   group = group_id,
   pattern = '*',
   callback = function()
-    if not opt.buftype:get() then
+    if #opt.buftype:get() == 0 then
       cmd('checktime %')
     end
   end,
@@ -262,8 +259,12 @@ hl('StatusLine', nil, '#432717')
 hl('StatusLineNC', '#BDAE9D', '#432717')
 local line_bg = '#432717'
 local ponton_cdt = require('ponton.condition')
+local main_cdt = {
+  ponton_cdt.filetype_not,
+  { 'NvimTree', 'Trouble', 'TelescopePrompt' },
+}
 local cdts = {
-  { ponton_cdt.filetype_not, { 'NvimTree', 'Trouble', 'TelescopePrompt' } },
+  main_cdt,
 }
 require('ponton').setup({
   line = {
@@ -283,14 +284,12 @@ require('ponton').setup({
     'sep',
     'column',
     'line_percent',
-    --[[ 'active_mark_start',
-    'active_mark_end', ]]
   },
   segments = {
     mode = {
       map = {
         normal = { ' ', { line_bg, line_bg } },
-        insert = { '▲', { '#69ff00', line_bg, 'bold' } },
+        insert = { '❯', { '#69ff00', line_bg, 'bold' } },
         replace = { '▲', { '#69ff00', line_bg, 'bold' } },
         visual = { '◆', { '#43A8ED', line_bg, 'bold' } },
         v_line = { '━', { '#43A8ED', line_bg, 'bold' } },
@@ -298,7 +297,7 @@ require('ponton').setup({
         select = { '■', { '#3592C4', line_bg, 'bold' } },
         command = { '▼', { '#BDAE9D', line_bg, 'bold' } },
         shell_ex = { '▶', { '#93896C', line_bg, 'bold' } },
-        terminal = { '▶', { '#049B0A', line_bg, 'bold' } },
+        terminal = { '❯', { '#049B0A', line_bg, 'bold' } },
         prompt = { '▼', { '#BDAE9D', line_bg, 'bold' } },
         inactive = { ' ', { line_bg, line_bg } },
       },
@@ -313,16 +312,17 @@ require('ponton').setup({
       empty = nil,
       padding = { 1, 1 },
       margin = { 1, 1 },
-      decorator = { '❮❰', '❱❯', { '#DF824C', line_bg } },
+      decorator = { '❰', '❱', { '#DF824C', line_bg } },
       conditions = {
         ponton_cdt.buffer_not_empty,
-        { ponton_cdt.filetype_not, { 'NvimTree', 'Trouble' } },
+        main_cdt,
       },
     },
     buffer_changed = {
       style = { '#a3f307', line_bg, 'bold' },
       value = '✶',
       padding = { nil, 1 },
+      conditions = cdts,
     },
     read_only = {
       style = { '#C75450', line_bg, 'bold' },
@@ -392,14 +392,6 @@ require('ponton').setup({
       prefix = '•',
       conditions = cdts,
     },
-    --[[ active_mark_start = {
-      style = { { '#DF824C', line_bg }, { line_bg, line_bg } },
-      text = '❱',
-    },
-    active_mark_end = {
-      style = { { '#DF824C', line_bg }, { line_bg, line_bg } },
-      text = '❰',
-    }, ]]
   },
 })
 
