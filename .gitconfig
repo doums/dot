@@ -11,6 +11,7 @@
   colorMoved = default
 [core]
   pager = delta
+	autocrlf = input
 [interactive]
   diffFilter = delta --color-only
 [delta]
@@ -37,6 +38,8 @@
   merge-conflict-begin-symbol   = ▼
   merge-conflict-end-symbol     = ▲
   right-arrow                   = →
+  wrap-right-symbol             = ¬
+  wrap-left-symbol              = ¬
   line-numbers                  = true
   max-line-length               = 512
   line-numbers-left-format      = {nm:^4}╎
