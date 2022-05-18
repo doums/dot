@@ -44,7 +44,7 @@ else
   if [ $use_delta ]; then
     preview="$preview | $delta_command"
   fi
-  git log --oneline --parents --decorate=short --diff-filter=a -- "$1" | fzf \
+  git log --oneline --parents --decorate=short -- "$1" | fzf \
   --with-nth=3.. \
   --preview="$preview" \
   --preview-window=up,80%,noborder,border-bottom \
