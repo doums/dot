@@ -171,6 +171,10 @@ map('', 'k', 'gk', { silent = true })
 -- goto start and end of line
 map('', '<space>l', '$')
 map('', '<space>h', '0')
+-- insert mode
+map('i', '<A-BS>', '<C-w>')
+map('i', '<M-Left>', '<S-Left>')
+map('i', '<M-Right>', '<S-Right>')
 -- command line
 map('c', '<A-Right>', '<C-Right>')
 map('c', '<A-Left>', '<C-Left>')
@@ -285,6 +289,11 @@ require('ponton').setup({
     'column',
     'line_percent',
   },
+  --[[ top_line = {
+    'buffer_name_top',
+    'buffer_changed_top',
+  }, ]]
+  top_line_exclude = { 'NvimTree', 'Trouble', 'TelescopePrompt' },
   segments = {
     mode = {
       map = {
@@ -324,6 +333,19 @@ require('ponton').setup({
       padding = { nil, 1 },
       conditions = cdts,
     },
+    --[[ buffer_name_top = {
+      style = { '#BDAE9D', line_bg, 'bold' },
+      empty = '□',
+      padding = { 1, 1 },
+      margin = { 1, 1 },
+      conditions = cdts,
+    },
+    buffer_changed_top = {
+      style = { '#a3f307', line_bg, 'bold' },
+      value = '✶',
+      padding = { nil, 1 },
+      conditions = cdts,
+    }, ]]
     read_only = {
       style = { '#C75450', line_bg, 'bold' },
       value = '',
@@ -468,43 +490,52 @@ require('nvim-tree').setup({
   actions = {
     open_file = {
       window_picker = {
-        exclude = { filetype = { 'Trouble', 'qf' } },
+        exclude = {
+          filetype = { 'Trouble', 'qf' },
+          buftype = { 'nofile', 'terminal', 'help' },
+        },
         chars = 'HLJKFQDS',
       },
     },
+  },
+  live_filter = {
+    prefix = 'filter → ',
+    always_show_folders = true,
   },
   view = {
     width = 40,
     mappings = {
       custom_only = true,
       list = {
-        { key = { '<CR>', '<2-LeftMouse>' }, cb = tree_cb('edit') },
-        { key = { '<2-RightMouse>', '<C-]>' }, cb = tree_cb('cd') },
-        { key = '<C-v>', cb = tree_cb('vsplit') },
-        { key = '<C-s>', cb = tree_cb('split') },
-        { key = '<C-t>', cb = tree_cb('tabnew') },
-        { key = '<BS>', cb = tree_cb('close_node') },
-        { key = '<S-CR>', cb = tree_cb('close_node') },
-        { key = '<Tab>', cb = tree_cb('preview') },
-        { key = 'K', cb = tree_cb('first_sibling') },
-        { key = 'J', cb = tree_cb('last_sibling') },
-        { key = 'I', cb = tree_cb('toggle_ignored') },
-        { key = 'H', cb = tree_cb('toggle_dotfiles') },
-        { key = 'R', cb = tree_cb('refresh') },
-        { key = 'a', cb = tree_cb('create') },
-        { key = 'd', cb = tree_cb('remove') },
-        { key = 'r', cb = tree_cb('rename') },
-        { key = '<C-r>', cb = tree_cb('full_rename') },
-        { key = 'x', cb = tree_cb('cut') },
-        { key = 'c', cb = tree_cb('copy') },
-        { key = 'p', cb = tree_cb('paste') },
-        { key = 'y', cb = tree_cb('copy_name') },
-        { key = 'Y', cb = tree_cb('copy_path') },
-        { key = 'gy', cb = tree_cb('copy_absolute_path') },
-        { key = '-', cb = tree_cb('dir_up') },
-        { key = 'o', cb = tree_cb('system_open') },
-        { key = 'q', cb = tree_cb('close') },
-        { key = 'g?', cb = tree_cb('toggle_help') },
+        { key = { '<CR>', '<2-LeftMouse>' }, action = 'edit' },
+        { key = { '<2-RightMouse>', '<C-]>' }, action = 'cd' },
+        { key = '<C-v>', action = 'vsplit' },
+        { key = '<C-s>', action = 'split' },
+        { key = '<C-t>', action = 'tabnew' },
+        { key = '<BS>', action = 'close_node' },
+        { key = '<S-CR>', action = 'close_node' },
+        { key = '<Tab>', action = 'preview' },
+        { key = 'K', action = 'first_sibling' },
+        { key = 'J', action = 'last_sibling' },
+        { key = 'I', action = 'toggle_git_ignored' },
+        { key = 'H', action = 'toggle_dotfiles' },
+        { key = 'R', action = 'refresh' },
+        { key = 'a', action = 'create' },
+        { key = 'd', action = 'remove' },
+        { key = 'r', action = 'rename' },
+        { key = '<C-r>', action = 'full_rename' },
+        { key = 'x', action = 'cut' },
+        { key = 'c', action = 'copy' },
+        { key = 'p', action = 'paste' },
+        { key = 'y', action = 'copy_name' },
+        { key = 'Y', action = 'copy_path' },
+        { key = 'gy', action = 'copy_absolute_path' },
+        { key = '-', action = 'dir_up' },
+        { key = 'o', action = 'system_open' },
+        { key = 'f', action = 'live_filter' },
+        { key = 'F', action = 'clear_live_filter' },
+        { key = 'q', action = 'close' },
+        { key = 'g?', action = 'toggle_help' },
       },
     },
   },
@@ -523,6 +554,8 @@ li('NvimTreeGitDirty', 'NvimTreeGitDeleted')
 hl('NvimTreeWindowPicker', '#BDAE9D', '#2A190E', 'bold')
 hl('NvimTreeLspDiagnosticsError', '#FF0000', nil, 'bold')
 li('NvimTreeWinSeparator', 'WinSeparator')
+li('NvimTreeLiveFilterPrefix', 'CurSearch')
+li('NvimTreeLiveFilterValue', 'Search')
 
 -- nvim-treesitter -----------------------------------------------
 require('nvim-treesitter.configs').setup({
@@ -706,11 +739,13 @@ require('lspconfig').prismals.setup({
 })
 -- null-ls.nvim
 local null_ls = require('null-ls')
+local cspell_src = null_ls.builtins.diagnostics.cspell
+cspell_src.disabled_filetypes = { 'NvimTree' }
 null_ls.setup({
   sources = {
     null_ls.builtins.diagnostics.eslint,
     null_ls.builtins.diagnostics.shellcheck,
-    null_ls.builtins.diagnostics.cspell,
+    cspell_src,
     null_ls.builtins.formatting.prettier,
     null_ls.builtins.formatting.stylua,
     null_ls.builtins.formatting.prismaFmt,
