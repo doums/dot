@@ -39,6 +39,7 @@ cmd('packadd paq-nvim') -- Load package
 local function update_ts_parsers()
   cmd('TSUpdate')
 end
+
 require('paq')({
   { 'savq/paq-nvim', opt = true }, -- Let Paq manage itself
   'b3nj5m1n/kommentary',
@@ -50,6 +51,7 @@ require('paq')({
   'doums/floaterm.nvim',
   'doums/oterm.nvim',
   'doums/vassal.nvim',
+  'doums/suit.nvim',
   { 'nvim-treesitter/nvim-treesitter', run = update_ts_parsers },
   'nvim-treesitter/playground',
   'neovim/nvim-lspconfig',
@@ -916,9 +918,9 @@ local ls = require('luasnip')
 local function has_word_before()
   local line, col = unpack(api.nvim_win_get_cursor(0))
   return col ~= 0
-    and api.nvim_buf_get_lines(0, line - 1, line, true)[1]
-        :sub(col, col)
-        :match('%s')
+      and api.nvim_buf_get_lines(0, line - 1, line, true)[1]
+      :sub(col, col)
+      :match('%s')
       == nil
 end
 
@@ -1029,6 +1031,8 @@ local ts_snippets = {
   s('ei', fmta('else if (<>) {\n\t<>\n}', { i(1), i(2) })),
   s('el', fmta('else {\n\t<>\n}', i(1))),
   s('tl', fmta('`${<>}`', i(1))),
+  s('imd', fmta("import <> from '<>';", { i(1), i(2, 'path') })),
+  s('im', fmta("import { <> } from '<>';", { i(1), i(2, 'path') })),
   s(
     'fn',
     fmta(
@@ -1125,3 +1129,13 @@ map(
   [[:lua require('telescope').extensions.neoclip.plus()<cr>]],
   { silent = true }
 )
+
+-- suit.nvim -----------------------------------------------------
+hl('suitPrompt', '#C7C7FF', '#1d1916', { 'bold', 'italic' })
+hl('suitInput', '#BDAE9D', '#1d1916')
+require('suit').setup({
+  hl_prompt_win = 'suitPrompt',
+  hl_prompt_border = 'suitPrompt',
+  hl_input_win = 'suitInput',
+  hl_input_border = 'suitInput',
+})
