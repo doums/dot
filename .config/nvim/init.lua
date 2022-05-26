@@ -701,7 +701,7 @@ local function on_attach(client, bufnr)
     end,
   })
   -- highlight the symbol under the cursor
-  if client.server_capabilities.document_highlight then
+  if client.server_capabilities.documentHighlightProvider then
     api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
       pattern = '<buffer>',
       callback = function()
@@ -730,7 +730,7 @@ lspconfig.clangd.setup({ -- C, C++
 lspconfig.tsserver.setup({ -- TypeScript
   on_attach = function(client, bufnr)
     -- do not use tsserver for formatting (use Prettier through null-ls)
-    client.server_capabilities.document_formatting = false
+    client.server_capabilities.documentFormattingProvider = false
     on_attach(client, bufnr)
   end,
   capabilities = capabilities,
