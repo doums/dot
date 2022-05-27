@@ -240,6 +240,7 @@ myLayout = renamed [CutWordsLeft 1]
 -- To match on the WM_NAME, you can use 'title' in the same way that
 -- 'className' and 'resource' are used below.
 --
+--
 myManageHook = fmap not willFloat --> insertPosition Below Newer <+> composeAll
     [ className =? "Gimp"               --> doFloat
     , className =? "jetbrains-toolbox"  --> doIgnore
@@ -281,7 +282,6 @@ myLogHook = return ()
 myStartupHook = do
     setDefaultCursor xC_left_ptr -- set default cursor
     spawnOnce "picom --config /home/pierre/.config/picom.conf -b"
-    spawnOnce "gnome-keyring-daemon --start -d"
     spawnOnce "redshift -c /home/pierre/.config/redshift/redshift.conf"
     spawnOnce "dunst -c /home/pierre/.config/dunst/dunstrc"
     spawnOnce "udiskie"

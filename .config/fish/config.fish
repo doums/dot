@@ -1,7 +1,3 @@
-if test -n "$DESKTOP_SESSION"
-    set -x (gnome-keyring-daemon --start | string split "=")
-end
-
 alias ls='exa --group-directories-first'
 alias la='exa -lag --group-directories-first'
 alias db='adb shell input keyevent 82'
@@ -21,6 +17,7 @@ alias dc='docker-compose'
 alias log='docker logs -f'
 
 set fish_greeting
+set -x SSH_AUTH_SOCK /run/user/1000/keyring/ssh
 set -x LD_LIBRARY_PATH /usr/local/lib $LD_LIBRARY_PATH
 set -x QT_AUTO_SCREEN_SCALE_FACTOR 1
 set -x EDITOR /usr/bin/nvim
@@ -37,8 +34,6 @@ set -x XDG_SESSION_TYPE X11
 set -x PATH $PATH $HOME/.cargo/bin
 set -x PATH $PATH $HOME/.gem/ruby/2.7.0/bin
 set -x fish_emoji_width 2
-#set -x PATH /opt/node_aos/bin $PATH
-set -x PATH /opt/node17/bin $PATH
 set -x PATH /opt/ltex-ls/bin $PATH
 set -x PATH /home/pierre/.yarn/bin $PATH
 set -x PATH $HOME/.local/bin $PATH
@@ -57,3 +52,7 @@ set -x NNN_FCOLORS '0505040a00060e0801030301'
 set -x XDG_CONFIG_HOME $HOME/.config
 set -x DENO_INSTALL $HOME/.deno
 set -x PATH $PATH $DENO_INSTALL/bin
+
+# Nodejs
+set -x PATH /opt/node16/bin $PATH
+
