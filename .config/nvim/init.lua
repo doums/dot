@@ -461,23 +461,8 @@ map(
 
 -- nvim-tree.lua -------------------------------------------------
 local tree_cb = require('nvim-tree.config').nvim_tree_callback
-g.nvim_tree_git_hl = 1
 map('n', '<Tab>', '<cmd>NvimTreeToggle<CR>')
 map('n', '<S-Tab>', '<cmd>NvimTreeFindFile<CR>')
-g.nvim_tree_show_icons = { git = 0, folders = 1, files = 1 }
-g.nvim_tree_icons = {
-  symlink = '󰌹',
-  folder = {
-    arrow_open = '▼',
-    arrow_closed = '▶',
-    default = '▶',
-    open = '▼',
-    empty = '▷',
-    empty_open = '▽',
-    symlink = '󰌹 ▶',
-    symlink_open = '󰌹 ▼',
-  },
-}
 require('nvim-tree').setup({
   hijack_cursor = true,
   diagnostics = {
@@ -503,6 +488,30 @@ require('nvim-tree').setup({
   live_filter = {
     prefix = 'filter → ',
     always_show_folders = true,
+  },
+  renderer = {
+    icons = {
+      show = {
+        git = false,
+        folder = true,
+        file = true,
+        folder_arrow = false,
+      },
+      glyphs = {
+        symlink = '󰌹',
+        folder = {
+          arrow_open = '▼',
+          arrow_closed = '▶',
+          default = '▶',
+          open = '▼',
+          empty = '▷',
+          empty_open = '▽',
+          symlink = '󰌹 ▶',
+          symlink_open = '󰌹 ▼',
+        },
+      },
+    },
+    highlight_git = true,
   },
   view = {
     width = 40,
