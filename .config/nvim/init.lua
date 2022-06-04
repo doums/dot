@@ -783,9 +783,11 @@ require('rust-tools').setup({ -- Rust
     },
   },
 })
-local runtime_path = vim.split(package.path, ';')
-table.insert(runtime_path, 'lua/?.lua')
-table.insert(runtime_path, 'lua/?/init.lua')
+local runtime_path = vim.tbl_extend(
+  'keep',
+  vim.split(package.path, ';'),
+  { '?/init.lua', '?.lua', 'lua/?.lua', 'lua/?/init.lua' }
+)
 lspconfig.sumneko_lua.setup({ -- Lua
   on_attach = on_attach,
   capabilities = capabilities,
