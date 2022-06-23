@@ -1,4 +1,4 @@
-Config { font = "xft:JetBrainsMono Nerd Font:pixelsize=22:antialias=true"
+Config { font = "xft:JetBrainsMono Nerd Font:pixelsize=20:antialias=true"
        , additionalFonts = []
        , borderColor = "#262626"
        , bgColor = "#262626"
@@ -15,9 +15,9 @@ Config { font = "xft:JetBrainsMono Nerd Font:pixelsize=22:antialias=true"
        , allDesktops = True
        , overrideRedirect = True
        , commands = [ Run CommandReader "baru" "status"
-                    , Run XPropertyLog "_XMONAD_LOG_1"
+                    , Run XMonadLog
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "%_XMONAD_LOG_1% }{ %status% "
+       , template = "%XMonadLog% }{ %status% "
        }

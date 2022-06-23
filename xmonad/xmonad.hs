@@ -9,6 +9,7 @@
 
 -- Base
 import XMonad
+-- import XMonad.Util.EZConfig
 import System.Exit
 import qualified XMonad.StackSet as W
 
@@ -113,6 +114,49 @@ toggleXmobar :: String
 toggleXmobar = "dbus-send --session --dest=org.Xmobar.Control --type=method_call '/org/Xmobar/Control' org.Xmobar.Control.SendSignal 'string:Toggle 0'"
 
 ------------------------------------------------------------------------
+{- keybinds :: XConfig l -> [(String, X ())]
+keybinds conf =
+  [ ("M-t",         spawn $ XMonad.terminal conf)
+  , ("M-!",         spawn "rofi -show drun")
+  , ("M-w",         spawn "rofi -show window")
+  , ("M-S-l",       spawn "lock.sh")
+  , ("M-q",         spawn ("session.sh" ++ dmenuArgs))
+  , ("M-C-q",       spawn "xmonad --recompile; xmonad --restart")
+  , ("M-C-r",       refresh)
+  , ("M-d",         spawn ("set_dp.sh" ++ dmenuArgs))
+  , ("M-v",         spawn ("clipmenu -b -i -p '◧'" ++ dmenuArgs))
+  , ("M-p",         spawn "restart_picom.sh")
+  , ("M-*",         spawn "pkill -USR1 redshift")
+  , ("Print",       spawn "screenshot.sh")
+  , ("M-c",         spawn "clipshot.sh")
+  , ("M-x",         kill)
+  , ("M-S-x",       killAll)
+  , ("M-<Space>",   sendMessage NextLayout)
+  , ("M-j",         windows W.focusDown)
+  , ("M-k",         windows W.focusUp)
+  , ("M-m",         windows W.focusMaster)
+  , ("M-<Return>",  windows W.swapMaster)
+  , ("M-S-j",       windows W.swapDown)
+  , ("M-S-k",       windows W.swapUp)
+  , ("M-s",         toggleSmartSpacing)
+  , ("M-f",         withFocused $ windows . W.sink)
+  , ("M-<Left>",    prevWS)
+  , ("M-<Right>",   nextWS)
+  , ("M-S-<Left>",  shiftToPrev)
+  , ("M-S-<Right>", shiftToNext)
+  , ("M-h",         sendMessage Shrink)
+  , ("M-l",         sendMessage Expand)
+  , ("M-;",         sendMessage (IncMasterN 1))
+  , ("M-,",         sendMessage (IncMasterN (-1)))
+  , ("M-b",         spawn toggleXmobar)
+  , ("<XF86MonBrightnessUp>",   spawn "pral.sh light_up")
+  , ("<XF86MonBrightnessDown>", spawn "pral.sh light_down")
+  , ("<XF86AudioRaiseVolume>",  spawn "pral.sh sink_up")
+  , ("<XF86AudioLowerVolume>",  spawn "pral.sh sink_down")
+  , ("<XF86AudioMute>",         spawn "pral.sh sink_mute")
+  , ("<XF86AudioMicMute>",      spawn "pral.sh source_mute")
+  ] -}
+
 -- Key bindings. Add, modify or remove key bindings here.
 --
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
@@ -166,15 +210,15 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [((m .|. modm, k), windows $ f i)
         | (i, k) <- zip (XMonad.workspaces conf) myWorkspaceKeys
         , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
-    -- ++
+    ++
 
     --
-    -- mod-{w,e,r}, Switch to physical/Xinerama screens 1, 2, or 3
-    -- mod-shift-{w,e,r}, Move client to screen 1, 2, or 3
+    -- mod-{[,]} Switch to physical/Xinerama screens 1, 2
+    -- mod-shift-{[,]}, Move client to screen 1, 2
     --
-    -- [((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
-        -- | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..]
-        -- , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
+    [((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
+        | (key, sc) <- zip [xK_bracketleft, xK_bracketright] [0..]
+        , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
 
 ------------------------------------------------------------------------
 -- Mouse bindings: default actions bound to mouse events
@@ -314,14 +358,6 @@ myXmobarPP = def
     red      = xmobarColor "#bf616a" ""
     stone    = xmobarColor "#8c8c8c" ""
 
-xmobarPrimary   = statusBarPropTo "_XMONAD_LOG_1" "xmobar -x 0 ~/.config/xmobar/xmobarrc_primary" (pure myXmobarPP)
-xmobarSecondary = statusBarPropTo "_XMONAD_LOG_2" "xmobar -x 1 ~/.config/xmobar/xmobarrc_secondary" (pure myXmobarPP)
-
-barSpawner :: ScreenId -> IO StatusBarConfig
-barSpawner 0 = pure $ xmobarPrimary
-barSpawner 1 = pure $ xmobarSecondary
-barSpawner _ = mempty -- nothing on the rest of the screens
-
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.
 
@@ -332,7 +368,7 @@ main = xmonad
      . docks
      . ewmhFullscreen
      . ewmh
-     . dynamicSBs barSpawner
+     . withSB (statusBarProp "xmobar" (pure myXmobarPP))
      $ myConfig
 
 -- A structure containing your configuration settings, overriding
@@ -363,4 +399,5 @@ myConfig = def {
         logHook            = myLogHook,
         startupHook        = myStartupHook
     }
+    -- `additionalKeysP` (keybinds)
 

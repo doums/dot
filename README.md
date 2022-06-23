@@ -147,7 +147,7 @@ Override `stack.yaml` to only build needed features
 cp xmobar/stack.yaml .
 ```
 
-Add `xmobarrc_primary` and `xmobarrc_secondary` to `~/config/xmobar/`.
+Add `xmobarrc` to `~/config/xmobar/`.
 
 Finally build and install it
 
