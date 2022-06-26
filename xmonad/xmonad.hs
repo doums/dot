@@ -37,7 +37,7 @@ cfg = def {
   focusFollowsMouse  = True,
   clickJustFocuses   = False,
   borderWidth        = 4,
-  modMask            = mod4Mask,
+  modMask            = modm,
   workspaces         = myWorkspaces,
   normalBorderColor  = darkGrey,
   focusedBorderColor = grey,
@@ -95,6 +95,10 @@ cfg = def {
         | (k, sc) <- zip screenKeys [0..]
         , (f, m) <- [(windows . W.view, ""), (windows . W.shift, "S-")]]
   )
+  `additionalMouseBindings`
+    [((modm, button1), \w -> focus w >> mouseMoveWindow w)
+     , ((modm, button2), windows . (W.shiftMaster .) . W.focusWindow)
+     , ((modm, button3), \w -> focus w >> mouseResizeWindow w)]
 
 nav2DConfig = def {layoutNavigation = [("→", sideNavigation)
                                      , ("↓", sideNavigation)]}
@@ -102,6 +106,7 @@ nav2D = navigation2DP def ("<Up>", "<Left>", "<Down>", "<Right>")
                           [("M-", windowGo), ("M-S-", windowSwap)]
                           True
 
+modm = mod4Mask
 myTerminal = "alacritty"
 myWorkspaces = ["1", "2", "3", "a", "z", "e", "4", "r", "5"]
 workspaceKeys = "&é\"aze'r%"
