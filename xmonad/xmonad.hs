@@ -79,11 +79,12 @@ cfg = def {
     ,("M-l",         sendMessage Expand)
     ,("M-;",         sendMessage (IncMasterN 1))
     ,("M-,",         sendMessage (IncMasterN (-1)))
-    ,("M-S-<Space>", switchToLast)
+    ,("M-S-<Space>", switchToLastTopic)
     ,("M-n",         namedScratchpadAction scratchpads "gtrans")
     ,("M-o",         namedScratchpadAction scratchpads "pavucontrol")
     ,("M-b",         namedScratchpadAction scratchpads "filemanager")
     ,("M-=",         namedScratchpadAction scratchpads "calc")
+    ,("M-i",         namedScratchpadAction scratchpads "irc")
     ,("M-<Page_Down>",   prevWS)
     ,("M-<Page_Up>",     nextWS)
     ,("M-S-<Page_Down>", shiftToPrev)
@@ -227,19 +228,22 @@ spawnShellIn dir = spawn $ "alacritty --working-directory " ++ dir
 goto :: Topic -> X ()
 goto = switchTopic myTopicConfig
 
-switchToLast :: X ()
-switchToLast = switchNthLastFocusedByScreen myTopicConfig 1
+switchToLastTopic :: X ()
+switchToLastTopic = switchNthLastFocusedByScreen myTopicConfig 1
 
 -- scratchPads
 scratchpads =
   [ NS "gtrans" "alacritty --class gtrans -e trans -I -show-original no -show-languages no en:fr"
       (appName =? "gtrans")
-      (customFloating $ W.RationalRect (2/8) (1/6) (2/8) (4/6))
+      (customFloating $ W.RationalRect (2/8) (1/6) (3/9) (4/6))
   , NS "pavucontrol" "pavucontrol" (className =? "Pavucontrol")
       (customFloating $ W.RationalRect (1/4) (1/4) (2/4) (2/4))
   , NS "filemanager" "alacritty --class filemanager -e nnn"
       (appName =? "filemanager")
-      (customFloating $ W.RationalRect (2/8) (1/6) (3/8) (4/6))
+      (customFloating $ W.RationalRect (2/8) (1/6) (3/9) (4/6))
+  , NS "irc" "alacritty --class irc -e tiny"
+      (appName =? "irc")
+      (doFloatAt 0.2 0.3)
   , NS "calc" "alacritty --class calc -e kalker"
       (appName =? "calc")
       (customFloating $ W.RationalRect (2/8) (2/6) (2/8) (3/6))
