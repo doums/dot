@@ -8,10 +8,11 @@ import XMonad.Actions.CycleWS
 import XMonad.Actions.CycleRecentWS
 import XMonad.Actions.Navigation2D
 import XMonad.Actions.TopicSpace
-import XMonad.Layout.Spacing
+import Data.Char
 import XMonad.Layout.NoBorders
-import XMonad.Layout.Renamed
 import XMonad.Layout.PerWorkspace
+import XMonad.Layout.Renamed
+import XMonad.Layout.Spacing
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.StatusBar
 import XMonad.Hooks.StatusBar.PP
@@ -50,64 +51,74 @@ cfg = def {
   logHook            = myLogHook,
   startupHook        = myStartupHook
   }
-  `additionalKeysP` (
-    [("M-t",         spawn $ myTerminal)
-    ,("M-!",         spawn "rofi -show drun")
-    ,("M-w",         spawn "rofi -show window")
-    ,("M-S-l",       spawn "lock.sh")
-    ,("M-q",         spawn ("session.sh" ++ dmenuArgs))
-    ,("M-C-q",       spawn "xmonad --recompile; xmonad --restart")
-    ,("M-C-r",       refresh)
-    ,("M-d",         spawn ("set_dp.sh" ++ dmenuArgs))
-    ,("M-v",         spawn ("clipmenu -b -i -p '◧'" ++ dmenuArgs))
-    ,("M-p",         spawn "restart_picom.sh")
-    ,("M-*",         spawn "pkill -USR1 redshift")
-    ,("Print",       spawn "screenshot.sh")
-    ,("M-c",         spawn "clipshot.sh")
-    ,("M-x",         kill)
-    ,("M-<Space>",   sendMessage NextLayout)
-    ,("M-j",         windows W.focusDown)
-    ,("M-k",         windows W.focusUp)
-    ,("M-m",         windows W.focusMaster)
-    ,("M-<Return>",  windows W.swapMaster)
-    ,("M-S-j",       windows W.swapDown)
-    ,("M-S-k",       windows W.swapUp)
-    ,("M-s",         toggleSmartSpacing)
-    ,("M-f",         withFocused $ windows . W.sink)
-    ,("M-<Tab>",     cycleRecentNonEmptyWS [xK_Super_L, xK_Super_R] xK_Tab xK_a)
-    ,("M-h",         sendMessage Shrink)
-    ,("M-l",         sendMessage Expand)
-    ,("M-;",         sendMessage (IncMasterN 1))
-    ,("M-,",         sendMessage (IncMasterN (-1)))
-    ,("M-S-<Space>", switchToLastTopic)
-    ,("M-n",         namedScratchpadAction scratchpads "gtrans")
-    ,("M-o",         namedScratchpadAction scratchpads "pavucontrol")
-    ,("M-b",         namedScratchpadAction scratchpads "filemanager")
-    ,("M-=",         namedScratchpadAction scratchpads "calc")
-    ,("M-i",         namedScratchpadAction scratchpads "irc")
-    ,("M-<Page_Down>",   prevWS)
-    ,("M-<Page_Up>",     nextWS)
-    ,("M-S-<Page_Down>", shiftToPrev)
-    ,("M-S-<Page_Up>",   shiftToNext)
-    ,("<XF86MonBrightnessUp>",   spawn "pral.sh light_up")
-    ,("<XF86MonBrightnessDown>", spawn "pral.sh light_down")
-    ,("<XF86AudioRaiseVolume>",  spawn "pral.sh sink_up")
-    ,("<XF86AudioLowerVolume>",  spawn "pral.sh sink_down")
-    ,("<XF86AudioMute>",         spawn "pral.sh sink_mute")
-    ,("<XF86AudioMicMute>",      spawn "pral.sh source_mute")]
+  `additionalKeysP`         keybinds
+  `additionalMouseBindings` mousebinds
+
+-- key bindings
+keybinds = (
+    [ ("M-t",         spawn $ myTerminal)
+    , ("M-!",         spawn "rofi -show drun")
+    , ("M-w",         spawn "rofi -show window")
+    , ("M-S-l",       spawn "lock.sh")
+    , ("M-q",         spawn ("session.sh" ++ dmenuArgs))
+    , ("M-C-q",       spawn "xmonad --recompile; xmonad --restart")
+    , ("M-C-r",       refresh)
+    , ("M-d",         spawn ("set_dp.sh" ++ dmenuArgs))
+    , ("M-v",         spawn ("clipmenu -b -i -p '◧'" ++ dmenuArgs))
+    , ("M-p",         spawn "restart_picom.sh")
+    , ("M-*",         spawn "pkill -USR1 redshift")
+    , ("Print",       spawn "screenshot.sh")
+    , ("M-c",         spawn "clipshot.sh")
+    , ("M-x",         kill)
+    , ("M-<Space>",   sendMessage NextLayout)
+    , ("M-j",         windows W.focusDown)
+    , ("M-k",         windows W.focusUp)
+    , ("M-m",         windows W.focusMaster)
+    , ("M-<Return>",  windows W.swapMaster)
+    , ("M-S-j",       windows W.swapDown)
+    , ("M-S-k",       windows W.swapUp)
+    , ("M-s",         toggleSmartSpacing)
+    , ("M-f",         withFocused $ windows . W.sink)
+    , ("M-<Tab>",     cycleRecentNonEmptyWS [xK_Super_L, xK_Super_R] xK_Tab xK_a)
+    , ("M-h",         sendMessage Shrink)
+    , ("M-l",         sendMessage Expand)
+    , ("M-;",         sendMessage (IncMasterN 1))
+    , ("M-,",         sendMessage (IncMasterN (-1)))
+    , ("M-S-<Space>", switchToLastTopic)
+    , ("M-n",         namedScratchpadAction scratchpads "gtrans")
+    , ("M-o",         namedScratchpadAction scratchpads "pavucontrol")
+    , ("M-b",         namedScratchpadAction scratchpads "filemanager")
+    , ("M-=",         namedScratchpadAction scratchpads "calc")
+    , ("M-i",         namedScratchpadAction scratchpads "irc")
+    , ("M-<Page_Down>",   prevWS)
+    , ("M-<Page_Up>",     nextWS)
+    , ("M-S-<Page_Down>", shiftToPrev)
+    , ("M-S-<Page_Up>",   shiftToNext)
+    , ("<XF86MonBrightnessUp>",   spawn "pral.sh light_up")
+    , ("<XF86MonBrightnessDown>", spawn "pral.sh light_down")
+    , ("<XF86AudioRaiseVolume>",  spawn "pral.sh sink_up")
+    , ("<XF86AudioLowerVolume>",  spawn "pral.sh sink_down")
+    , ("<XF86AudioMute>",         spawn "pral.sh sink_mute")
+    , ("<XF86AudioMicMute>",      spawn "pral.sh source_mute")
+    ]
     ++
+    -- M-[123aze4r5] move to topic x
+    -- M-S-[123aze4r5] move current window to topic x
     [(m ++ "M-" ++ [k], f i)
         | (i, k) <- zip (topicNames topicItems) topicKeys
         , (f, m) <- [(goto, ""), (windows . W.shift, "S-")]]
     ++
+    -- M-<[]> move to next/previous screen
+    -- M-S-<[]> move current window to next/previous screen
     [(m ++ "M-" ++ [k], screenWorkspace sc >>= flip whenJust f)
         | (k, sc) <- zip screenKeys [0..]
         , (f, m) <- [(windows . W.view, ""), (windows . W.shift, "S-")]]
   )
-  `additionalMouseBindings`
-    [((modm, button1), \w -> focus w >> mouseMoveWindow w)
-     , ((modm, button2), windows . (W.shiftMaster .) . W.focusWindow)
-     , ((modm, button3), \w -> focus w >> mouseResizeWindow w)]
+
+mousebinds = [
+    ((modm, button1), \w -> focus w >> mouseMoveWindow w)
+    , ((modm, button2), windows . (W.shiftMaster .) . W.focusWindow)
+    , ((modm, button3), \w -> focus w >> mouseResizeWindow w) ]
 
 nav2DConfig = def {layoutNavigation = [("→", sideNavigation)
                                      , ("↓", sideNavigation)]}
@@ -124,12 +135,11 @@ grey = "#404040"
 darkGrey = "#262626"
 stone = "#8c8c8c"
 
-dmenuFn = "'JetBrains Mono:pixelsize=22:antialias=true'"
+-- dmenu config
+dmenuFn = "'Roboto Condensed:pixelsize=22:antialias=true'"
 dDarkGrey = "\\#262626"
 dNearBlack = "\\#0d0d0d"
 dStone = "\\#8c8c8c"
-
-dmenuArgs :: String
 dmenuArgs = " -fn " ++ dmenuFn ++ " -nb " ++ dNearBlack ++ " -nf " ++ dStone ++ " -sb " ++ dDarkGrey ++ " -sf " ++ dStone
 
 myLayout = renamed [CutWordsLeft 1]
@@ -156,6 +166,8 @@ myManageHook = fmap not willFloat --> insertPosition Below Newer
     , className =? "jetbrains-toolbox"  --> doCenterFloat
     , title =? "splash"
         <&&> className ^? "jetbrains-"  --> doCenterFloat <> hasBorder False
+    , (className =? "firefox" <&&> resource =? "Dialog")
+                                        --> doFloat
     , title     =? "Contrôle du volume" --> doCenterFloat
     , resource  =? "desktop_window"     --> doIgnore ]
 
@@ -176,7 +188,6 @@ myStartupHook = do
     spawnOnce "trayer -l --align left --distancefrom left --distance 540 --monitor primary --widthtype request --height 28 --transparent true --alpha 0 --tint 0x262626 --expand true --iconspacing 4 --SetPartialStrut true --SetDockType true"
 
 -- xmobar
-bar :: PP
 bar = def
     { ppSep              = "  "
     , ppWsSep            = " "
@@ -197,41 +208,36 @@ bar = def
     stone    = xmobarColor "#8c8c8c" ""
 
 -- topics
-topicItems :: [TopicItem]
-topicItems =
-  [ inHome   "1"                  spawnShell
-  , inHome   "2"                  (spawn "firefox")
-  , TI       "3"    "Documents"   (spawn "jetbrains-toolbox")
-  , inHome   "a"                  (spawn "run_keybase")
-  , noAction "z"    "Documents"
-  , inHome   "e"                  (spawn "flatpak run im.riot.Riot")
-  , noAction "4"      "~"
-  , noAction "r"      "~"
-  , noAction "5"      "~"
+-- 1›terminal 2›web browser 3›IDE a›keybase z›empty r›element 4›empty r›empty 5›empty
+topicItems = 
+  [ inHome   "\985015"                spawnShell
+  , inHome   "\984479"                (spawn "firefox")
+  , TI       "\987350"  "Documents"   (spawn "jetbrains-toolbox")
+  , inHome   "\985977"                (spawn "run_keybase")
+  , noAction "z"        "Documents"
+  , inHome   "\984960"                (spawn "flatpak run im.riot.Riot")
+  , noAction "4"          "~"
+  , noAction "r"          "~"
+  , noAction "5"          "~"
   ]
 
-myTopicConfig :: TopicConfig
 myTopicConfig = def
   { topicDirs          = tiDirs    topicItems
   , topicActions       = tiActions topicItems
   , defaultTopicAction = const (pure ())
-  , defaultTopic       = "1"
+  , defaultTopic       = "\985015" -- 1›terminal
   }
 
 -- topics helper functions
-spawnShell :: X ()
 spawnShell = currentTopicDir myTopicConfig >>= spawnShellIn
 
-spawnShellIn :: Dir -> X ()
-spawnShellIn dir = spawn $ "alacritty --working-directory " ++ dir
+spawnShellIn dir = spawn $ myTerminal ++ "--working-directory " ++ dir
 
-goto :: Topic -> X ()
 goto = switchTopic myTopicConfig
 
-switchToLastTopic :: X ()
 switchToLastTopic = switchNthLastFocusedByScreen myTopicConfig 1
 
--- scratchPads
+-- scratchpads
 scratchpads =
   [ NS "gtrans" "alacritty --class gtrans -e trans -I -show-original no -show-languages no en:fr"
       (appName =? "gtrans")
@@ -248,3 +254,4 @@ scratchpads =
       (appName =? "calc")
       (customFloating $ W.RationalRect (2/8) (2/6) (2/8) (3/6))
   ]
+

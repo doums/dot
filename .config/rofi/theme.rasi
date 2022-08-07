@@ -1,7 +1,7 @@
 * {
   background-color: #404040;
   text-color: #bfbfbf;
-  font: "Inconsolata Regular 14";
+  font: "Roboto Condensed 12";
   border: 0px;
 }
 
@@ -10,7 +10,7 @@ window {
   location: north;
   padding: 30px;
   y-offset: 400px;
-  width: 600px;
+  width: 460px;
 }
 
 mainbox {
