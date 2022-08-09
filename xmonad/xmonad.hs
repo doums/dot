@@ -55,64 +55,74 @@ cfg = def {
   `additionalMouseBindings` mousebinds
 
 -- key bindings
-keybinds = (
-    [ ("M-t",         spawn $ myTerminal)
+keybinds = ([
+    -- XMonad basics
+      ("M-C-q",       spawn "xmonad --recompile; xmonad --restart")
+    , ("M-C-r",       refresh)
+    , ("M-x",         kill)
+    -- Topic navigation
+    , ("M-<Tab>",     switchToLastTopic)
+    , ("M-<Page_Up>", nextWS)
+    , ("M-<Page_Down>",
+                      prevWS)
+    -- Window navigation
+    , ("M-k",         windows W.focusUp)
+    , ("M-j",         windows W.focusDown)
+    , ("M-m",         windows W.focusMaster)
+    , ("M-<Return>",  windows W.swapMaster)
+    , ("M-S-k",       windows W.swapUp)
+    , ("M-S-j",       windows W.swapDown)
+    , ("M-S-<Page_Up>",
+                      shiftToNext)
+    , ("M-S-<Page_Down>",
+                      shiftToPrev)
+    -- Layout
+    , ("M-<Space>",   sendMessage NextLayout)
+    , ("M-f",         withFocused $ windows . W.sink)
+    , ("M-l",         sendMessage Expand)
+    , ("M-h",         sendMessage Shrink)
+    , ("M-;",         sendMessage (IncMasterN 1))
+    , ("M-,",         sendMessage (IncMasterN (-1)))
+    -- Launch app
+    , ("M-t",         spawn $ myTerminal)
     , ("M-!",         spawn "rofi -show drun")
     , ("M-w",         spawn "rofi -show window")
     , ("M-S-l",       spawn "lock.sh")
     , ("M-q",         spawn ("session.sh" ++ dmenuArgs))
-    , ("M-C-q",       spawn "xmonad --recompile; xmonad --restart")
-    , ("M-C-r",       refresh)
-    , ("M-d",         spawn ("set_dp.sh" ++ dmenuArgs))
     , ("M-v",         spawn ("clipmenu -b -i -p '◧'" ++ dmenuArgs))
     , ("M-p",         spawn "restart_picom.sh")
     , ("M-*",         spawn "pkill -USR1 redshift")
     , ("Print",       spawn "screenshot.sh")
     , ("M-c",         spawn "clipshot.sh")
-    , ("M-x",         kill)
-    , ("M-<Space>",   sendMessage NextLayout)
-    , ("M-j",         windows W.focusDown)
-    , ("M-k",         windows W.focusUp)
-    , ("M-m",         windows W.focusMaster)
-    , ("M-<Return>",  windows W.swapMaster)
-    , ("M-S-j",       windows W.swapDown)
-    , ("M-S-k",       windows W.swapUp)
-    , ("M-s",         toggleSmartSpacing)
-    , ("M-f",         withFocused $ windows . W.sink)
-    , ("M-<Tab>",     cycleRecentNonEmptyWS [xK_Super_L, xK_Super_R] xK_Tab xK_a)
-    , ("M-h",         sendMessage Shrink)
-    , ("M-l",         sendMessage Expand)
-    , ("M-;",         sendMessage (IncMasterN 1))
-    , ("M-,",         sendMessage (IncMasterN (-1)))
-    , ("M-S-<Space>", switchToLastTopic)
-    , ("M-n",         namedScratchpadAction scratchpads "gtrans")
-    , ("M-o",         namedScratchpadAction scratchpads "pavucontrol")
-    , ("M-b",         namedScratchpadAction scratchpads "filemanager")
-    , ("M-=",         namedScratchpadAction scratchpads "calc")
-    , ("M-i",         namedScratchpadAction scratchpads "irc")
-    , ("M-<Page_Down>",   prevWS)
-    , ("M-<Page_Up>",     nextWS)
-    , ("M-S-<Page_Down>", shiftToPrev)
-    , ("M-S-<Page_Up>",   shiftToNext)
+    -- Scratchpads
+    , ("M-n", namedScratchpadAction scratchpads "gtrans")
+    , ("M-o", namedScratchpadAction scratchpads "pavucontrol")
+    , ("M-b", namedScratchpadAction scratchpads "filemanager")
+    , ("M-=", namedScratchpadAction scratchpads "calc")
+    , ("M-i", namedScratchpadAction scratchpads "irc")
+    -- Multimedia
     , ("<XF86MonBrightnessUp>",   spawn "pral.sh light_up")
     , ("<XF86MonBrightnessDown>", spawn "pral.sh light_down")
     , ("<XF86AudioRaiseVolume>",  spawn "pral.sh sink_up")
     , ("<XF86AudioLowerVolume>",  spawn "pral.sh sink_down")
     , ("<XF86AudioMute>",         spawn "pral.sh sink_mute")
     , ("<XF86AudioMicMute>",      spawn "pral.sh source_mute")
-    ]
+    -- Miscellaneous
+    , ("M-s",         toggleSmartSpacing) ]
     ++
-    -- M-[123aze4r5] move to topic x
-    -- M-S-[123aze4r5] move current window to topic x
-    [(m ++ "M-" ++ [k], f i)
+    -- Basic topic navigation
+    -- M-<123aze4r5> move to topic x
+    -- M-S-<123aze4r5> move current window to topic x
+    [ (m ++ "M-" ++ [k], f i)
         | (i, k) <- zip (topicNames topicItems) topicKeys
-        , (f, m) <- [(goto, ""), (windows . W.shift, "S-")]]
+        , (f, m) <- [(goto, ""), (windows . W.shift, "S-")] ]
     ++
+    -- Basic screen navigation
     -- M-<[]> move to next/previous screen
     -- M-S-<[]> move current window to next/previous screen
-    [(m ++ "M-" ++ [k], screenWorkspace sc >>= flip whenJust f)
+    [ (m ++ "M-" ++ [k], screenWorkspace sc >>= flip whenJust f)
         | (k, sc) <- zip screenKeys [0..]
-        , (f, m) <- [(windows . W.view, ""), (windows . W.shift, "S-")]]
+        , (f, m) <- [(windows . W.view, ""), (windows . W.shift, "S-")] ]
   )
 
 mousebinds = [
@@ -184,6 +194,7 @@ myStartupHook = do
     spawnOnce "dunst -c /home/pierre/.config/dunst/dunstrc"
     spawnOnce "udiskie"
     -- spawnOnce "bato"
+    spawnOnce "solaar -w hide"
     spawnOnce "clipmenud"
     spawnOnce "trayer -l --align left --distancefrom left --distance 540 --monitor primary --widthtype request --height 28 --transparent true --alpha 0 --tint 0x262626 --expand true --iconspacing 4 --SetPartialStrut true --SetDockType true"
 
@@ -231,7 +242,7 @@ myTopicConfig = def
 -- topics helper functions
 spawnShell = currentTopicDir myTopicConfig >>= spawnShellIn
 
-spawnShellIn dir = spawn $ myTerminal ++ "--working-directory " ++ dir
+spawnShellIn dir = spawn $ myTerminal ++ " --working-directory " ++ dir
 
 goto = switchTopic myTopicConfig
 
