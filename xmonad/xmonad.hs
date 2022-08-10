@@ -56,79 +56,79 @@ cfg = def {
 
 -- key bindings
 keybinds = ([
-    -- XMonad basics
-      ("M-C-q",       spawn "xmonad --recompile; xmonad --restart")
-    , ("M-C-r",       refresh)
-    , ("M-x",         kill)
-    -- Topic navigation
-    , ("M-<Tab>",     switchToLastTopic)
-    , ("M-<Page_Up>", nextWS)
-    , ("M-<Page_Down>",
-                      prevWS)
-    -- Window navigation
-    , ("M-k",         windows W.focusUp)
-    , ("M-j",         windows W.focusDown)
-    , ("M-m",         windows W.focusMaster)
-    , ("M-<Return>",  windows W.swapMaster)
-    , ("M-S-k",       windows W.swapUp)
-    , ("M-S-j",       windows W.swapDown)
-    , ("M-S-<Page_Up>",
-                      shiftToNext)
-    , ("M-S-<Page_Down>",
-                      shiftToPrev)
-    -- Layout
-    , ("M-<Space>",   sendMessage NextLayout)
-    , ("M-f",         withFocused $ windows . W.sink)
-    , ("M-l",         sendMessage Expand)
-    , ("M-h",         sendMessage Shrink)
-    , ("M-;",         sendMessage (IncMasterN 1))
-    , ("M-,",         sendMessage (IncMasterN (-1)))
-    -- Launch app
-    , ("M-t",         spawn $ myTerminal)
-    , ("M-!",         spawn "rofi -show drun")
-    , ("M-w",         spawn "rofi -show window")
-    , ("M-S-l",       spawn "lock.sh")
-    , ("M-q",         spawn ("session.sh" ++ dmenuArgs))
-    , ("M-v",         spawn ("clipmenu -b -i -p '◧'" ++ dmenuArgs))
-    , ("M-p",         spawn "restart_picom.sh")
-    , ("M-*",         spawn "pkill -USR1 redshift")
-    , ("Print",       spawn "screenshot.sh")
-    , ("M-c",         spawn "clipshot.sh")
-    -- Scratchpads
-    , ("M-n", namedScratchpadAction scratchpads "gtrans")
-    , ("M-o", namedScratchpadAction scratchpads "pavucontrol")
-    , ("M-b", namedScratchpadAction scratchpads "filemanager")
-    , ("M-=", namedScratchpadAction scratchpads "calc")
-    , ("M-i", namedScratchpadAction scratchpads "irc")
-    -- Multimedia
-    , ("<XF86MonBrightnessUp>",   spawn "pral.sh light_up")
-    , ("<XF86MonBrightnessDown>", spawn "pral.sh light_down")
-    , ("<XF86AudioRaiseVolume>",  spawn "pral.sh sink_up")
-    , ("<XF86AudioLowerVolume>",  spawn "pral.sh sink_down")
-    , ("<XF86AudioMute>",         spawn "pral.sh sink_mute")
-    , ("<XF86AudioMicMute>",      spawn "pral.sh source_mute")
-    -- Miscellaneous
-    , ("M-s",         toggleSmartSpacing) ]
-    ++
-    -- Basic topic navigation
-    -- M-<123aze4r5> move to topic x
-    -- M-S-<123aze4r5> move current window to topic x
-    [ (m ++ "M-" ++ [k], f i)
-        | (i, k) <- zip (topicNames topicItems) topicKeys
-        , (f, m) <- [(goto, ""), (windows . W.shift, "S-")] ]
-    ++
-    -- Basic screen navigation
-    -- M-<[]> move to next/previous screen
-    -- M-S-<[]> move current window to next/previous screen
-    [ (m ++ "M-" ++ [k], screenWorkspace sc >>= flip whenJust f)
-        | (k, sc) <- zip screenKeys [0..]
-        , (f, m) <- [(windows . W.view, ""), (windows . W.shift, "S-")] ]
+  -- XMonad basics
+    ("M-C-q",       spawn "xmonad --recompile; xmonad --restart")
+  , ("M-C-r",       refresh)
+  , ("M-x",         kill)
+  -- Topic navigation
+  , ("M-<Tab>",     switchToLastTopic)
+  , ("M-<Page_Up>", nextWS)
+  , ("M-<Page_Down>",
+                    prevWS)
+  -- Window navigation
+  , ("M-k",         windows W.focusUp)
+  , ("M-j",         windows W.focusDown)
+  , ("M-m",         windows W.focusMaster)
+  , ("M-<Return>",  windows W.swapMaster)
+  , ("M-S-k",       windows W.swapUp)
+  , ("M-S-j",       windows W.swapDown)
+  , ("M-S-<Page_Up>",
+                    shiftToNext)
+  , ("M-S-<Page_Down>",
+                    shiftToPrev)
+  -- Layout
+  , ("M-<Space>",   sendMessage NextLayout)
+  , ("M-f",         withFocused $ windows . W.sink)
+  , ("M-l",         sendMessage Expand)
+  , ("M-h",         sendMessage Shrink)
+  , ("M-;",         sendMessage (IncMasterN 1))
+  , ("M-,",         sendMessage (IncMasterN (-1)))
+  -- Launch app
+  , ("M-t",         spawn $ myTerminal)
+  , ("M-!",         spawn "rofi -show drun")
+  , ("M-w",         spawn "rofi -show window")
+  , ("M-S-l",       spawn "lock.sh")
+  , ("M-q",         spawn ("session.sh" ++ dmenuArgs))
+  , ("M-v",         spawn ("clipmenu -b -i -p '◧'" ++ dmenuArgs))
+  , ("M-p",         spawn "restart_picom.sh")
+  , ("M-*",         spawn "pkill -USR1 redshift")
+  , ("Print",       spawn "screenshot.sh")
+  , ("M-c",         spawn "clipshot.sh")
+  -- Scratchpads
+  , ("M-n", namedScratchpadAction scratchpads "gtrans")
+  , ("M-o", namedScratchpadAction scratchpads "pavucontrol")
+  , ("M-b", namedScratchpadAction scratchpads "filemanager")
+  , ("M-=", namedScratchpadAction scratchpads "calc")
+  , ("M-i", namedScratchpadAction scratchpads "irc")
+  -- Multimedia
+  , ("<XF86MonBrightnessUp>",   spawn "pral.sh light_up")
+  , ("<XF86MonBrightnessDown>", spawn "pral.sh light_down")
+  , ("<XF86AudioRaiseVolume>",  spawn "pral.sh sink_up")
+  , ("<XF86AudioLowerVolume>",  spawn "pral.sh sink_down")
+  , ("<XF86AudioMute>",         spawn "pral.sh sink_mute")
+  , ("<XF86AudioMicMute>",      spawn "pral.sh source_mute")
+  -- Miscellaneous
+  , ("M-s",         toggleSmartSpacing) ]
+  ++
+  -- Basic topic navigation
+  -- M-<123aze4r5> move to topic x
+  -- M-S-<123aze4r5> move current window to topic x
+  [ (m ++ "M-" ++ [k], f i)
+      | (i, k) <- zip (topicNames topicItems) topicKeys
+      , (f, m) <- [(goto, ""), (windows . W.shift, "S-")] ]
+  ++
+  -- Basic screen navigation
+  -- M-<[]> move to next/previous screen
+  -- M-S-<[]> move current window to next/previous screen
+  [ (m ++ "M-" ++ [k], screenWorkspace sc >>= flip whenJust f)
+      | (k, sc) <- zip screenKeys [0..]
+      , (f, m) <- [(windows . W.view, ""), (windows . W.shift, "S-")] ]
   )
 
 mousebinds = [
-    ((modm, button1), \w -> focus w >> mouseMoveWindow w)
-    , ((modm, button2), windows . (W.shiftMaster .) . W.focusWindow)
-    , ((modm, button3), \w -> focus w >> mouseResizeWindow w) ]
+  ((modm, button1), \w -> focus w >> mouseMoveWindow w)
+  , ((modm, button2), windows . (W.shiftMaster .) . W.focusWindow)
+  , ((modm, button3), \w -> focus w >> mouseResizeWindow w) ]
 
 nav2DConfig = def {layoutNavigation = [("→", sideNavigation)
                                      , ("↓", sideNavigation)]}
@@ -158,12 +158,12 @@ myLayout = renamed [CutWordsLeft 1]
            $ spacingWithEdge 7
            $ tiled ||| mirror ||| full
   where
-     tiled   = renamed [Replace "→"] (Tall nmaster delta ratio)
-     mirror  = renamed [Replace "↓"] (Mirror tiled)
-     full    = renamed [Replace "■"] Full
-     nmaster = 1 -- The default number of windows in the master pane
-     ratio   = 1/2 -- Default proportion of screen occupied by master pane
-     delta   = 3/100 -- Percent of screen to increment by when resizing panes
+    tiled   = renamed [Replace "→"] (Tall nmaster delta ratio)
+    mirror  = renamed [Replace "↓"] (Mirror tiled)
+    full    = renamed [Replace "■"] Full
+    nmaster = 1 -- The default number of windows in the master pane
+    ratio   = 1/2 -- Default proportion of screen occupied by master pane
+    delta   = 3/100 -- Percent of screen to increment by when resizing panes
 
 myManageHook = fmap not willFloat --> insertPosition Below Newer
                <+> namedScratchpadManageHook scratchpads
