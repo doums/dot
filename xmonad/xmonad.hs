@@ -100,15 +100,14 @@ keybinds = ([
   , ("M-b", namedScratchpadAction scratchpads "filemanager")
   , ("M-=", namedScratchpadAction scratchpads "calc")
   , ("M-i", namedScratchpadAction scratchpads "irc")
+  , ("M-s", namedScratchpadAction scratchpads "bottom")
   -- Multimedia
   , ("<XF86MonBrightnessUp>",   spawn "pral.sh light_up")
   , ("<XF86MonBrightnessDown>", spawn "pral.sh light_down")
   , ("<XF86AudioRaiseVolume>",  spawn "pral.sh sink_up")
   , ("<XF86AudioLowerVolume>",  spawn "pral.sh sink_down")
   , ("<XF86AudioMute>",         spawn "pral.sh sink_mute")
-  , ("<XF86AudioMicMute>",      spawn "pral.sh source_mute")
-  -- Miscellaneous
-  , ("M-s",         toggleSmartSpacing) ]
+  , ("<XF86AudioMicMute>",      spawn "pral.sh source_mute") ]
   ++
   -- Basic topic navigation
   -- M-<123aze4r5> move to topic x
@@ -252,17 +251,20 @@ switchToLastTopic = switchNthLastFocusedByScreen myTopicConfig 1
 scratchpads =
   [ NS "gtrans" "alacritty --class gtrans -e trans -I -show-original no -show-languages no en:fr"
       (appName =? "gtrans")
-      (customFloating $ W.RationalRect (2/8) (1/6) (3/9) (4/6))
+      (customFloating $ W.RationalRect (1/4) (1/6) (3/9) (4/6))
   , NS "pavucontrol" "pavucontrol" (className =? "Pavucontrol")
       (customFloating $ W.RationalRect (1/4) (1/4) (2/4) (2/4))
   , NS "filemanager" "alacritty --class filemanager -e nnn"
       (appName =? "filemanager")
-      (customFloating $ W.RationalRect (2/8) (1/6) (3/9) (4/6))
+      (customFloating $ W.RationalRect (1/4) (1/6) (3/9) (4/6))
   , NS "irc" "alacritty --class irc -e tiny"
       (appName =? "irc")
       (doFloatAt 0.2 0.3)
+  , NS "bottom" "alacritty --class systemMonitor -e btm"
+      (appName =? "systemMonitor")
+      (customFloating $ W.RationalRect (1/6) (1/9) (4/6) (7/9))
   , NS "calc" "alacritty --class calc -e kalker"
       (appName =? "calc")
-      (customFloating $ W.RationalRect (2/8) (2/6) (2/8) (3/6))
+      (customFloating $ W.RationalRect (1/4) (2/6) (1/4) (3/6))
   ]
 

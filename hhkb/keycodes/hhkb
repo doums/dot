@@ -69,7 +69,7 @@ default xkb_keycodes "hhkb" {
     <FK09> = 75;
     <FK10> = 76;
     <SCLK> = 78;
-    <KPSU> = 82;
+    <END> = 82;
     <KPAD> = 86;
     <LVL3> = 92;
     <FK11> = 95;
@@ -85,9 +85,9 @@ default xkb_keycodes "hhkb" {
     <PGUP> = 112;
     <LEFT> = 113;
     <RGHT> = 114;
-    <END> = 115;
+    <PGDN> = 115;
     <DOWN> = 116;
-    <PGDN> = 117;
+    <KPSU> = 117;
     <INS> = 118;
     <DELE> = 119;
     <MUTE> = 121;
