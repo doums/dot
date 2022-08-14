@@ -673,85 +673,83 @@ vim.diagnostic.config({
   },
 })
 
-local function on_attach(client, bufnr)
-  local bufopt = { buffer = bufnr }
-  map('n', '<A-b>', '<cmd>lua vim.lsp.buf.definition()<CR>', bufopt)
-  map('n', '<A-S-b>', '<cmd>lua vim.lsp.buf.type_definition()<CR>', bufopt)
-  map(
-    'n',
-    '<A-a>',
-    '<cmd>lua vim.diagnostic.goto_prev({float=false})<CR>',
-    bufopt
-  )
-  map(
-    'n',
-    '<A-z>',
-    '<cmd>lua vim.diagnostic.goto_next({float=false})<CR>',
-    bufopt
-  )
-  map('v', '<A-CR>', '<cmd>lua vim.lsp.buf.range_code_action()<CR>', bufopt)
-  map('n', '<A-d>', '<cmd>lua vim.lsp.buf.hover()<CR>', bufopt)
-  map('n', '<A-g>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', bufopt)
-  map(
-    'n',
-    '<A-i>',
-    '<cmd>lua require("rust-tools.inlay_hints").toggle_inlay_hints()<CR>',
-    bufopt
-  )
-  map('n', '<A-r>', '<cmd>lua vim.lsp.buf.rename()<CR>', bufopt)
-  map('v', '<A-f>', '<cmd>lua vim.lsp.buf.range_formatting()<CR>', bufopt)
-  map('n', '<A-e>', '<cmd>lua vim.lsp.buf.format({async = true})<CR>', bufopt)
-  map('n', '<A-CR>', '<cmd>lua vim.lsp.buf.code_action()<CR>', bufopt)
-  -- open a floating window with the diagnostics from the current cursor position
-  api.nvim_create_autocmd('CursorHold', {
-    pattern = '*',
-    callback = function()
-      vim.diagnostic.open_float({ focusable = false, scope = 'cursor' })
-    end,
-  })
-  -- highlight the symbol under the cursor
-  if client.server_capabilities.documentHighlightProvider then
-    api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
-      pattern = '<buffer>',
+vim.api.nvim_create_autocmd('LspAttach', {
+  callback = function(args)
+    local client = lsp.get_client_by_id(args.data.client_id)
+    local bufopt = { buffer = args.buf }
+    -- keybinds
+    map('n', '<A-b>', vim.lsp.buf.definition, bufopt)
+    map('n', '<A-S-b>', vim.lsp.buf.type_definition, bufopt)
+    map(
+      'n',
+      '<A-a>',
+      '<cmd>lua vim.diagnostic.goto_prev({float=false})<CR>',
+      bufopt
+    )
+    map(
+      'n',
+      '<A-z>',
+      '<cmd>lua vim.diagnostic.goto_next({float=false})<CR>',
+      bufopt
+    )
+    map('v', '<A-CR>', vim.lsp.buf.range_code_action, bufopt)
+    map('n', '<A-d>', vim.lsp.buf.hover, bufopt)
+    map('n', '<A-g>', vim.lsp.buf.signature_help, bufopt)
+    map('n', '<A-i>', function()
+      return require('rust-tools.inlay_hints').toggle_inlay_hints
+    end, bufopt)
+    map('n', '<A-r>', vim.lsp.buf.rename, bufopt)
+    map('v', '<A-f>', vim.lsp.buf.range_formatting, bufopt)
+    map('n', '<A-e>', '<cmd>lua vim.lsp.buf.format({async = true})<CR>', bufopt)
+    map('n', '<A-CR>', vim.lsp.buf.code_action, bufopt)
+    -- open a floating window with the diagnostics from the current cursor position
+    api.nvim_create_autocmd('CursorHold', {
       callback = function()
-        lsp.buf.document_highlight()
+        vim.diagnostic.open_float({ focusable = false, scope = 'cursor' })
       end,
+      buffer = args.buf,
     })
-    api.nvim_create_autocmd('CursorMoved', {
-      pattern = '<buffer>',
-      callback = function()
-        lsp.buf.clear_references()
-      end,
-    })
-  end
-  lsp_spinner.on_attach(client, bufnr)
-  lsp_signature.on_attach(signature_help_cfg, bufnr)
-end
+    -- highlight the symbol under the cursor
+    if client.server_capabilities.documentHighlightProvider then
+      api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+        callback = function()
+          lsp.buf.document_highlight()
+        end,
+        buffer = args.buf,
+      })
+      api.nvim_create_autocmd('CursorMoved', {
+        callback = function()
+          lsp.buf.clear_references()
+        end,
+        buffer = args.buf,
+      })
+    end
+    lsp_spinner.on_attach(client, args.buf)
+    lsp_signature.on_attach(signature_help_cfg, args.buf)
+  end,
+})
 
 local capabilities = lsp.protocol.make_client_capabilities()
 lsp_spinner.init_capabilities(capabilities)
 require('cmp_nvim_lsp').update_capabilities(capabilities)
 
 lspconfig.clangd.setup({ -- C, C++
-  on_attach = on_attach,
   capabilities = capabilities,
 })
 lspconfig.tsserver.setup({ -- TypeScript
   on_attach = function(client, bufnr)
     -- do not use tsserver for formatting (use Prettier through null-ls)
     client.server_capabilities.documentFormattingProvider = false
-    on_attach(client, bufnr)
   end,
   capabilities = capabilities,
 })
 require('lspconfig').prismals.setup({
-  on_attach = on_attach,
   capabilities = capabilities,
 })
 -- null-ls.nvim
 local null_ls = require('null-ls')
 local cspell_src = null_ls.builtins.diagnostics.cspell
-cspell_src.disabled_filetypes = { 'NvimTree' }
+cspell_src.disabled_filetypes = { 'NvimTree', 'c', 'cpp' }
 null_ls.setup({
   sources = {
     null_ls.builtins.diagnostics.eslint,
@@ -762,7 +760,6 @@ null_ls.setup({
     null_ls.builtins.formatting.prismaFmt,
   },
   fallback_severity = vim.diagnostic.severity.HINT,
-  on_attach = on_attach,
   capabilities = capabilities,
 })
 require('rust-tools').setup({ -- Rust
@@ -776,7 +773,6 @@ require('rust-tools').setup({ -- Rust
     hover_actions = { border = 'none' },
   },
   server = { -- rust-analyzer server options
-    on_attach = on_attach,
     capabilities = capabilities,
     settings = {
       ['rust-analyzer'] = { checkOnSave = { command = 'clippy' } },
@@ -789,7 +785,6 @@ local runtime_path = vim.tbl_extend(
   { '?/init.lua', '?.lua', 'lua/?.lua', 'lua/?/init.lua' }
 )
 lspconfig.sumneko_lua.setup({ -- Lua
-  on_attach = on_attach,
   capabilities = capabilities,
   cmd = {
     '/opt/lua-language-server/bin/lua-language-server',
@@ -929,7 +924,8 @@ local ls = require('luasnip')
 local function has_word_before()
   local line, col = unpack(api.nvim_win_get_cursor(0))
   return col ~= 0
-      and api.nvim_buf_get_lines(0, line - 1, line, true)[1]
+      and api
+      .nvim_buf_get_lines(0, line - 1, line, true)[1]
       :sub(col, col)
       :match('%s')
       == nil
@@ -1130,7 +1126,7 @@ hl('LightspeedLabelDistant', '#aa4e00', nil, { 'bold', 'underline' })
 hl('LightspeedLabelDistantOverlapped', '#aa4e00', nil, 'underline')
 hl('LightspeedMaskedChar', '#906526')
 
-api.nvim_del_keymap('n', 't')
+-- api.nvim_del_keymap('n', 't')
 
 -- nvim-neoclip.lua ----------------------------------------------
 require('neoclip').setup()
@@ -1144,9 +1140,21 @@ map(
 -- suit.nvim -----------------------------------------------------
 hl('suitPrompt', '#C7C7FF', '#1d1916', { 'bold', 'italic' })
 hl('suitInput', '#BDAE9D', '#1d1916')
+hl('suitSelectedItem', nil, '#3b2f27')
 require('suit').setup({
-  hl_prompt_win = 'suitPrompt',
-  hl_prompt_border = 'suitPrompt',
-  hl_input_win = 'suitInput',
-  hl_input_border = 'suitInput',
+  input = {
+    default_prompt = '→ ',
+    border = 'vgap',
+    hl_prompt = 'suitPrompt',
+    hl_input = 'suitInput',
+    hl_border = 'suitInput',
+  },
+  select = {
+    default_prompt = '→ ',
+    border = 'vgap',
+    hl_prompt = 'suitPrompt',
+    hl_select = 'suitInput',
+    hl_border = 'suitInput',
+    hl_selected_item = 'suitSelectedItem',
+  },
 })
