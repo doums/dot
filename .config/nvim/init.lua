@@ -45,13 +45,13 @@ require('paq')({
   'b3nj5m1n/kommentary',
   'doums/coBra',
   -- 'doums/ponton.nvim',
+  -- 'doums/suit.nvim',
   'doums/espresso',
   'doums/sae',
   'doums/lsp_spinner.nvim',
   'doums/floaterm.nvim',
   'doums/oterm.nvim',
   'doums/vassal.nvim',
-  'doums/suit.nvim',
   { 'nvim-treesitter/nvim-treesitter', run = update_ts_parsers },
   'nvim-treesitter/playground',
   'neovim/nvim-lspconfig',
@@ -66,7 +66,6 @@ require('paq')({
   'saadparwaiz1/cmp_luasnip',
   'L3MON4D3/LuaSnip',
   'folke/trouble.nvim',
-  'brymer-meneses/grammar-guard.nvim',
   'nvim-lua/plenary.nvim', -- dep of telescope.nvim, gitsigns.nvim, null-ls.nvim
   'nvim-lua/popup.nvim', -- dep of telescope.nvim
   'nvim-telescope/telescope.nvim',
@@ -76,6 +75,7 @@ require('paq')({
   'kyazdani42/nvim-web-devicons', -- dep of nvim-tree.lua
   'ggandor/lightspeed.nvim',
   'AckslD/nvim-neoclip.lua',
+  'windwp/nvim-ts-autotag',
   -- paq 'henriquehbr/nvim-startup.lua'
 })
 
@@ -261,6 +261,8 @@ require('vassal').commands({
 })
 
 -- ponton.nvim ---------------------------------------------------
+hl('WinBar', '#2A211C', '#2A211C')
+hl('WinBarNC', '#2A211C', '#2A211C')
 hl('StatusLine', nil, '#432717')
 hl('StatusLineNC', '#BDAE9D', '#432717')
 local line_bg = '#432717'
@@ -291,10 +293,10 @@ require('ponton').setup({
     'column',
     'line_percent',
   },
-  --[[ top_line = {
-    'buffer_name_top',
-    'buffer_changed_top',
-  }, ]]
+  winbar = {
+    'buffer_name_winbar',
+    'buffer_changed_winbar',
+  },
   top_line_exclude = { 'NvimTree', 'Trouble', 'TelescopePrompt' },
   segments = {
     mode = {
@@ -335,19 +337,29 @@ require('ponton').setup({
       padding = { nil, 1 },
       conditions = cdts,
     },
-    --[[ buffer_name_top = {
-      style = { '#BDAE9D', line_bg, 'bold' },
-      empty = '□',
+    buffer_name_winbar = {
+      provider = 'buffer_name',
+      empty = nil,
+      style = {
+        { '#BDAE9D', line_bg, 'bold' },
+        { '#BDAE9D', '#2A190E', 'bold' },
+      },
       padding = { 1, 1 },
-      margin = { 1, 1 },
-      conditions = cdts,
+      conditions = {
+        ponton_cdt.buffer_not_empty,
+        main_cdt,
+      },
     },
-    buffer_changed_top = {
-      style = { '#a3f307', line_bg, 'bold' },
+    buffer_changed_winbar = {
+      provider = 'buffer_changed',
+      style = {
+        { '#a3f307', line_bg, 'bold' },
+        { '#a3f307', '#2A190E', 'bold' },
+      },
       value = '✶',
       padding = { nil, 1 },
       conditions = cdts,
-    }, ]]
+    },
     read_only = {
       style = { '#C75450', line_bg, 'bold' },
       value = '',
@@ -601,10 +613,11 @@ require('nvim-treesitter.configs').setup({
       node_decremental = '<A-h>',
     },
   },
+  autotag = {
+    enable = true,
+    filetypes = { 'typescriptreact', 'tsx', 'markdown' },
+  },
 })
-
--- grammar-guard.nvim --------------------------------------------
-require('grammar-guard').init()
 
 -- LSP -----------------------------------------------------------
 local lspconfig = require('lspconfig')
@@ -673,13 +686,44 @@ vim.diagnostic.config({
   },
 })
 
+-- lsp-menu
+local lsp_actions = {
+  ['goto definition'] = lsp.buf.definition,
+  ['goto declaration'] = lsp.buf.declaration,
+  ['goto type definition'] = lsp.buf.type_definition,
+  ['find usages'] = lsp.buf.references,
+  refactor = lsp.buf.rename,
+  ['code action'] = lsp.buf.code_action,
+  ['signature help'] = lsp.buf.signature_help,
+  ['find implementations'] = lsp.buf.implementations,
+}
+local lsp_range_actions = {
+  ['code action'] = lsp.buf.range_code_action,
+  format = lsp.buf.range_formatting,
+}
+local function lsp_menu()
+  local mode = api.nvim_get_mode().mode
+  local is_visual = mode == 'v' or mode == 'V' or mode == '\22'
+  local actions = lsp_actions
+  if is_visual then
+    actions = lsp_range_actions
+  end
+  vim.ui.select(vim.tbl_keys(actions), {
+    prompt = 'LSP:',
+  }, function(choice)
+    if choice then
+      actions[choice]()
+    end
+  end)
+end
+
 vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(args)
     local client = lsp.get_client_by_id(args.data.client_id)
     local bufopt = { buffer = args.buf }
     -- keybinds
-    map('n', '<A-b>', vim.lsp.buf.definition, bufopt)
-    map('n', '<A-S-b>', vim.lsp.buf.type_definition, bufopt)
+    map({ 'n', 'v' }, '<A-CR>', lsp_menu, bufopt)
+    map('n', '<A-b>', lsp.buf.definition, bufopt)
     map(
       'n',
       '<A-a>',
@@ -692,16 +736,13 @@ vim.api.nvim_create_autocmd('LspAttach', {
       '<cmd>lua vim.diagnostic.goto_next({float=false})<CR>',
       bufopt
     )
-    map('v', '<A-CR>', vim.lsp.buf.range_code_action, bufopt)
-    map('n', '<A-d>', vim.lsp.buf.hover, bufopt)
-    map('n', '<A-g>', vim.lsp.buf.signature_help, bufopt)
+    map('n', '<A-d>', lsp.buf.hover, bufopt)
     map('n', '<A-i>', function()
       return require('rust-tools.inlay_hints').toggle_inlay_hints
     end, bufopt)
-    map('n', '<A-r>', vim.lsp.buf.rename, bufopt)
-    map('v', '<A-f>', vim.lsp.buf.range_formatting, bufopt)
+    map('n', '<A-r>', lsp.buf.rename, bufopt)
+    map('v', '<A-f>', lsp.buf.range_formatting, bufopt)
     map('n', '<A-e>', '<cmd>lua vim.lsp.buf.format({async = true})<CR>', bufopt)
-    map('n', '<A-CR>', vim.lsp.buf.code_action, bufopt)
     -- open a floating window with the diagnostics from the current cursor position
     api.nvim_create_autocmd('CursorHold', {
       callback = function()
@@ -803,25 +844,6 @@ lspconfig.sumneko_lua.setup({ -- Lua
         library = api.nvim_get_runtime_file('', true),
       },
       telemetry = { enable = false },
-    },
-  },
-})
-lspconfig.grammar_guard.setup({
-  cmd = { '/opt/ltex-ls/bin/ltex-ls' },
-  settings = {
-    ltex = {
-      enabled = { 'tex', 'markdown', 'plaintext', 'typescript' },
-      language = 'en',
-      diagnosticSeverity = 'information',
-      setenceCacheSize = 2000,
-      additionalRules = {
-        enablePickyRules = true,
-        motherTongue = 'en',
-      },
-      trace = { server = 'verbose' },
-      dictionary = {},
-      disabledRules = {},
-      hiddenFalsePositives = {},
     },
   },
 })
@@ -943,7 +965,9 @@ local tab_key = cmp.mapping(function(fallback)
   end
 end, {
   'i',
-  'c',
+  -- fix cmdline autocplt, workaround
+  -- see https://github.com/hrsh7th/nvim-cmp/issues/875
+  c = cmp.config.disable,
   's',
 })
 
@@ -1011,16 +1035,21 @@ cmp.setup({
     end,
   },
 })
--- `/` cmdline setup.
---[[ cmp.setup.cmdline('/', {
+-- command line `:`
+cmp.setup.cmdline(':', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = {
+    { name = 'nvim_lua' },
+    { name = 'cmdline' },
+  },
+})
+-- command line `/`
+cmp.setup.cmdline('/', {
   mapping = cmp.mapping.preset.cmdline(),
   sources = {
     { name = 'buffer' },
   },
-  view = {
-    { name = 'wildmenu', separator = '|' },
-  },
-}) ]]
+})
 li('CmpItemAbbr', 'Pmenu')
 li('CmpItemAbbrDeprecated', 'Pmenu')
 hl('CmpItemAbbrMatch', '#CA7E03', '#432717', 'bold')
