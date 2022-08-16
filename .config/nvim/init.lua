@@ -15,6 +15,7 @@ for LSP
 others: git, ripgrep, fzf, node, npm
 -- ]]
 
+
 -- ALIASES -------------------------------------------------------
 local fn = vim.fn
 local cmd = vim.cmd
@@ -42,7 +43,7 @@ end
 
 require('paq')({
   { 'savq/paq-nvim', opt = true }, -- Let Paq manage itself
-  'b3nj5m1n/kommentary',
+  'numToStr/comment.nvim',
   'doums/coBra',
   -- 'doums/ponton.nvim',
   -- 'doums/suit.nvim',
@@ -395,7 +396,6 @@ require('ponton').setup({
       style = { '#C5656B', line_bg },
       padding = { 1, 1 },
       prefix = ' ',
-      conditions = cdts,
     },
     lsp_spinner = {
       style = { '#C5656B', line_bg },
@@ -431,11 +431,23 @@ require('ponton').setup({
   },
 })
 
--- kommentary ----------------------------------------------------
-g.kommentary_create_default_mappings = false
-map('n', '<leader>cc', '<Plug>kommentary_line_default', { remap = true })
-map('n', '<leader>c', '<Plug>kommentary_motion_default', { remap = true })
-map('v', '<leader>c', '<Plug>kommentary_visual_default', { remap = true })
+-- Comment.nvim --------------------------------------------------
+require('Comment').setup({
+  ignore = '^$',
+  toggler = {
+    line = '<leader>cc',
+    block = '<leader>bc',
+  },
+  opleader = {
+    line = '<leader>c',
+    block = '<leader>b',
+  },
+  mappings = {
+    basic = true,
+    extra = false,
+    extended = false,
+  },
+})
 
 -- coBra ---------------------------------------------------------
 g.coBraPairs = {
@@ -883,6 +895,7 @@ map('n', '<A-u>', '<cmd>Trouble lsp_references<cr>', { silent = true })
 li('TroubleCount', 'Number')
 li('TroubleText', 'Fg')
 li('TroubleLocation', 'NonText')
+li('TroubleFoldIcon', 'Constant')
 
 -- telescope.nvim ------------------------------------------------
 local actions = require('telescope.actions')
