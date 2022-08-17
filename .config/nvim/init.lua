@@ -698,21 +698,23 @@ vim.diagnostic.config({
   },
 })
 
--- lsp-menu
+-- LSP-menu
 local lsp_actions = {
-  ['goto definition'] = lsp.buf.definition,
-  ['goto declaration'] = lsp.buf.declaration,
-  ['goto type definition'] = lsp.buf.type_definition,
-  ['find usages'] = lsp.buf.references,
-  refactor = lsp.buf.rename,
-  ['code action'] = lsp.buf.code_action,
-  ['signature help'] = lsp.buf.signature_help,
-  ['find implementations'] = lsp.buf.implementations,
+  ['Goto definition'] = lsp.buf.definition,
+  ['Goto declaration'] = lsp.buf.declaration,
+  ['Goto type definition'] = lsp.buf.type_definition,
+  ['Find usages'] = lsp.buf.references,
+  ['Refactor'] = lsp.buf.rename,
+  ['Code action'] = lsp.buf.code_action,
+  ['Signature help'] = lsp.buf.signature_help,
+  ['Find implementations'] = lsp.buf.implementation,
+  ['Format'] = lsp.buf.format,
 }
 local lsp_range_actions = {
-  ['code action'] = lsp.buf.range_code_action,
-  format = lsp.buf.range_formatting,
+  ['Code action'] = lsp.buf.range_code_action,
+  ['Format'] = lsp.buf.range_formatting,
 }
+
 local function lsp_menu()
   local mode = api.nvim_get_mode().mode
   local is_visual = mode == 'v' or mode == 'V' or mode == '\22'
@@ -720,7 +722,9 @@ local function lsp_menu()
   if is_visual then
     actions = lsp_range_actions
   end
-  vim.ui.select(vim.tbl_keys(actions), {
+  local lsp_items = vim.tbl_keys(actions)
+  table.sort(lsp_items)
+  vim.ui.select(lsp_items, {
     prompt = 'LSP:',
   }, function(choice)
     if choice then
@@ -1113,6 +1117,43 @@ ls.add_snippets('lua', {
 })
 
 -- gitsigns.nvim -------------------------------------------------
+-- git-menu
+local gs = require('gitsigns')
+local git_static_actions = {
+  ['Diff'] = gs.diffthis,
+  ['Diff ~'] = function()
+    gs.diffthis('~')
+  end,
+  ['Changelist'] = function()
+    gs.setloclist(0, 'all')
+  end,
+  ['Refresh'] = gs.refresh,
+  ['Stage buffer'] = gs.stage_buffer,
+  ['Rollback'] = function()
+    vim.ui.select({ 'OK', 'Cancel' }, {
+      prompt = 'Rollback:',
+    }, function(choice)
+      if choice == 'OK' then
+        gs.reset_buffer()
+      end
+    end)
+  end,
+}
+
+local function git_menu()
+  local git_actions =
+  vim.tbl_extend('keep', gs.get_actions(), git_static_actions)
+  local items = vim.tbl_keys(git_actions)
+  table.sort(items)
+  vim.ui.select(items, {
+    prompt = 'git:',
+  }, function(choice)
+    if choice then
+      git_actions[choice]()
+    end
+  end)
+end
+
 require('gitsigns').setup({
   signs = {
     add = { hl = 'GitAddSign', text = '┃' },
@@ -1123,25 +1164,13 @@ require('gitsigns').setup({
   },
   numhl = false,
   linehl = false,
-  keymaps = {
-    noremap = true,
-    buffer = true,
-    ['n <Leader>n'] = {
-      expr = true,
-      [[&diff ? '<Leader>n' : '<cmd>lua require"gitsigns".next_hunk()<CR>']],
-    },
-    ['n <Leader>b'] = {
-      expr = true,
-      [[&diff ? '<Leader>b' : '<cmd>lua require"gitsigns".prev_hunk()<CR>']],
-    },
-    ['n <leader>hs'] = '<cmd>lua require"gitsigns".stage_hunk()<CR>',
-    ['n <leader>hu'] = '<cmd>lua require"gitsigns".undo_stage_hunk()<CR>',
-    ['n <leader>hr'] = '<cmd>lua require"gitsigns".reset_hunk()<CR>',
-    ['v <leader>hr'] = '<cmd>lua require"gitsigns".reset_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>',
-    ['n <leader>hR'] = '<cmd>lua require"gitsigns".reset_buffer()<CR>',
-    ['n <leader>hp'] = '<cmd>lua require"gitsigns".preview_hunk()<CR>',
-    ['n <leader>hb'] = '<cmd>lua require"gitsigns".blame_line()<CR>',
-  },
+  current_line_blame_formatter = '<author>, <author_time:%d-%m-%Y> - <summary>',
+  on_attach = function(bufnr)
+    local opts = { buffer = bufnr }
+    map('n', '<A-g>', git_menu, opts)
+    map('n', '<leader>n', gs.next_hunk, opts)
+    map('n', '<leader>N', gs.prev_hunk, opts)
+  end,
   preview_config = { border = { '', '', '', ' ', '', '', '', ' ' } },
 })
 
