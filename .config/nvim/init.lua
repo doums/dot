@@ -15,7 +15,6 @@ for LSP
 others: git, ripgrep, fzf, node, npm
 -- ]]
 
-
 -- ALIASES -------------------------------------------------------
 local fn = vim.fn
 local cmd = vim.cmd
@@ -794,9 +793,10 @@ lspconfig.clangd.setup({ -- C, C++
   capabilities = capabilities,
 })
 lspconfig.tsserver.setup({ -- TypeScript
-  on_attach = function(client, bufnr)
-    -- do not use tsserver for formatting (use Prettier through null-ls)
+  on_attach = function(client)
+    -- use null-ls to handle formatting (Prettier)
     client.server_capabilities.documentFormattingProvider = false
+    client.server_capabilities.documentRangeFormattingProvider = false
   end,
   capabilities = capabilities,
 })
@@ -842,6 +842,11 @@ local runtime_path = vim.tbl_extend(
   { '?/init.lua', '?.lua', 'lua/?.lua', 'lua/?/init.lua' }
 )
 lspconfig.sumneko_lua.setup({ -- Lua
+  on_attach = function(client)
+    -- use null-ls to handle formatting (stylua)
+    client.server_capabilities.documentFormattingProvider = false
+    client.server_capabilities.documentRangeFormattingProvider = false
+  end,
   capabilities = capabilities,
   cmd = {
     '/opt/lua-language-server/bin/lua-language-server',
@@ -963,10 +968,10 @@ local ls = require('luasnip')
 local function has_word_before()
   local line, col = unpack(api.nvim_win_get_cursor(0))
   return col ~= 0
-      and api
-      .nvim_buf_get_lines(0, line - 1, line, true)[1]
-      :sub(col, col)
-      :match('%s')
+    and api
+        .nvim_buf_get_lines(0, line - 1, line, true)[1]
+        :sub(col, col)
+        :match('%s')
       == nil
 end
 
@@ -1142,7 +1147,7 @@ local git_static_actions = {
 
 local function git_menu()
   local git_actions =
-  vim.tbl_extend('keep', gs.get_actions(), git_static_actions)
+    vim.tbl_extend('keep', gs.get_actions(), git_static_actions)
   local items = vim.tbl_keys(git_actions)
   table.sort(items)
   vim.ui.select(items, {
