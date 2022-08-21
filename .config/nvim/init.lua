@@ -9,7 +9,6 @@ for LSP
   * lua-language-server, must be installed in /opt/lua-language-server
   * ESLint and Prettier (npm packages - eslint prettier)
   * Prisma LSP (npm package - @prisma/language-server)
-  * LTEX LS https://github.com/valentjn/ltex-ls/releases
   * cspell (npm package)
 
 others: git, ripgrep, fzf, node, npm
@@ -216,120 +215,8 @@ require('plugins.floaterm')
 require('plugins.trouble')
 require('plugins.nvim-cmp')
 require('plugins.luasnip')
+require('plugins.gitsigns')
+require('plugins.lightspeed')
+require('plugins.nvim-neoclip')
+require('plugins.suit')
 require('lsp')
-
--- gitsigns.nvim -------------------------------------------------
--- git-menu
-local gs = require('gitsigns')
-local git_static_actions = {
-  ['Buffer commits'] = require('telescope.builtin').git_bcommits,
-  ['Diff'] = gs.diffthis,
-  ['Diff ~'] = function()
-    gs.diffthis('~')
-  end,
-  ['Changelist'] = function()
-    gs.setloclist(0, 'all')
-  end,
-  ['Refresh'] = gs.refresh,
-  ['Stage buffer'] = gs.stage_buffer,
-  ['Stash'] = require('telescope.builtin').git_stash,
-  ['Rollback'] = function()
-    vim.ui.select({ 'OK', 'Cancel' }, {
-      prompt = 'Rollback:',
-    }, function(choice)
-      if choice == 'OK' then
-        gs.reset_buffer()
-      end
-    end)
-  end,
-}
-
-local function git_menu()
-  local git_actions =
-    vim.tbl_extend('keep', gs.get_actions(), git_static_actions)
-  local items = vim.tbl_keys(git_actions)
-  table.sort(items)
-  vim.ui.select(items, {
-    prompt = 'git:',
-  }, function(choice)
-    if choice then
-      git_actions[choice]()
-    end
-  end)
-end
-
-require('gitsigns').setup({
-  signs = {
-    add = { hl = 'GitAddSign', text = '┃' },
-    change = { hl = 'GitChangeSign', text = '┃' },
-    delete = { hl = 'GitDeleteSign', text = '▶' },
-    topdelete = { hl = 'GitDeleteSign', text = '▶' },
-    changedelete = { hl = 'GitChangeDeleteSign', text = '┃' },
-  },
-  numhl = false,
-  linehl = false,
-  current_line_blame_formatter = '<author>, <author_time:%d-%m-%Y> - <summary>',
-  on_attach = function(bufnr)
-    local opts = { buffer = bufnr }
-    map('n', '<A-g>', git_menu, opts)
-    map('n', '<leader>n', gs.next_hunk, opts)
-    map('n', '<leader>N', gs.prev_hunk, opts)
-  end,
-  preview_config = { border = { '', '', '', ' ', '', '', '', ' ' } },
-})
-
--- lightspeed ----------------------------------------------------
--- stylua: ignore start
-require('lightspeed').setup({
-  exit_after_idle_msecs = { labeled = 1500, unlabeled = 1500 },
-  safe_labels = { 's', 'f', 'n', 'u', 't', 'b', 'g', 'F',
-    'L', 'N', 'H', 'G', 'M', 'U', 'T', 'Z' },
-  labels = { 's', 'f', 'n', 'g', 'h', 'v', 'b', 'w', 'y', 'd',
-    'q', 'z', 'c', 'x', 't', 'u', 'r', 'i', 'a', 'o', 'e' },
-  repeat_ft_with_target_char = true
-})
--- stylua: ignore end
-hl('LightspeedCursor', '#212121', '#ebff00', 'bold')
-hl('LightspeedLabel', '#f49810', nil, { 'bold', 'underline' })
-hl('LightspeedLabelOverlapped', '#f49810', nil, 'underline')
-hl('LightspeedShortcut', '#212121', '#f49810', { 'bold', 'underline' })
-hl('LightspeedOneCharMatch', '#212121', '#f49810', 'bold')
-hl('LightspeedGreyWash', '#80807f')
-hl('LightspeedUnlabeledMatch', '#ddddff', nil, 'bold')
-hl('LightspeedPendingOpArea', '#212121', '#f49810')
-hl('LightspeedLabelDistant', '#aa4e00', nil, { 'bold', 'underline' })
-hl('LightspeedLabelDistantOverlapped', '#aa4e00', nil, 'underline')
-hl('LightspeedMaskedChar', '#906526')
-
--- api.nvim_del_keymap('n', 't')
-
--- nvim-neoclip.lua ----------------------------------------------
-require('neoclip').setup()
-map(
-  '',
-  '<A-c>',
-  [[:lua require('telescope').extensions.neoclip.plus()<cr>]],
-  { silent = true }
-)
-
--- suit.nvim -----------------------------------------------------
-hl('suitPrompt', '#C7C7FF', '#1d1916', { 'bold', 'italic' })
-hl('suitInput', '#BDAE9D', '#1d1916')
-hl('suitSelectedItem', nil, '#3b2f27')
-require('suit').setup({
-  input = {
-    default_prompt = '↓',
-    border = 'vgap',
-    hl_prompt = 'suitPrompt',
-    hl_input = 'suitInput',
-    hl_border = 'suitInput',
-  },
-  select = {
-    default_prompt = '≡',
-    border = 'vgap',
-    hl_prompt = 'suitPrompt',
-    hl_select = 'suitInput',
-    hl_border = 'suitInput',
-    hl_selected_item = 'suitSelectedItem',
-  },
-})

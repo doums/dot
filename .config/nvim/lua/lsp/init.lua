@@ -10,6 +10,13 @@ local map = vim.keymap.set
 local fn = vim.fn
 local hl = require('utils').hl
 
+-- Server configs
+require('lsp.servers.lua')
+require('lsp.servers.c')
+require('lsp.servers.rust')
+require('lsp.servers.typescript')
+require('lsp.servers.null-ls')
+
 local lsp_menu = require('plugins.lsp_menu')
 local lsp_spinner = require('lsp_spinner')
 local lsp_signature = require('lsp_signature')
@@ -129,10 +136,3 @@ vim.api.nvim_create_autocmd('LspAttach', {
     lsp_signature.on_attach(signature_help_cfg, args.buf)
   end,
 })
-
--- Server configs
-require('lsp.servers.lua')
-require('lsp.servers.c')
-require('lsp.servers.rust')
-require('lsp.servers.typescript')
-require('lsp.servers.null-ls')
