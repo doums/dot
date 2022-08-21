@@ -83,6 +83,9 @@ function M.hl()
   li('TroubleText', 'Fg')
   li('TroubleLocation', 'NonText')
   li('TroubleFoldIcon', 'Constant')
+
+  -- lsp_signature.nvim
+  hl('signatureHint', '#CA7E03', nil, 'italic')
 end
 
 return M

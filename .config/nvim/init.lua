@@ -75,7 +75,6 @@ require('paq')({
   'ggandor/lightspeed.nvim',
   'AckslD/nvim-neoclip.lua',
   'windwp/nvim-ts-autotag',
-  -- paq 'henriquehbr/nvim-startup.lua'
 })
 
 -- OPTIONS -------------------------------------------------------

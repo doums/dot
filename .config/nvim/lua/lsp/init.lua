@@ -8,7 +8,6 @@ local lsp = vim.lsp
 local api = vim.api
 local map = vim.keymap.set
 local fn = vim.fn
-local hl = require('utils').hl
 
 -- Server configs
 require('lsp.servers.lua')
@@ -43,7 +42,6 @@ fn.sign_define(
   { text = '•', texthl = 'DiagnosticSignHint' }
 )
 
-hl('signatureHint', '#CA7E03', nil, 'italic')
 local signature_help_cfg = {
   bind = true,
   doc_lines = 2,
