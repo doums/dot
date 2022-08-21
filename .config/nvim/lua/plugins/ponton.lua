@@ -4,12 +4,6 @@ file, You can obtain one at https://mozilla.org/MPL/2.0/. ]]
 
 -- Config for ponton.nvim
 
-local hl = require('utils').hl
-
-hl('WinBar', '#2A211C', '#2A211C')
-hl('WinBarNC', '#2A211C', '#2A211C')
-hl('StatusLine', nil, '#432717')
-hl('StatusLineNC', '#BDAE9D', '#432717')
 local line_bg = '#432717'
 local ponton_cdt = require('ponton.condition')
 local main_cdt = {

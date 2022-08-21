@@ -4,7 +4,6 @@ file, You can obtain one at https://mozilla.org/MPL/2.0/. ]]
 
 -- Config for floaterm.nvim
 
-local hl = require('utils').hl
 local map = vim.keymap.set
 
 require('floaterm').setup({
@@ -14,7 +13,6 @@ require('floaterm').setup({
   bg_color = '#211a16',
 })
 
-hl('otermSplit', '#2A190E', '#211a16')
 require('oterm').setup({
   bg_color = '#211a16',
   split_hl = 'otermSplit',

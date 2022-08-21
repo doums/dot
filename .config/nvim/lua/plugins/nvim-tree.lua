@@ -5,8 +5,6 @@ file, You can obtain one at https://mozilla.org/MPL/2.0/. ]]
 -- Config for nvim-tree.lua
 
 local map = vim.keymap.set
-local hl = require('utils').hl
-local li = require('utils').li
 
 map('n', '<Tab>', '<cmd>NvimTreeToggle<CR>')
 map('n', '<S-Tab>', '<cmd>NvimTreeFindFile<CR>')
@@ -99,19 +97,3 @@ require('nvim-tree').setup({
     },
   },
 })
-li('NvimTreeRootFolder', 'Comment')
-li('NvimTreeExecFile', 'Todo')
-li('NvimTreeSpecialFile', 'Function')
-li('NvimTreeFolderIcon', 'Constant')
-li('NvimTreeImageFile', 'Normal')
-li('NvimTreeGitIgnored', 'Debug')
-hl('NvimTreeGitNew', '#42905b', nil, 'italic')
-hl('NvimTreeGitStaged', '#39c064', nil, 'italic')
-hl('NvimTreeGitRenamed', '#507eae', nil, 'italic')
-hl('NvimTreeGitDeleted', '#bd5b5b', nil, 'italic')
-li('NvimTreeGitDirty', 'NvimTreeGitDeleted')
-hl('NvimTreeWindowPicker', '#BDAE9D', '#2A190E', 'bold')
-hl('NvimTreeLspDiagnosticsError', '#FF0000', nil, 'bold')
-li('NvimTreeWinSeparator', 'WinSeparator')
-li('NvimTreeLiveFilterPrefix', 'CurSearch')
-li('NvimTreeLiveFilterValue', 'Search')

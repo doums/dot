@@ -5,8 +5,6 @@ file, You can obtain one at https://mozilla.org/MPL/2.0/. ]]
 -- Config for nvim-cmp
 
 local api = vim.api
-local li = require('utils').li
-local hl = require('utils').hl
 local cmp = require('cmp')
 local ls = require('luasnip')
 
@@ -117,9 +115,3 @@ cmp.setup.cmdline('/', {
     { name = 'buffer' },
   },
 })
-li('CmpItemAbbr', 'Pmenu')
-li('CmpItemAbbrDeprecated', 'Pmenu')
-hl('CmpItemAbbrMatch', '#CA7E03', '#432717', 'bold')
-hl('CmpItemAbbrMatchFuzzy', '#CA7E03', '#432717', 'bold')
-li('CmpItemKind', 'Pmenu')
-li('CmpItemMenu', 'Pmenu')

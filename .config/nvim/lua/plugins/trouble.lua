@@ -5,7 +5,6 @@ file, You can obtain one at https://mozilla.org/MPL/2.0/. ]]
 -- Config for Trouble
 
 local map = vim.keymap.set
-local li = require('utils').li
 
 require('trouble').setup({
   height = 8,
@@ -38,7 +37,3 @@ map(
 --[[ map('n', '<A-b>', '<cmd>Trouble lsp_definitions<cr>')
 map('n', '<A-S-b>', '<cmd>Trouble lsp_type_definitions<cr>') ]]
 map('n', '<A-u>', '<cmd>Trouble lsp_references<cr>', { silent = true })
-li('TroubleCount', 'Number')
-li('TroubleText', 'Fg')
-li('TroubleLocation', 'NonText')
-li('TroubleFoldIcon', 'Constant')

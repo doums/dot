@@ -5,8 +5,6 @@ file, You can obtain one at https://mozilla.org/MPL/2.0/. ]]
 -- Config for telescope.nvim
 
 local map = vim.keymap.set
-local li = require('utils').li
-local hl = require('utils').hl
 local actions = require('telescope.actions')
 local builtin = require('telescope.builtin')
 
@@ -65,5 +63,3 @@ map('', '<C-f>', builtin.live_grep)
 map('', '<C-b>', function()
   builtin.buffers(dropdown_theme)
 end)
-li('TelescopeNormal', 'Fg')
-hl('TelescopeSelection', nil, '#3b2f27')

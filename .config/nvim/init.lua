@@ -43,7 +43,7 @@ require('paq')({
   'doums/coBra',
   -- 'doums/ponton.nvim',
   -- 'doums/suit.nvim',
-  -- 'doums/espresso',
+  -- 'doums/espresso.nvim',
   'doums/sae',
   'doums/lsp_spinner.nvim',
   'doums/floaterm.nvim',
@@ -77,14 +77,6 @@ require('paq')({
   'windwp/nvim-ts-autotag',
   -- paq 'henriquehbr/nvim-startup.lua'
 })
-
--- Init modules --------------------------------------------------
-
--- create autocmds
-require('autocmd')
-
--- utils
-local hl = require('utils').hl
 
 -- OPTIONS -------------------------------------------------------
 opt.termguicolors = true
@@ -129,6 +121,9 @@ opt.foldmethod = 'expr'
 opt.foldexpr = 'nvim_treesitter#foldexpr()'
 opt.foldlevelstart = 99
 
+-- create autocmds
+require('autocmd')
+
 -- VARIOUS -------------------------------------------------------
 -- color scheme
 cmd('colorscheme espresso')
@@ -136,9 +131,6 @@ cmd('colorscheme espresso')
 cmd('runtime ftplugin/man.vim')
 -- map leader
 g.mapleader = ','
--- highlight group for guicursor
-hl('Caret', '#2A211C', '#889AFF', 'bold')
-hl('WinSeparator', '#332a25', '#332a25')
 
 -- MAPPINGS ------------------------------------------------------
 -- c'est en forgeant que l'on devient forgeron
@@ -202,6 +194,9 @@ map(
   [[:lua vim.opt.spell = not vim.opt.spell:get()<CR>]],
   { silent = true }
 )
+
+-- generate custom highlight groups
+require('hl').hl()
 
 -- LOAD PLUGIN CONFIGS -------------------------------------------
 require('plugins.nvim-treesitter')
