@@ -38,7 +38,7 @@ set -x PATH $PATH $HOME/.local/share/JetBrains/Toolbox/scripts
 set -x PATH $PATH $HOME/.local/share/JetBrains/Toolbox/bin
 set -x MANPAGER 'nvim +Man!'
 set -x MAKEFLAGS '-j8'
-set -x FZF_DEFAULT_OPTS "--bind 'ctrl-w:toggle-preview-wrap,ctrl-p:toggle-preview,ctrl-a:toggle-all' --color='bg:-1,fg:-1,preview-bg:-1,preview-fg:-1,border:black:bold,bg+:#323232,fg+:-1:regular,hl:magenta:bold,hl+:magenta:bold,gutter:-1,pointer:yellow,prompt:blue,marker:green,spinner:bright-cyan,info:cyan:italic,header:blue:bold,query:-1:bold' --pointer=❱ --marker=❯ --prompt='❯ '"
+set -x FZF_DEFAULT_OPTS "--bind 'ctrl-w:toggle-preview-wrap,ctrl-p:toggle-preview,ctrl-a:toggle-all,alt-j:preview-half-page-down,alt-k:preview-half-page-up' --color='bg:-1,fg:-1,preview-bg:-1,preview-fg:-1,border:black:bold,bg+:#323232,fg+:-1:regular,hl:magenta:bold,hl+:magenta:bold,gutter:-1,pointer:yellow,prompt:blue,marker:green,spinner:bright-cyan,info:cyan:italic,header:blue:bold,query:-1:bold' --pointer=❱ --marker=❯ --prompt='❯ '"
 set -x FZF_DEFAULT_COMMAND "fd -HI -t f"
 set -x XDG_DATA_DIRS /home/pierre/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share
 set -x NNN_OPTS QAuex
@@ -49,6 +49,7 @@ set -x NNN_FCOLORS '0505040a00060e0801030301'
 set -x XDG_CONFIG_HOME $HOME/.config
 set -x DENO_INSTALL $HOME/.deno
 set -x PATH $PATH $DENO_INSTALL/bin
+set -x LIBVA_DRIVER_NAME vdpau
 
 # Nodejs
 set -x PATH /opt/node16/bin $PATH
