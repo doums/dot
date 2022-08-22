@@ -24,8 +24,8 @@ set -x LD_LIBRARY_PATH /usr/local/lib $LD_LIBRARY_PATH
 set -x QT_AUTO_SCREEN_SCALE_FACTOR 1
 set -x EDITOR /usr/bin/nvim
 set -x VISUAL /usr/bin/nvim
-set -x GDK_SCALE 2
-set -x GDK_DPI_SCALE 0.5
+# set -x GDK_SCALE 2
+# set -x GDK_DPI_SCALE 0.5
 set -x JAVA_HOME /usr/lib/jvm/default
 set -x XDG_SESSION_TYPE X11
 set -x PATH $PATH $HOME/.cargo/bin

@@ -13,8 +13,6 @@ alias ls='ls --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=au
 alias ll='ls -l --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
 alias la='ls -la --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
 alias grep='grep --color=tty -d skip'
-alias sb='subl'
-alias emu="cd /home/pierre/Android/Sdk/emulator/ && emulator -avd android -gpu host -accel on -scale 2 -no-boot-anim"
 
 # bash provides PROMPT_COMMAND to hold a command that will be evaluated right before PS1
 # xterm enables to change the window icon and title with a special sequence using the Operating System Command
@@ -35,6 +33,7 @@ PROMPT_COMMAND='printf "\e]0;%s %s\a" "${HOSTNAME%%.*}" "${PWD/#$HOME/\~}"'
 PS1='\u \[\033[0;32m\]\$ \[\033[m\]'
 
 export QT_AUTO_SCREEN_SCALE_FACTOR=1
-export GDK_SCALE=2
-export GDK_DPI_SCALE=0.5
+# export GDK_SCALE=2
+# export GDK_DPI_SCALE=0.5
 
+source "$HOME/.cargo/env"
