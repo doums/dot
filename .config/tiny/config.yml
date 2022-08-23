@@ -14,6 +14,7 @@ servers:
           - "#archlinux"
           - "#archlinux-aur"
           - "#xmonad"
+          - "#neovim"
 
       # Three authentication methods: pass, sasl, and nickserv_ident
       # These are optional and you probably only need one of these, delete
