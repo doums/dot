@@ -55,10 +55,10 @@ local dropdown_theme = require('telescope.themes').get_dropdown({
 })
 
 map('', '<A-s>', builtin.lsp_document_symbols)
+map('', '<A-w>', builtin.lsp_workspace_symbols)
 map('', '<C-s>', function()
   return builtin.find_files({ find_command = { 'fd', '-t', 'f' } })
 end)
-map('', '<Leader>w', builtin.lsp_workspace_symbols)
 map('', '<C-f>', builtin.live_grep)
 map('', '<C-b>', function()
   builtin.buffers(dropdown_theme)

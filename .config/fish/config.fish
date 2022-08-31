@@ -43,11 +43,13 @@ set -x XDG_DATA_DIRS /home/pierre/.local/share/flatpak/exports/share:/var/lib/fl
 set -x NNN_OPTS QAuex
 set -x NNN_COLORS 2341
 set -x NNN_PLUG 't:-_bat $nnn;f:-_|firefox $nnn*'
-set -x NNN_BMS 'h:~;d:~/Documents/dotfiles;r:/;m:/run/media/pierre;v:~/.config/nvim;n:~/Documents/nym/nym'
+set -x NNN_BMS 'h:~;d:~/Documents/dotfiles;r:/;m:/run/media/pierre;v:~/.config/nvim;n:~/Documents/nym/nym;x:/opt/xmonad'
 set -x NNN_FCOLORS '0505040a00060e0801030301'
 set -x DENO_INSTALL $HOME/.deno
 set -x PATH $PATH $DENO_INSTALL/bin
 set -x LIBVA_DRIVER_NAME vdpau
+set -x GDK_SCALE 2
+set -x GDK_DPI_SCALE 0.5
 
 # Nodejs
 set -x PATH /opt/node16/bin $PATH

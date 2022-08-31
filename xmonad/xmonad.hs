@@ -95,11 +95,12 @@ keybinds = ([
   , ("Print",       spawn "screenshot.sh")
   , ("M-c",         spawn "clipshot.sh")
   -- Scratchpads
+  , ("M-:", namedScratchpadAction scratchpads "notes")
   , ("M-n", namedScratchpadAction scratchpads "gtrans")
   , ("M-o", namedScratchpadAction scratchpads "pavucontrol")
-  , ("M-b", namedScratchpadAction scratchpads "filemanager")
+  , ("M-b", namedScratchpadAction scratchpads "file-manager")
   , ("M-=", namedScratchpadAction scratchpads "calc")
-  , ("M-i", namedScratchpadAction scratchpads "irc")
+  , ("M-i", namedScratchpadAction scratchpads "irc-chat")
   , ("M-s", namedScratchpadAction scratchpads "bottom")
   -- Multimedia
   , ("<XF86MonBrightnessUp>",   spawn "pral.sh light_up")
@@ -254,11 +255,11 @@ scratchpads =
       (customFloating $ W.RationalRect (1/4) (1/6) (3/9) (4/6))
   , NS "pavucontrol" "pavucontrol" (className =? "Pavucontrol")
       (customFloating $ W.RationalRect (1/4) (1/4) (2/4) (2/4))
-  , NS "filemanager" "alacritty --class filemanager -e nnn"
-      (appName =? "filemanager")
+  , NS "file-manager" "alacritty --class file-manager -e nnn"
+      (appName =? "file-manager")
       (customFloating $ W.RationalRect (1/4) (1/6) (3/9) (4/6))
-  , NS "irc" "alacritty --class irc -e tiny"
-      (appName =? "irc")
+  , NS "irc-chat" "alacritty --class irc-chat -e tiny"
+      (appName =? "irc-chat")
       (doFloatAt 0.2 0.3)
   , NS "bottom" "alacritty --class systemMonitor -e btm"
       (appName =? "systemMonitor")
@@ -266,5 +267,8 @@ scratchpads =
   , NS "calc" "alacritty --class calc -e kalker"
       (appName =? "calc")
       (customFloating $ W.RationalRect (1/4) (2/6) (1/4) (3/6))
+  , NS "notes" "alacritty -o window.dimensions.columns=78 --class notes -e nvim /home/pierre/.local/share/notes.md"
+      (appName =? "notes")
+      (doFloatAt 0.2 0.3)
   ]
 
