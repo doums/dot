@@ -1,5 +1,6 @@
-alias ls='exa --group-directories-first'
-alias la='exa -lag --group-directories-first'
+# aliases
+alias ls='exa -lag --group-directories-first'
+alias la='ls'
 alias db='adb shell input keyevent 82'
 alias dbk='adb shell am force-stop com.monbuilding.app'
 alias rr='adb shell input text "RR"'
@@ -18,6 +19,14 @@ alias dk='docker'
 alias dc='docker compose'
 alias log='docker logs -f'
 
+# bindings
+bind \eh '~; commandline -f repaint'
+bind \ed '~/Documents/dotfiles/; commandline -f repaint'
+bind \ev '~/.config/nvim/; commandline -f repaint'
+bind \ex '/opt/xmonad/; commandline -f repaint'
+bind \en '~/Documents/nym/; commandline -f repaint'
+
+# env vars
 set fish_greeting
 set -x XDG_CONFIG_HOME $HOME/.config
 set -x SSH_AUTH_SOCK /run/user/1000/keyring/ssh
