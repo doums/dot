@@ -20,6 +20,10 @@ require('nvim-tree').setup({
       error = '✕',
     },
   },
+  git = {
+    enable = true,
+    ignore = false,
+  },
   actions = {
     open_file = {
       window_picker = {

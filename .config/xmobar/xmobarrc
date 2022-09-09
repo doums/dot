@@ -3,7 +3,7 @@ Config { font = "xft:JetBrainsMono Nerd Font:pixelsize=20:antialias=true"
        , borderColor = "#262626"
        , bgColor = "#262626"
        , fgColor = "#8c8c8c"
-       , alpha = 255
+       , alpha = 180
        , position = Bottom
        , textOffset = -1
        , iconOffset = -1

@@ -24,7 +24,7 @@ bind \eh '~; commandline -f repaint'
 bind \ed '~/Documents/dotfiles/; commandline -f repaint'
 bind \ev '~/.config/nvim/; commandline -f repaint'
 bind \ex '/opt/xmonad/; commandline -f repaint'
-bind \en '~/Documents/nym/; commandline -f repaint'
+bind \en '~/Documents/nym/nym/; commandline -f repaint'
 
 # env vars
 set fish_greeting
