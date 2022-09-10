@@ -366,18 +366,3 @@ sudo pacman -S gnome-keyring
 
 https://wiki.archlinux.org/index.php/GNOME/Keyring#Installation
 
-### lower GRUB resolution
-
-In `/etc/default/grub` change the line (replace with the desired resolutions)
-
-```
-GRUB_GFXMODE=1600x1200x32,2560x1440x32,auto
-```
-
-then re-generate the config
-
-```shell
-grub-mkconfig -o /boot/grub/grub.cfg
-```
-
-source: https://wiki.archlinux.org/index.php/GRUB/Tips_and_tricks#Setting_the_framebuffer_resolution

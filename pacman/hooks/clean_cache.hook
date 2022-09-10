@@ -6,7 +6,7 @@ Type = Package
 Target = *
 
 [Action]
-Description = Cleaning cache...
+Description = Cleaning cache ⚡
 When = PostTransaction
 Exec = /usr/bin/paccache -rk1 
 
