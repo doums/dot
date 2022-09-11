@@ -4,7 +4,8 @@ file, You can obtain one at https://mozilla.org/MPL/2.0/. ]]
 
 -- Config for ponton.nvim
 
-local line_bg = '#432717'
+local winbar_bg = '#432717'
+local line_bg = '#332A25'
 local ponton_cdt = require('ponton.condition')
 local main_cdt = {
   ponton_cdt.filetype_not,
@@ -17,7 +18,6 @@ require('ponton').setup({
   line = {
     'void',
     'mode',
-    'buffer_name',
     'buffer_changed',
     'read_only',
     'git_branch',
@@ -33,15 +33,15 @@ require('ponton').setup({
     'line_percent',
   },
   winbar = {
-    'buffer_name_winbar',
+    'buffer_name',
     'buffer_changed_winbar',
   },
   top_line_exclude = { 'NvimTree', 'Trouble', 'TelescopePrompt' },
   segments = {
     mode = {
       map = {
-        normal = { ' ', { line_bg, line_bg } },
-        insert = { '❯', { '#69ff00', line_bg, 'bold' } },
+        normal = { ' ' },
+        insert = { '❱', { '#69ff00', line_bg, 'bold' } },
         replace = { '▲', { '#69ff00', line_bg, 'bold' } },
         visual = { '◆', { '#43A8ED', line_bg, 'bold' } },
         v_line = { '━', { '#43A8ED', line_bg, 'bold' } },
@@ -51,24 +51,12 @@ require('ponton').setup({
         shell_ex = { '▶', { '#93896C', line_bg, 'bold' } },
         terminal = { '❯', { '#049B0A', line_bg, 'bold' } },
         prompt = { '▼', { '#BDAE9D', line_bg, 'bold' } },
-        inactive = { ' ', { line_bg, line_bg } },
+        inactive = { ' ' },
       },
       margin = { 1, 1 },
     },
     void = {
-      style = { nil, line_bg },
       length = '20%',
-    },
-    buffer_name = {
-      style = { '#BDAE9D', line_bg, 'bold' },
-      empty = nil,
-      padding = { 1, 1 },
-      margin = { 1, 1 },
-      decorator = { '❰', '❱', { '#DF824C', line_bg } },
-      conditions = {
-        ponton_cdt.buffer_not_empty,
-        main_cdt,
-      },
     },
     buffer_changed = {
       style = { '#a3f307', line_bg, 'bold' },
@@ -76,23 +64,19 @@ require('ponton').setup({
       padding = { nil, 1 },
       conditions = cdts,
     },
-    buffer_name_winbar = {
-      provider = 'buffer_name',
-      empty = nil,
+    buffer_name = {
+      empty = "▫▫▫",
       style = {
-        { '#BDAE9D', line_bg, 'bold' },
+        { '#BDAE9D', winbar_bg, 'bold' },
         { '#BDAE9D', '#2A190E', 'bold' },
       },
       padding = { 1, 1 },
-      conditions = {
-        ponton_cdt.buffer_not_empty,
-        main_cdt,
-      },
+      conditions = { main_cdt },
     },
     buffer_changed_winbar = {
       provider = 'buffer_changed',
       style = {
-        { '#a3f307', line_bg, 'bold' },
+        { '#a3f307', winbar_bg, 'bold' },
         { '#a3f307', '#2A190E', 'bold' },
       },
       value = '✶',
@@ -108,7 +92,7 @@ require('ponton').setup({
         ponton_cdt.is_normal_buf,
       },
     },
-    spacer = { style = { line_bg, line_bg } },
+    spacer = {},
     sep = {
       style = { '#BDAE9D', line_bg },
       text = '⏽',
