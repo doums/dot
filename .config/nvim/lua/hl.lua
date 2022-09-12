@@ -66,7 +66,7 @@ function M.hl()
   -- ponton.nvim
   hl('WinBar', '#2A211C', '#2A211C')
   hl('WinBarNC', '#2A211C', '#2A211C')
-  hl('StatusLine', '#2A211C', '#332A25')
+  hl('StatusLine', '#734c36', '#332A25')
 
   -- suit.nvim
   hl('suitPrompt', '#C7C7FF', '#1d1916', { 'bold', 'italic' })

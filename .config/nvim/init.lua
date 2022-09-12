@@ -18,6 +18,7 @@ others: git, ripgrep, fzf, node, npm
 local fn = vim.fn
 local cmd = vim.cmd
 local g = vim.g
+local o = vim.o
 local opt = vim.opt
 local map = vim.keymap.set
 
@@ -78,47 +79,47 @@ require('paq')({
 })
 
 -- OPTIONS -------------------------------------------------------
-opt.termguicolors = true
-opt.number = true
-opt.relativenumber = true
-opt.showmode = false
-opt.shortmess = 'IFaWcs'
-opt.ignorecase = true
-opt.smartcase = true
-opt.cindent = true
-opt.tabstop = 2
-opt.shiftwidth = 2
-opt.expandtab = true
-opt.showmatch = true
-opt.matchtime = 3
-opt.updatetime = 100
-opt.splitbelow = true
-opt.splitright = true
-opt.hidden = true
-opt.cursorline = true
-opt.cursorlineopt = { 'number', 'screenline' }
-opt.switchbuf = 'usetab'
-opt.scrolloff = 1
-opt.completeopt = { 'menuone', 'noselect' }
-opt.pumheight = 10
-opt.fillchars = { diff = ' ', fold = ' ', eob = ' ', vert = ' ', horiz = ' ' }
+o.termguicolors = true
+o.number = true
+o.relativenumber = true
+o.showmode = false
+o.shortmess = 'IFaWcs'
+o.ignorecase = true
+o.smartcase = true
+o.cindent = true
+o.tabstop = 2
+o.shiftwidth = 2
+o.expandtab = true
+o.showmatch = true
+o.matchtime = 3
+o.updatetime = 100
+o.splitbelow = true
+o.splitright = true
+o.hidden = true
+o.cursorline = true
+o.cursorlineopt = 'number,screenline'
+o.switchbuf = 'usetab'
+o.scrolloff = 1
+o.completeopt = 'menuone,noselect'
+o.pumheight = 10
+o.fillchars = 'diff: ,fold: ,eob: ,vert: ,horiz: '
+o.clipboard = 'unnamedplus'
+o.signcolumn = 'yes:2'
+o.cmdheight = 2
+o.mouse = 'a'
+o.statusline = ' ' -- hide the default statusline on the first frames
+o.laststatus = 3
+o.guifont = 'JetBrains Mono:h16'
+o.guicursor = 'a:block-Caret'
+o.spelllang = 'en_us'
+o.spelloptions = 'camel'
+o.colorcolumn = '66'
+o.textwidth = 66
+o.foldmethod = 'expr'
+o.foldexpr = 'nvim_treesitter#foldexpr()'
+o.foldlevelstart = 99
 opt.complete = opt.complete:append({ 'i' })
-opt.clipboard = 'unnamedplus'
-opt.signcolumn = 'yes:2'
-opt.cmdheight = 2
-opt.mouse = 'a'
-opt.statusline = ' ' -- hide the default statusline on the first frames
-opt.laststatus = 3
-opt.guifont = 'JetBrains Mono:h16'
-opt.guicursor = 'a:block-Caret'
-opt.spelllang = 'en_us'
-opt.spelloptions = 'camel'
-opt.colorcolumn = '66'
-opt.textwidth = 66
 opt.formatoptions = opt.formatoptions:append('lv')
-opt.foldmethod = 'expr'
-opt.foldexpr = 'nvim_treesitter#foldexpr()'
-opt.foldlevelstart = 99
 
 -- create autocmds
 require('autocmd')

@@ -6,6 +6,7 @@ file, You can obtain one at https://mozilla.org/MPL/2.0/. ]]
 
 local winbar_bg = '#432717'
 local line_bg = '#332A25'
+local line_fg = '#734c36'
 local ponton_cdt = require('ponton.condition')
 local main_cdt = {
   ponton_cdt.filetype_not,
@@ -94,22 +95,22 @@ require('ponton').setup({
     },
     spacer = {},
     sep = {
-      style = { '#BDAE9D', line_bg },
+      style = { line_fg, line_bg },
       text = '⏽',
       conditions = cdts,
     },
     line_percent = {
-      style = { '#BDAE9D', line_bg },
+      style = { line_fg, line_bg },
       padding = { nil, 1 },
       conditions = cdts,
     },
     line = {
-      style = { '#BDAE9D', line_bg },
+      style = { line_fg, line_bg },
       padding = { 1 },
       conditions = cdts,
     },
     column = {
-      style = { '#BDAE9D', line_bg },
+      style = { line_fg, line_bg },
       left_adjusted = true,
       padding = { nil, 1 },
       conditions = cdts,
