@@ -5,5 +5,5 @@ file, You can obtain one at https://mozilla.org/MPL/2.0/. ]]
 -- Config for LuaSnip
 
 require('luasnip.loaders.from_lua').load({
-  paths = './lua/snippets',
+  paths = './lua/snippets/ft/',
 })
