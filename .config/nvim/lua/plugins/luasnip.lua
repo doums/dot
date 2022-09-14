@@ -7,3 +7,4 @@ file, You can obtain one at https://mozilla.org/MPL/2.0/. ]]
 require('luasnip.loaders.from_lua').load({
   paths = './lua/snippets/ft/',
 })
+require('luasnip').filetype_extend('typescriptreact', { 'typescript' })

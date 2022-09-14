@@ -6,41 +6,14 @@ file, You can obtain one at https://mozilla.org/MPL/2.0/. ]]
 
 local ls = require('luasnip')
 local s = ls.snippet
+local fmt = require('luasnip.extras.fmt').fmt
 local fmta = require('luasnip.extras.fmt').fmta
-local i = ls.insert_node
 local f = ls.function_node
+local i = ls.insert_node
 local filename = require('snippets.utils').filename
 local copy = require('snippets.utils').copy
 
 local M = {
-  s('log', fmta('console.log(<>);', i(1))),
-  s('if', fmta('if (<>) {\n\t<>\n}', { i(1), i(2) })),
-  s('ei', fmta('else if (<>) {\n\t<>\n}', { i(1), i(2) })),
-  s('el', fmta('else {\n\t<>\n}', i(1))),
-  s('tl', fmta('`${<>}`', i(1))),
-  s('imd', fmta("import <> from '<>';", { i(1), i(2, 'path') })),
-  s('im', fmta("import { <> } from '<>';", { i(1), i(2, 'path') })),
-  s(
-    'fn',
-    fmta(
-      'function <> (<>: <>) {\n\t<>\n}',
-      { i(1, 'name'), i(2, 'args'), i(3, 'ArgsType'), i(4, 'body') }
-    )
-  ),
-  s(
-    'fna',
-    fmta(
-      'const <> = (<>: {<>}) =>> {\n\t<>\n};',
-      { i(1, 'name'), i(2, 'args'), i(3, 'ArgsType'), i(4, 'body') }
-    )
-  ),
-  s(
-    'tc',
-    fmta(
-      'try {\n\t<>\n} catch (<>: any) {\n\t<>\n}',
-      { i(1, 'body'), i(2, 'e'), i(3) }
-    )
-  ),
   s(
     'fnc',
     fmta(
@@ -48,9 +21,8 @@ local M = {
     import * as React from 'react';
 
     // https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/basic_type_example#useful-react-prop-type-examples
-    type Props = {};
 
-    export const <> = (<>: Props) =>> {
+    export const <> = (<>: { <> }) =>> {
       console.log(<>);
       return (
         <>
@@ -59,9 +31,59 @@ local M = {
 		]],
       {
         filename(),
-        i(1, 'args'),
+        i(1, 'props'),
+        i(2, 'type'),
         copy(1),
         i(0),
+      },
+      { dedent = true }
+    )
+  ),
+  s(
+    { trig = 'us', name = 'useState' },
+    fmt([[const [{}, {}] = useState<{}>({});]], {
+      i(1),
+      f(function(args)
+        return 'set' .. args[1][1]:gsub('^.', string.upper)
+      end, 1),
+      i(2),
+      i(0),
+    })
+  ),
+  s(
+    { trig = 'ue', name = 'useEffect' },
+    fmta(
+      [[
+    useEffect(() =>> {
+      <>
+    }, [<>]);
+		]],
+      {
+        i(0),
+        i(1),
+      },
+      { dedent = true }
+    )
+  ),
+  s(
+    { trig = 'um', name = 'useMemo' },
+    fmt([[useMemo(() => {}, [{}]);]], {
+      i(0),
+      i(1),
+    })
+  ),
+  s(
+    { trig = 'uc', name = 'useCallback' },
+    fmta(
+      [[
+    const <> = useCallback(() =>> {
+      <>
+    }, [<>]);
+    ]],
+      {
+        i(1),
+        i(0),
+        i(2),
       },
       { dedent = true }
     )
