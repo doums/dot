@@ -92,7 +92,7 @@ keybinds = ([
   , ("M-v",         spawn ("clipmenu -b -i -p '◧'" ++ dmenuArgs))
   , ("M-p",         spawn "restart_picom.sh")
   , ("M-*",         spawn "pkill -USR1 redshift")
-  , ("Print",       spawn "screenshot.sh")
+  , ("<Print>",     spawn "screenshot.sh")
   , ("M-c",         spawn "clipshot.sh")
   -- Scratchpads
   , ("M-:", namedScratchpadAction scratchpads "notes")
