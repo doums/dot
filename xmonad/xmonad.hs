@@ -102,6 +102,7 @@ keybinds = ([
   , ("M-=", namedScratchpadAction scratchpads "calc")
   , ("M-i", namedScratchpadAction scratchpads "irc-chat")
   , ("M-s", namedScratchpadAction scratchpads "bottom")
+  , ("M-u", namedScratchpadAction scratchpads "network")
   -- Multimedia
   , ("<XF86MonBrightnessUp>",   spawn "pral.sh light_up")
   , ("<XF86MonBrightnessDown>", spawn "pral.sh light_down")
@@ -249,6 +250,8 @@ goto = switchTopic myTopicConfig
 switchToLastTopic = switchNthLastFocusedByScreen myTopicConfig 1
 
 -- scratchpads
+-- RationalRect `x y width height` - from top left corner, 0-1
+-- 1 means full width/height of the screen
 scratchpads =
   [ NS "gtrans" "alacritty --class gtrans -e trans -I -show-original no -show-languages no en:fr"
       (appName =? "gtrans")
@@ -267,6 +270,9 @@ scratchpads =
   , NS "calc" "alacritty --class calc -e kalker"
       (appName =? "calc")
       (customFloating $ W.RationalRect (1/4) (2/6) (1/4) (3/6))
+  , NS "network" "alacritty --class network -e nmtui"
+      (appName =? "network")
+      (customFloating $ W.RationalRect 0.3 0.14 0.4 0.6)
   , NS "notes" "alacritty -o window.dimensions.columns=78 --class notes -e nvim /home/pierre/.local/share/notes.md"
       (appName =? "notes")
       (doFloatAt 0.2 0.3)
