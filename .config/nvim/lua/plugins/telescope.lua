@@ -22,7 +22,7 @@ require('telescope').setup({
     },
     mappings = {
       i = {
-        ['<c-x>'] = false,
+        ['<c-x>'] = actions.delete_buffer,
         ['<c-s>'] = actions.select_horizontal,
         ['<esc>'] = actions.close, -- <Esc> quit in insert mode
         ['<C-Down>'] = actions.cycle_history_next,
@@ -55,7 +55,7 @@ local dropdown_theme = require('telescope.themes').get_dropdown({
 })
 
 map('', '<A-s>', builtin.lsp_document_symbols)
-map('', '<A-w>', builtin.lsp_workspace_symbols)
+map('', '<A-w>', builtin.lsp_dynamic_workspace_symbols)
 map('', '<C-s>', function()
   return builtin.find_files({ find_command = { 'fd', '-t', 'f' } })
 end)

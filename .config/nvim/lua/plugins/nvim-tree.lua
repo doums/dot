@@ -5,9 +5,26 @@ file, You can obtain one at https://mozilla.org/MPL/2.0/. ]]
 -- Config for nvim-tree.lua
 
 local map = vim.keymap.set
+local uv = vim.loop
 
 map('n', '<Tab>', '<cmd>NvimTreeToggle<CR>')
 map('n', '<S-Tab>', '<cmd>NvimTreeFindFile<CR>')
+
+-- live grep using Telescope inside the current directory under
+-- the cursor (or the parent directory of the current file)
+local function grep_in(node)
+  if not node then
+    return
+  end
+  local path = node.absolute_path or uv.cwd()
+  if node.type ~= 'directory' and node.parent then
+    path = node.parent.absolute_path
+  end
+  require('telescope.builtin').live_grep({
+    search_dirs = { path },
+    prompt_title = string.format('Grep in [%s]', vim.fs.basename(path)),
+  })
+end
 
 require('nvim-tree').setup({
   hijack_cursor = true,
@@ -96,7 +113,9 @@ require('nvim-tree').setup({
         { key = 'f', action = 'live_filter' },
         { key = 'F', action = 'clear_live_filter' },
         { key = 'q', action = 'close' },
+        { key = '<C-k>', action = 'toggle_file_info' },
         { key = 'g?', action = 'toggle_help' },
+        { key = '<C-f>', action = '', action_cb = grep_in, mode = 'n' },
       },
     },
   },
