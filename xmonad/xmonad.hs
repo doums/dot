@@ -54,78 +54,134 @@ cfg = def {
   `additionalKeysP`         keybinds
   `additionalMouseBindings` mousebinds
 
--- key bindings
+-- # Key bindings
 keybinds = ([
-  -- XMonad basics
+  -- ## XMonad basics
+  -- Recompile and restart XMonad
     ("M-C-q",       spawn "xmonad --recompile; xmonad --restart")
+  -- Refresh XMonad
   , ("M-C-r",       refresh)
+  -- Kill current window
   , ("M-x",         kill)
-  -- Topic navigation
+
+  -- ## Topic navigation
+  -- "M-<Topic key>" Move to topic x
+  -- "M-S-<Topic key>" Move current window to topic x
+  -- Switch to last topic
   , ("M-<Tab>",     switchToLastTopic)
+  -- Switch to next topic
   , ("M-<Page_Up>", nextWS)
+  -- Switch to previous topic
   , ("M-<Page_Down>",
                     prevWS)
-  -- Window navigation
+
+  -- ## Window navigation
+  -- "M-<Up>/<Down>/<Right>/<Left>" Navigate through windows
+  -- "M-S-<Up>/<Down>/<Right>/<Left>" Swap windows
+  -- Focus next window up
   , ("M-k",         windows W.focusUp)
+  -- Focus next window down
   , ("M-j",         windows W.focusDown)
+  -- Focus master
   , ("M-m",         windows W.focusMaster)
+  -- Swap master
   , ("M-<Return>",  windows W.swapMaster)
+  -- Swap window up
   , ("M-S-k",       windows W.swapUp)
+  -- Swap window down
   , ("M-S-j",       windows W.swapDown)
+  -- Shift current window to next topic
   , ("M-S-<Page_Up>",
                     shiftToNext)
+  -- Shift current window to previous topic
   , ("M-S-<Page_Down>",
                     shiftToPrev)
-  -- Layout
+
+  -- ## Screen navigation
+  -- "M-<[]>" Move to next/previous screen
+  -- "M-S-<[]>" Move current window to next/previous screen
+
+  -- ## Layout
+  -- Next layout
   , ("M-<Space>",   sendMessage NextLayout)
+  -- Unfloat current window
   , ("M-f",         withFocused $ windows . W.sink)
+  -- Expand master area
   , ("M-l",         sendMessage Expand)
+  -- Shrink master area
   , ("M-h",         sendMessage Shrink)
+  -- Increment master slots
   , ("M-;",         sendMessage (IncMasterN 1))
+  -- Decrement master slots
   , ("M-,",         sendMessage (IncMasterN (-1)))
-  -- Launch app
+
+  -- ## Launch apps
+  -- Open a terminal
   , ("M-t",         spawn $ myTerminal)
+  -- Open the application launcher
   , ("M-!",         spawn "rofi -show drun")
+  -- Open the window switcher
   , ("M-w",         spawn "rofi -show window")
+  -- Screen lock
   , ("M-S-l",       spawn "lock.sh")
+  -- Open session menu
   , ("M-q",         spawn ("session.sh" ++ dmenuArgs))
+  -- Open clipboard manager
   , ("M-v",         spawn ("clipmenu -b -i -p '◧'" ++ dmenuArgs))
+  -- Restart compositor
   , ("M-p",         spawn "restart_picom.sh")
+  -- Toggle Redshift
   , ("M-*",         spawn "pkill -USR1 redshift")
+  -- Take a screenshot
   , ("<Print>",     spawn "screenshot.sh")
+  -- Take a screenshot with square selection
   , ("M-c",         spawn "clipshot.sh")
-  -- Scratchpads
+
+  -- ## Scratchpads
+  -- Take notes
   , ("M-:", namedScratchpadAction scratchpads "notes")
+  -- Translate
   , ("M-n", namedScratchpadAction scratchpads "gtrans")
+  -- Audio mixer
   , ("M-o", namedScratchpadAction scratchpads "pavucontrol")
+  -- File manager
   , ("M-b", namedScratchpadAction scratchpads "file-manager")
+  -- Calculator
   , ("M-=", namedScratchpadAction scratchpads "calc")
+  -- IRC
   , ("M-i", namedScratchpadAction scratchpads "irc-chat")
+  -- System monitor
   , ("M-s", namedScratchpadAction scratchpads "bottom")
+  -- Network Manager
   , ("M-u", namedScratchpadAction scratchpads "network")
-  -- Multimedia
+  -- Insomnia
+  , ("M-S-i", namedScratchpadAction scratchpads "insomnia")
+
+  -- ## Multimedia
+  -- Light up
   , ("<XF86MonBrightnessUp>",   spawn "pral.sh light_up")
+  -- Light down
   , ("<XF86MonBrightnessDown>", spawn "pral.sh light_down")
+  -- Volume up
   , ("<XF86AudioRaiseVolume>",  spawn "pral.sh sink_up")
+  -- Volume down
   , ("<XF86AudioLowerVolume>",  spawn "pral.sh sink_down")
+  -- Mute audio
   , ("<XF86AudioMute>",         spawn "pral.sh sink_mute")
+  -- Mute mic
   , ("<XF86AudioMicMute>",      spawn "pral.sh source_mute") ]
   ++
-  -- Basic topic navigation
-  -- M-<123aze4r5> move to topic x
-  -- M-S-<123aze4r5> move current window to topic x
   [ (m ++ "M-" ++ [k], f i)
       | (i, k) <- zip (topicNames topicItems) topicKeys
       , (f, m) <- [(goto, ""), (windows . W.shift, "S-")] ]
   ++
-  -- Basic screen navigation
-  -- M-<[]> move to next/previous screen
-  -- M-S-<[]> move current window to next/previous screen
   [ (m ++ "M-" ++ [k], screenWorkspace sc >>= flip whenJust f)
       | (k, sc) <- zip screenKeys [0..]
       , (f, m) <- [(windows . W.view, ""), (windows . W.shift, "S-")] ]
   )
 
+-- ## Mouse bindings
+-- "M-<left click>" Drag the window and make it floating
 mousebinds = [
   ((modm, button1), \w -> focus w >> mouseMoveWindow w)
   , ((modm, button2), windows . (W.shiftMaster .) . W.focusWindow)
@@ -136,6 +192,7 @@ nav2DConfig = def {layoutNavigation = [("→", sideNavigation)
 nav2D = navigation2DP def ("<Up>", "<Left>", "<Down>", "<Right>")
                           [("M-", windowGo), ("M-S-", windowSwap)]
                           True
+-- #
 
 modm = mod4Mask
 myTerminal = "alacritty"
@@ -171,9 +228,6 @@ myManageHook = fmap not willFloat --> insertPosition Below Newer
                <+> composeAll
     [ className =? "Gimp"               --> doFloat
     , className =? "feh"                --> doFloat
-    , className =? "Galculator"         --> doCenterFloat
-    , className =? "TeamSpeak 3"        --> doCenterFloat
-    , className =? "Insomnia"           --> doCenterFloat
     , className =? "jetbrains-toolbox"  --> doCenterFloat
     , title =? "splash"
         <&&> className ^? "jetbrains-"  --> doCenterFloat <> hasBorder False
@@ -221,7 +275,7 @@ bar = def
 
 -- topics
 -- 1›terminal 2›web browser 3›IDE a›keybase z›empty r›element 4›empty r›empty 5›empty
-topicItems = 
+topicItems =
   [ inHome   "\985015"                spawnShell
   , inHome   "\984479"                (spawn "firefox")
   , TI       "\987350"  "Documents"   (spawn "jetbrains-toolbox")
@@ -270,11 +324,13 @@ scratchpads =
   , NS "calc" "alacritty --class calc -e kalker"
       (appName =? "calc")
       (customFloating $ W.RationalRect (1/4) (2/6) (1/4) (3/6))
-  , NS "network" "alacritty --class network -e nmtui"
-      (appName =? "network")
-      (customFloating $ W.RationalRect 0.3 0.14 0.4 0.6)
   , NS "notes" "alacritty -o window.dimensions.columns=78 --class notes -e nvim /home/pierre/.local/share/notes.md"
       (appName =? "notes")
       (doFloatAt 0.2 0.3)
+  , NS "network" "alacritty --class network -e nmtui"
+      (appName =? "network")
+      (customFloating $ W.RationalRect 0.3 0.14 0.4 0.6)
+  , NS "insomnia" "/opt/AppImages/Insomnia.AppImage" (className =? "Insomnia")
+      (customFloating $ W.RationalRect (1/4) (1/4) (2/4) (2/4))
   ]
 
