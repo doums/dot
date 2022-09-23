@@ -18,6 +18,7 @@ alias wtr='curl fr.wttr.in'
 alias dk='docker'
 alias dc='docker compose'
 alias log='docker logs -f'
+alias gu='gitui'
 
 # bindings
 bind \eh '~; commandline -f repaint'

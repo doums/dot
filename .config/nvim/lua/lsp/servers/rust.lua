@@ -13,6 +13,7 @@ require('rust-tools').setup({
       autoSetHints = false,
       parameter_hints_prefix = '← ',
       other_hints_prefix = '→ ',
+      highlight = 'codeHint',
     },
     hover_actions = { border = 'none' },
   },

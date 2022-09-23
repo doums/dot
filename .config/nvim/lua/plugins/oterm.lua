@@ -12,9 +12,7 @@ require('oterm').setup({
   split_hl = 'terminal',
 })
 
-map('n', '<M-t>', function()
-  open()
-end)
+map('n', '<M-t>', open)
 map('n', '<M-y>', function()
   open({ layout = 'vsplit' })
 end)

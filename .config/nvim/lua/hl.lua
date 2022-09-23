@@ -85,7 +85,7 @@ function M.hl()
   li('TroubleFoldIcon', 'Constant')
 
   -- lsp_signature.nvim
-  hl('signatureHint', '#CA7E03', nil, 'italic')
+  hl('codeHint', '#CA7E03', nil, 'italic')
 end
 
 return M

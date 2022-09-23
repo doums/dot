@@ -1,0 +1,16 @@
+(
+    enter: Some("󰌑"),
+    shift: Some("󰘶")
+	  left: Some("←"),
+    right: Some("→"),
+    up: Some("↑"),
+    down: Some("↓"),
+    backspace: Some("󰭜"),
+    tab: Some("󰌒"),
+    back_tab: Some("󰌥"),
+    delete: Some("󰆴"),
+    insert: Some("󰏫"),
+    esc: Some("󱊷"),
+    control: Some("⌃"),
+    alt: Some("󰫺"),
+)
