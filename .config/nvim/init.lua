@@ -47,7 +47,6 @@ require('paq')({
   -- 'doums/espresso.nvim',
   'doums/sae',
   'doums/lsp_spinner.nvim',
-  'doums/floaterm.nvim',
   'doums/oterm.nvim',
   'doums/vassal.nvim',
   { 'nvim-treesitter/nvim-treesitter', run = update_ts_parsers },
@@ -206,7 +205,7 @@ require('plugins.vassal')
 require('plugins.comment')
 require('plugins.telescope')
 require('plugins.cobra')
-require('plugins.floaterm')
+require('plugins.oterm')
 require('plugins.trouble')
 require('plugins.nvim-cmp')
 require('plugins.luasnip')

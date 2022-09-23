@@ -21,7 +21,8 @@ function M.hl()
   hl('Caret', '#2A211C', '#889AFF', 'bold')
   hl('WinSeparator', '#332a25', '#332a25')
 
-  -- floaterm.nvim
+  -- oterm.nvim
+  hl('terminal', '#FFFFFF', '#211a16')
   hl('otermSplit', '#2A190E', '#211a16')
 
   -- lightspeed.nvim
