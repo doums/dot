@@ -18,8 +18,8 @@ local lsp_actions = {
   ['Format'] = lsp.buf.format,
 }
 local lsp_range_actions = {
-  ['Code action'] = lsp.buf.range_code_action,
-  ['Format'] = lsp.buf.range_formatting,
+  ['Code action'] = lsp.buf.code_action,
+  ['Format'] = lsp.buf.format,
 }
 
 local function lsp_menu()

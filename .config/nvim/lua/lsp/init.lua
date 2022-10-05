@@ -106,8 +106,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
       return require('rust-tools.inlay_hints').toggle_inlay_hints
     end, bufopt)
     map('n', '<A-r>', lsp.buf.rename, bufopt)
-    map('v', '<A-f>', lsp.buf.range_formatting, bufopt)
-    map('n', '<A-e>', '<cmd>lua vim.lsp.buf.format({async = true})<CR>', bufopt)
+    map({ 'n', 'v' }, '<A-e>', lsp.buf.format, bufopt)
     -- open a floating window with the diagnostics from the current cursor position
     api.nvim_create_autocmd('CursorHold', {
       callback = function()
