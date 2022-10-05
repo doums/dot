@@ -12,7 +12,11 @@ vim.api.nvim_create_autocmd('ColorScheme', {
   pattern = '*',
   callback = function()
     M.hl()
-    print('hl groups have been generated ✓')
+    vim.notify(
+      'hl groups have been generated ✓',
+      vim.log.levels.INFO,
+      { title = 'nvim-config' }
+    )
   end,
 })
 
@@ -22,21 +26,17 @@ function M.hl()
   hl('WinSeparator', '#332a25', '#332a25')
 
   -- oterm.nvim
-  hl('terminal', '#FFFFFF', '#211a16')
-  hl('otermSplit', '#2A190E', '#211a16')
+  hl('terminal', '#FFFFFF', '#212121')
+  hl('otermBorder', '#2A190E', '#212121')
 
-  -- lightspeed.nvim
-  hl('LightspeedCursor', '#212121', '#ebff00', 'bold')
-  hl('LightspeedLabel', '#f49810', nil, { 'bold', 'underline' })
-  hl('LightspeedLabelOverlapped', '#f49810', nil, 'underline')
-  hl('LightspeedShortcut', '#212121', '#f49810', { 'bold', 'underline' })
-  hl('LightspeedOneCharMatch', '#212121', '#f49810', 'bold')
-  hl('LightspeedGreyWash', '#80807f')
-  hl('LightspeedUnlabeledMatch', '#ddddff', nil, 'bold')
-  hl('LightspeedPendingOpArea', '#212121', '#f49810')
-  hl('LightspeedLabelDistant', '#aa4e00', nil, { 'bold', 'underline' })
-  hl('LightspeedLabelDistantOverlapped', '#aa4e00', nil, 'underline')
-  hl('LightspeedMaskedChar', '#906526')
+  -- leap.nvim
+  hl('LeapMatch', '#aa4e00', nil, { 'underline', 'nocombine' })
+  hl('LeapLabelPrimary', '#212121', '#f49810', 'nocombine')
+  hl('LeapLabelSecondary', '#212121', '#8c5845', 'nocombine')
+  hl('LeapLabelSelected', '#ddddff', nil, { 'bold', 'nocombine' })
+  -- hl('LeapBackdrop', '#80807f', nil, 'nocombine')
+  -- leap use Cursor hl group, customize it
+  hl('Cursor', '#212121', '#8c5845', { 'nocombine', 'bold' })
 
   -- nvim-cmp
   li('CmpItemAbbr', 'Pmenu')

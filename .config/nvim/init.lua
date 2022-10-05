@@ -72,7 +72,7 @@ require('paq')({
   'pantharshit00/vim-prisma',
   'kyazdani42/nvim-tree.lua',
   'kyazdani42/nvim-web-devicons', -- dep of nvim-tree.lua
-  'ggandor/lightspeed.nvim',
+  'ggandor/leap.nvim',
   'AckslD/nvim-neoclip.lua',
   'windwp/nvim-ts-autotag',
 })
@@ -193,6 +193,18 @@ map(
   [[:lua vim.opt.spell = not vim.opt.spell:get()<CR>]],
   { silent = true }
 )
+-- reload nvim config
+map('n', '<F10>', function()
+  vim.cmd([[
+      update $MYVIMRC
+      source $MYVIMRC
+    ]])
+  vim.notify(
+    'config reloaded ✓',
+    vim.log.levels.INFO,
+    { title = 'nvim-config' }
+  )
+end)
 
 -- generate custom highlight groups
 require('hl').hl()
@@ -210,7 +222,7 @@ require('plugins.trouble')
 require('plugins.nvim-cmp')
 require('plugins.luasnip')
 require('plugins.gitsigns')
-require('plugins.lightspeed')
+require('plugins.leap')
 require('plugins.nvim-neoclip')
 require('plugins.suit')
 require('lsp')

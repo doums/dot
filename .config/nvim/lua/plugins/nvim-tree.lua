@@ -113,7 +113,7 @@ require('nvim-tree').setup({
         { key = 'f', action = 'live_filter' },
         { key = 'F', action = 'clear_live_filter' },
         { key = 'q', action = 'close' },
-        { key = '<C-k>', action = 'toggle_file_info' },
+        { key = '<A-d>', action = 'toggle_file_info' },
         { key = 'g?', action = 'toggle_help' },
         { key = '<C-f>', action = '', action_cb = grep_in, mode = 'n' },
       },
