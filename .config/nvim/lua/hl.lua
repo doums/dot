@@ -36,7 +36,7 @@ function M.hl()
   hl('LeapLabelSelected', '#ddddff', nil, { 'bold', 'nocombine' })
   -- hl('LeapBackdrop', '#80807f', nil, 'nocombine')
   -- leap use Cursor hl group, customize it
-  hl('Cursor', '#212121', '#8c5845', { 'nocombine', 'bold' })
+  hl('Cursor', '#212121', '#df4a00', { 'nocombine', 'bold' })
 
   -- nvim-cmp
   li('CmpItemAbbr', 'Pmenu')

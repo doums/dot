@@ -117,6 +117,7 @@ o.textwidth = 66
 o.foldmethod = 'expr'
 o.foldexpr = 'nvim_treesitter#foldexpr()'
 o.foldlevelstart = 99
+o.splitkeep = 'screen'
 opt.complete = opt.complete:append({ 'i' })
 opt.formatoptions = opt.formatoptions:append('lv')
 
