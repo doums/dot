@@ -43,7 +43,7 @@ require('ponton').setup({
       map = {
         normal = { ' ' },
         insert = { '❱', { '#69ff00', line_bg, 'bold' } },
-        replace = { '▲', { '#69ff00', line_bg, 'bold' } },
+        replace = { '❰', { '#ff0050', line_bg, 'bold' } },
         visual = { '◆', { '#43A8ED', line_bg, 'bold' } },
         v_line = { '━', { '#43A8ED', line_bg, 'bold' } },
         v_block = { '■', { '#43A8ED', line_bg, 'bold' } },

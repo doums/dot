@@ -45,6 +45,7 @@ require('paq')({
   -- 'doums/ponton.nvim',
   -- 'doums/suit.nvim',
   -- 'doums/espresso.nvim',
+  -- 'doums/modeui.nvim'
   'doums/sae',
   'doums/lsp_spinner.nvim',
   'doums/oterm.nvim',
@@ -226,4 +227,5 @@ require('plugins.gitsigns')
 require('plugins.leap')
 require('plugins.nvim-neoclip')
 require('plugins.suit')
+require('plugins.modeui')
 require('lsp')
