@@ -18,11 +18,6 @@ require('lspconfig').sumneko_lua.setup({ -- Lua
     client.server_capabilities.documentRangeFormattingProvider = false
   end,
   capabilities = capabilities,
-  cmd = {
-    '/opt/lua-language-server/bin/lua-language-server',
-    '-E',
-    '/opt/lua-language-server/main.lua',
-  },
   settings = {
     Lua = {
       runtime = { version = 'LuaJIT', path = runtime_path },

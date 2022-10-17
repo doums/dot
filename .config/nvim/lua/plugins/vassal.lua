@@ -5,6 +5,5 @@ file, You can obtain one at https://mozilla.org/MPL/2.0/. ]]
 -- Config for vassal.nvim
 
 require('vassal').commands({
-  [[npm i -g typescript typescript-language-server eslint prettier @prisma/language-server cspell]],
-  'cd /opt/lua-language-server/ && ./update.sh',
+  [[npm i -g typescript typescript-language-server eslint prettier cspell]],
 })

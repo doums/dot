@@ -1,14 +1,13 @@
 --[[ External dependencies
 
 for LSP
-  * clangd, language server for C/C++ (Arch Linux package clangd)
+  * clangd, language server for C/C++ (Arch Linux package)
   * TypeScript Language Server (npm package - typescript-language-server)
   * rust-analyzer (https://rust-analyzer.github.io/manual.html#rustup)
   * shellcheck, shell script static analysis tool (AUR shellcheck-bin)
-  * StyLua, Lua code formatter (AUR stylua)
-  * lua-language-server, must be installed in /opt/lua-language-server
+  * StyLua, Lua code formatter (Arch Linux package)
+  * lua-language-server (Arch Linux package)
   * ESLint and Prettier (npm packages - eslint prettier)
-  * Prisma LSP (npm package - @prisma/language-server)
   * cspell (npm package)
 
 others: git, ripgrep, fzf, node, npm
@@ -42,10 +41,10 @@ require('paq')({
   { 'savq/paq-nvim', opt = true }, -- Let Paq manage itself
   'numToStr/comment.nvim',
   'doums/coBra',
-  -- 'doums/ponton.nvim',
-  -- 'doums/suit.nvim',
-  -- 'doums/espresso.nvim',
-  -- 'doums/modeui.nvim'
+  'doums/ponton.nvim',
+  'doums/suit.nvim',
+  'doums/espresso.nvim',
+  'doums/modeui.nvim',
   'doums/sae',
   'doums/lsp_spinner.nvim',
   'doums/oterm.nvim',
