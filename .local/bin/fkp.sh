@@ -17,12 +17,18 @@ processes=$(ss -pnOatu \
 | fzf -m --header-lines=1 --preview 'echo {}' --preview-window=up:4:sharp:wrap \
 | awk '{print $7}')
 
+if [ -z "$processes" ]; then
+  exit 0
+fi
+
+signal=$(printf 'SIGTERM\nSIGKILL\nSIGINT\nSIGABRT' | fzf --header="Signal")
+
 for process in ${processes}; do
   match=$(grep -o "pid=[[:digit:]]\+" <<< "${process}")
   pid="${match##pid=}"
   if [ "$pid" ]; then
-    if ! kill "$pid" &> /dev/null; then
-      sudo kill "$pid"
+    if ! kill -s "$signal" "$pid" &> /dev/null; then
+      sudo kill -s "$signal" "$pid"
     fi
   fi
 done

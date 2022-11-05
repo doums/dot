@@ -17,8 +17,14 @@ pids=$(ps -eo user=user,pid=pid,ppid=ppid,%cpu=cpu,%mem=mem,args=cmd \
 | fzf -m --header-lines=1 --preview 'echo {}' --preview-window=up:4:sharp:wrap \
 | awk '{print $2}')
 
+if [ -z "$pids" ]; then
+  exit 0
+fi
+
+signal=$(printf 'SIGTERM\nSIGKILL\nSIGINT\nSIGABRT' | fzf --header="Signal")
+
 for pid in ${pids}; do
-  if ! kill "$pid" &> /dev/null; then
-    sudo kill "$pid"
+  if ! kill -s "$signal" "$pid" &> /dev/null; then
+    sudo kill -s "$signal" "$pid"
   fi
 done
