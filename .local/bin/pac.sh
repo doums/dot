@@ -1,12 +1,40 @@
 #!/bin/bash
 
+red="\e[38;5;1m"
+yellow="\e[38;5;3m"
+bold="\e[1m"
+reset="\e[0m"
+
 remove ()
 {
-  choice=$(pacman -Qq | fzf --preview 'pacman -Qil {}' --preview-window=right:70%:noborder)
-  sudo pacman -Rsn "$choice"
+  package=$(pacman -Qq | fzf --preview 'pacman -Qil {}' --preview-window=right:70%:noborder)
+  if [ -n "$package" ]; then
+    printf "Remove %b%b%s%b\n" "$bold" "$red" "$package" "$reset"
+    sudo pacman -Rsn "$package"
+  fi
 }
 
-choice=$(printf "query\nforeign\nsync\nexplicitly\nremove\nupdate" | fzf --no-info)
+install ()
+{
+  package=$(pacman -Ssq | fzf --preview 'pacman -Si {}'\
+    --preview-window=right:70%:noborder\
+    --bind "change:reload(pacman -Ssq)")
+  if [ -n "$package" ]; then
+    printf "Install %b%b%s%b\n" "$bold" "$yellow" "$package" "$reset"
+    sudo pacman -S "$package"
+  fi
+}
+
+orphans ()
+{
+  package=$(pacman -Qtd | fzf | awk '{print $1}')
+  if [ -n "$package" ]; then
+    printf "Remove %b%b%s%b\n" "$bold" "$red" "$package" "$reset"
+    sudo pacman -Rsn "$package"
+  fi
+}
+
+choice=$(printf "query\nforeign\nsync db\nexplicitly\nremove\nupdate\norphans" | fzf --no-info)
 case "$choice" in
   "query")
     pacman -Qq | fzf --preview 'pacman -Qil {}' --preview-window=right:70%:noborder
@@ -14,10 +42,8 @@ case "$choice" in
   "foreign")
     pacman -Qmq | fzf --preview 'pacman -Qil {}' --preview-window=right:70%:noborder
   ;;
-  "sync")
-    pacman -Ssq | fzf --preview 'pacman -Si {}'\
-      --preview-window=right:70%:noborder\
-      --bind "change:reload(pacman -Ssq)"
+  "sync db")
+    install
   ;;
   "explicitly")
     pacman -Qeq | fzf --preview 'pacman -Qil {}'\
@@ -28,5 +54,8 @@ case "$choice" in
   ;;
   "update")
     sudo pacman -Syu
+  ;;
+  "orphans")
+    orphans
   ;;
 esac

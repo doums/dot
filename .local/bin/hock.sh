@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 
 # hock, Handy dOCKer manager using fzf
 
@@ -17,7 +17,7 @@ manage_container() {
   if [ ${#containers[*]} -eq 1 ] && [ -z "${containers[0]}" ]; then
     return 0
   fi
-  action=$(printf 'inspect\nkill\nlogs\npause\nport\nrestart\nrm\nstart\nstop\ntop\nunpause\nupdate\nwait\n' | fzf --no-info)
+  action=$(printf 'inspect\nkill\nlogs\nlogs -f\npause\nport\nrestart\nrm\nstart\nstop\ntop\nunpause\nupdate\nwait\n' | fzf --no-info)
   if [ -z "$action" ]; then
     if ! manage_container; then
       return 1
@@ -32,7 +32,7 @@ manage_container() {
         cmd+=("$id")
       done
     ;;
-    logs | port | top)
+    logs | "logs -f" | port | top)
       cmd+=("$action" "${containers[0]}")
     ;;
   esac
