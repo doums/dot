@@ -2,7 +2,9 @@
     selected_tab: Reset,
     command_fg: White,
     selection_bg: DarkGray,
-    cmdbar_extra_lines_bg: Blue,
+    selection_fg: White,
+    cmdbar_bg: Indexed(237),
+    cmdbar_extra_lines_bg: Indexed(237),
     disabled_fg: DarkGray,
     diff_line_add: Green,
     diff_line_delete: Red,
@@ -14,6 +16,8 @@
     commit_time: LightCyan,
     commit_author: Blue,
     danger_fg: Red,
-    push_gauge_bg: Blue,
+    push_gauge_bg: Yellow,
     push_gauge_fg: Reset,
+    tag_fg: LightMagenta,
+    branch_fg: Magenta
 )
