@@ -76,8 +76,8 @@ keybinds = ([
                     prevWS)
 
   -- ## Window navigation
-  -- "M-<Up>/<Down>/<Right>/<Left>" Navigate through windows
-  -- "M-S-<Up>/<Down>/<Right>/<Left>" Swap windows
+  -- "M-↑→↓←" Navigate through windows
+  -- "M-S-↑→↓←" Swap windows
   -- Focus next window up
   , ("M-k",         windows W.focusUp)
   -- Focus next window down
@@ -184,6 +184,7 @@ keybinds = ([
 
 -- ## Mouse bindings
 -- "M-<left click>" Drag the window and make it floating
+-- "M-<right click>" Resize the window (make it floating)
 mousebinds = [
   ((modm, button1), \w -> focus w >> mouseMoveWindow w)
   , ((modm, button2), windows . (W.shiftMaster .) . W.focusWindow)
@@ -284,7 +285,7 @@ topicItems =
   , inHome   "\985977"                (spawn "run_keybase")
   , noAction "z"        "Documents"
   , inHome   "\984960"                (spawn "flatpak run im.riot.Riot")
-  , noAction "4"          "~"
+  , inHome   "4"                      (spawn "com.discordapp.Discord")
   , noAction "r"          "~"
   , noAction "5"          "~"
   ]
