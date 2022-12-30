@@ -54,9 +54,9 @@ cfg = def {
   `additionalKeysP`         keybinds
   `additionalMouseBindings` mousebinds
 
--- # Key bindings
+-- # XMonad keymap
 keybinds = ([
-  -- ## XMonad basics
+  -- ## Basics
   -- Recompile and restart XMonad
     ("M-C-q",       spawn "xmonad --recompile; xmonad --restart")
   -- Refresh XMonad
@@ -138,6 +138,8 @@ keybinds = ([
   , ("M-c",         spawn "clipshot.sh")
 
   -- ## Scratchpads
+  -- Keymap
+  , ("M-S-,", namedScratchpadAction scratchpads "keymap")
   -- Take notes
   , ("M-:", namedScratchpadAction scratchpads "notes")
   -- Translate
@@ -281,7 +283,7 @@ bar = def
 topicItems =
   [ inHome   "\985015"                spawnShell
   , inHome   "\984479"                (spawn "firefox")
-  , TI       "\987350"  "Documents"   (spawn "jetbrains-toolbox")
+  , TI       "\987350"  "Documents"   (spawnShellIn "Documents")
   , inHome   "\985977"                (spawn "run_keybase")
   , noAction "z"        "Documents"
   , inHome   "\984960"                (spawn "flatpak run im.riot.Riot")
@@ -315,6 +317,9 @@ scratchpads =
       (customFloating $ W.RationalRect (1/4) (1/6) (3/9) (4/6))
   , NS "pavucontrol" "pavucontrol" (className =? "Pavucontrol")
       (customFloating $ W.RationalRect (1/4) (1/4) (2/4) (2/4))
+  , NS "keymap" "apekey"
+      (appName =? "apekey")
+      (customFloating $ W.RationalRect 0.38 0.12 0.33 0.8)
   , NS "file-manager" "alacritty --class file-manager -e nnn"
       (appName =? "file-manager")
       (customFloating $ W.RationalRect (1/4) (1/6) (3/9) (4/6))
