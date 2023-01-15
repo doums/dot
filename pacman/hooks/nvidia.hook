@@ -4,6 +4,7 @@ Operation=Upgrade
 Operation=Remove
 Type=Package
 Target=nvidia
+Target=nvidia-utils
 
 [Action]
 Description=Update NVIDIA module in initcpio ⚡
