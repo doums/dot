@@ -54,7 +54,7 @@ cfg = def {
   `additionalKeysP`         keybinds
   `additionalMouseBindings` mousebinds
 
--- # XMonad keymap
+-- # Keymap
 keybinds = ([
   -- ## Basics
   -- Recompile and restart XMonad
@@ -236,9 +236,10 @@ myManageHook = fmap not willFloat --> insertPosition Below Newer
     , className =? "jetbrains-toolbox"  --> doCenterFloat
     , title =? "splash"
         <&&> className ^? "jetbrains-"  --> doCenterFloat <> hasBorder False
+    , title ^? "Emulator"               --> doFloat
     , (className =? "firefox" <&&> resource =? "Dialog")
                                         --> doFloat
-    , title     =? "Contrôle du volume" --> doCenterFloat
+    , title     =? "Volume Control" --> doCenterFloat
     , resource  =? "desktop_window"     --> doIgnore ]
 
 myEventHook = handleEventHook def
@@ -284,7 +285,7 @@ topicItems =
   [ inHome   "\985015"                spawnShell
   , inHome   "\984479"                (spawn "firefox")
   , TI       "\987350"  "Documents"   (spawnShellIn "Documents")
-  , inHome   "\985977"                (spawn "run_keybase")
+  , inHome   "\985977"                (spawn "firefox --new-window https://element.nymtech.chat")
   , noAction "z"        "Documents"
   , inHome   "\984960"                (spawn "flatpak run im.riot.Riot")
   , inHome   "4"                      (spawn "com.discordapp.Discord")
