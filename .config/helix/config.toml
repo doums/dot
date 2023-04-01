@@ -1,0 +1,30 @@
+theme = "rose_pine"
+
+[editor]
+line-number = "relative"
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+
+[editor.file-picker]
+hidden = false
+
+[editor.whitespace.render]
+newline = "all"
+
+[editor.whitespace.characters]
+newline = "¬"
+
+[editor.soft-wrap]
+enable = true
+wrap-indicator = "➞"
+
+[keys.normal]
+C-l = "move_next_word_start"
+C-h = "move_prev_word_end"
+C-k = "half_page_up"
+C-j = "half_page_down"
+A-h = "goto_line_start"
+A-l = "goto_line_end"
