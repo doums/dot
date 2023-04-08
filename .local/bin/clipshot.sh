@@ -19,5 +19,5 @@ if ! xclip -version &> /dev/null; then
   exit 1
 fi
 
-read -ra options <<< "$(slop -b 4 --color=191,191,191,0.60 -f "-i %i -g %g")"
+read -ra options <<< "$(slop -b 4 --color=245,0,87,0.80 -f "-i %i -g %g")"
 shotgun "${options[@]}" - | xclip -t 'image/png' -selection clipboard
