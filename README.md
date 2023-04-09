@@ -8,7 +8,7 @@ Linux build:
 - no desktop environment
 - display manager: LightDM + its gtk greeter
 - window manager: XMonad
-- compositor: picom
+- compositor: yshui/picom
 
 ### in the live environment
 
