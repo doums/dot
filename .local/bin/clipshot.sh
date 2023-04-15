@@ -1,21 +1,26 @@
 #!/bin/bash
+# pierreD
 
-red="\e[38;5;1m"
-bold="\e[1m"
-reset="\e[0m"
+# script to take screenshot with square selection
+
+# ANSI style codes
+RED="\e[38;5;1m" # red
+BLD="\e[1m"      # bold
+RS="\e[0m"       # style reset
+B_RED="$BLD$RED"
 
 if ! shotgun --version &> /dev/null; then
-  >&2 printf "%bThis script needs %bshotgun%b%b to work.%b\n" "$red" "$bold" "$reset" "$red" "$reset"
+  >&2 echo -e " $B_RED⚠$RS This script needs$BLD shotgun$RS to work"
   exit 1
 fi
 
 if ! slop --version &> /dev/null; then
-  >&2 printf "%bThis script needs %bslop%b%b to work.%b\n" "$red" "$bold" "$reset" "$red" "$reset"
+  >&2 echo -e " $B_RED⚠$RS This script needs$BLD slop$RS to work"
   exit 1
 fi
 
 if ! xclip -version &> /dev/null; then
-  >&2 printf "%bThis script needs %bxclip%b%b to work.%b\n" "$red" "$bold" "$reset" "$red" "$reset"
+  >&2 echo -e " $B_RED⚠$RS This script needs$BLD xclip$RS to work"
   exit 1
 fi
 

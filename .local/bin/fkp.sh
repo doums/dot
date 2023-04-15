@@ -1,15 +1,18 @@
 #!/bin/bash
+# pierreD
 
-# from port(s) find and kill process
+# searching by port listened find and kill process(es) quickly
 
 set -e
 
-red="\e[38;5;1m"
-bold="\e[1m"
-reset="\e[0m"
+# ANSI style codes
+RED="\e[38;5;1m" # red
+BLD="\e[1m"      # bold
+RS="\e[0m"       # style reset
+B_RED="$BLD$RED"
 
 if ! fzf --version &> /dev/null; then
-  >&2 printf "%bThis script needs %bfzf%b%b to work.%b\n" "$red" "$bold" "$reset" "$red" "$reset"
+  >&2 echo -e " $B_RED⚠$RS This script needs$BLD fzf$RS to work"
   exit 1
 fi
 
