@@ -14,7 +14,8 @@ if ! dmenu -v &> /dev/null; then
   exit 1
 fi
 
-choice=$(printf "✓ check\n✗ error\n⚠ warn\n⚡ power\n→ right\n← left\n↑ up\n↓ down\n✶ star\n" | dmenu -b -i -l 9 -p 'glyph' "$@")
+choice=$(printf "✓ check\n✗ error\n⚠ warn\n⚡ power\n→ right\n← left\n↑ up\n↓ down\n✶ star\n⚇ face\n"\
+        | dmenu -b -i -l 10 -p 'glyph' "$@" -fn 'JetBrainsMono:pixelsize=19:antialias=true')
 case $choice in
   "✓ check")  echo -n ✓ | xclip -selection clipboard;;
   "✗ error")  echo -n ✗ | xclip -selection clipboard;;
@@ -25,4 +26,5 @@ case $choice in
   "↑ up")     echo -n ↑ | xclip -selection clipboard;;
   "↓ down")   echo -n ↓ | xclip -selection clipboard;;
   "✶ star")   echo -n ✶ | xclip -selection clipboard;;
+  "⚇ face")   echo -n ⚇ | xclip -selection clipboard;;
 esac
