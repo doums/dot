@@ -126,6 +126,8 @@ keybinds = ([
   , ("M-S-l",       spawn "lock.sh")
   -- Open session menu
   , ("M-q",         spawn ("session.sh" ++ dmenuArgs))
+  -- Open glyph menu
+  , ("M-g",         spawn ("glyph.sh" ++ dmenuArgs))
   -- Open clipboard manager
   , ("M-v",         spawn ("clipmenu -b -i -p '◧'" ++ dmenuArgs))
   -- Restart compositor
@@ -239,7 +241,7 @@ myManageHook = fmap not willFloat --> insertPosition Below Newer
     , title ^? "Emulator"               --> doFloat
     , (className =? "firefox" <&&> resource =? "Dialog")
                                         --> doFloat
-    , title     =? "Volume Control" --> doCenterFloat
+    , title     =? "Volume Control"     --> doCenterFloat
     , resource  =? "desktop_window"     --> doIgnore ]
 
 myEventHook = handleEventHook def
@@ -285,7 +287,7 @@ topicItems =
   [ inHome   "\985015"                spawnShell
   , inHome   "\984479"                (spawn "firefox")
   , TI       "\987350"  "Documents"   (spawnShellIn "Documents")
-  , inHome   "\985977"                (spawn "firefox --new-window https://element.nymtech.chat")
+  , inHome   "\985977"                (spawn "im.riot.Riot --profile nym")
   , noAction "z"        "Documents"
   , inHome   "\984960"                (spawn "flatpak run im.riot.Riot")
   , inHome   "4"                      (spawn "com.discordapp.Discord")
