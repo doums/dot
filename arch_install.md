@@ -1,4 +1,6 @@
-### setup overview
+## Arch install
+
+setup overview:
 
 - UEFI - GPT
 - bootloader: systemd-boot
@@ -101,3 +103,8 @@ cp -a /boot/intel-ucode.img /efi/
 
 TODO add instruction for auto updates
 
+### POST install
+
+to setup wired connection, use systemd-networkd & systemd-resolvd
+
+enable/start these services
