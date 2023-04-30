@@ -75,7 +75,7 @@ write the conf loader in `/efi/loader/loader.conf`
 ```
 default arch.conf
 timeout 4
-console-mode 1
+console-mode keep
 editor no
 ```
 
@@ -101,10 +101,101 @@ cp -a /boot/initramfs-linux.img /efi/
 cp -a /boot/intel-ucode.img /efi/
 ```
 
-TODO add instruction for auto updates
+**⚠** be sure to read #system maintenance
 
 ### POST install
 
-to setup wired connection, use systemd-networkd & systemd-resolvd
+#### network
 
+check interfaces
+
+```
+ip link
+```
+
+The ether interface should be DOWN by default\
+To have it UP at boot use systemd-networkd.service & systemd-resolvd.service\
 enable/start these services
+
+→ https://wiki.archlinux.org/title/Systemd-networkd
+https://wiki.archlinux.org/title/Network_configuration
+
+#### ⚠ system maintenance
+
+To upgrade `systemd-boot` on package upgrade add the
+following custom pacman hook in `/etc/pacman.d/hooks/`
+
+```
+[Trigger]
+Type = Package
+Operation = Upgrade
+Target = systemd
+
+[Action]
+Description = Upgrading systemd-boot ⚡
+When = PostTransaction
+Exec = /usr/bin/systemctl restart systemd-boot-update.service
+```
+
+To automatically copy kernel, initramfs and microcode images into
+the ESP after a system upgrade add this pacman hook
+
+```
+[Trigger]
+Type = Path
+Operation = Install
+Operation = Upgrade
+Target = usr/lib/modules/*/vmlinuz
+Target = usr/lib/initcpio/*
+Target = boot/*-ucode.img
+
+[Action]
+Description = Copying boot files to EFI ⚡
+When = PostTransaction
+Exec = /usr/local/bin/boot-files-copy.sh
+```
+
+Add the corresponding script into `/usr/local/bin/`
+
+```
+#! /bin/sh
+
+ESP="/efi/"
+
+cp -a /boot/vmlinuz-linux $ESP
+cp -a /boot/initramfs-linux.img $ESP
+cp -a /boot/intel-ucode.img $ESP
+
+exit 0
+```
+
+#### TRIM
+
+→ https://wiki.archlinux.org/index.php/Solid_state_drive#Periodic_TRIM
+
+```
+sudo systemctl enable fstrim.timer
+sudo systemctl start fstrim.timer
+```
+
+#### time synchronization
+
+→ https://wiki.archlinux.org/title/Systemd-timesyncd
+
+```
+sudo systemctl enable systemd-timesyncd.service
+sudo systemctl start systemd-timesyncd.service
+timedatectl set-ntp true
+```
+
+#### pacman stuff
+
+→ https://github.com/doums/dotfiles/tree/master/pacman
+
+#### user
+
+```
+useradd -Um -G wheel -s /bin/fish pierre
+passwd pierre
+```
+
