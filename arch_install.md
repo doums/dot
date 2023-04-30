@@ -5,7 +5,7 @@ setup overview:
 - UEFI - GPT
 - bootloader: systemd-boot
 - ESP mounted to `/efi`
-- ROOT type `ext4` (btrfs could be considered in next installs)
+- ROOT type `ext4` (`btrfs` could be considered in next installs)
 - Swap partition of 8G
 
 ### memo
@@ -49,7 +49,7 @@ swapon /dev/nvme0n1p3
 1. mount ROOT
 
 ```
-mount /dev/nvme0n1p1 /mnt
+mount /dev/nvme0n1p2 /mnt
 ```
 
 2. mount ESP to `/efi`
@@ -101,7 +101,7 @@ cp -a /boot/initramfs-linux.img /efi/
 cp -a /boot/intel-ucode.img /efi/
 ```
 
-**⚠** be sure to read #system maintenance
+⚠ be sure to read #system maintenance
 
 ### POST install
 
