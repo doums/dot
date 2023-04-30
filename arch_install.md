@@ -77,6 +77,8 @@ console-mode 1
 editor no
 ```
 
+source: https://man.archlinux.org/man/loader.conf.5#OPTIONS
+
 write the Arch Linux entry in `/efi/loader/entries/arch.conf`
 
 ```
