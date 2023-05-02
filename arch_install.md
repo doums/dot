@@ -23,6 +23,8 @@ Partition the disk using `fdisk /dev/nvme0n1`
 7. change SWAP type to "Linux swap"
 8. write the disk & exit fdisk
 
+→ https://wiki.archlinux.org/title/Partitioning
+
 #### Formatting
 
 1. format ESP in `FAT32`
@@ -43,6 +45,9 @@ mkfs.ext4 -L ARCH /dev/nvme0n1p2
 mkswap -L SWAP /dev/nvme0n1p3
 swapon /dev/nvme0n1p3
 ```
+
+→ https://wiki.archlinux.org/title/EFI_system_partition
+→ https://wiki.archlinux.org/title/File_systems
 
 #### Mounting FS
 
@@ -117,8 +122,8 @@ The ether interface should be DOWN by default\
 To have it UP at boot use systemd-networkd.service & systemd-resolvd.service\
 enable/start these services
 
+→ https://wiki.archlinux.org/title/Network_configuration \
 → https://wiki.archlinux.org/title/Systemd-networkd
-https://wiki.archlinux.org/title/Network_configuration
 
 #### ⚠ system maintenance
 
@@ -180,7 +185,8 @@ sudo systemctl start fstrim.timer
 
 #### time synchronization
 
-→ https://wiki.archlinux.org/title/Systemd-timesyncd
+→ https://wiki.archlinux.org/title/Systemd-timesyncd \
+→ https://wiki.archlinux.org/title/System_time
 
 ```
 sudo systemctl enable systemd-timesyncd.service
@@ -193,6 +199,8 @@ timedatectl set-ntp true
 → https://github.com/doums/dotfiles/tree/master/pacman
 
 #### user
+
+→ https://wiki.archlinux.org/title/Users_and_groups#User_management
 
 ```
 useradd -Um -G wheel -s /bin/fish pierre
