@@ -15,11 +15,11 @@ setup overview:
 Partition the disk using `fdisk /dev/nvme0n1`
 
 1. create a new GPT table
-2. create 1st partition of 512M -> ESP
+2. create 1st partition of 512M → ESP
 3. change ESP type to "EFI system"
-4. create 2nd partition of -8G (= remaining size for swap) -> ROOT
+4. create 2nd partition of -8G (= remaining size for swap) → ROOT
 5. ROOT type should be set by default to "Linux filesystem"
-6. create 3rd part with the remaining space (8G) -> SWAP
+6. create 3rd part with the remaining space (8G) → SWAP
 7. change SWAP type to "Linux swap"
 8. write the disk & exit fdisk
 
