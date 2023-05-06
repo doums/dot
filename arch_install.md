@@ -10,6 +10,13 @@ setup overview:
 
 ### memo
 
+#### Prerequisites
+
+In UEFI firmware:
+
+- ⚠ set the hardware clock to UTC time
+- disable secure boot
+
 #### Partitioning
 
 Partition the disk using `fdisk /dev/nvme0n1`
@@ -174,29 +181,32 @@ cp -a /boot/intel-ucode.img $ESP
 exit 0
 ```
 
-#### TRIM
+#### time & time sync
 
-→ https://wiki.archlinux.org/index.php/Solid_state_drive#Periodic_TRIM
-
-```
-sudo systemctl enable fstrim.timer
-sudo systemctl start fstrim.timer
-```
-
-#### time synchronization
-
-→ https://wiki.archlinux.org/title/Systemd-timesyncd \
 → https://wiki.archlinux.org/title/System_time
+→ https://wiki.archlinux.org/title/Systemd-timesyncd \
+
+Check the current settings
 
 ```
-sudo systemctl enable systemd-timesyncd.service
-sudo systemctl start systemd-timesyncd.service
-timedatectl set-ntp true
+timedatectl
 ```
 
-#### pacman stuff
+The hardware clock (`RTC time` in the output) should match the current UTC time \
+Set the timezone
 
-→ https://github.com/doums/dotfiles/tree/master/pacman
+```
+$ timedatectl list-timezones
+# timedatectl set-timezone Europe/Paris
+```
+
+Enable time synchronization
+
+```
+# systemctl enable systemd-timesyncd.service
+# systemctl start systemd-timesyncd.service
+# timedatectl set-ntp true
+```
 
 #### user
 
@@ -207,3 +217,15 @@ useradd -Um -G wheel -s /bin/fish pierre
 passwd pierre
 ```
 
+#### TRIM
+
+→ https://wiki.archlinux.org/index.php/Solid_state_drive#Periodic_TRIM
+
+```
+# systemctl enable fstrim.timer
+# systemctl start fstrim.timer
+```
+
+#### pacman stuff
+
+→ https://github.com/doums/dotfiles/tree/master/pacman
