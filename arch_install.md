@@ -53,7 +53,7 @@ mkswap -L SWAP /dev/nvme0n1p3
 swapon /dev/nvme0n1p3
 ```
 
-→ https://wiki.archlinux.org/title/EFI_system_partition
+→ https://wiki.archlinux.org/title/EFI_system_partition \
 → https://wiki.archlinux.org/title/File_systems
 
 #### Mounting FS
@@ -91,7 +91,7 @@ console-mode keep
 editor no
 ```
 
-source: https://man.archlinux.org/man/loader.conf.5#OPTIONS
+→ https://man.archlinux.org/man/loader.conf.5#OPTIONS
 
 write the Arch Linux entry in `/efi/loader/entries/arch.conf`
 
@@ -113,7 +113,7 @@ cp -a /boot/initramfs-linux.img /efi/
 cp -a /boot/intel-ucode.img /efi/
 ```
 
-⚠ be sure to read #system maintenance
+⚠ be sure to read [system maintenance](#-system-maintenance)
 
 ### POST install
 
@@ -183,8 +183,8 @@ exit 0
 
 #### time & time sync
 
-→ https://wiki.archlinux.org/title/System_time
-→ https://wiki.archlinux.org/title/Systemd-timesyncd \
+→ https://wiki.archlinux.org/title/System_time \
+→ https://wiki.archlinux.org/title/Systemd-timesyncd
 
 Check the current settings
 
