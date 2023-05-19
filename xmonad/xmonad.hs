@@ -145,7 +145,7 @@ keybinds = ([
   -- Take notes
   , ("M-:", namedScratchpadAction scratchpads "notes")
   -- Translate
-  , ("M-n", namedScratchpadAction scratchpads "gtrans")
+  , ("M-n", namedScratchpadAction scratchpads "translate")
   -- Audio mixer
   , ("M-o", namedScratchpadAction scratchpads "pavucontrol")
   -- File manager
@@ -290,7 +290,7 @@ topicItems =
   , inHome   "\985977"                (spawn "im.riot.Riot --profile nym")
   , noAction "z"        "Documents"
   , inHome   "\984960"                (spawn "flatpak run im.riot.Riot")
-  , inHome   "4"                      (spawn "com.discordapp.Discord")
+  , noAction "4"          "~"
   , noAction "r"          "~"
   , noAction "5"          "~"
   ]
@@ -315,9 +315,9 @@ switchToLastTopic = switchNthLastFocusedByScreen myTopicConfig 1
 -- RationalRect `x y width height` - from top left corner, 0-1
 -- 1 means full width/height of the screen
 scratchpads =
-  [ NS "gtrans" "alacritty --class gtrans -e trans -I -show-original no -show-languages no en:fr"
-      (appName =? "gtrans")
-      (customFloating $ W.RationalRect (1/4) (1/6) (3/9) (4/6))
+  [ NS "translate" "alacritty --class translate -e gtt"
+      (appName =? "translate")
+      (customFloating $ W.RationalRect 0.25 0.25 0.6 0.4)
   , NS "pavucontrol" "pavucontrol" (className =? "Pavucontrol")
       (customFloating $ W.RationalRect (1/4) (1/4) (2/4) (2/4))
   , NS "keymap" "apekey"
