@@ -1,12 +1,11 @@
-Config { font = "xft:JetBrainsMono Nerd Font:pixelsize=20:antialias=true"
+Config { font = "JetBrainsMono Nerd Font 11"
+       , dpi = 127
        , additionalFonts = []
        , borderColor = "#262626"
        , bgColor = "#262626"
        , fgColor = "#8c8c8c"
        , alpha = 180
-       , position = Bottom
-       , textOffset = -1
-       , iconOffset = -1
+       , position = BottomH 30
        , lowerOnStart = True
        , pickBroadest = False
        , persistent = False
