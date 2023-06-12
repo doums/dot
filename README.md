@@ -1,8 +1,8 @@
 # My personal dotfiles
 
-## ArchLinux installation
+## OS installation
 
-Linux build:
+Arch Linux build:
 
 - display server: Xorg (X11)
 - no desktop environment
@@ -10,23 +10,7 @@ Linux build:
 - window manager: XMonad
 - compositor: yshui/picom
 
-### in the live environment
-
-Connect in wireless using `iwd`
-
-```shell
-$ iwctl
-```
-
-resources: https://wiki.archlinux.org/index.php/Iwd#Connect_to_a_network
-
-### during the arch-chroot session (aka Inception)
-
-Install `base-devel` and `networkmanager` packages
-
-```shell
-pacman -S base-devel networkmanager
-```
+[INSTALL](arch_install.md)
 
 ### first boot in the fresh installed Linux
 
@@ -40,15 +24,6 @@ sudo systemctl start NetworkManager.service
 then connect to a network using `nmtui`
 
 source: https://wiki.archlinux.org/index.php/NetworkManager#Installation
-
-### enable periodic TRIM
-
-```shell
-sudo systemctl enable fstrim.timer
-sudo systemctl start fstrim.timer
-```
-
-source: https://wiki.archlinux.org/index.php/Solid_state_drive#Periodic_TRIM
 
 ### create XDG user directories
 
@@ -138,7 +113,7 @@ source: https://xmonad.org/INSTALL.html
 Clone the sources and build the project
 
 ```shell
-git clone git://github.com/jaor/xmobar
+git clone https://codeberg.org/xmobar/xmobar.git
 ```
 
 Override `stack.yaml` to only build needed features
@@ -154,8 +129,6 @@ Finally build and install it
 ```shell
 stack install
 ```
-
-source:https://xmobar.org/#from-source
 
 ##### system tray
 
@@ -173,7 +146,7 @@ sudo pacman -S udisks2 udiskie
 
 source: https://wiki.archlinux.org/index.php/Udisks
 
-## Design porn
+## Design
 
 ### gtk theme, Adapta
 
@@ -358,11 +331,25 @@ remove build dependencies
 sudo pacman -Rsn inkscape sassc parallel
 ```
 
-### gnome keyring
+### SSH agent
 
 ```shell
 sudo pacman -S gnome-keyring
 ```
 
-https://wiki.archlinux.org/index.php/GNOME/Keyring#Installation
+Enable the following systemd _user_ unit
+
+```shell
+systemctl --user enable gcr-ssh-agent.socket
+```
+
+⚠ don't run this command as root (`sudo`) as it is a _user_ unit
+
+Set the `SSH_AUTH_SOCK` env variable, eg. in `.xprofile`
+
+```sh
+export SSH_AUTH_SOCK=/run/user/1000/gcr/ssh
+```
+
+source: https://wiki.archlinux.org/title/GNOME/Keyring
 

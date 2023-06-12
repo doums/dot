@@ -4,12 +4,13 @@ alias la='ls'
 alias db='adb shell input keyevent 82'
 alias dbk='adb shell am force-stop com.monbuilding.app'
 alias rr='adb shell input text "RR"'
+alias emu='emulator -avd main -gpu host -accel on -no-boot-anim'
 alias ds='xrandr --output eDP-1 --auto --output DP-2 --auto --scale 1.333 --right-of eDP-1'
 alias fk='fk.sh'
 alias fkp='fkp.sh'
 alias pac='pac.sh'
 alias hok='hock.sh'
-alias vim='nvim'
+alias nv='nvim'
 alias gs='git status'
 alias gl='gl.sh'
 alias gd='gd.sh'
@@ -19,6 +20,7 @@ alias dk='docker'
 alias dc='docker compose'
 alias log='docker logs -f'
 alias gu='gitui'
+alias hx='helix'
 
 # bindings
 bind \eh '~; commandline -f repaint'
@@ -28,11 +30,21 @@ bind \ex '/opt/xmonad/; commandline -f repaint'
 bind \en '~/Documents/nym/nym/; commandline -f repaint'
 
 # env vars
-set fish_greeting
-set -x fish_emoji_width 2
+# see https://wiki.archlinux.org/title/Debuginfod
+set -x DEBUGINFOD_URLS https://debuginfod.archlinux.org
 set -x GDK_SCALE 2
 set -x GDK_DPI_SCALE 0.5
 
-# Nodejs
-# set -x PATH /opt/node16/bin $PATH
+# Java
+set -x JAVA_HOME /usr/lib/jvm/default
 
+# android dev
+set -x ANDROID_HOME $HOME/.local/share/android/sdk
+set -x PATH $ANDROID_HOME/tools $PATH
+set -x PATH $ANDROID_HOME/emulator $PATH
+set -x PATH $ANDROID_HOME/tools/bin $PATH
+set -x PATH $ANDROID_HOME/platform-tools $PATH
+set -x NDK_HOME $ANDROID_HOME/ndk/25.2.9519653
+
+# LanguageTool server
+set -x LANGTOOL_HOST http://loup:8010
