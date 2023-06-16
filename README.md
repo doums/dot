@@ -61,6 +61,71 @@ https://wiki.archlinux.org/index.php/LightDM#Installation
 
 3. install the window manager
 
+### fonts
+
+Main fonts
+
+```shell
+sudo pacman -S ttf-jetbrains-mono ttf-roboto
+```
+
+Other system fonts
+
+```
+sudo pacman -S noto-fonts ttf-dejavu ttf-liberation
+```
+
+**emoji**
+
+```shell
+sudo pacman -S noto-fonts-emoji
+```
+
+Refresh font cache
+
+```shell
+fc-cache
+fc-list
+```
+
+#### custom fonts
+
+[docs](https://wiki.archlinux.org/title/Fonts#Manual_installation)
+
+First create the directory
+
+```
+sudo mkdir -p /usr/local/share/fonts/ttf/
+```
+
+Place any custom fonts under it
+
+**patch font to add MDI icons glyphs**
+
+Material Design Icons font: https://github.com/Templarian/MaterialDesign-Font
+
+font patcher: https://github.com/ryanoasis/nerd-fonts#font-patcher
+
+1. install FontForge
+
+```shell
+sudo pacman -S FontForge
+```
+
+2. clone the repo
+
+```shell
+git clone --depth 1 https://github.com/ryanoasis/nerd-fonts.git
+cd nerd-fonts
+```
+
+3. move the MDI font in `src/glyphs/`
+4. patch
+
+```shell
+./font-patcher --custom MaterialDesignIconsDesktop.ttf --progressbars --careful path/to/fontToPatch.ttf
+```
+
 #### XMonad
 
 First install `stack`. Take the static version from AUR to avoid
@@ -189,54 +254,6 @@ in ~/.gtkrc-2.0
 gtk-icon-theme-name = "Paper"
 gtk-theme-name = "Adapta-Nokto"
 gtk-font-name = "Roboto 12"
-```
-
-### fonts
-
-first install some TTF fonts
-
-```shell
-sudo pacman -S noto-fonts ttf-dejavu ttf-liberation
-```
-
-put the files located in the `font` directory in `/usr/share/fonts/TTF` and make them readable by every user
-
-update de font cache
-
-```shell
-fc-cache
-```
-
-**emoji support**
-
-```shell
-$ sudo pacman -S noto-fonts-emoji
-```
-
-**patch font to add MDI icons glyphs**
-
-Material Design Icons font: https://github.com/Templarian/MaterialDesign-Font
-
-font patcher: https://github.com/ryanoasis/nerd-fonts#font-patcher
-
-1. install FontForge
-
-```shell
-sudo pacman -S FontForge
-```
-
-2. clone the repo
-
-```shell
-git clone --depth 1 https://github.com/ryanoasis/nerd-fonts.git
-cd nerd-fonts
-```
-
-3. move the MDI font in `src/glyphs/`
-4. patch
-
-```shell
-./font-patcher --custom MaterialDesignIconsDesktop.ttf --progressbars --careful path/to/fontToPatch.ttf
 ```
 
 ### HiDPI
