@@ -14,7 +14,8 @@ c.max_fps = 144
 c.font = wezterm.font({
   family = 'JetBrains Mono',
   -- https://github.com/JetBrains/JetBrainsMono/wiki/OpenType-features
-  harfbuzz_features = { 'zero', 'ss19' },
+  -- ligatures off
+  harfbuzz_features = { 'zero', 'ss19', 'calt=0', 'clig=0', 'liga=0' },
 })
 c.font_size = 12.0
 c.freetype_load_target = 'Light'
@@ -37,6 +38,7 @@ c.inactive_pane_hsb = {
 }
 c.window_background_opacity = 0.92
 -- c.text_background_opacity = 0.92
+c.window_close_confirmation = 'NeverPrompt'
 
 -- tab bar
 c.use_fancy_tab_bar = false
@@ -76,6 +78,11 @@ wezterm.on('start-ide', function(window, pane)
 end)
 
 c.keys = {
+  {
+    key = 't',
+    mods = 'SHIFT|SUPER',
+    action = act.SpawnWindow,
+  },
   {
     key = 'Space',
     mods = 'SHIFT|CTRL',
