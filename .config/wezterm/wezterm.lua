@@ -220,10 +220,10 @@ c.key_tables = {
 
 -- palette
 local p = {
-  bg = '#262626',
+  bg = '#212121',
   fg = '#8c8c8c',
   cursor = '#ca7911',
-  selection_bg = '#4d5247',
+  selection_bg = '#4a17d2',
   selection_fg = '#ffffff',
 }
 
@@ -241,23 +241,23 @@ c.color_schemes = {
 
     ansi = {
       '#3B4252', -- black
-      '#d04956', -- red
+      '#FF6767', -- red
       '#52b910', -- green
-      '#ebbd61', -- yellow
+      '#ce993a', -- yellow
       '#6492c1', -- blue
-      '#B48EAD', -- magenta
-      '#88C0D0', -- cyan
+      '#FF2EFF', -- magenta
+      '#06B8B8', -- cyan
       '#d6d9e0', -- white
     },
     brights = {
       '#4C566A', -- black
-      '#e14756', -- red
+      '#FF4050', -- red
       '#61da13', -- green
-      '#ebaf37', -- yellow
-      '#74aae0', -- blue
-      '#B48EAD', -- magenta
-      '#8FBCBB', -- cyan
-      '#ECEFF4', -- white
+      '#E5BF00', -- yellow
+      '#1FB0FF', -- blue
+      '#ED7EED', -- magenta
+      '#00E5E5', -- cyan
+      '#FFFFFF', -- white
     },
 
     -- When the IME, a dead key or a leader key are being processed and are effectively

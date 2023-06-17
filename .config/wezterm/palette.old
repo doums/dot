@@ -1,0 +1,20 @@
+    ansi = {
+      '#3B4252', -- black
+      '#d04956', -- red
+      '#52b910', -- green
+      '#ebbd61', -- yellow
+      '#6492c1', -- blue
+      '#B48EAD', -- magenta
+      '#88C0D0', -- cyan
+      '#d6d9e0', -- white
+    },
+    brights = {
+      '#4C566A', -- black
+      '#e14756', -- red
+      '#61da13', -- green
+      '#ebaf37', -- yellow
+      '#74aae0', -- blue
+      '#B48EAD', -- magenta
+      '#8FBCBB', -- cyan
+      '#ECEFF4', -- white
+    },
