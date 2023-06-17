@@ -4,43 +4,45 @@ local c = wezterm.config_builder()
 local act = wezterm.action
 local mux = wezterm.mux
 
+c.term = 'wezterm'
 c.dpi = 120
 c.xcursor_theme = 'Paper'
+c.color_scheme = 'Cooper'
+c.max_fps = 144
 
 -- font
-c.font = wezterm.font('JetBrains Mono')
+c.font = wezterm.font({
+  family = 'JetBrains Mono',
+  -- https://github.com/JetBrains/JetBrainsMono/wiki/OpenType-features
+  harfbuzz_features = { 'zero', 'ss19' },
+})
 c.font_size = 12.0
 c.freetype_load_target = 'Light'
 c.freetype_render_target = 'HorizontalLcd'
--- https://github.com/JetBrains/JetBrainsMono/wiki/OpenType-features
-c.harfbuzz_features = { 'zero', 'ss19' }
 c.char_select_font_size = 14.0
+c.custom_block_glyphs = false
 
-c.color_scheme = 'Cooper'
-c.max_fps = 165
 c.window_padding = {
   left = '1cell',
   right = '1cell',
   top = 6,
   bottom = 6,
 }
-
+c.underline_thickness = 2
 c.scrollback_lines = 4096
+c.quick_select_alphabet = 'azerty'
+c.inactive_pane_hsb = {
+  saturation = 0.9,
+  brightness = 0.8,
+}
+c.window_background_opacity = 0.92
+-- c.text_background_opacity = 0.92
 
 -- tab bar
 c.use_fancy_tab_bar = false
 c.enable_tab_bar = true
 c.hide_tab_bar_if_only_one_tab = true
 c.tab_bar_at_bottom = true
-
-c.inactive_pane_hsb = {
-  saturation = 0.9,
-  brightness = 0.8,
-}
-
--- TODO revert this back
--- c.window_background_opacity = 0.92
--- c.text_background_opacity = 0.92
 
 c.leader = { key = 'w', mods = 'ALT', timeout_milliseconds = 2000 }
 
@@ -137,6 +139,8 @@ c.keys = {
       title = 'WORKSPACES',
     }),
   },
+  { key = '[', mods = 'LEADER', action = act.ActivateTabRelative(-1) },
+  { key = ']', mods = 'LEADER', action = act.ActivateTabRelative(1) },
   { key = 'LeftArrow', mods = 'LEADER', action = act.ActivateTabRelative(-1) },
   { key = 'RightArrow', mods = 'LEADER', action = act.ActivateTabRelative(1) },
 }
@@ -233,7 +237,6 @@ c.color_schemes = {
     selection_fg = p.selection_fg,
     selection_bg = p.selection_bg,
     scrollbar_thumb = '#191a1d',
-    -- The color of the split lines between panes
     split = '#161616',
 
     ansi = {
