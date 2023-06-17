@@ -39,6 +39,7 @@ c.inactive_pane_hsb = {
 c.window_background_opacity = 0.92
 -- c.text_background_opacity = 0.92
 c.window_close_confirmation = 'NeverPrompt'
+c.hide_mouse_cursor_when_typing = false
 
 -- tab bar
 c.use_fancy_tab_bar = false
