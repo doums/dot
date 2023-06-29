@@ -33,10 +33,10 @@ c.underline_thickness = 2
 c.scrollback_lines = 4096
 c.quick_select_alphabet = 'azerty'
 c.inactive_pane_hsb = {
-  saturation = 0.9,
-  brightness = 0.8,
+  saturation = 1,
+  brightness = 1,
 }
-c.window_background_opacity = 0.92
+-- c.window_background_opacity = 0.92
 -- c.text_background_opacity = 0.92
 c.window_close_confirmation = 'NeverPrompt'
 c.hide_mouse_cursor_when_typing = false
@@ -95,6 +95,11 @@ c.keys = {
     action = act.QuickSelect,
   },
   {
+    key = 'Enter',
+    mods = 'ALT',
+    action = act.Nop,
+  },
+  {
     key = 'r',
     mods = 'LEADER',
     action = act.ActivateKeyTable({
@@ -130,7 +135,7 @@ c.keys = {
   {
     key = 'x',
     mods = 'LEADER|SHIFT',
-    action = act.CloseCurrentTab({ confirm = true }),
+    action = act.CloseCurrentTab({ confirm = false }),
   },
   { key = 'PageUp', mods = 'SHIFT', action = act.ScrollByPage(-0.5) },
   { key = 'PageDown', mods = 'SHIFT', action = act.ScrollByPage(0.5) },
@@ -226,13 +231,36 @@ c.key_tables = {
   copy_mode = copy_mode,
 }
 
+c.mouse_bindings = {
+  -- Change the default click behavior so that it only selects
+  -- text and doesn't open hyperlinks
+  {
+    event = { Up = { streak = 1, button = 'Left' } },
+    mods = 'NONE',
+    action = act.CompleteSelection('ClipboardAndPrimarySelection'),
+  },
+  -- use Shift-click to open hyperlinks
+  {
+    event = { Up = { streak = 1, button = 'Left' } },
+    mods = 'SHIFT',
+    action = act.OpenLinkAtMouseCursor,
+  },
+  -- disable 'Down' event to prevent weird behavior
+  -- see https://wezfurlong.org/wezterm/config/mouse.html#gotcha-on-binding-an-up-event-only
+  {
+    event = { Down = { streak = 1, button = 'Left' } },
+    mods = 'SHIFT',
+    action = act.Nop,
+  },
+}
+
 -- palette
 local p = {
   bg = '#212121',
-  fg = '#8c8c8c',
-  cursor = '#ca7911',
-  selection_bg = '#4a17d2',
-  selection_fg = '#ffffff',
+  fg = '#8C8C8C',
+  cursor = '#CA7911',
+  selection_bg = '#4A17D2',
+  selection_fg = '#FFFFFF',
 }
 
 c.color_schemes = {
@@ -244,23 +272,23 @@ c.color_schemes = {
     cursor_border = p.cursor,
     selection_fg = p.selection_fg,
     selection_bg = p.selection_bg,
-    scrollbar_thumb = '#191a1d',
+    scrollbar_thumb = '#191A1D',
     split = '#161616',
 
     ansi = {
       '#3B4252', -- black
       '#FF6767', -- red
-      '#52b910', -- green
-      '#ce993a', -- yellow
-      '#6492c1', -- blue
+      '#52B910', -- green
+      '#CE993A', -- yellow
+      '#6492C1', -- blue
       '#FF2EFF', -- magenta
       '#06B8B8', -- cyan
-      '#d6d9e0', -- white
+      '#D6D9E0', -- white
     },
     brights = {
       '#4C566A', -- black
       '#FF4050', -- red
-      '#61da13', -- green
+      '#61DA13', -- green
       '#E5BF00', -- yellow
       '#1FB0FF', -- blue
       '#ED7EED', -- magenta
@@ -271,7 +299,7 @@ c.color_schemes = {
     -- When the IME, a dead key or a leader key are being processed and are effectively
     -- holding input pending the result of input composition, change the cursor
     -- to this color to give a visual cue about the compose state.
-    compose_cursor = '#ffac00',
+    compose_cursor = '#FFAC00',
 
     -- Colors for copy_mode and quick_select
     -- In copy_mode, the color of the active text is:
@@ -291,24 +319,24 @@ c.color_schemes = {
       background = p.bg,
       active_tab = {
         bg_color = '#121212',
-        fg_color = '#c0c0c0',
+        fg_color = '#C0C0C0',
         intensity = 'Normal',
       },
       inactive_tab = {
-        bg_color = '#1d1d1d',
+        bg_color = '#1D1D1D',
         fg_color = '#808080',
       },
       inactive_tab_hover = {
-        bg_color = '#4a4646',
+        bg_color = '#4A4646',
         fg_color = '#909090',
       },
       new_tab = {
-        bg_color = '#1d1d1d',
+        bg_color = '#1D1D1D',
         fg_color = '#b8a8a8',
       },
       new_tab_hover = {
-        bg_color = '#da7800',
-        fg_color = '#b8a8a8',
+        bg_color = '#DA7800',
+        fg_color = '#B8A8A8',
         intensity = 'Bold',
       },
     },
