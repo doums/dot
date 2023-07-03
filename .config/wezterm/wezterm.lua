@@ -11,17 +11,42 @@ c.color_scheme = 'Cooper'
 c.max_fps = 144
 
 -- font
+local font_features = { 'zero', 'ss19', 'calt=0', 'clig=0', 'liga=0' }
 c.font = wezterm.font({
   family = 'JetBrains Mono',
   -- https://github.com/JetBrains/JetBrainsMono/wiki/OpenType-features
   -- ligatures off
-  harfbuzz_features = { 'zero', 'ss19', 'calt=0', 'clig=0', 'liga=0' },
+  harfbuzz_features = font_features,
 })
 c.font_size = 12.0
 c.freetype_load_target = 'Light'
 c.freetype_render_target = 'HorizontalLcd'
 c.char_select_font_size = 14.0
 c.custom_block_glyphs = false
+
+-- by default for 'Half' intensity font weight is set to 'ExtraLight'
+-- override to 'Light'
+c.font_rules = {
+  {
+    intensity = 'Half',
+    italic = true,
+    font = wezterm.font({
+      family = 'JetBrains Mono',
+      weight = 'Light',
+      style = 'Italic',
+      harfbuzz_features = font_features,
+    }),
+  },
+  {
+    intensity = 'Half',
+    italic = false,
+    font = wezterm.font({
+      family = 'JetBrains Mono',
+      weight = 'Light',
+      harfbuzz_features = font_features,
+    }),
+  },
+}
 
 c.window_padding = {
   left = '1cell',
@@ -97,7 +122,7 @@ c.keys = {
   {
     key = 'Enter',
     mods = 'ALT',
-    action = act.Nop,
+    action = act.DisableDefaultAssignment,
   },
   {
     key = 'r',
@@ -239,14 +264,13 @@ c.mouse_bindings = {
     mods = 'NONE',
     action = act.CompleteSelection('ClipboardAndPrimarySelection'),
   },
-  -- use Shift-click to open hyperlinks
+
+  -- and make SHIFT-Click open hyperlinks
   {
     event = { Up = { streak = 1, button = 'Left' } },
     mods = 'SHIFT',
     action = act.OpenLinkAtMouseCursor,
   },
-  -- disable 'Down' event to prevent weird behavior
-  -- see https://wezfurlong.org/wezterm/config/mouse.html#gotcha-on-binding-an-up-event-only
   {
     event = { Down = { streak = 1, button = 'Left' } },
     mods = 'SHIFT',
@@ -256,6 +280,8 @@ c.mouse_bindings = {
 
 -- palette
 local p = {
+  -- bg = '#212326',
+  -- bg = '#1d2125',
   bg = '#212121',
   fg = '#8C8C8C',
   cursor = '#CA7911',
