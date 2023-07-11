@@ -66,7 +66,7 @@ https://wiki.archlinux.org/index.php/LightDM#Installation
 Main fonts
 
 ```shell
-sudo pacman -S ttf-jetbrains-mono ttf-roboto
+sudo pacman -S ttf-jetbrains-mono ttf-inconsolata ttf-roboto
 ```
 
 Other system fonts
