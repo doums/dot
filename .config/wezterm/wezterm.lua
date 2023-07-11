@@ -154,7 +154,7 @@ c.keys = {
   },
   {
     key = 'x',
-    mods = 'LEADER',
+    mods = 'ALT|SHIFT',
     action = act.CloseCurrentPane({ confirm = false }),
   },
   {
@@ -325,7 +325,7 @@ c.color_schemes = {
     -- When the IME, a dead key or a leader key are being processed and are effectively
     -- holding input pending the result of input composition, change the cursor
     -- to this color to give a visual cue about the compose state.
-    compose_cursor = '#FFAC00',
+    compose_cursor = '#FFE49C',
 
     -- Colors for copy_mode and quick_select
     -- In copy_mode, the color of the active text is:

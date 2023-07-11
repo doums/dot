@@ -46,7 +46,7 @@ window:
   # Blank space added around the window in pixels. This padding is scaled
   # by DPI and the specified value is always added at both opposing sides.
   padding:
-    x: 2
+    x: 6
     y: 6
 
   # Spread additional padding evenly around the terminal content.
@@ -67,7 +67,7 @@ window:
   #
   # Window opacity as a floating point number from `0.0` to `1.0`.
   # The value `0.0` is completely transparent and `1.0` is opaque.
-  opacity: 0.80
+  opacity: 1.0
 
   # Startup Mode (changes require restart)
   #
@@ -117,7 +117,7 @@ font:
     #   - (macOS) Menlo
     #   - (Linux/BSD) monospace
     #   - (Windows) Consolas
-    family: JetBrains Mono
+    family: JetBrains Mono SZ
 
     # The `style` can be specified to pick a specific face.
     #style: Regular
@@ -180,7 +180,7 @@ font:
   builtin_box_drawing: false
 
 # If `true`, bold text is drawn using the bright color variants.
-#draw_bold_text_with_bright_colors: false
+draw_bold_text_with_bright_colors: true
 
 # Colors (Tomorrow Night)
 #colors:
@@ -900,6 +900,47 @@ key_bindings:
   - { key: J,      mods: Control,       mode: Vi, action: ScrollHalfPageDown }
 
 schemes:
+  cooper: &cooper
+    primary:
+      background: '#212121'
+      foreground: '#8C8C8C'
+    cursor:
+      text: '#212121'
+      cursor: '#CA7911'
+    vi_mode_cursor:
+      text:  '#FFFFFF'
+      cursor: '#3515FF'
+    normal:
+      black: '#3B4252'
+      red: '#FF6767'
+      green: '#52B910'
+      yellow: '#CE993A'
+      blue: '#6492C1'
+      magenta: '#FF2EFF'
+      cyan: '#06B8B8'
+      white: '#D6D9E0'
+    bright:
+      black: '#4C566A'
+      red: '#FF4050'
+      green: '#61DA13'
+      yellow: '#E5BF00'
+      blue: '#1FB0FF'
+      magenta: '#ED7EED'
+      cyan: '#00E5E5'
+      white: '#FFFFFF'
+    search:
+      matches:
+        foreground: '#000000'
+        background: '#F3F34D'
+      focused_match:
+        foreground: '#000000'
+        background: '#FFA600'
+    footer_bar:
+      background: '#2C2B2B'
+      foreground: '#C0C9CF'
+    selection:
+      text: '#FFFFFF'
+      background: '#4A17D2'
   nord: &nord
     primary:
       # background: '#2e3440'
@@ -944,4 +985,4 @@ schemes:
     selection:
       text: '#eceff4'
       background: '#434c5e'
-colors: *nord
+colors: *cooper
