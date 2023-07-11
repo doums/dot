@@ -1,9 +1,6 @@
 # aliases
 alias ls='exa -lag --group-directories-first'
 alias la='ls'
-alias db='adb shell input keyevent 82'
-alias dbk='adb shell am force-stop com.monbuilding.app'
-alias rr='adb shell input text "RR"'
 alias emu='emulator -avd main -gpu host -accel on -no-boot-anim'
 alias ds='xrandr --output eDP-1 --auto --output DP-2 --auto --scale 1.333 --right-of eDP-1'
 alias fk='fk.sh'
