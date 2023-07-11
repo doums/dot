@@ -1,0 +1,26 @@
+api_key:
+    chatgpt: xxx # TODO chatGPT token
+destination:
+    border_color: blue
+    language:
+        apertium: French
+        argos: French
+        bing: French
+        chatgpt: French
+        deepl: English
+        google: French
+        reverso: French
+hide_below: false
+source:
+    border_color: green
+    language:
+        apertium: English
+        argos: English
+        bing: English
+        chatgpt: English
+        deepl: English
+        google: English
+        reverso: English
+theme: nord
+translator: Google
+transparent: true
