@@ -160,8 +160,6 @@ keybinds = ([
   , ("M-u", namedScratchpadAction scratchpads "network")
   -- Insomnia
   , ("M-S-i", namedScratchpadAction scratchpads "insomnia")
-  -- Music player
-  , ("M-S-m", namedScratchpadAction scratchpads "musics")
 
   -- ## Multimedia
   -- Light up
@@ -341,10 +339,7 @@ scratchpads =
   , NS "network" "alacritty --class network -e nmtui"
       (appName =? "network")
       (customFloating $ W.RationalRect 0.3 0.14 0.5 0.7)
-  , NS "musics" "alacritty --class musics -e cmus"
-      (appName =? "musics")
-      (customFloating $ W.RationalRect 0.3 0.14 0.3 0.3)
-  , NS "insomnia" "/opt/AppImages/Insomnia.AppImage" (className =? "Insomnia")
+  , NS "insomnia" "flatpak run rest.insomnia.Insomnia" (className =? "Insomnia")
       (customFloating $ W.RationalRect (1/4) (1/4) (2/4) (2/4))
   ]
 

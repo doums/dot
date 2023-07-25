@@ -908,8 +908,8 @@ schemes:
       text: '#212121'
       cursor: '#CA7911'
     vi_mode_cursor:
-      text:  '#FFFFFF'
-      cursor: '#3515FF'
+      text:  '#000000'
+      cursor: '#FF1D7A'
     normal:
       black: '#3B4252'
       red: '#FF6767'

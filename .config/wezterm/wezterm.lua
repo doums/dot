@@ -208,6 +208,10 @@ table.insert(
 local copy_mode = wezterm.gui.default_key_tables().copy_mode
 table.insert(
   copy_mode,
+  { key = 'i', mods = 'NONE', action = act.CopyMode('Close') }
+)
+table.insert(
+  copy_mode,
   { key = 'l', mods = 'CTRL', action = act.CopyMode('MoveForwardWord') }
 )
 table.insert(
