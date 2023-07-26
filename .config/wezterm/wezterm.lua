@@ -9,15 +9,20 @@ c.dpi = 120
 c.xcursor_theme = 'Paper'
 c.color_scheme = 'Cooper'
 c.max_fps = 144
+c.adjust_window_size_when_changing_font_size = false
 
 -- font
+-- https://github.com/JetBrains/JetBrainsMono/wiki/OpenType-features
+-- slashed zero and ligatures off
 local font_features = { 'zero', 'ss19', 'calt=0', 'clig=0', 'liga=0' }
-c.font = wezterm.font({
-  family = 'JetBrains Mono',
-  -- https://github.com/JetBrains/JetBrainsMono/wiki/OpenType-features
-  -- ligatures off
-  harfbuzz_features = font_features,
+c.font = wezterm.font_with_fallback({
+  {
+    family = 'JetBrains Mono',
+    harfbuzz_features = font_features,
+  },
+  'JetBrainsMono Nerd Font',
 })
+-- c.allow_square_glyphs_to_overflow_width = 'Always'
 c.font_size = 12.0
 c.freetype_load_target = 'Light'
 c.freetype_render_target = 'HorizontalLcd'
@@ -25,14 +30,14 @@ c.char_select_font_size = 14.0
 c.custom_block_glyphs = false
 
 -- by default for 'Half' intensity font weight is set to 'ExtraLight'
--- override to 'Light'
+-- override to 'Regular'
 c.font_rules = {
   {
     intensity = 'Half',
     italic = true,
     font = wezterm.font({
       family = 'JetBrains Mono',
-      weight = 'Light',
+      weight = 'Regular',
       style = 'Italic',
       harfbuzz_features = font_features,
     }),
@@ -42,7 +47,7 @@ c.font_rules = {
     italic = false,
     font = wezterm.font({
       family = 'JetBrains Mono',
-      weight = 'Light',
+      weight = 'Regular',
       harfbuzz_features = font_features,
     }),
   },
