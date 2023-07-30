@@ -7,7 +7,6 @@ import Data.Monoid
 import XMonad.Actions.CycleWS
 import XMonad.Actions.CycleRecentWS
 import XMonad.Actions.Navigation2D
-import XMonad.Actions.TopicSpace
 import Data.Char
 import XMonad.Layout.NoBorders
 import XMonad.Layout.PerWorkspace
@@ -20,6 +19,7 @@ import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.InsertPosition
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.WorkspaceHistory
+import XMonad.Actions.PerWorkspaceKeys
 import XMonad.Util.Cursor
 import XMonad.Util.SpawnOnce
 import XMonad.Util.NamedScratchpad
@@ -42,7 +42,7 @@ cfg = def {
   clickJustFocuses   = False,
   borderWidth        = 4,
   modMask            = modm,
-  workspaces         = topicNames topicItems,
+  workspaces         = myWorkspaces,
   normalBorderColor  = darkGrey,
   focusedBorderColor = grey,
   layoutHook         = myLayout,
@@ -64,16 +64,17 @@ keybinds = ([
   -- Kill current window
   , ("M-x",         kill)
 
-  -- ## Topic navigation
-  -- "M-<Topic key>" Move to topic x
-  -- "M-S-<Topic key>" Move current window to topic x
-  -- Switch to last topic
-  , ("M-<Tab>",     switchToLastTopic)
-  -- Switch to next topic
-  , ("M-<Page_Up>", nextWS)
-  -- Switch to previous topic
-  , ("M-<Page_Down>",
-                    prevWS)
+  -- ## Workspace navigation
+  -- "M-<Workspace key>" Move to workspace x
+  -- "M-S-<Workspace key>" Move current window to workspace x
+  -- Switch to last workspace
+  , ("M-<Tab>",       toggleRecentWS)
+  -- Switch to next workspace
+  , ("M-<Page_Up>",   nextWS)
+  -- Switch to previous workspace
+  , ("M-<Page_Down>", prevWS)
+  -- Exec the action of the current workspace
+  , ("M-<Return>",    chooseAction wsActions)
 
   -- ## Window navigation
   -- "M-↑→↓←" Navigate through windows
@@ -84,16 +85,14 @@ keybinds = ([
   , ("M-j",         windows W.focusDown)
   -- Focus master
   , ("M-m",         windows W.focusMaster)
-  -- Swap master
-  , ("M-<Return>",  windows W.swapMaster)
   -- Swap window up
   , ("M-S-k",       windows W.swapUp)
   -- Swap window down
   , ("M-S-j",       windows W.swapDown)
-  -- Shift current window to next topic
+  -- Shift current window to next workspace
   , ("M-S-<Page_Up>",
                     shiftToNext)
-  -- Shift current window to previous topic
+  -- Shift current window to previous workspace
   , ("M-S-<Page_Down>",
                     shiftToPrev)
 
@@ -176,8 +175,8 @@ keybinds = ([
   , ("<XF86AudioMicMute>",      spawn "pral.sh source_mute") ]
   ++
   [ (m ++ "M-" ++ [k], f i)
-      | (i, k) <- zip (topicNames topicItems) topicKeys
-      , (f, m) <- [(goto, ""), (windows . W.shift, "S-")] ]
+      | (i, k) <- zip myWorkspaces workspaceKeys
+      , (f, m) <- [(windows . W.greedyView, ""), (windows . W.shift, "S-")] ]
   ++
   [ (m ++ "M-" ++ [k], screenWorkspace sc >>= flip whenJust f)
       | (k, sc) <- zip screenKeys [0..]
@@ -201,7 +200,9 @@ nav2D = navigation2DP def ("<Up>", "<Left>", "<Down>", "<Right>")
 
 modm = mod4Mask
 myTerminal = "alacritty"
-topicKeys = "&é\"aze'r%"
+-- workspaces: 󰞷 󰖟 󱃖 󰭹 z 󰅶 4 r 5
+myWorkspaces = ["\985015", "\984479", "\987350", "\985977", "z", "\983414", "4", "r", "5"]
+workspaceKeys = "&é\"aze'r("
 screenKeys = "[]"
 
 grey = "#404040"
@@ -279,35 +280,17 @@ bar = def
     red      = xmobarColor "#bf616a" ""
     stone    = xmobarColor "#8c8c8c" ""
 
--- topics
--- 1›terminal 2›web browser 3›IDE a›keybase z›empty r›element 4›empty r›empty 5›empty
-topicItems =
-  [ inHome   "\985015"                spawnShell
-  , inHome   "\984479"                (spawn "firefox")
-  , TI       "\987350"  "Documents"   (spawnShellIn "Documents")
-  , inHome   "\985977"                (spawn "im.riot.Riot --profile nym")
-  , noAction "z"        "Documents"
-  , inHome   "\984960"                (spawn "flatpak run im.riot.Riot")
-  , noAction "4"          "~"
-  , noAction "r"          "~"
-  , noAction "5"          "~"
-  ]
 
-myTopicConfig = def
-  { topicDirs          = tiDirs    topicItems
-  , topicActions       = tiActions topicItems
-  , defaultTopicAction = const (pure ())
-  , defaultTopic       = "\985015" -- 1›terminal
-  }
-
--- topics helper functions
-spawnShell = currentTopicDir myTopicConfig >>= spawnShellIn
-
-spawnShellIn dir = spawn $ myTerminal ++ " --working-directory " ++ dir
-
-goto = switchTopic myTopicConfig
-
-switchToLastTopic = switchNthLastFocusedByScreen myTopicConfig 1
+wsActions ws = case ws of
+  -- 󰞷
+  "\985015" -> spawn $ myTerminal
+  -- 󰖟
+  "\984479" -> spawn "firefox"
+  -- 󱃖
+  "\987350" -> spawn $ "jetbrains-toolbox"
+  -- 󰭹
+  "\985977" -> spawn "im.riot.Riot --profile nym"
+  _         -> undefined
 
 -- scratchpads
 -- RationalRect `x y width height` - from top left corner, 0-1
