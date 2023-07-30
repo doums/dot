@@ -280,7 +280,7 @@ bar = def
     red      = xmobarColor "#bf616a" ""
     stone    = xmobarColor "#8c8c8c" ""
 
-
+-- workspaces dedicated action
 wsActions ws = case ws of
   -- 󰞷
   "\985015" -> spawn $ myTerminal
