@@ -251,6 +251,7 @@ myLogHook = workspaceHistoryHook
 
 myStartupHook = do
     setDefaultCursor xC_left_ptr -- set default cursor
+    spawnOnce "xwallpaper --daemon --clear --center $BG_PRIMARY"
     spawnOnce "picom --config /home/pierre/.config/picom.conf -b"
     spawnOnce "redshift -c /home/pierre/.config/redshift/redshift.conf"
     spawnOnce "dunst -c /home/pierre/.config/dunst/dunstrc"
@@ -289,7 +290,7 @@ wsActions ws = case ws of
   -- 󱃖
   "\987350" -> spawn $ "jetbrains-toolbox"
   -- 󰭹
-  "\985977" -> spawn "im.riot.Riot --profile nym"
+  "\985977" -> spawn "im.riot.Riot"
   _         -> undefined
 
 -- scratchpads
@@ -302,7 +303,7 @@ scratchpads =
   , NS "pavucontrol" "pavucontrol" (className =? "Pavucontrol")
       (customFloating $ W.RationalRect (1/4) (1/4) (2/4) (2/4))
   , NS "keymap" "apekey"
-      (appName =? "apekey")
+      (title =? "apekey")
       (customFloating $ W.RationalRect 0.38 0.12 0.33 0.8)
   , NS "file-manager" "alacritty --class file-manager -e nnn"
       (appName =? "file-manager")

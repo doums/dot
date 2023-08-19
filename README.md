@@ -219,6 +219,17 @@ https://github.com/adapta-project/adapta-gtk-theme.git
 
 (see notes below for how to build it for HiDPI)
 
+### set the wallpaper
+
+Install `xwallpaper` package\
+`xwallpaper` is spawned by XMonad\
+The wallpaper image is defined by `$BG_PRIMARY` env variable\
+eg. in `.xprofile`
+
+```bash
+export BG_PRIMARY=$HOME/Pictures/dark_ocean.png
+```
+
 ### icon and cursor theme
 
 install https://github.com/snwh/paper-icon-theme
