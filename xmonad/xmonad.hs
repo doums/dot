@@ -251,7 +251,7 @@ myLogHook = workspaceHistoryHook
 
 myStartupHook = do
     setDefaultCursor xC_left_ptr -- set default cursor
-    spawnOnce "xwallpaper --daemon --clear --center $BG_PRIMARY"
+    spawnOnce "xwallpaper --daemon --clear --zoom $BG_PRIMARY"
     spawnOnce "picom --config /home/pierre/.config/picom.conf -b"
     spawnOnce "redshift -c /home/pierre/.config/redshift/redshift.conf"
     spawnOnce "dunst -c /home/pierre/.config/dunst/dunstrc"
