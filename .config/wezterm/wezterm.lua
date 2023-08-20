@@ -23,7 +23,7 @@ c.font = wezterm.font_with_fallback({
   'JetBrainsMono Nerd Font',
 })
 -- c.allow_square_glyphs_to_overflow_width = 'Always'
-c.font_size = 12.0
+c.font_size = 13.0
 c.freetype_load_target = 'Light'
 c.freetype_render_target = 'HorizontalLcd'
 c.char_select_font_size = 14.0
@@ -289,9 +289,8 @@ c.mouse_bindings = {
 
 -- palette
 local p = {
-  -- bg = '#212326',
-  -- bg = '#1d2125',
-  bg = '#212121',
+  bg = '#1E1F22',
+  -- original fg color from Dark JetBrains IDE theme: '#BCBEC4'
   fg = '#8C8C8C',
   cursor = '#CA7911',
   selection_bg = '#4A17D2',
