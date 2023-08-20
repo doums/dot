@@ -49,6 +49,7 @@ element selected {
   text-color: #dadada;
   highlight: bold #dadada;
   background-color: #2d2d2d;
+  border-radius: 15px;
 }
 
 element-icon selected {
