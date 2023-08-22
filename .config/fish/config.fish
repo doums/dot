@@ -2,7 +2,6 @@
 alias ls='exa -lag --group-directories-first'
 alias la='ls'
 alias emu='emulator -avd main -gpu host -accel on -no-boot-anim'
-alias ds='xrandr --output eDP-1 --auto --output DP-2 --auto --scale 1.333 --right-of eDP-1'
 alias fk='fk.sh'
 alias fkp='fkp.sh'
 alias pac='pac.sh'
@@ -21,7 +20,7 @@ alias hx='helix'
 
 # bindings
 bind \eh '~; commandline -f repaint'
-bind \ed '~/Documents/dotfiles/; commandline -f repaint'
+bind \ed '~/Documents/dot/; commandline -f repaint'
 bind \ev '~/.config/nvim/; commandline -f repaint'
 bind \ex '/opt/xmonad/; commandline -f repaint'
 bind \en '~/Documents/nym/nym/; commandline -f repaint'
@@ -29,14 +28,15 @@ bind \en '~/Documents/nym/nym/; commandline -f repaint'
 # env vars
 # see https://wiki.archlinux.org/title/Debuginfod
 set -x DEBUGINFOD_URLS https://debuginfod.archlinux.org
-set -x GDK_SCALE 2
-set -x GDK_DPI_SCALE 0.5
+# set -x GDK_SCALE 2
+# set -x GDK_DPI_SCALE 0.5
 
 # Java
 set -x JAVA_HOME /usr/lib/jvm/default
 
 # android dev
 set -x ANDROID_HOME $HOME/.local/share/android/sdk
+set -x ANDROID_USER_HOME $HOME/.local/share/android/user
 set -x PATH $ANDROID_HOME/tools $PATH
 set -x PATH $ANDROID_HOME/emulator $PATH
 set -x PATH $ANDROID_HOME/tools/bin $PATH

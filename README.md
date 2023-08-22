@@ -1,4 +1,6 @@
-# My personal dotfiles
+# dot
+
+My dotfiles
 
 ## OS installation
 
@@ -24,6 +26,46 @@ sudo systemctl start NetworkManager.service
 then connect to a network using `nmtui`
 
 source: https://wiki.archlinux.org/index.php/NetworkManager#Installation
+
+### DNS setup
+
+`systemd-resolved` is used (already installed)
+
+```shell
+sudo systemctl enable systemd-resolved.service
+sudo systemctl start systemd-resolved.service
+sudo ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
+sudo systemctl restart systemd-resolved.service
+```
+
+Check resolver status with `resolvectl status`
+
+#### Setting DNS servers
+
+Create the directory `/etc/systemd/resolved.conf.d/`
+
+Then create `dns_servers.conf` file. For DNS over TLS (DoT) using
+Cloudflare DNS:
+
+```conf
+[Resolve]
+DNS=1.1.1.1#cloudflare-dns.com 1.0.0.1#cloudflare-dns.com 2606:4700:4700::1111#cloudflare-dns.com 2606:4700:4700::1001#cloudflare-dns.com
+Domains=~.
+DNSOverTLS=yes
+```
+
+Restart systemd-resolved
+
+Check DNS resolution
+
+```shell
+resolvectl query archlinux.org
+```
+
+#### sources
+
+- https://wiki.archlinux.org/title/Systemd-resolved
+- https://developers.cloudflare.com/1.1.1.1/setup/linux
 
 ### create XDG user directories
 
