@@ -4,7 +4,7 @@ servers:
       port: 6697
       tls: true
       realname: diep
-      nicks: [diep]
+      nicks: [diep, rascasse]
 
       # (optional) Server alias for display in tab line
       # alias: OFTC
@@ -26,7 +26,7 @@ servers:
       # SASL authentication
       sasl:
         username: 'diep'
-        password: 'xxx' # TODO replace with the real password
+        password: 'xxx' # TODO
 
       # Identify nick by sending a message to NickServ:
       # (useful when `pass` or `sasl` fields above are not used)
@@ -34,13 +34,13 @@ servers:
 
 # Defaults used when connecting to servers via the /connect command
 defaults:
-    nicks: [diep]
+    nicks: [diep, rascasse]
     realname: diep
     join: ["#archlinux"]
     tls: true
 
 # Where to put log files
-log_dir: "/home/pierre/tiny_logs"
+log_dir: "/home/pierre/.var/log/tiny/"
 
 # (Optional) Limits the maximum number of messages stored for each UI tab. Defaults to unlimited.
 # scrollback: 512
