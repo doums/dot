@@ -12,7 +12,7 @@ Arch Linux build:
 - window manager: XMonad
 - compositor: yshui/picom
 
-[INSTALL](arch_install.md)
+[INSTALL](ARCH_INSTALL.md)
 
 ### first boot in the fresh installed Linux
 
