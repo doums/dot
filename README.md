@@ -48,10 +48,14 @@ Then create `dns_servers.conf` file. For DNS over TLS (DoT) using
 Cloudflare DNS:
 
 ```conf
+# Cloudflare DNS over TLS (DoT)
+
 [Resolve]
 DNS=1.1.1.1#cloudflare-dns.com 1.0.0.1#cloudflare-dns.com 2606:4700:4700::1111#cloudflare-dns.com 2606:4700:4700::1001#cloudflare-dns.com
 Domains=~.
 DNSOverTLS=yes
+# disable fallback
+FallbackDNS=
 ```
 
 Restart systemd-resolved
