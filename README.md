@@ -427,3 +427,13 @@ export SSH_AUTH_SOCK=/run/user/1000/gcr/ssh
 
 source: https://wiki.archlinux.org/title/GNOME/Keyring
 
+### Firefox
+
+To set the scrollbar width set the following property in
+`about:config`
+
+```
+widget.non-native-theme.scrollbar.size.override 16
+```
+
+NOTE: the `widget.non-native-theme.enable` should be set to true

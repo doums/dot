@@ -12,7 +12,14 @@ export PATH=$PATH:$HOME/.yarn/bin
 export PATH=$PATH:$HOME/.local/share/JetBrains/Toolbox/scripts
 export PATH=$PATH:$HOME/.local/share/JetBrains/Toolbox/bin
 
+# XDG Base Directory Spec
 export XDG_CONFIG_HOME=$HOME/.config
+export XDG_DATA_HOME=$HOME/.local/share
+export XDG_SATE_HOME=$HOME/.local/state
+export XDG_CACHE_HOME=$HOME/.cache
+export XDG_DATA_DIRS=$HOME/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share
+export XDG_SESSION_TYPE=X11
+
 # export SSH_AUTH_SOCK=/run/user/1000/keyring/ssh
 export SSH_AUTH_SOCK=/run/user/1000/gcr/ssh
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
@@ -20,16 +27,14 @@ export QT_AUTO_SCREEN_SCALE_FACTOR=1
 export EDITOR=/usr/bin/nvim
 export VISUAL=/usr/bin/nvim
 export JAVA_HOME=/usr/lib/jvm/default
-export XDG_SESSION_TYPE=X11
 export MANPAGER='nvim +Man!'
 export MAKEFLAGS='-j8'
 export FZF_DEFAULT_OPTS="--bind 'ctrl-w:toggle-preview-wrap,ctrl-p:toggle-preview,ctrl-a:toggle-all,alt-j:preview-half-page-down,alt-k:preview-half-page-up' --color='bg:-1,fg:-1,preview-bg:-1,preview-fg:-1,border:black:bold,bg+:#323232,fg+:-1:regular,hl:magenta:bold,hl+:magenta:bold,gutter:-1,pointer:yellow,prompt:blue,marker:green,spinner:bright-cyan,info:cyan:italic,header:blue:bold,query:-1:bold' --pointer=❱ --marker=❯ --prompt='❯ '"
 export FZF_DEFAULT_COMMAND="fd -HI -t f"
-export XDG_DATA_DIRS=$HOME/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share
 export NNN_OPTS=QUAuex
 export NNN_COLORS=2341
 export NNN_PLUG='t:-_bat $nnn;f:-_|firefox $nnn*'
-export NNN_BMS='h:~;d:~/Documents/dotfiles;r:/;m:/run/media/pierre;v:~/.config/nvim;n:~/Documents/nym/nym;x:/opt/xmonad'
+export NNN_BMS='h:~;d:~/Documents/dotfiles;r:/;m:/run/media/pierre;v:~/.config/nvim;n:~/Documents/nym/nym;x:/opt/xmonad;p:~/.local/share/nvim/dev/'
 export NNN_FCOLORS='0505040a00060e0801030301'
 export BG_PRIMARY=$HOME/Images/Brothers_in_the_Mist,_South_Iceland-by_Kiliii_Yuyan.jpg
 export BG_SECONDARY=$HOME/Images/Brothers_in_the_Mist,_South_Iceland-by_Kiliii_Yuyan.jpg
@@ -41,6 +46,15 @@ export LIBVA_DRIVER_NAME=vdpau
 if [ "$XDG_SESSION_DESKTOP" = 'rosu' ]; then
   (baru | xrootwin) &
 fi
+
+# android dev
+export ANDROID_HOME=$HOME/.local/share/android/sdk
+export ANDROID_USER_HOME=$HOME/.local/share/android/user
+export PATH=$PATH:$ANDROID_HOME/tools
+export PATH=$PATH:$ANDROID_HOME/emulator
+export PATH=$PATH:$ANDROID_HOME/tools/bin
+export PATH=$PATH:$ANDROID_HOME/platform-tools
+export NDK_HOME=$ANDROID_HOME/ndk/25.2.9519653
 
 # Nodejs
 export PATH=$PATH:/opt/node18/bin
