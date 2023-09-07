@@ -199,7 +199,7 @@ nav2D = navigation2DP def ("<Up>", "<Left>", "<Down>", "<Right>")
 -- #
 
 modm = mod4Mask
-myTerminal = "alacritty"
+myTerminal = "wezterm"
 -- workspaces: 󰞷 󰖟 󱃖 󰭹 z 󰅶 4 r 5
 myWorkspaces = ["\985015", "\984479", "\987350", "\985977", "z", "\983414", "4", "r", "5"]
 workspaceKeys = "&é\"aze'r("
@@ -297,7 +297,7 @@ wsActions ws = case ws of
 -- RationalRect `x y width height` - from top left corner, 0-1
 -- 1 means full width/height of the screen
 scratchpads =
-  [ NS "translate" "alacritty --class translate -e gtt"
+  [ NS "translate" "wezterm start --class translate -- gtt"
       (appName =? "translate")
       (customFloating $ W.RationalRect 0.25 0.25 0.6 0.4)
   , NS "pavucontrol" "pavucontrol" (className =? "Pavucontrol")
@@ -305,22 +305,22 @@ scratchpads =
   , NS "keymap" "apekey"
       (title =? "apekey")
       (customFloating $ W.RationalRect 0.38 0.12 0.33 0.8)
-  , NS "file-manager" "alacritty --class file-manager -e nnn"
+  , NS "file-manager" "wezterm start --class file-manager -- nnn"
       (appName =? "file-manager")
       (customFloating $ W.RationalRect (1/4) (1/6) (3/9) (4/6))
-  , NS "irc-chat" "alacritty --class irc-chat -e tiny"
+  , NS "irc-chat" "wezterm start --class irc-chat -- tiny"
       (appName =? "irc-chat")
       (doFloatAt 0.2 0.3)
-  , NS "bottom" "alacritty --class systemMonitor -e btm"
+  , NS "bottom" "wezterm start --class systemMonitor -- btm"
       (appName =? "systemMonitor")
       (customFloating $ W.RationalRect (1/6) (1/9) (4/6) (7/9))
-  , NS "calc" "alacritty --class calc -e kalker"
+  , NS "calc" "wezterm start --class calc -- kalker"
       (appName =? "calc")
       (customFloating $ W.RationalRect (1/4) (2/6) (1/4) (3/6))
-  , NS "notes" "alacritty -o window.dimensions.columns=78 --class notes -e nvim /home/pierre/.local/share/notes.md"
+  , NS "notes" "wezterm start --class notes -- nvim /home/pierre/.local/share/notes.md"
       (appName =? "notes")
       (doFloatAt 0.2 0.3)
-  , NS "network" "alacritty --class network -e nmtui"
+  , NS "network" "wezterm start --class network -- nmtui"
       (appName =? "network")
       (customFloating $ W.RationalRect 0.3 0.14 0.5 0.7)
   , NS "insomnia" "flatpak run rest.insomnia.Insomnia" (className =? "Insomnia")
