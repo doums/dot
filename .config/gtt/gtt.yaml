@@ -7,7 +7,7 @@ destination:
         argos: French
         bing: French
         chatgpt: French
-        deepl: English
+        deepl: French
         google: French
         reverso: French
 hide_below: false
@@ -21,6 +21,6 @@ source:
         deepl: English
         google: English
         reverso: English
-theme: nord
+theme: cooper
 translator: Google
 transparent: true

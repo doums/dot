@@ -1,0 +1,12 @@
+# ref https://github.com/eeeXun/gtt/tree/master#customize-theme
+cooper:
+  bg: 0x1E1F22
+  fg: 0x8C8C8C
+  gray: 0x3B4252
+  red: 0xFF6767
+  green: 0x52B910
+  yellow: 0xCE993A
+  blue: 0x6492C1
+  purple: 0xFF2EFF
+  cyan: 0x06B8B8
+  orange: 0xE5BF00
