@@ -45,3 +45,8 @@ set -x NDK_HOME $ANDROID_HOME/ndk/25.2.9519653
 
 # LanguageTool server
 set -x LANGTOOL_HOST http://loup:8010
+
+# PATH
+set -x PATH /opt/ltex-ls/bin $PATH
+
+zoxide init fish | source
