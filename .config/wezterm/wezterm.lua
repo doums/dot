@@ -59,7 +59,8 @@ c.window_padding = {
   top = 6,
   bottom = 6,
 }
-c.underline_thickness = 2
+c.underline_thickness = 3
+c.cursor_thickness = 2
 c.scrollback_lines = 4096
 c.quick_select_alphabet = 'azerty'
 c.inactive_pane_hsb = {
