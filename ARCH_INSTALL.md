@@ -8,6 +8,11 @@ setup overview:
 - ROOT type `ext4` (`btrfs` could be considered in next installs)
 - Swap partition of 8G
 
+### TODO
+
+Consider [Booster](https://wiki.archlinux.org/title/Booster) as 
+initramfs generator (instead of mkinitcpio)
+
 ### memo
 
 #### Prerequisites
