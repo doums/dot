@@ -8,7 +8,7 @@ c.term = 'wezterm'
 c.dpi = 120
 c.xcursor_theme = 'Paper'
 c.color_scheme = 'Cooper'
-c.max_fps = 144
+c.max_fps = 165
 c.adjust_window_size_when_changing_font_size = false
 
 -- font
@@ -23,7 +23,7 @@ c.font = wezterm.font_with_fallback({
   'JetBrainsMono Nerd Font',
 })
 -- c.allow_square_glyphs_to_overflow_width = 'Always'
-c.font_size = 13.0
+c.font_size = 12.0
 c.freetype_load_target = 'Light'
 c.freetype_render_target = 'HorizontalLcd'
 c.char_select_font_size = 14.0
@@ -73,10 +73,17 @@ c.window_close_confirmation = 'NeverPrompt'
 c.hide_mouse_cursor_when_typing = false
 
 -- tab bar
-c.use_fancy_tab_bar = false
 c.enable_tab_bar = true
-c.hide_tab_bar_if_only_one_tab = true
+c.use_fancy_tab_bar = false
+c.hide_tab_bar_if_only_one_tab = false
 c.tab_bar_at_bottom = true
+-- TODO disabling `show_tab_index_in_tab_bar` will cause tab titles 
+-- to be print without any space padding around title text
+-- A workaround is to use `format-tab-title`
+-- see https://wezfurlong.org/wezterm/config/lua/window-events/format-tab-title.html
+-- But I found it to be bugged when hovering tab titles
+-- So let's keep it enable for now
+c.show_tab_index_in_tab_bar = true
 
 c.leader = { key = 'w', mods = 'ALT', timeout_milliseconds = 2000 }
 
@@ -91,22 +98,6 @@ wezterm.on('update-right-status', function(window, pane)
     })
   end
   window:set_right_status(name or '')
-end)
-
-wezterm.on('start-ide', function(window, pane)
-  local p_info = pane:get_foreground_process_info()
-  local tab, _pane, _ = mux.spawn_window({
-    workspace = 'ide',
-    cwd = p_info and p_info.cwd or nil,
-    args = { 'nvim' },
-  })
-  _pane:split({
-    direction = 'Bottom',
-    size = 0.10,
-  })
-  _pane:activate()
-  tab:set_title('IDE')
-  mux.set_active_workspace('ide')
 end)
 
 c.keys = {
@@ -129,14 +120,6 @@ c.keys = {
     key = 'Enter',
     mods = 'ALT',
     action = act.DisableDefaultAssignment,
-  },
-  {
-    key = 'r',
-    mods = 'LEADER',
-    action = act.ActivateKeyTable({
-      name = 'resize_pane',
-      one_shot = false,
-    }),
   },
   {
     key = ':',
@@ -170,11 +153,20 @@ c.keys = {
   },
   { key = 'PageUp', mods = 'SHIFT', action = act.ScrollByPage(-0.5) },
   { key = 'PageDown', mods = 'SHIFT', action = act.ScrollByPage(0.5) },
-  { key = 'h', mods = 'LEADER', action = act.ActivatePaneDirection('Left') },
-  { key = 'j', mods = 'LEADER', action = act.ActivatePaneDirection('Down') },
-  { key = 'k', mods = 'LEADER', action = act.ActivatePaneDirection('Up') },
-  { key = 'l', mods = 'LEADER', action = act.ActivatePaneDirection('Right') },
-  { key = 'n', mods = 'LEADER', action = act.EmitEvent('start-ide') },
+  { key = 'h', mods = 'SHIFT|ALT', action = act.ActivatePaneDirection('Left') },
+  -- navigates panes using <Shift-Alt-hjkl>
+  { key = 'j', mods = 'SHIFT|ALT', action = act.ActivatePaneDirection('Down') },
+  { key = 'k', mods = 'SHIFT|ALT', action = act.ActivatePaneDirection('Up') },
+  {
+    key = 'l',
+    mods = 'SHIFT|ALT',
+    action = act.ActivatePaneDirection('Right'),
+  },
+  -- rezise panes using <Ctrl-Alt-hjkl>
+  { key = 'h', mods = 'CTRL|ALT', action = act.AdjustPaneSize({ 'Left', 2 }) },
+  { key = 'j', mods = 'CTRL|ALT', action = act.AdjustPaneSize({ 'Down', 2 }) },
+  { key = 'k', mods = 'CTRL|ALT', action = act.AdjustPaneSize({ 'Up', 2 }) },
+  { key = 'l', mods = 'CTRL|ALT', action = act.AdjustPaneSize({ 'Right', 2 }) },
   {
     key = 'w',
     mods = 'LEADER',
@@ -183,10 +175,9 @@ c.keys = {
       title = 'WORKSPACES',
     }),
   },
-  { key = '[', mods = 'LEADER', action = act.ActivateTabRelative(-1) },
-  { key = ']', mods = 'LEADER', action = act.ActivateTabRelative(1) },
-  { key = 'LeftArrow', mods = 'LEADER', action = act.ActivateTabRelative(-1) },
-  { key = 'RightArrow', mods = 'LEADER', action = act.ActivateTabRelative(1) },
+  -- tabs navigation
+  { key = 'h', mods = 'LEADER', action = act.ActivateTabRelative(-1) },
+  { key = 'l', mods = 'LEADER', action = act.ActivateTabRelative(1) },
 }
 
 -- tabs mapping
@@ -295,7 +286,10 @@ local p = {
   fg = '#8C8C8C',
   cursor = '#CA7911',
   selection_bg = '#4A17D2',
+  selection_inactive_bg = '#381E7f',
   selection_fg = '#FFFFFF',
+  tab_bar_bg = '#191919',
+  active_tab_bg = '#111111',
 }
 
 c.color_schemes = {
@@ -342,8 +336,8 @@ c.color_schemes = {
     -- 2. selection_* otherwise
     copy_mode_active_highlight_bg = { Color = '#000000' },
     copy_mode_active_highlight_fg = { AnsiColor = 'Black' },
-    copy_mode_inactive_highlight_bg = { Color = p.selection_bg },
-    copy_mode_inactive_highlight_fg = { AnsiColor = 'White' },
+    copy_mode_inactive_highlight_bg = { Color = p.selection_inactive_bg },
+    copy_mode_inactive_highlight_fg = { AnsiColor = 'Black' },
 
     quick_select_label_bg = { AnsiColor = 'Red' },
     quick_select_label_fg = { Color = 'White' },
@@ -351,14 +345,14 @@ c.color_schemes = {
     quick_select_match_fg = { Color = p.selection_fg },
 
     tab_bar = {
-      background = p.bg,
+      background = p.tab_bar_bg,
       active_tab = {
-        bg_color = '#121212',
+        bg_color = p.active_tab_bg,
         fg_color = '#C0C0C0',
         intensity = 'Normal',
       },
       inactive_tab = {
-        bg_color = '#1D1D1D',
+        bg_color = p.tab_bar_bg,
         fg_color = '#808080',
       },
       inactive_tab_hover = {
@@ -366,12 +360,13 @@ c.color_schemes = {
         fg_color = '#909090',
       },
       new_tab = {
-        bg_color = '#1D1D1D',
-        fg_color = '#b8a8a8',
+        bg_color = p.tab_bar_bg,
+        fg_color = '#B8A8A8',
+        intensity = 'Bold',
       },
       new_tab_hover = {
         bg_color = '#DA7800',
-        fg_color = '#B8A8A8',
+        fg_color = '#FFFFFF',
         intensity = 'Bold',
       },
     },
