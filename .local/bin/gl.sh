@@ -28,7 +28,7 @@ if delta --version &> /dev/null; then
   delta_command="delta -s -w ${FZF_PREVIEW_COLUMNS:-$COLUMNS}"
 fi
 
-if [ ! "$1" ]; then
+log() {
   preview="git show --color --abbrev-commit --pretty=medium --date=format:%c {1}"
   if [ "$use_delta" ]; then
     preview="$preview | $delta_command"
@@ -40,16 +40,33 @@ if [ ! "$1" ]; then
   if [ -n "$output" ]; then
     git show "$output"
   fi
-else
+}
+
+log_args=(--oneline --parents --decorate=short)
+log_path() {
   preview="git show --color --abbrev-commit -s --pretty=medium --date=format:%c {1} \
   && echo -e \n \
   && git diff --color {2} {1} -- $1"
   if [ "$use_delta" ]; then
     preview="$preview | $delta_command"
   fi
-  git log --oneline --parents --decorate=short -- "$1" | fzf \
+  # if a revision-range is provided, add it to git log args
+  if [ -n "$2" ]; then
+    log_args+=("$2")
+  fi
+  git log "${log_args[@]}" -- "$1" | fzf \
   --with-nth=3.. \
   --preview="$preview" \
   --preview-window=up,80%,noborder,border-bottom \
-  --header="git log $1"
+  --header="git log $1 $2"
+}
+
+# $1 path (optional)
+# $2 revision-range (optional)
+if [ "$#" -eq 0 ]; then
+  log
+elif [ "$#" -eq 1 ]; then
+  log_path "$1"
+else
+  log_path "$1" "$2"
 fi
