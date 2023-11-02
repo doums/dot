@@ -4,25 +4,20 @@ setup overview:
 
 - UEFI - GPT
 - bootloader: systemd-boot
+- initramfs gen: Booster
 - ESP mounted to `/efi`
 - ROOT type `ext4` (`btrfs` could be considered in next installs)
 - Swap partition of 8G
+- KMS
 
-### TODO
-
-Consider [Booster](https://wiki.archlinux.org/title/Booster) as 
-initramfs generator (instead of mkinitcpio)
-
-### memo
-
-#### Prerequisites
+### Prerequisites
 
 In UEFI firmware:
 
 - ⚠ set the hardware clock to UTC time
 - disable secure boot
 
-#### Partitioning
+### Partitioning
 
 Partition the disk using `fdisk /dev/nvme0n1`
 
@@ -37,7 +32,7 @@ Partition the disk using `fdisk /dev/nvme0n1`
 
 → https://wiki.archlinux.org/title/Partitioning
 
-#### Formatting
+### Formatting
 
 1. format ESP in `FAT32`
 
@@ -75,13 +70,44 @@ mount /dev/nvme0n1p2 /mnt
 mount --mkdir /dev/nvme0n1p1 /mnt/efi
 ```
 
-#### follow Arch wiki steps
+### follow Arch wiki steps
 
 from https://wiki.archlinux.org/title/Installation_guide#Installation
 
-### systemd-boot
+then **chroot**
 
-Once **chrooted**, to install systemd-boot run
+### Booster
+
+```
+pacman -S booster
+```
+
+Initramfs images will be generated and located under `/boot`
+directory.
+
+### KMS
+
+Edit `/etc/booster.yaml`
+
+For intel GPU
+
+```
+modules_force_load: i915
+```
+
+For nvidia GPU
+
+```
+modules_force_load: nvidia nvidia_modeset nvidia_uvm nvidia_drm
+```
+
+sources:
+
+- https://wiki.archlinux.org/title/Kernel_mode_setting#Early_KMS_start
+- https://wiki.archlinux.org/title/Booster#Early_module_loading
+- https://wiki.archlinux.org/title/NVIDIA#Early_loading
+
+### systemd-boot
 
 ```
 bootctl install
@@ -104,7 +130,7 @@ write the Arch Linux entry in `/efi/loader/entries/arch.conf`
 title   Arch Linux
 linux   /vmlinuz-linux
 initrd  /intel-ucode.img
-initrd  /initramfs-linux.img
+initrd  /booster-linux.img
 options root=LABEL=ARCH rw quiet splash
 ```
 
@@ -114,7 +140,7 @@ TODO: add note for nvidia kernel modules
 
 ```
 cp -a /boot/vmlinuz-linux /efi/
-cp -a /boot/initramfs-linux.img /efi/
+cp -a /boot/booster-linux.img /efi/
 cp -a /boot/intel-ucode.img /efi/
 ```
 
@@ -163,7 +189,7 @@ Type = Path
 Operation = Install
 Operation = Upgrade
 Target = usr/lib/modules/*/vmlinuz
-Target = usr/lib/initcpio/*
+Target = usr/lib/booster/*
 Target = boot/*-ucode.img
 
 [Action]
@@ -172,7 +198,7 @@ When = PostTransaction
 Exec = /usr/local/bin/boot-files-copy.sh
 ```
 
-Add the corresponding script into `/usr/local/bin/`
+Add the following script into `/usr/local/bin/`
 
 ```
 #! /bin/sh
@@ -180,7 +206,7 @@ Add the corresponding script into `/usr/local/bin/`
 ESP="/efi/"
 
 cp -a /boot/vmlinuz-linux $ESP
-cp -a /boot/initramfs-linux.img $ESP
+cp -a /boot/booster-linux.img $ESP
 cp -a /boot/intel-ucode.img $ESP
 
 exit 0
