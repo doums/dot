@@ -163,10 +163,10 @@ c.keys = {
     action = act.ActivatePaneDirection('Right'),
   },
   -- rezise panes using <Ctrl-Alt-hjkl>
-  { key = 'h', mods = 'CTRL|ALT', action = act.AdjustPaneSize({ 'Left', 2 }) },
-  { key = 'j', mods = 'CTRL|ALT', action = act.AdjustPaneSize({ 'Down', 2 }) },
-  { key = 'k', mods = 'CTRL|ALT', action = act.AdjustPaneSize({ 'Up', 2 }) },
-  { key = 'l', mods = 'CTRL|ALT', action = act.AdjustPaneSize({ 'Right', 2 }) },
+  { key = 'LeftArrow', mods = 'CTRL|ALT', action = act.AdjustPaneSize({ 'Left', 2 }) },
+  { key = 'DownArrow', mods = 'CTRL|ALT', action = act.AdjustPaneSize({ 'Down', 2 }) },
+  { key = 'UpArrow', mods = 'CTRL|ALT', action = act.AdjustPaneSize({ 'Up', 2 }) },
+  { key = 'RightArrow', mods = 'CTRL|ALT', action = act.AdjustPaneSize({ 'Right', 2 }) },
   {
     key = 'w',
     mods = 'LEADER',
@@ -176,8 +176,8 @@ c.keys = {
     }),
   },
   -- tabs navigation
-  { key = 'h', mods = 'LEADER', action = act.ActivateTabRelative(-1) },
-  { key = 'l', mods = 'LEADER', action = act.ActivateTabRelative(1) },
+  { key = 'h', mods = 'CTRL|ALT', action = act.ActivateTabRelative(-1) },
+  { key = 'l', mods = 'CTRL|ALT', action = act.ActivateTabRelative(1) },
 }
 
 -- tabs mapping
