@@ -361,11 +361,9 @@ rename the links to match this format: obs.desktop, vlc.desktop
 
 ### journal
 
-To prevent the journal to take 4Gb space of disk memory in `/etc/systemd/journald.conf` add :
-
-```
-SystemMaxUse=1G
-```
+To prevent the journal to take 4Gb space of disk memory add
+the configuration file `00-journal-size.conf` in
+`/etc/systemd/journald.conf.d/` directory (create it)
 
 (the default is 4Gb)
 
