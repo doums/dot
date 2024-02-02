@@ -1,4 +1,4 @@
-Config { font = "JetBrainsMono Nerd Font 11"
+Config { font = "JetBrainsMono SZMDI 12"
        , dpi = 127
        , additionalFonts = []
        , borderColor = "#262626"

@@ -146,9 +146,7 @@ sudo mkdir -p /usr/local/share/fonts/ttf/
 
 Place any custom fonts under it
 
-**patch font to add MDI icons glyphs**
-
-Material Design Icons font: https://github.com/Templarian/MaterialDesign-Font
+**patch font to add MDI glyphs**
 
 font patcher: https://github.com/ryanoasis/nerd-fonts#font-patcher
 
@@ -165,12 +163,13 @@ git clone --depth 1 https://github.com/ryanoasis/nerd-fonts.git
 cd nerd-fonts
 ```
 
-3. move the MDI font in `src/glyphs/`
-4. patch
+3. patch
 
 ```shell
-./font-patcher --custom MaterialDesignIconsDesktop.ttf --progressbars --careful path/to/fontToPatch.ttf
+./font-patcher --progressbars --careful --makegroups 4 --mdi path/to/fontToPatch.ttf
 ```
+
+4. rename font using FontForge
 
 #### XMonad
 
