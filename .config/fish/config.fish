@@ -11,7 +11,6 @@ alias gs='git status'
 alias gl='gl.sh'
 alias gd='gd.sh'
 alias glf='git log -p --date=format:%c --abbrev-commit --'
-alias wtr='curl fr.wttr.in'
 alias dk='docker'
 alias dc='docker compose'
 alias log='docker logs -f'
@@ -31,22 +30,35 @@ set -x DEBUGINFOD_URLS https://debuginfod.archlinux.org
 # set -x GDK_SCALE 2
 # set -x GDK_DPI_SCALE 0.5
 
+# nnn
+set -x NNN_OPTS QUAuex
+set -x NNN_COLORS 2341
+set -x NNN_PLUG 't:-_bat $nnn;f:-_|firefox $nnn*'
+set -x NNN_BMS 'h:~;d:~/Documents/dot;r:/;m:/run/media/pierre;n:~/.config/nvim;x:/opt/xmonad'
+set -x NNN_FCOLORS '0505040a00060e0801030301'
+
+# fzf
+set -x FZF_DEFAULT_OPTS "--bind 'ctrl-w:toggle-preview-wrap,ctrl-p:toggle-preview,ctrl-a:toggle-all,alt-j:preview-half-page-down,alt-k:preview-half-page-up' --color='bg:-1,fg:-1,preview-bg:-1,preview-fg:-1,border:black:bold,bg+:#323232,fg+:-1:regular,hl:magenta:bold,hl+:magenta:bold,gutter:-1,pointer:yellow,prompt:blue,marker:green,spinner:bright-cyan,info:cyan:italic,header:blue:bold,query:-1:bold' --pointer=❱ --marker=❯ --prompt='❯ '"
+set -x FZF_DEFAULT_COMMAND "fd -HI -t f"
+
 # Java
 set -x JAVA_HOME /usr/lib/jvm/default
 
-# android dev
-set -x ANDROID_HOME $HOME/.local/share/android/sdk
-set -x ANDROID_USER_HOME $HOME/.local/share/android/user
-set -x PATH $ANDROID_HOME/tools $PATH
-set -x PATH $ANDROID_HOME/emulator $PATH
-set -x PATH $ANDROID_HOME/tools/bin $PATH
-set -x PATH $ANDROID_HOME/platform-tools $PATH
-set -x NDK_HOME $ANDROID_HOME/ndk/25.2.9519653
+# Go
+set -x GOPATH $HOME/.go
+set -x GOBIN $GOPATH/bin
+set -x PATH $GOBIN $PATH
+
+# bun
+set --export BUN_INSTALL "$HOME/.bun"
+set --export PATH $BUN_INSTALL/bin $PATH
 
 # LanguageTool server
 set -x LANGTOOL_HOST http://loup:8010
 
 # PATH
 set -x PATH /opt/ltex-ls/bin $PATH
+# Nodejs
+set -x PATH /opt/node20/bin $PATH
 
 zoxide init fish | source
