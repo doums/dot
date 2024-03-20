@@ -1,0 +1,103 @@
+# ref https://alacritty.org/config-alacritty.html
+
+live_config_reload = true
+
+[window]
+dynamic_title = true
+opacity = 0.95
+blur = true
+dimensions = { columns = 67, lines = 24 }
+padding = { x = 6, y = 6 }
+# dynamic_padding = true
+decorations = "None"
+
+[font]
+builtin_box_drawing = false
+size = 12.3
+[font.normal]
+family = "JetBrains Mono SZ"
+style = "Regular"
+
+[colors]
+transparent_background_colors = true
+draw_bold_text_with_bright_colors = false
+[colors.primary]
+background = "#1E1F22"
+foreground = "#8C8C8C"
+dim_foreground = "#404040"
+bright_foreground = "#AFAFAF"
+[colors.cursor]
+text = "#212121"
+cursor = "#CA7911"
+[colors.vi_mode_cursor]
+text = "#FFFFFF"
+cursor = "#FF1D7A"
+[colors.search.focused_match]
+background = "#FDE68A"
+foreground = "#000000"
+[colors.search.matches]
+background = "#FFA600"
+foreground = "#000000"
+# [colors.hint.start]
+# foreground = ""
+# background = ""
+# [colors.hint.end]
+# foreground = ""
+# background = ""
+# [colors.line_indicator]
+# foreground = ""
+# background = ""
+[colors.footer_bar]
+background = "#2C2B2B"
+foreground = "#C0C9CF"
+[colors.selection]
+background = "#4A17D2"
+text = "#FFFFFF"
+[colors.normal]
+black = "#3B4252"
+red = "#FF6767"
+green = "#52B910"
+yellow = "#CE993A"
+blue = "#6492C1"
+magenta = "#FF2EFF"
+cyan = "#06B8B8"
+white = "#D6D9E0"
+[colors.bright]
+black = "#4C566A"
+red = "#FF4050"
+green = "#61DA13"
+yellow = "#E5BF00"
+blue = "#1FB0FF"
+magenta = "#ED7EED"
+cyan = "#00E5E5"
+white = "#FFFFFF"
+# [colors.dim]
+
+[cursor]
+thickness = 0.5
+unfocused_hollow = true
+[cursor.style]
+shape = "Underline"
+blinking = "Off"
+[cursor.vi_mode_style]
+shape = "Block"
+blinking = "Off"
+
+[mouse]
+hide_when_typing = false
+
+[keyboard]
+bindings = [
+  { key = 12, mods = "Control", action = "ResetFontSize" },
+  { key = "K", mods = "Control|Shift", action = "ClearHistory" },
+  { key = "T", mods = "Super|Shift", action = "SpawnNewInstance" },
+  { key = "F", mods = "Control|Shift", action = "SearchBackward" },
+  { key = "H", mods = "Control", mode = "Vi", action = "SemanticLeft" },
+  { key = "L", mods = "Control", mode = "Vi", action = "SemanticRight" },
+  { key = "K", mods = "Control", mode = "Vi", action = "ScrollHalfPageUp" },
+  { key = "J", mods = "Control", mode = "Vi", action = "ScrollHalfPageDown" },
+  { key = "Backspace", mods = "Alt", mode = "Search", action = "SearchDeleteWord" },
+  { key = "N", mods = "Control", mode = "Search", action = "SearchFocusNext" },
+  { key = "N", mods = "Control|Shift", mode = "Search", action = "SearchFocusPrevious" },
+]
+
