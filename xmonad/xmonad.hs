@@ -52,6 +52,7 @@ cfg = def {
   startupHook        = myStartupHook
   }
   `additionalKeysP`         keybinds
+  `removeKeysP`             kbRemoved
   `additionalMouseBindings` mousebinds
 
 -- # Keymap
@@ -121,12 +122,12 @@ keybinds = ([
   , ("M-!",         spawn "rofi -show drun")
   -- Open the window switcher
   , ("M-w",         spawn "rofi -show window")
-  -- Screen lock
-  , ("M-S-l",       spawn "lock.sh")
   -- Open session menu
   , ("M-q",         spawn ("session.sh" ++ dmenuArgs))
   -- Open glyph menu
   , ("M-g",         spawn ("glyph.sh" ++ dmenuArgs))
+  -- Open ssh.sh
+  , ("M-S-s",        spawn ("ssh.sh" ++ dmenuArgs))
   -- Open clipboard manager
   , ("M-v",         spawn ("clipmenu -b -i -p '◧'" ++ dmenuArgs))
   -- Restart compositor
@@ -198,6 +199,8 @@ nav2D = navigation2DP def ("<Up>", "<Left>", "<Down>", "<Right>")
                           True
 -- #
 
+kbRemoved = ["M-S-c"]
+
 modm = mod4Mask
 myTerminal = "wezterm"
 -- workspaces: 󰞷 󰖟 󱃖 󰭹 z 󰅶 4 r 5
@@ -237,6 +240,7 @@ myManageHook = fmap not willFloat --> insertPosition Below Newer
     , className =? "jetbrains-toolbox"  --> doCenterFloat
     , className =? "frame"              --> doCenterFloat
     , title =? "frame"                  --> doCenterFloat
+    , className =? "Gpick"              --> doFloat
     , title =? "splash"
         <&&> className ^? "jetbrains-"  --> doCenterFloat <> hasBorder False
     , title ^? "Emulator"               --> doFloat
