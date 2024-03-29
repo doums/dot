@@ -134,7 +134,11 @@ initrd  /booster-linux.img
 options root=LABEL=ARCH rw quiet splash
 ```
 
-TODO: add note for nvidia kernel modules
+For nvidia add `nvidia_drm.modeset=1` to kernel parameters
+
+```
+options root=LABEL=ARCH rw quiet splash nvidia_drm.modeset=1
+```
 
 #### copy boot file to ESP
 
