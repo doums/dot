@@ -1,23 +1,26 @@
-## pacman stuff
+## Pacman
 
-Includes the main pacman configuration file and post-transaction
-hooks.
+### config
 
-- move `pacman.conf` in `/etc`
-- move `hooks/*.hook` in `/etc/pacman.d/hooks`
+Edit `/etc/pacman.conf`, in `[options]` section
 
-`clean_cache.hook` use `paccache` which is an util from the `pacman-contrib` package:
+- uncomment `Color`
+- set `ParallelDownloads = 5`
+- add `ILoveCandy`
 
-```
-sudo pacman -S pacman-contrib
-```
+### custom hooks
 
+First install `pacman-contrib` (provides `paccache`).
+
+Move `hooks/*.hook` (from repo) into `/etc/pacman.d/hooks/`
+
+`clean_cache.hook` use `paccache`.
 It runs after every system update, package installation and
 package removal. It will only keep one older version of the
 installed packages, preventing the cache from growing
 indefinitely.
 
-source: https://wiki.archlinux.org/index.php/Pacman#Cleaning_the_package_cache
+→ https://wiki.archlinux.org/index.php/Pacman#Cleaning_the_package_cache
 
 ### improving compile time
 
@@ -33,4 +36,4 @@ replace 8 with the number of CPU cores
 nproc
 ```
 
-source: https://wiki.archlinux.org/index.php/Makepkg#Improving_compile_times
+→ https://wiki.archlinux.org/index.php/Makepkg#Improving_compile_times

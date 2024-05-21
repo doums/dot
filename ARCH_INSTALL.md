@@ -10,6 +10,8 @@ setup overview:
 - Swap (partition or swapfile) of 8G
 - KMS
 
+[partitioning](#partitioning) • [formatting](#formatting) • [chroot](#chroot) • [post](#post-install) • [graphics](#graphics)
+
 ### Prerequisites
 
 In UEFI firmware:
@@ -118,53 +120,35 @@ https://wiki.archlinux.org/title/Installation_guide#Installation
 
 After generating `fstab` edit the root entry:
 remove `discard=async` and add `nodiscard` to the mount options \
-→ this is for periodic trim
+→ periodic trim will be used instead
 
-### chroot
+## chroot
 
-### KMS
+### initramfs
 
-Edit `/etc/mkinitcpio.conf`
+Disable `fallback` img generation (useless)
 
-#### intel GPU
-
-```
-MODULES=(i915)
-```
-
-#### nvidia GPU
-
-```
-MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)
-```
-
-⚠ remove `kms` from hooks array
-
-> Remove kms from the HOOKS array in /etc/mkinitcpio.conf and regenerate the initramfs. This will prevent the initramfs from containing the nouveau module making sure the kernel cannot load it during early boot.
-
-```
-HOOKS=(… ~~kms~~ …)
-```
+- remove `fallback` from `PRESETS=(…)` line in all `.preset` files in `/etc/mkinitcpio.d/`
+- remove `/boot/*-fallback.img`
 
 Re-generate initramfs → `mkinitcpio -P`
 
-sources:
+→ https://wiki.archlinux.org/title/Mkinitcpio#Possibly_missing_firmware_for_module_XXXX
 
-- https://wiki.archlinux.org/title/Kernel_mode_setting#Early_KMS_start
-- https://wiki.archlinux.org/title/NVIDIA#Early_loading
+### bootloader
 
-### systemd-boot
+Install `systemd-boot` with
 
 ```
 bootctl install
 ```
 
-write the conf loader in `/efi/loader/loader.conf`
+write the loader config in `/efi/loader/loader.conf`
 
 ```
 default arch.conf
 timeout 4
-console-mode keep
+console-mode keep # or max
 editor no
 ```
 
@@ -175,32 +159,40 @@ write the Arch Linux entry in `/efi/loader/entries/arch.conf`
 ```
 title   Arch Linux
 linux   /vmlinuz-linux
-# initrd  /intel-ucode.img # only needed if using intel gpu
 initrd  /initramfs-linux.img
 options root=LABEL=ARCH rw quiet splash
 ```
-
-For nvidia add `nvidia_drm.modeset=1` to kernel parameters
-
-```
-options root=LABEL=ARCH rw quiet splash nvidia_drm.modeset=1
-```
-
-ref https://wiki.archlinux.org/title/NVIDIA#DRM_kernel_mode_setting
 
 #### copy boot file to ESP
 
 ```
 cp -a /boot/vmlinuz-linux /efi/
 cp -a /boot/initramfs-linux.img /efi/
-
-# only needed if using intel gpu
-#cp -a /boot/intel-ucode.img /efi/
 ```
 
 ⚠ be sure to read [system maintenance](#-system-maintenance)
 
+### swapfile (as btrfs subvolume)
+
+skip if using partition
+
+```shell
+btrfs subvolume create /swap
+btrfs filesystem mkswapfile --size 8g --uuid clear /swap/swapfile
+swapon /swap/swapfile
+```
+
+edit `/etc/fstab`
+
+```
+/swap/swapfile none swap defaults 0 0
+```
+
+→ https://wiki.archlinux.org/title/Btrfs#Swap_file
+
 ## POST install
+
+Configure Pacman → https://github.com/doums/dot/blob/master/pacman/README.md
 
 ### network
 
@@ -261,11 +253,20 @@ resolvectl query archlinux.org --cache=false
 - https://wiki.archlinux.org/title/Systemd-resolved
 - https://developers.cloudflare.com/1.1.1.1/setup/linux
 
+#### define hosts
+
+`/etc/hosts`
+
+```
+127.0.0.1   localhost
+::1         localhost
+```
+
 ### ⚠ system maintenance
 
 To upgrade `systemd-boot` on package upgrade use a pacman hook
 
-To automatically copy kernel, initramfs (and microcode) images from
+To automatically copy kernel, initramfs images from
 `/boot` into the ESP (`/efi`), after a system upgrade use a pacman
 hook
 
@@ -325,3 +326,57 @@ Setup sudo
 # systemctl enable fstrim.timer
 # systemctl start fstrim.timer
 ```
+
+## graphics
+
+Install the needed packages
+
+|        | Intel        | NVIDIA             |
+| ------ | ------------ | ------------------ |
+| driver | mesa         | nvidia             |
+| 32bits | lib32-mesa   | lib32-nvidia-utils |
+| libs   | vulkan-intel | nvidia-utils       |
+
+### KMS
+
+Edit `/etc/mkinitcpio.conf`
+
+#### Intel
+
+```
+MODULES=(i915)
+```
+
+https://wiki.archlinux.org/title/Intel_graphics#Early_KMS
+
+#### NVIDIA
+
+```
+MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)
+```
+
+⚠ remove `kms` from hooks array
+
+> Remove kms from the HOOKS array in /etc/mkinitcpio.conf and regenerate the initramfs. This will prevent the initramfs from containing the nouveau module making sure the kernel cannot load it during early boot.
+
+```
+HOOKS=(… ~~kms~~ …)
+```
+
+Re-generate initramfs → `mkinitcpio -P`
+
+#### NVIDIA DRM
+
+Add `nvidia_drm.modeset=1` to kernel parameters
+
+Edit `/efi/loader/entries/arch.conf`
+
+```
+options root=LABEL=ARCH rw quiet splash nvidia_drm.modeset=1
+```
+
+**TBD** consider using `nvidia_drm.fbdev=1`
+
+→ https://wiki.archlinux.org/title/Kernel_mode_setting#Early_KMS_start \
+→ https://wiki.archlinux.org/title/NVIDIA#Early_loading \
+→ https://wiki.archlinux.org/title/NVIDIA#DRM_kernel_mode_setting

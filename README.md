@@ -8,66 +8,44 @@ Arch Linux build:
 
 - display server: Xorg (X11)
 - no desktop environment
-- display manager: LightDM + its gtk greeter
+- display manager: LightDM + its GTK greeter
 - window manager: XMonad
 - compositor: yshui/picom
 
 [INSTALL](ARCH_INSTALL.md)
 
-### XDG user directories
+## X
 
-```shell
-sudo pacman -S xdg-user-dirs
-xdg-user-dirs-update
+Install `xorg-server`
+
+https://wiki.archlinux.org/index.php/Xorg
+
+## Display manager
+
+Install LightDM and its GTK greeter
+
+```
+lightdm lightdm-gtk-greeter
 ```
 
-source: https://wiki.archlinux.org/index.php/XDG_user_directories
-
-### graphic environment setup
-
-1. install the display server Xorg (implementation of the X Window System aka X11) and the display driver (`mesa` for intel integrated graphic card)
-
-```shell
-sudo pacman -S xorg-server mesa
-```
-
-https://wiki.archlinux.org/index.php/Xorg\
-https://wiki.archlinux.org/index.php/Intel_graphics#Installation
-
-2. install the display manager LightDM and its greeter
-
-```shell
-sudo pacman -S lightdm lightdm-gtk-greeter
-```
-
-start the service
-
-```shell
-sudo systemctl enable lightdm
-```
+Enable `lightdm.service`
 
 https://wiki.archlinux.org/index.php/LightDM#Installation
 
-3. install the window manager
+## Window Manager
 
 ### fonts
 
 Main fonts
 
-```shell
-sudo pacman -S ttf-jetbrains-mono ttf-inconsolata ttf-roboto
+```
+ttf-jetbrains-mono ttf-inconsolata ttf-roboto noto-fonts ttf-dejavu ttf-liberation
 ```
 
-Other system fonts
+Emoji font
 
 ```
-sudo pacman -S noto-fonts ttf-dejavu ttf-liberation
-```
-
-**emoji**
-
-```shell
-sudo pacman -S noto-fonts-emoji
+noto-fonts-emoji
 ```
 
 Refresh font cache
@@ -81,40 +59,10 @@ fc-list
 
 [docs](https://wiki.archlinux.org/title/Fonts#Manual_installation)
 
-First create the directory
+First create the directory `/usr/local/share/fonts/ttf/` and
+place any custom fonts under it
 
-```
-sudo mkdir -p /usr/local/share/fonts/ttf/
-```
-
-Place any custom fonts under it
-
-**patch font to add MDI glyphs**
-
-font patcher: https://github.com/ryanoasis/nerd-fonts#font-patcher
-
-1. install FontForge
-
-```shell
-sudo pacman -S FontForge
-```
-
-2. clone the repo
-
-```shell
-git clone --depth 1 https://github.com/ryanoasis/nerd-fonts.git
-cd nerd-fonts
-```
-
-3. patch
-
-```shell
-./font-patcher --progressbars --careful --makegroups 4 --mdi path/to/fontToPatch.ttf
-```
-
-4. rename font using FontForge
-
-#### XMonad
+### XMonad
 
 First install `stack`. Take the static version from AUR to avoid
 the plethora of Haskell dependencies.
@@ -161,7 +109,7 @@ ln -s ~/Documents/xmonad/stack.yaml stack.yaml
 
 source: https://xmonad.org/INSTALL.html
 
-##### XMobar
+#### XMobar
 
 Clone the sources and build the project
 
@@ -199,26 +147,57 @@ sudo pacman -S udisks2 udiskie
 
 source: https://wiki.archlinux.org/index.php/Udisks
 
-## Design
+### XDG user directories
 
-### gtk theme, Adapta
-
-https://github.com/adapta-project/adapta-gtk-theme.git
-
-(see notes below for how to build it for HiDPI)
-
-### set the wallpaper
-
-Install `xwallpaper` package\
-`xwallpaper` is spawned by XMonad\
-The wallpaper image is defined by `$BG_PRIMARY` env variable\
-eg. in `.xprofile`
-
-```bash
-export BG_PRIMARY=$HOME/Pictures/dark_ocean.png
+```shell
+sudo pacman -S xdg-user-dirs
+xdg-user-dirs-update
 ```
 
-### icon and cursor theme
+source: https://wiki.archlinux.org/index.php/XDG_user_directories
+
+## Design
+
+### GTK theme
+
+Theme used https://github.com/nana-4/materia-theme
+
+Install `materia-gtk-theme`
+
+edit `$XDG_CONFIG_HOME/gtk-3.0/settings.ini`
+
+```
+[Settings]
+gtk-icon-theme-name = Paper
+gtk-theme-name = Materia-dark
+gtk-font-name = Roboto 12
+```
+
+edit ~/.gtkrc-2.0
+
+```
+gtk-icon-theme-name = "Paper"
+gtk-theme-name = "Materia-dark"
+gtk-font-name = "Roboto 12"
+```
+
+#### gnome
+
+```shell
+gsettings set org.gnome.desktop.interface gtk-theme Materia-dark
+gsettings set org.gnome.desktop.interface color-scheme prefer-dark
+gsettings set org.gnome.desktop.interface icon-theme Paper
+gsettings set org.gnome.desktop.interface cursor-size 64
+```
+
+#### Flatpak
+
+```shell
+flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+flatpak install flathub org.gtk.Gtk3theme.Materia-dark
+```
+
+### Cursor theme
 
 install https://github.com/snwh/paper-icon-theme
 
@@ -229,30 +208,21 @@ edit `/usr/share/icons/default/index.theme`
 Inherits=Paper
 ```
 
-note: the icon theme is also set when `.Xresources` file is read when lightdm (display manager) starts and sources `.xprofile`
+note: the icon theme is also set when `.Xresources` file is read
+when lightdm (display manager) starts and sources `.xprofile`
 
-resources:
-
+- https://wiki.archlinux.org/title/Cursor_themes
 - https://wiki.archlinux.org/index.php/Icons#Manually
-- https://wiki.archlinux.org/index.php/Cursor_themes#XDG_specification
 
-### set gtk theme
+### set the wallpaper
 
-in `$XDG_CONFIG_HOME/gtk-3.0/settings.ini`
+Install `xwallpaper` package\
+`xwallpaper` is spawned by XMonad\
+The wallpaper image is defined by `$BG_PRIMARY` env variable\
+eg. in `.xprofile`
 
-```
-[Settings]
-gtk-icon-theme-name = Paper
-gtk-theme-name = Adapta-Nokto
-gtk-font-name = Roboto 12
-```
-
-in ~/.gtkrc-2.0
-
-```
-gtk-icon-theme-name = "Paper"
-gtk-theme-name = "Adapta-Nokto"
-gtk-font-name = "Roboto 12"
+```bash
+export BG_PRIMARY=$HOME/Pictures/dark_ocean.png
 ```
 
 ### HiDPI
@@ -303,47 +273,13 @@ rename the links to match this format: obs.desktop, vlc.desktop
 
 ### journal
 
-To prevent the journal to take 4Gb space of disk memory add
-the configuration file `00-journal-size.conf` in
-`/etc/systemd/journald.conf.d/` directory (create it)
+To prevent the journal to take 4Gb space of disk memory copy the
+configuration file `00-journal-size.conf` (from the `conf` dir in
+this repo) into `/etc/systemd/journald.conf.d/` directory (create it)
 
 (the default is 4Gb)
 
 source: https://wiki.archlinux.org/index.php/Systemd/Journal#Journal_size_limit
-
-### fix Adapta theme for HiDPI
-
-install build dependencies
-
-```shell
-sudo pacman -S inkscape sassc parallel
-```
-
-in `wm/asset/assets-xfwm-scripts/render-assets-xfwm.sh` make these changes
-
-```
- if [ "$inkver" = 0.91 ]; then
--    non_scale_dpi=90
-+    non_scale_dpi=135
- else
--    non_scale_dpi=96
-+    non_scale_dpi=144
- fi
-```
-
-then build and install:
-
-```shell
-./autogen.sh --prefix=/usr --disable-cinnamon --disable-mate --disable-gnome --disable-flashback --disable-openbox --enable-parallel
-make
-sudo make install
-```
-
-remove build dependencies
-
-```shell
-sudo pacman -Rsn inkscape sassc parallel
-```
 
 ### SSH agent
 
