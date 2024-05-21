@@ -14,64 +14,7 @@ Arch Linux build:
 
 [INSTALL](ARCH_INSTALL.md)
 
-### first boot in the fresh installed Linux
-
-start the service `NetworkManager.service`
-
-```shell
-sudo systemctl enable NetworkManager.service
-sudo systemctl start NetworkManager.service
-```
-
-then connect to a network using `nmtui`
-
-source: https://wiki.archlinux.org/index.php/NetworkManager#Installation
-
-### DNS setup
-
-`systemd-resolved` is used (already installed)
-
-```shell
-sudo systemctl enable systemd-resolved.service
-sudo systemctl start systemd-resolved.service
-sudo ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
-sudo systemctl restart systemd-resolved.service
-```
-
-Check resolver status with `resolvectl status`
-
-#### Setting DNS servers
-
-Create the directory `/etc/systemd/resolved.conf.d/`
-
-Then create `dns_servers.conf` file. For DNS over TLS (DoT) using
-Cloudflare DNS:
-
-```conf
-# Cloudflare DNS over TLS (DoT)
-
-[Resolve]
-DNS=1.1.1.1#cloudflare-dns.com 1.0.0.1#cloudflare-dns.com 2606:4700:4700::1111#cloudflare-dns.com 2606:4700:4700::1001#cloudflare-dns.com
-Domains=~.
-DNSOverTLS=yes
-# disable fallback
-FallbackDNS=
-```
-
-Restart systemd-resolved
-
-Check DNS resolution
-
-```shell
-resolvectl query archlinux.org
-```
-
-#### sources
-
-- https://wiki.archlinux.org/title/Systemd-resolved
-- https://developers.cloudflare.com/1.1.1.1/setup/linux
-
-### create XDG user directories
+### XDG user directories
 
 ```shell
 sudo pacman -S xdg-user-dirs
@@ -80,7 +23,7 @@ xdg-user-dirs-update
 
 source: https://wiki.archlinux.org/index.php/XDG_user_directories
 
-### graphical environment setup
+### graphic environment setup
 
 1. install the display server Xorg (implementation of the X Window System aka X11) and the display driver (`mesa` for intel integrated graphic card)
 
