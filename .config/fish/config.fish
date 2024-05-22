@@ -6,6 +6,7 @@ alias fk='fk.sh'
 alias fkp='fkp.sh'
 alias pac='pac.sh'
 alias hok='hock.sh'
+alias ts='ts.sh'
 alias nv='nvim'
 alias gs='git status'
 alias gl='gl.sh'
@@ -17,24 +18,21 @@ alias log='docker logs -f'
 alias gu='gitui'
 alias hx='helix'
 
-# bindings
-bind \eh '~; commandline -f repaint'
-bind \ed '~/Documents/dot/; commandline -f repaint'
-bind \ev '~/.config/nvim/; commandline -f repaint'
-bind \ex '/opt/xmonad/; commandline -f repaint'
-bind \en '~/Documents/nym/nym/; commandline -f repaint'
+# disable that
+set -g fish_greeting
 
 # env vars
 # see https://wiki.archlinux.org/title/Debuginfod
 set -x DEBUGINFOD_URLS https://debuginfod.archlinux.org
 # set -x GDK_SCALE 2
 # set -x GDK_DPI_SCALE 0.5
+set -x SSH_AUTH_SOCK /run/user/1000/gcr/ssh
 
 # nnn
 set -x NNN_OPTS QUAuex
 set -x NNN_COLORS 2341
 set -x NNN_PLUG 't:-_bat $nnn;f:-_|firefox $nnn*'
-set -x NNN_BMS 'h:~;d:~/Documents/dot;r:/;m:/run/media/pierre;n:~/.config/nvim;x:/opt/xmonad'
+set -x NNN_BMS 'h:~;d:~/Documents/dot;r:/;m:/run/media/pierre;n:~/.config/nvim;x:/opt/xmonad;s:~/sync'
 set -x NNN_FCOLORS '0505040a00060e0801030301'
 
 # fzf
@@ -61,4 +59,5 @@ set -x PATH /opt/ltex-ls/bin $PATH
 # Nodejs
 set -x PATH /opt/node20/bin $PATH
 
+set -x _ZO_ECHO 1
 zoxide init fish | source

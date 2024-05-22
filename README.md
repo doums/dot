@@ -131,21 +131,11 @@ Finally build and install it
 stack install
 ```
 
-##### system tray
+##### required packages
 
-Install trayer
-
-```shell
-sudo pacman -S trayer
 ```
-
-### mount helper and USB
-
-```shell
-sudo pacman -S udisks2 udiskie
+dmenu clipmenu trayer shotgun graphicsmagick xwallpaper udisks2 udiskie xclip slop gpick
 ```
-
-source: https://wiki.archlinux.org/index.php/Udisks
 
 ### XDG user directories
 
@@ -283,25 +273,17 @@ source: https://wiki.archlinux.org/index.php/Systemd/Journal#Journal_size_limit
 
 ### SSH agent
 
-```shell
-sudo pacman -S gnome-keyring
-```
+Install `gnome-keyring` and `libsecret`
 
-Enable the following systemd _user_ unit
+Enable the following systemd **user** unit (⚠ no `sudo`)
 
 ```shell
 systemctl --user enable gcr-ssh-agent.socket
 ```
+Set the env var `SSH_AUTH_SOCK` to `/run/user/1000/gcr/ssh`
+(`.xprofile`/ fish config)
 
-⚠ don't run this command as root (`sudo`) as it is a _user_ unit
-
-Set the `SSH_AUTH_SOCK` env variable, eg. in `.xprofile`
-
-```sh
-export SSH_AUTH_SOCK=/run/user/1000/gcr/ssh
-```
-
-source: https://wiki.archlinux.org/title/GNOME/Keyring
+→ https://wiki.archlinux.org/title/GNOME/Keyring
 
 ### Firefox
 
