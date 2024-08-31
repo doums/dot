@@ -14,8 +14,8 @@ if ! dmenu -v &> /dev/null; then
   exit 1
 fi
 
-choice=$(printf "→ right\n✓ check\n✗ error\n⚠ warn\n⚡ power\n← left\n↑ up\n↓ down\n✶ star\n… 3dots\n⚇ face\n"\
-        | dmenu -b -i -l 11 -p 'glyph' "$@" -fn 'JetBrainsMono:pixelsize=19:antialias=true')
+choice=$(printf "→ right\n✓ check\n✗ error\n⚠ warn\n⚡ power\n← left\n↑ up\n↓ down\n✶ star\n… 3dots\n⚇ face\n❱ prompt\n❯ prompt thin"\
+        | dmenu -b -i -l 11 -p 'glyph' "$@" -fn 'JetBrainsMono:pixelsize=25:antialias=true')
 case $choice in
   "→ right")  echo -n → | xclip -selection clipboard;;
   "✓ check")  echo -n ✓ | xclip -selection clipboard;;
@@ -28,4 +28,6 @@ case $choice in
   "✶ star")   echo -n ✶ | xclip -selection clipboard;;
   "… 3dots")  echo -n … | xclip -selection clipboard;;
   "⚇ face")   echo -n ⚇ | xclip -selection clipboard;;
+  "❱ prompt") echo -n ❱ | xclip -selection clipboard;;
+  "❯ prompt thin") echo -n ❯ | xclip -selection clipboard;;
 esac
