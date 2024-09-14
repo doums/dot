@@ -17,6 +17,7 @@ alias dc='docker compose'
 alias log='docker logs -f'
 alias gu='gitui'
 alias hx='helix'
+alias x='xplr'
 
 # disable that
 set -g fish_greeting
@@ -37,7 +38,7 @@ set -x NNN_FCOLORS '0505040a00060e0801030301'
 
 # fzf
 set -x FZF_DEFAULT_OPTS "--bind 'ctrl-w:toggle-preview-wrap,ctrl-p:toggle-preview,ctrl-a:toggle-all,alt-j:preview-half-page-down,alt-k:preview-half-page-up' --color='bg:-1,fg:-1,preview-bg:-1,preview-fg:-1,border:black:bold,bg+:#323232,fg+:-1:regular,hl:magenta:bold,hl+:magenta:bold,gutter:-1,pointer:yellow,prompt:blue,marker:green,spinner:bright-cyan,info:cyan:italic,header:blue:bold,query:-1:bold' --pointer=❱ --marker=❯ --prompt='❯ '"
-set -x FZF_DEFAULT_COMMAND "fd -HI -t f"
+set -x FZF_DEFAULT_COMMAND "fd -H -t f --strip-cwd-prefix"
 
 # Java
 set -x JAVA_HOME /usr/lib/jvm/default
