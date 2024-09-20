@@ -22,7 +22,9 @@ indefinitely.
 
 → https://wiki.archlinux.org/index.php/Pacman#Cleaning_the_package_cache
 
-### improving compile time
+### makepkg
+
+Improve compile times by recruiting multi CPU cores:
 
 in `/etc/makepkg.conf` uncomment the line
 
@@ -37,3 +39,9 @@ nproc
 ```
 
 → https://wiki.archlinux.org/index.php/Makepkg#Improving_compile_times
+
+Disable debug packages:
+
+in `/etc/makepkg.conf` add a `!` character in front of `debug` -> `OPTIONS=(…!debug…)`
+
+→ https://wiki.archlinux.org/title/Makepkg#Disable_debug_packages_and_LTO

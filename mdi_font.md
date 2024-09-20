@@ -2,14 +2,8 @@
 
 font patcher: https://github.com/ryanoasis/nerd-fonts#font-patcher
 
-1. install `fontforge`
-2. clone the repo
-
-```shell
-git clone --depth 1 https://github.com/ryanoasis/nerd-fonts.git
-cd nerd-fonts
-```
-
+1. install `fontforge` (arch package)
+2. download font-patcher from latest release
 3. patch
 
 ```shell
@@ -17,3 +11,7 @@ cd nerd-fonts
 ```
 
 4. rename font using FontForge
+
+Element → Font Info → PS Names, TTF Names\
+File → Generate Fonts
+

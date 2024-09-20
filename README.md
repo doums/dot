@@ -39,7 +39,7 @@ https://wiki.archlinux.org/index.php/LightDM#Installation
 Main fonts
 
 ```
-ttf-jetbrains-mono ttf-inconsolata ttf-roboto noto-fonts ttf-dejavu ttf-liberation
+ttf-inconsolata ttf-roboto noto-fonts ttf-dejavu ttf-liberation
 ```
 
 Emoji font
