@@ -2,10 +2,10 @@ local wezterm = require('wezterm')
 
 local c = wezterm.config_builder()
 local act = wezterm.action
-local mux = wezterm.mux
 
 c.term = 'wezterm'
-c.dpi = 120
+-- c.dpi = 120
+c.dpi = 144
 c.xcursor_theme = 'Paper'
 c.color_scheme = 'Cooper'
 c.max_fps = 165
@@ -20,10 +20,11 @@ c.font = wezterm.font_with_fallback({
     family = 'JetBrains Mono',
     harfbuzz_features = font_features,
   },
-  'JetBrainsMono Nerd Font',
+  'JetBrainsMono NF',
 })
 -- c.allow_square_glyphs_to_overflow_width = 'Always'
-c.font_size = 12.0
+-- c.font_size = 12.0
+c.font_size = 13.0
 c.freetype_load_target = 'Light'
 c.freetype_render_target = 'HorizontalLcd'
 c.char_select_font_size = 14.0
@@ -59,16 +60,17 @@ c.window_padding = {
   top = 6,
   bottom = 6,
 }
-c.underline_thickness = 3
-c.cursor_thickness = 2
+c.underline_thickness = 5
+c.default_cursor_style = 'SteadyUnderline'
+c.cursor_thickness = '4pt'
 c.scrollback_lines = 4096
 c.quick_select_alphabet = 'azerty'
 c.inactive_pane_hsb = {
   saturation = 1,
   brightness = 1,
 }
--- c.window_background_opacity = 0.92
--- c.text_background_opacity = 0.92
+c.window_background_opacity = 0.89
+c.text_background_opacity = 0.80
 c.window_close_confirmation = 'NeverPrompt'
 c.hide_mouse_cursor_when_typing = false
 
@@ -77,7 +79,7 @@ c.enable_tab_bar = true
 c.use_fancy_tab_bar = false
 c.hide_tab_bar_if_only_one_tab = false
 c.tab_bar_at_bottom = true
--- TODO disabling `show_tab_index_in_tab_bar` will cause tab titles 
+-- TODO disabling `show_tab_index_in_tab_bar` will cause tab titles
 -- to be print without any space padding around title text
 -- A workaround is to use `format-tab-title`
 -- see https://wezfurlong.org/wezterm/config/lua/window-events/format-tab-title.html
@@ -163,10 +165,26 @@ c.keys = {
     action = act.ActivatePaneDirection('Right'),
   },
   -- rezise panes using <Ctrl-Alt-hjkl>
-  { key = 'LeftArrow', mods = 'CTRL|ALT', action = act.AdjustPaneSize({ 'Left', 2 }) },
-  { key = 'DownArrow', mods = 'CTRL|ALT', action = act.AdjustPaneSize({ 'Down', 2 }) },
-  { key = 'UpArrow', mods = 'CTRL|ALT', action = act.AdjustPaneSize({ 'Up', 2 }) },
-  { key = 'RightArrow', mods = 'CTRL|ALT', action = act.AdjustPaneSize({ 'Right', 2 }) },
+  {
+    key = 'LeftArrow',
+    mods = 'CTRL|ALT',
+    action = act.AdjustPaneSize({ 'Left', 2 }),
+  },
+  {
+    key = 'DownArrow',
+    mods = 'CTRL|ALT',
+    action = act.AdjustPaneSize({ 'Down', 2 }),
+  },
+  {
+    key = 'UpArrow',
+    mods = 'CTRL|ALT',
+    action = act.AdjustPaneSize({ 'Up', 2 }),
+  },
+  {
+    key = 'RightArrow',
+    mods = 'CTRL|ALT',
+    action = act.AdjustPaneSize({ 'Right', 2 }),
+  },
   {
     key = 'w',
     mods = 'LEADER',
@@ -178,6 +196,11 @@ c.keys = {
   -- tabs navigation
   { key = 'h', mods = 'CTRL|ALT', action = act.ActivateTabRelative(-1) },
   { key = 'l', mods = 'CTRL|ALT', action = act.ActivateTabRelative(1) },
+  {
+    key = 'k',
+    mods = 'CTRL|ALT',
+    action = act.ClearScrollback('ScrollbackAndViewport'),
+  },
 }
 
 -- tabs mapping
@@ -266,17 +289,19 @@ c.mouse_bindings = {
     action = act.CompleteSelection('ClipboardAndPrimarySelection'),
   },
 
-  -- and make SHIFT-Click open hyperlinks
+  -- and make CTRL-Click open hyperlinks
   {
     event = { Up = { streak = 1, button = 'Left' } },
-    mods = 'SHIFT',
+    mods = 'CTRL',
     action = act.OpenLinkAtMouseCursor,
   },
+  -- Disable the 'Down' event of CTRL-Click to avoid weird program behaviors
   {
     event = { Down = { streak = 1, button = 'Left' } },
-    mods = 'SHIFT',
+    mods = 'CTRL',
     action = act.Nop,
   },
+
 }
 
 -- palette
@@ -298,7 +323,11 @@ c.color_schemes = {
     background = p.bg,
     cursor_bg = p.cursor,
     cursor_fg = '#212121',
-    cursor_border = p.cursor,
+    -- trick: cursor_border does not apply when the cursor is in
+    -- focus but only when the window/pane is not focused
+    -- use this to 'mute' unfocused pane/window
+    -- cursor_border = p.cursor,
+    cursor_border = '#424242',
     selection_fg = p.selection_fg,
     selection_bg = p.selection_bg,
     scrollbar_thumb = '#191A1D',
