@@ -1,7 +1,0 @@
-[Desktop Entry]
-Name=Robo 3T
-Comment=MongoDB GUI
-Exec=/opt/robo3t/bin/robo3t
-Type=Application
-Icon=robo3t
-Categories=Utility;
