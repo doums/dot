@@ -1,6 +1,7 @@
 # aliases
 alias ls='exa -lag --group-directories-first'
 alias la='ls'
+alias rt='trash'
 alias emu='emulator -avd main -gpu host -accel on -no-boot-anim'
 alias fk='fk.sh'
 alias fkp='fkp.sh'
@@ -32,7 +33,7 @@ set -x SSH_AUTH_SOCK /run/user/1000/gcr/ssh
 # nnn
 set -x NNN_OPTS QUAuex
 set -x NNN_COLORS 2341
-set -x NNN_PLUG 't:-_bat $nnn;f:-_|firefox $nnn*'
+set -x NNN_PLUG 'x:!ouch d -A "$nnn";X:!ouch ls "$nnn";i:!wezterm imgcat "$nnn"'
 set -x NNN_BMS 'h:~;d:~/Documents/dot;r:/;m:/run/media/pierre;n:~/.config/nvim;x:/opt/xmonad;s:~/sync'
 set -x NNN_FCOLORS '0505040a00060e0801030301'
 
@@ -49,8 +50,8 @@ set -x GOBIN $GOPATH/bin
 set -x PATH $GOBIN $PATH
 
 # bun
-set --export BUN_INSTALL "$HOME/.bun"
-set --export PATH $BUN_INSTALL/bin $PATH
+set -x BUN_INSTALL "$HOME/.bun"
+set -x PATH $BUN_INSTALL/bin $PATH
 
 # LanguageTool server
 set -x LANGTOOL_HOST http://loup:8010

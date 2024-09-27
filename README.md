@@ -134,7 +134,8 @@ stack install
 ##### required packages
 
 ```
-dmenu clipmenu trayer shotgun graphicsmagick xwallpaper udisks2 udiskie xclip slop gpick
+dmenu clipmenu trayer shotgun graphicsmagick xwallpaper udisks2 
+udiskie xclip slop gpick trashy ouch
 ```
 
 ### XDG user directories
