@@ -24,7 +24,7 @@ end
 xplr.fn.builtin.fmt_general_table_row_cols_1 = function(m)
   local is_exe = u.is_executable(m)
   local nl = xplr.util.paint(nl_icon, { add_modifiers = { 'Italic', 'Dim' } })
-  -- happend reset fg color ANSI code to fix an issue with filename colors
+  -- append reset fg color ANSI code to fix an issue with filename colors
   local r = xplr.util.paint(m.prefix, row_prefix_style) .. '\x1b[0m'
 
   if is_exe then

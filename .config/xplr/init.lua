@@ -5,8 +5,6 @@ local xplr = xplr
 ---@diagnostic disable-next-line: lowercase-global
 version = '0.21.7'
 
-local log = xplr.util.debug
-
 -- Lua paths -----
 local home = os.getenv('HOME')
 package.path = home
@@ -65,20 +63,23 @@ g.selection.item.format = 'builtin.fmt_general_selection_item'
 g.selection.item.style = {}
 g.search.algorithm = 'Fuzzy'
 g.search.unordered = false
-g.default_ui.prefix = ' '
+g.default_ui.prefix = ''
 g.default_ui.suffix = ''
 g.default_ui.style = {
   fg = 'Gray',
 }
-g.focus_ui.prefix = ' '
+g.focus_ui.prefix = ''
 g.focus_ui.suffix = ''
 g.focus_ui.style = {
   add_modifiers = { 'Reversed' },
 }
-g.selection_ui.prefix = '❱'
+g.selection_ui.prefix = ''
 g.selection_ui.suffix = ''
-g.selection_ui.style = {}
-g.focus_selection_ui.prefix = '❱'
+g.selection_ui.style = {
+  fg = { Rgb = { 33, 33, 33 } },
+  bg = 'Yellow',
+}
+g.focus_selection_ui.prefix = ''
 g.focus_selection_ui.suffix = ''
 g.focus_selection_ui.style = {
   add_modifiers = { 'Reversed' },
@@ -149,7 +150,7 @@ require('ctx4').setup({
 -- Hooks setup -----
 return {
   on_load = {
-    { LogSuccess = '__loaded' },
+    -- { LogSuccess = '__loaded' },
     { CallLuaSilently = 'custom.ctx4.hooks.on_load' },
   },
   on_directory_change = {
