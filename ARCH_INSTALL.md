@@ -32,6 +32,11 @@ Re-check if HW is correctly set in UTC
 
 https://wiki.archlinux.org/title/System_time#UTC_in_Microsoft_Windows
 
+Windows _Fast startup_ should be disabled if using one EFI partition 
+shared between OSes or if Linux fs can be mounted by Windows
+
+https://wiki.archlinux.org/title/Dual_boot_with_Windows#Fast_Startup_and_hibernation
+
 ### Partitioning
 
 Partition the disk using `fdisk /dev/nvme0n1`
