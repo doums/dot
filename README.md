@@ -296,3 +296,17 @@ widget.non-native-theme.scrollbar.size.override 16
 ```
 
 NOTE: the `widget.non-native-theme.enable` should be set to true
+
+#### lock screen on suspend
+
+Copy `systemd_unit/user-suspend@.service` to `/etc/systemd/system/`
+and enable it
+
+```
+sudo systemctl enable user-suspend@user.service
+```
+
+⚠ note `@user.service` in the command
+
+https://wiki.archlinux.org/title/Power_management/Suspend_and_hibernate#Sleep_hooks
+
