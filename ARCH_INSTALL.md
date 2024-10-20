@@ -32,8 +32,11 @@ Re-check if HW is correctly set in UTC
 
 https://wiki.archlinux.org/title/System_time#UTC_in_Microsoft_Windows
 
-Windows _Fast startup_ should be disabled if using one EFI partition 
-shared between OSes or if Linux fs can be mounted by Windows
+Disable Windows _Fast startup_
+
+```
+set reg [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Power] "HiberbootEnabled" -> 0
+```
 
 https://wiki.archlinux.org/title/Dual_boot_with_Windows#Fast_Startup_and_hibernation
 

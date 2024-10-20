@@ -147,6 +147,21 @@ xdg-user-dirs-update
 
 source: https://wiki.archlinux.org/index.php/XDG_user_directories
 
+## Screen lock
+
+Install `i3lock-color` from AUR
+
+#### On suspend
+
+Copy `systemd_unit/suspend@.service` to `/etc/systemd/system/`
+and enable it
+
+```
+sudo systemctl enable suspend@pierre.service
+```
+
+https://wiki.archlinux.org/title/Power_management/Suspend_and_hibernate#Sleep_hooks
+
 ## Design
 
 ### GTK theme
