@@ -341,7 +341,7 @@ Install the needed packages
 
 |        | Intel        | NVIDIA             |
 | ------ | ------------ | ------------------ |
-| driver | mesa         | nvidia             |
+| driver | mesa         | nvidia-open        |
 | 32bits | lib32-mesa   | lib32-nvidia-utils |
 | libs   | vulkan-intel | nvidia-utils       |
 

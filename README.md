@@ -71,11 +71,9 @@ the plethora of Haskell dependencies.
 rua install stack-static
 ```
 
-Chose a location to clone the sources and build the project
+Clone the sources in `/opt/xmonad`
 
 ```shell
-mkdir Documents/xmonad
-cd Documents/xmonad
 git clone https://github.com/xmonad/xmonad
 git clone https://github.com/xmonad/xmonad-contrib
 ```
@@ -87,24 +85,28 @@ project to generate the `stack.yaml` file
 stack init
 ```
 
-Then build and install it
+Build & install xmonad
 
 ```shell
 stack install
 ```
 
-This will install `xmonad` binary under `~/.local/bin`.
+This creates the following binaries
 
-`xmonad --recompile` expects to find the project configuration and
-the XMonad config in `$XDG_CONFIG_HOME/xmonad`. To avoid to move
-the whole project under `$XDG_CONFIG_HOME/xmonad` (which doesn't
-make sense) symlink these files.
+```
+~/.cache/xmonad/xmonad-x86_64-linux
+~/.local/bin/xmonad
+```
+
+Add the custom `build` script into `~/.config/xmonad/`
 
 ```shell
-mkdir ~/.config/xmonad
-cd ~/.config/xmonad
-ln -s ~/Documents/xmonad/xmonad.hs xmonad.hs
-ln -s ~/Documents/xmonad/stack.yaml stack.yaml
+#!/bin/bash
+
+set -e
+
+cd /opt/xmonad
+stack install
 ```
 
 source: https://xmonad.org/INSTALL.html
