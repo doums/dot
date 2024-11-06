@@ -85,28 +85,21 @@ project to generate the `stack.yaml` file
 stack init
 ```
 
-Build & install xmonad
+Build & install
 
 ```shell
 stack install
 ```
 
-This creates the following binaries
-
-```
-~/.cache/xmonad/xmonad-x86_64-linux
-~/.local/bin/xmonad
-```
-
-Add the custom `build` script into `~/.config/xmonad/`
+Xmonad expects `xmonad.hs` and `stack.yaml` to be in
+`~/.config/xmonad/` \
+Use symlinks instead (does not make sense to have source files
+under the config directory)
 
 ```shell
-#!/bin/bash
-
-set -e
-
-cd /opt/xmonad
-stack install
+cd ~/.config/xmonad
+ln -s /opt/xmonad/xmonad.hs xmonad.hs
+ln -s /opt/xmonad/stack.yaml stack.yaml
 ```
 
 source: https://xmonad.org/INSTALL.html

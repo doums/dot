@@ -128,6 +128,8 @@ keybinds = ([
   , ("M-g",         spawn ("glyph.sh" ++ dmenuArgs))
   -- Open ssh.sh
   , ("M-S-s",        spawn ("ssh.sh" ++ dmenuArgs))
+  -- Open vm.sh
+  , ("M-S-v",        spawn ("vm.sh" ++ dmenuArgs))
   -- Open clipboard manager
   , ("M-v",         spawn ("clipmenu -b -i -p '◧'" ++ dmenuArgs))
   -- Restart compositor
@@ -246,6 +248,8 @@ myManageHook = fmap not willFloat --> insertPosition Below Newer
     , title ^? "Emulator"               --> doFloat
     , (className =? "firefox" <&&> resource =? "Dialog")
                                         --> doFloat
+    , appName =? "virt-manager"         --> doFloat
+    , appName =? "virt-viewer"          --> doFloat
     , title     =? "Volume Control"     --> doCenterFloat
     , resource  =? "desktop_window"     --> doIgnore ]
 
