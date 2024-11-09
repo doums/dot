@@ -270,6 +270,18 @@ resolvectl query archlinux.org --cache=false
 ::1         localhost
 ```
 
+#### wait-online
+
+When multiple network interfaces are present and only one is connected,
+`systemd-networkd-wait-online.service` will timeout after 2 minutes
+waiting for all interfaces to be up. \
+To override this, use a _drop-in_ file. Copy `systemd_unit/wait-online.conf`
+into `/etc/systemd/system/systemd-networkd-wait-online.service.d/`
+(create the directory) \
+Then `systemctl daemon-reload`
+
+source: https://wiki.archlinux.org/title/Systemd-networkd#Multiple_interfaces_that_are_not_connected_all_the_time
+
 ### ⚠ system maintenance
 
 To upgrade `systemd-boot` on package upgrade use a pacman hook
