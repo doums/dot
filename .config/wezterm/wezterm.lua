@@ -20,10 +20,15 @@ c.font = wezterm.font_with_fallback({
     family = 'JetBrains Mono',
     harfbuzz_features = font_features,
   },
+  -- get emoji glyphs from JetBrainsMono
+  -- see https://github.com/wez/wezterm/issues/4453#issuecomment-1793489412
+  {
+    family = 'JetBrains Mono',
+    assume_emoji_presentation = true,
+  },
   'JetBrainsMono NF',
 })
 -- c.allow_square_glyphs_to_overflow_width = 'Always'
--- c.font_size = 12.0
 c.font_size = 13.0
 c.freetype_load_target = 'Light'
 c.freetype_render_target = 'HorizontalLcd'
@@ -301,7 +306,6 @@ c.mouse_bindings = {
     mods = 'CTRL',
     action = act.Nop,
   },
-
 }
 
 -- palette
