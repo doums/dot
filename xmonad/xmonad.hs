@@ -133,7 +133,7 @@ keybinds = ([
   -- Open clipboard manager
   , ("M-v",         spawn ("clipmenu -b -i -p '◧'" ++ dmenuArgs))
   -- Restart compositor
-  , ("M-p",         spawn "restart_picom.sh")
+  , ("M-p",         spawn "picom.sh")
   -- Toggle Redshift
   , ("M-*",         spawn "pkill -USR1 redshift")
   -- Take a screenshot
@@ -262,7 +262,7 @@ myLogHook = workspaceHistoryHook
 myStartupHook = do
     setDefaultCursor xC_left_ptr -- set default cursor
     spawnOnce "xwallpaper --daemon --clear --zoom $BG_PRIMARY"
-    spawnOnce "picom --config /home/pierre/.config/picom.conf -b"
+    spawnOnce "picom.sh"
     spawnOnce "redshift -c /home/pierre/.config/redshift/redshift.conf"
     spawnOnce "dunst -c /home/pierre/.config/dunst/dunstrc"
     spawnOnce "udiskie"
