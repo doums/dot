@@ -1,11 +1,12 @@
 Config { font = "JetBrainsMono SZMDI 12"
-       , dpi = 127
+       , textOffset = 0
+       , dpi = 168
        , additionalFonts = []
-       , borderColor = "#262626"
-       , bgColor = "#262626"
+       , borderColor = "#4F5B73"
+       , bgColor = "#4F5B73"
        , fgColor = "#8c8c8c"
-       , alpha = 180
-       , position = BottomH 30
+       , alpha = 80
+       , position = BottomHM 40 0 240 0 0
        , lowerOnStart = True
        , pickBroadest = False
        , persistent = False
@@ -13,10 +14,10 @@ Config { font = "JetBrainsMono SZMDI 12"
        , iconRoot = "."
        , allDesktops = True
        , overrideRedirect = True
-       , commands = [ Run CommandReader "baru" "status"
+       , commands = [ Run CommandReader "baru -l file" "status"
                     , Run XMonadLog
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "%XMonadLog% }{ %status% "
+       , template = "%XMonadLog% }{ %status%"
        }
