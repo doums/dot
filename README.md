@@ -78,8 +78,10 @@ git clone https://github.com/xmonad/xmonad
 git clone https://github.com/xmonad/xmonad-contrib
 ```
 
-Add the configuration file from `xmonad/xmonad.hs` and init the
-project to generate the `stack.yaml` file
+Copy the config file `xmonad/xmonad.hs` to `/opt/xmonad/`.\
+Copy the `xmonad/lib` directory to `/opt/xmonad/` (it contains a
+custom layout).\
+Init the project to generate the `stack.yaml` file
 
 ```shell
 stack init
