@@ -126,9 +126,18 @@ https://wiki.archlinux.org/title/Installation_guide#Installation
 
 #### Fstab & `btrfs`
 
-After generating `fstab` edit the root entry:
-remove `discard=async` and add `nodiscard` to the mount options \
-→ periodic trim will be used instead
+After generating `fstab` edit the root partition:
+
+`discard=async` is the default for btrfs. In order to avoid
+duplicate trim operations with fstrim add `X-fstrim.notrim`
+to the btrfs partition mount options.\
+This will exclude it from fstrim.
+
+NOTE: only relevant if fstrim periodic trim is enabled,
+eg. needed for the other partitions.
+
+https://wiki.archlinux.org/title/Btrfs#SSD_TRIM \
+man fstrim
 
 ## chroot
 
@@ -340,11 +349,22 @@ Setup sudo
 
 ### TRIM
 
+Enable periodic TRIM
+
 → https://wiki.archlinux.org/index.php/Solid_state_drive#Periodic_TRIM
 
 ```
 # systemctl enable fstrim.timer
 # systemctl start fstrim.timer
+```
+
+To check which partitions will be trimmed
+
+```
+# journalctl -u fstrim.service
+# systemctl cat fstrim.service
+# this is the command used by the timer, in dry-run mode
+sudo fstrim --listed-in /etc/fstab:/proc/self/mountinfo --verbose --dry-run
 ```
 
 ## graphics

@@ -10,13 +10,13 @@ configuration {
   display-keys: "key";
   drun-display-format: "{name}";
   drun-match-fields: "name";
-  terminal: "alacritty";
+  terminal: "wezterm";
   matching: "fuzzy";
   dpi: 144;
   scroll-method: 1;
   window-format: "{c} - {t}";
-  ssh-command: "alacritty -e 'ssh {host}'";
-  run-shell-command: "alacritty -e '{cmd}'";
+  ssh-command: "wezterm ssh {host}";
+  run-shell-command: "wezterm -e '{cmd}'";
   icon-theme: "Paper";
   kb-mode-next: "Alt+l,Alt+Right";
   kb-mode-previous: "Alt+h,Alt+Left";
