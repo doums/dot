@@ -4,8 +4,9 @@ local c = wezterm.config_builder()
 local act = wezterm.action
 
 c.term = 'wezterm'
--- c.dpi = 120
-c.dpi = 144
+-- c.dpi = 144  -- for DualUp
+-- c.dpi = 168 -- benq RD280U
+c.dpi = 168
 c.xcursor_theme = 'Paper'
 c.color_scheme = 'Cooper'
 c.max_fps = 165
@@ -20,7 +21,7 @@ c.font = wezterm.font_with_fallback({
     family = 'JetBrains Mono',
     harfbuzz_features = font_features,
   },
-  -- get emoji glyphs from JetBrainsMono
+  -- to get emoji glyphs from JetBrainsMono
   -- see https://github.com/wez/wezterm/issues/4453#issuecomment-1793489412
   {
     family = 'JetBrains Mono',
@@ -107,31 +108,13 @@ wezterm.on('update-right-status', function(window, pane)
   window:set_right_status(name or '')
 end)
 
+c.disable_default_key_bindings = true
 c.keys = {
+  -- split new panes
   {
-    key = 't',
-    mods = 'SHIFT|SUPER',
-    action = act.SpawnWindow,
-  },
-  {
-    key = 'Space',
-    mods = 'SHIFT|CTRL',
-    action = act.ActivateCopyMode,
-  },
-  {
-    key = 'x',
-    mods = 'SHIFT|CTRL',
-    action = act.QuickSelect,
-  },
-  {
-    key = 'Enter',
-    mods = 'ALT',
-    action = act.DisableDefaultAssignment,
-  },
-  {
-    key = ':',
+    key = 's',
     mods = 'LEADER',
-    action = act.Search('CurrentSelectionOrEmptyString'),
+    action = act.SplitVertical({ domain = 'CurrentPaneDomain' }),
   },
   {
     key = 'v',
@@ -144,11 +127,6 @@ c.keys = {
     action = act.SpawnTab('CurrentPaneDomain'),
   },
   {
-    key = 's',
-    mods = 'LEADER',
-    action = act.SplitVertical({ domain = 'CurrentPaneDomain' }),
-  },
-  {
     key = 'x',
     mods = 'ALT|SHIFT',
     action = act.CloseCurrentPane({ confirm = false }),
@@ -158,10 +136,8 @@ c.keys = {
     mods = 'LEADER|SHIFT',
     action = act.CloseCurrentTab({ confirm = false }),
   },
-  { key = 'PageUp', mods = 'SHIFT', action = act.ScrollByPage(-0.5) },
-  { key = 'PageDown', mods = 'SHIFT', action = act.ScrollByPage(0.5) },
-  { key = 'h', mods = 'SHIFT|ALT', action = act.ActivatePaneDirection('Left') },
   -- navigates panes using <Shift-Alt-hjkl>
+  { key = 'h', mods = 'SHIFT|ALT', action = act.ActivatePaneDirection('Left') },
   { key = 'j', mods = 'SHIFT|ALT', action = act.ActivatePaneDirection('Down') },
   { key = 'k', mods = 'SHIFT|ALT', action = act.ActivatePaneDirection('Up') },
   {
@@ -190,17 +166,46 @@ c.keys = {
     mods = 'CTRL|ALT',
     action = act.AdjustPaneSize({ 'Right', 2 }),
   },
-  {
-    key = 'w',
-    mods = 'LEADER',
-    action = act.ShowLauncherArgs({
-      flags = 'WORKSPACES',
-      title = 'WORKSPACES',
-    }),
-  },
   -- tabs navigation
   { key = 'h', mods = 'CTRL|ALT', action = act.ActivateTabRelative(-1) },
   { key = 'l', mods = 'CTRL|ALT', action = act.ActivateTabRelative(1) },
+  -- font size
+  { key = '=', mods = 'CTRL', action = act.IncreaseFontSize },
+  { key = '*', mods = 'CTRL', action = act.DecreaseFontSize },
+  { key = ')', mods = 'CTRL', action = act.ResetFontSize },
+  -- copy/paste
+  { key = 'C', mods = 'SHIFT|CTRL', action = act.CopyTo('Clipboard') },
+  { key = 'V', mods = 'SHIFT|CTRL', action = act.PasteFrom('Clipboard') },
+  -- misc
+  {
+    key = 'F',
+    mods = 'SHIFT|CTRL',
+    action = act.Search('CurrentSelectionOrEmptyString'),
+  },
+  -- { key = 'L', mods = 'SHIFT|CTRL', action = act.ShowDebugOverlay },
+  -- { key = 'P', mods = 'SHIFT|CTRL', action = act.ActivateCommandPalette },
+  -- { key = 'R', mods = 'SHIFT|CTRL', action = act.ReloadConfiguration },
+  {
+    key = 'Insert',
+    mods = 'SHIFT',
+    action = act.PasteFrom('PrimarySelection'),
+  },
+  { key = 'Insert', mods = 'CTRL', action = act.CopyTo('PrimarySelection') },
+  { key = 'Copy', mods = 'NONE', action = act.CopyTo('Clipboard') },
+  { key = 'Paste', mods = 'NONE', action = act.PasteFrom('Clipboard') },
+  {
+    key = 't',
+    mods = 'SHIFT|SUPER',
+    action = act.SpawnWindow,
+  },
+  {
+    key = 'Space',
+    mods = 'SHIFT|CTRL',
+    action = act.ActivateCopyMode,
+  },
+  { key = 'PageUp', mods = 'SHIFT', action = act.ScrollByPage(-0.5) },
+  { key = 'PageDown', mods = 'SHIFT', action = act.ScrollByPage(0.5) },
+  -- clear scrollback
   {
     key = 'k',
     mods = 'CTRL|ALT',
@@ -209,17 +214,19 @@ c.keys = {
 }
 
 -- tabs mapping
-local tab_keys = { '&', 'é', '"', "'", '(', '-', 'è', '_', 'ç', ')' }
+local tab_keys = { '&', 'phys:2', '"', "'" }
 for i, k in ipairs(tab_keys) do
   table.insert(c.keys, {
     key = k,
-    mods = 'ALT',
+    mods = 'ALT|CTRL',
     action = act.ActivateTab(i - 1),
   })
 end
 
+local default_key_tables = wezterm.gui.default_key_tables()
+
 -- Search mode keys override (CTRL-SHIFT F)
-local search_mode = wezterm.gui.default_key_tables().search_mode
+local search_mode = default_key_tables.search_mode
 table.insert(
   search_mode,
   { key = 'n', mods = 'CTRL', action = act.CopyMode('PriorMatch') }
@@ -230,7 +237,7 @@ table.insert(
 )
 
 -- Copy mode keys override (CTRL-SHIFT Space)
-local copy_mode = wezterm.gui.default_key_tables().copy_mode
+local copy_mode = default_key_tables.copy_mode
 table.insert(
   copy_mode,
   { key = 'i', mods = 'NONE', action = act.CopyMode('Close') }
@@ -265,22 +272,6 @@ table.insert(copy_mode, {
 })
 
 c.key_tables = {
-  resize_pane = {
-    { key = 'LeftArrow', action = act.AdjustPaneSize({ 'Left', 1 }) },
-    { key = 'h', action = act.AdjustPaneSize({ 'Left', 1 }) },
-
-    { key = 'RightArrow', action = act.AdjustPaneSize({ 'Right', 1 }) },
-    { key = 'l', action = act.AdjustPaneSize({ 'Right', 1 }) },
-
-    { key = 'UpArrow', action = act.AdjustPaneSize({ 'Up', 1 }) },
-    { key = 'k', action = act.AdjustPaneSize({ 'Up', 1 }) },
-
-    { key = 'DownArrow', action = act.AdjustPaneSize({ 'Down', 1 }) },
-    { key = 'j', action = act.AdjustPaneSize({ 'Down', 1 }) },
-
-    -- Cancel the mode by pressing escape
-    { key = 'Escape', action = 'PopKeyTable' },
-  },
   search_mode = search_mode,
   copy_mode = copy_mode,
 }
