@@ -9,13 +9,13 @@ c.term = 'wezterm'
 c.dpi = 168
 c.xcursor_theme = 'Paper'
 c.color_scheme = 'Cooper'
-c.max_fps = 165
+c.max_fps = 240
 c.adjust_window_size_when_changing_font_size = false
 
 -- font
 -- https://github.com/JetBrains/JetBrainsMono/wiki/OpenType-features
 -- slashed zero and ligatures off
-local font_features = { 'zero', 'ss19', 'calt=0', 'clig=0', 'liga=0' }
+local font_features = { 'zero', 'calt=0', 'clig=0', 'liga=0' }
 c.font = wezterm.font_with_fallback({
   {
     family = 'JetBrains Mono',

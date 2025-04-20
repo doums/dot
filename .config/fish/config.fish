@@ -22,8 +22,6 @@ alias x='xplr'
 
 # disable that
 set -g fish_greeting
-# see https://github.com/fish-shell/fish-shell/issues/11204
-set -Ua fish_features no-keyboard-protocols
 
 # env vars
 # see https://wiki.archlinux.org/title/Debuginfod
@@ -56,10 +54,14 @@ set -x BUN_INSTALL "$HOME/.bun"
 set -x PATH $BUN_INSTALL/bin $PATH
 
 # LanguageTool server
-set -x LANGTOOL_HOST http://loup:8010
+set -x LANGTOOL_HOST http://loup.lan:8010
 
 # Nodejs
 set -x PATH /opt/node22/bin $PATH
+
+# manpage
+set -x MANPAGER 'nvim +Man!'
+set -x MANWIDTH 66
 
 set -x _ZO_ECHO 1
 zoxide init fish | source

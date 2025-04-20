@@ -1,0 +1,64 @@
+font-family = JetBrains Mono
+font-style = Regular
+font-style-bold = SemiBold
+font-style-bold-italic = SemiBold Italic
+font-size = 13.5
+# https://github.com/JetBrains/JetBrainsMono/wiki/OpenType-features
+font-feature = zero, -calt, -liga, -dlig
+font-synthetic-style = false
+window-decoration = false
+gtk-titlebar = true
+gtk-tabs-location = bottom
+adw-toolbar-style = flat
+gtk-wide-tabs = false
+shell-integration-features = no-cursor
+cursor-style = underline
+adjust-cursor-thickness = 4
+cursor-style-blink = false
+adjust-underline-thickness = 6
+adjust-overline-thickness = 6
+adjust-strikethrough-thickness = 6
+adjust-box-thickness = 4
+window-vsync = false
+confirm-close-surface = false
+bold-is-bright = true
+window-padding-x = 10
+window-padding-y = 4
+shell-integration = fish
+resize-overlay = never
+quick-terminal-animation-duration = 0
+
+# splits
+keybind = alt+w>t=new_tab
+keybind = alt+w>s=new_split:down
+keybind = alt+w>v=new_split:right
+# navigate tabs
+keybind = ctrl+alt+l=next_tab
+keybind = ctrl+alt+h=previous_tab
+# navigate splits
+keybind = alt+shift+l=goto_split:right
+keybind = alt+shift+h=goto_split:left
+keybind = alt+shift+k=goto_split:top
+keybind = alt+shift+j=goto_split:bottom
+# resize splits
+keybind = alt+ctrl+up=resize_split:up,40
+keybind = alt+ctrl+down=resize_split:down,40
+keybind = alt+ctrl+right=resize_split:right,30
+keybind = alt+ctrl+left=resize_split:left,30
+keybind = ctrl+alt+x=close_surface
+keybind = alt+shift+x=close_window
+keybind = ctrl+)=reset_font_size
+keybind = ctrl+alt+k=clear_screen
+keybind = ctrl+alt+space=write_scrollback_file:paste
+
+# style
+background-opacity = 0.90
+background-blur = true
+unfocused-split-opacity = 1
+selection-background = #4A17D2
+selection-foreground = #ffffff
+cursor-color = #CA7911
+split-divider-color = #171717
+# split divider thickness hack
+gtk-custom-css = style.css
+window-titlebar-background = #212121

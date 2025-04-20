@@ -1,0 +1,48 @@
+/* split divider line thickness
+* as there is no config option to customize it
+* see https://github.com/ghostty-org/ghostty/discussions/3301
+* */
+toastoverlay separator {
+  min-height: 8px;
+  min-width: 8px;
+}
+
+/* fix the tabs-bar
+* https://github.com/ghostty-org/ghostty/discussions/3190 */
+tabbar tabbox {
+  background-color: #191919f5;
+}
+
+tabbar tabbox separator {
+  background-color: #191919f5;
+  min-width: 0;
+}
+
+tabbar tabbox tab {
+  padding: 3px;
+  margin: 0;
+  font-family: "JetBrains Mono";
+  font-size: 12pt;
+  border-right: 6px solid #262626f5;
+  color: #9ca3af;
+  -gtk-icon-size: 0px;
+}
+
+tabbar tabbox tabboxchild {
+  margin-left: -6px;
+}
+
+tabbar tabbox tab:hover {
+  background-color: #262626f5;
+}
+
+tabbar tabbox tab:selected {
+  background-color: #111111f5;
+}
+
+tabbar tabbox tab button {
+  color: #111111f5;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+}
