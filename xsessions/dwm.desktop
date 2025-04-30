@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=dwm
-Comment=dynamic window manager
+Comment=WM
 Type=Application
 Exec=/home/pierre/.local/bin/launch_dwm.sh
 TryExec=dwm

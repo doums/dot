@@ -19,26 +19,29 @@ In UEFI firmware:
 - ⚠ set the hardware clock to UTC time
 - disable secure boot
 
-#### Windows dual boot
+### Windows dual boot
 
-Windows by default uses (and set) HW in local time \
-→ force UTC, in an admin console run
-
-```
-reg add "HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\TimeZoneInformation" /v RealTimeIsUniversal /d 1 /t REG_DWORD /f
-```
-
-Re-check if HW is correctly set in UTC
-
-https://wiki.archlinux.org/title/System_time#UTC_in_Microsoft_Windows
-
-Disable Windows _Fast startup_
+Disable Windows _Fast startup_ and _hibernation_
 
 ```
-set reg [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Power] "HiberbootEnabled" -> 0
+powercfg /H off
 ```
+
+Download and apply the registry entries located in `win/reg/`:
+
+- force Windows to use UTC instead of local time for HW clock
+- disable _fast boot_
+- disable _hibernation_
 
 https://wiki.archlinux.org/title/Dual_boot_with_Windows#Fast_Startup_and_hibernation
+https://wiki.archlinux.org/title/System_time#UTC_in_Microsoft_Windows
+
+> [!IMPORTANT]
+> By default, windows create a 100MB **EFI** partition which is too
+> small.\
+> The EFI needs to be manually created during windows install\
+> setup using `diskpart`.
+> See [instructions](win/notes.md#windows-efi)
 
 ### Partitioning
 
@@ -47,6 +50,9 @@ Partition the disk using `fdisk /dev/nvme0n1`
 1. create a new GPT table
 2. create 1st partition of 512M (use 1G for dual boot) → ESP
 3. change ESP type to "EFI system"
+
+> [!IMPORTANT]
+> if dual boot skip EFI creation, the one from Windows is reused
 
 #### for SWAP partition
 
@@ -62,7 +68,7 @@ Partition the disk using `fdisk /dev/nvme0n1`
 
 Write partition table to disk & exit fdisk
 
-→ https://wiki.archlinux.org/title/Partitioning
+https://wiki.archlinux.org/title/Partitioning
 
 ### Formatting
 
@@ -93,8 +99,8 @@ mkswap -L SWAP /dev/nvme0n1p3
 swapon /dev/nvme0n1p3
 ```
 
-→ https://wiki.archlinux.org/title/EFI_system_partition \
-→ https://wiki.archlinux.org/title/File_systems
+https://wiki.archlinux.org/title/EFI_system_partition \
+https://wiki.archlinux.org/title/File_systems
 
 #### Mounting FS
 
@@ -124,17 +130,18 @@ mount --mkdir /dev/nvme0n1p1 /mnt/efi
 
 https://wiki.archlinux.org/title/Installation_guide#Installation
 
-#### Fstab & `btrfs`
+#### Fstab & btrfs
 
 After generating `fstab` edit the root partition:
 
-`discard=async` is the default for btrfs. In order to avoid
-duplicate trim operations with fstrim add `X-fstrim.notrim`
+`discard=async` is the default for btrfs. In order to avoid\
+duplicate trim operations with fstrim add `X-fstrim.notrim`\
 to the btrfs partition mount options.\
 This will exclude it from fstrim.
 
-NOTE: only relevant if fstrim periodic trim is enabled,
-eg. needed for the other partitions.
+> [!NOTE]
+> only relevant if fstrim periodic trim is enabled, eg. needed \
+> for the other partitions.
 
 https://wiki.archlinux.org/title/Btrfs#SSD_TRIM \
 man fstrim
@@ -150,7 +157,7 @@ Disable `fallback` img generation (useless)
 
 Re-generate initramfs → `mkinitcpio -P`
 
-→ https://wiki.archlinux.org/title/Mkinitcpio#Possibly_missing_firmware_for_module_XXXX
+https://wiki.archlinux.org/title/Mkinitcpio#Possibly_missing_firmware_for_module_XXXX
 
 ### bootloader
 
@@ -169,7 +176,7 @@ console-mode keep # or max
 editor no
 ```
 
-→ https://man.archlinux.org/man/loader.conf.5#OPTIONS
+https://man.archlinux.org/man/loader.conf.5#OPTIONS
 
 write the Arch Linux entry in `/efi/loader/entries/arch.conf`
 
@@ -205,7 +212,7 @@ edit `/etc/fstab`
 /swap/swapfile none swap defaults 0 0
 ```
 
-→ https://wiki.archlinux.org/title/Btrfs#Swap_file
+https://wiki.archlinux.org/title/Btrfs#Swap_file
 
 ## POST install
 
@@ -220,8 +227,8 @@ start/enable
 
 run `networkctl` to get links status
 
-→ https://wiki.archlinux.org/title/Network_configuration \
-→ https://wiki.archlinux.org/title/Systemd-networkd
+https://wiki.archlinux.org/title/Network_configuration \
+https://wiki.archlinux.org/title/Systemd-networkd
 
 #### wired setup
 
@@ -299,12 +306,12 @@ To automatically copy kernel, initramfs images from
 `/boot` into the ESP (`/efi`), after a system upgrade use a pacman
 hook
 
-→ https://github.com/doums/dotfiles/tree/master/pacman
+https://github.com/doums/dotfiles/tree/master/pacman
 
 ### time & sync
 
-→ https://wiki.archlinux.org/title/System_time \
-→ https://wiki.archlinux.org/title/Systemd-timesyncd
+https://wiki.archlinux.org/title/System_time \
+https://wiki.archlinux.org/title/Systemd-timesyncd
 
 Check the current settings
 
@@ -343,7 +350,7 @@ useradd -Um -G wheel -s /usr/bin/fish pierre
 passwd pierre
 ```
 
-→ https://wiki.archlinux.org/title/Users_and_groups#User_management
+https://wiki.archlinux.org/title/Users_and_groups#User_management
 
 Setup sudo
 
@@ -351,7 +358,7 @@ Setup sudo
 
 Enable periodic TRIM
 
-→ https://wiki.archlinux.org/index.php/Solid_state_drive#Periodic_TRIM
+https://wiki.archlinux.org/index.php/Solid_state_drive#Periodic_TRIM
 
 ```
 # systemctl enable fstrim.timer
@@ -417,6 +424,6 @@ options root=LABEL=ARCH rw quiet splash nvidia_drm.modeset=1
 
 **TBD** consider using `nvidia_drm.fbdev=1`
 
-→ https://wiki.archlinux.org/title/Kernel_mode_setting#Early_KMS_start \
-→ https://wiki.archlinux.org/title/NVIDIA#Early_loading \
-→ https://wiki.archlinux.org/title/NVIDIA#DRM_kernel_mode_setting
+https://wiki.archlinux.org/title/Kernel_mode_setting#Early_KMS_start \
+https://wiki.archlinux.org/title/NVIDIA#Early_loading \
+https://wiki.archlinux.org/title/NVIDIA#DRM_kernel_mode_setting

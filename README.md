@@ -20,6 +20,14 @@ Install `xorg-server`
 
 https://wiki.archlinux.org/index.php/Xorg
 
+## Audio
+
+Install the following packages
+
+```
+pipewire wireplumber pipewire-pulse pipewire-alsa pavucontrol
+```
+
 ## Display manager
 
 Install LightDM and its GTK greeter
@@ -62,14 +70,25 @@ fc-list
 First create the directory `/usr/local/share/fonts/ttf/` and
 place any custom fonts under it
 
+---
+
 ### XMonad
 
-First install `stack`. Take the static version from AUR to avoid
-the plethora of Haskell dependencies.
+> [!IMPORTANT]
+> Most of the required system deps should be already installed (via xorg).\
+> But some of them could be missing and need to be installed,\
+> like `libxss` [ref](https://xmonad.org/INSTALL.html#arch)
+
+#### stack
+
+Then install `stack`. Take the bin version from AUR to avoid the
+plethora of Haskell dependencies.
 
 ```shell
-rua install stack-static
+rua install stack-bin
 ```
+
+#### sources
 
 Clone the sources in `/opt/xmonad`
 
@@ -87,7 +106,7 @@ Init the project to generate the `stack.yaml` file
 stack init
 ```
 
-Build & install
+#### build & install
 
 ```shell
 stack install
@@ -105,6 +124,12 @@ ln -s /opt/xmonad/stack.yaml stack.yaml
 ```
 
 source: https://xmonad.org/INSTALL.html
+
+#### init with lightDM
+
+Copy `xsessions/xmonad.desktop` in `/usr/share/xsessions`
+
+source: https://wiki.archlinux.org/index.php/Display_manager#Session_configuration
 
 #### XMobar
 
@@ -131,8 +156,14 @@ stack install
 ##### required packages
 
 ```
-dmenu clipmenu trayer shotgun graphicsmagick xwallpaper udisks2 
-udiskie xclip slop gpick trashy ouch
+dmenu clipmenu trayer shotgun graphicsmagick xwallpaper udisks2
+udiskie xclip slop gpick ouch
+```
+
+aur
+
+```
+trashy
 ```
 
 ### XDG user directories
