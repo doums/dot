@@ -320,7 +320,6 @@ myStartupHook = do
         ++ " --height " ++ show trayH
         ++ " --width " ++ show trayW 
         ++ " --padding " ++ show trayP)
-    spawnOnce "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
 
 -- xmobar
 bar = def

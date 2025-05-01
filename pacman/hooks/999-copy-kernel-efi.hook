@@ -3,10 +3,9 @@ Type = Path
 Operation = Install
 Operation = Upgrade
 Target = usr/lib/modules/*/vmlinuz
-Target = usr/lib/initcpio/*
 Target = boot/*-ucode.img
 
 [Action]
-Description = Copying boot files to EFI ⚡
+Description = Copying kernel and ucode img into EFI ⚡
 When = PostTransaction
-Exec = /usr/local/bin/boot-files-copy.sh
+Exec = /usr/local/bin/copy_kernel_efi.sh
