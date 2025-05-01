@@ -20,6 +20,10 @@ Install `xorg-server`
 
 https://wiki.archlinux.org/index.php/Xorg
 
+#### compositor
+
+Install `picom`
+
 ## Audio
 
 Install the following packages
@@ -160,7 +164,7 @@ stack install
 ##### required packages
 
 ```
-dmenu clipmenu trayer shotgun graphicsmagick xwallpaper udisks2
+rofi dmenu clipmenu trayer shotgun graphicsmagick xwallpaper
 udiskie xclip slop gpick ouch
 ```
 
@@ -198,9 +202,8 @@ https://wiki.archlinux.org/title/Power_management/Suspend_and_hibernate#Sleep_ho
 
 ### GTK theme
 
-Theme used https://github.com/nana-4/materia-theme
-
-Install `materia-gtk-theme`
+Install [materia](https://github.com/nana-4/materia-theme)
+`materia-gtk-theme` 
 
 edit `$XDG_CONFIG_HOME/gtk-3.0/settings.ini`
 
@@ -237,7 +240,11 @@ flatpak install flathub org.gtk.Gtk3theme.Materia-dark
 
 ### Cursor theme
 
-install https://github.com/snwh/paper-icon-theme
+Install https://github.com/snwh/paper-icon-theme
+
+> [!IMPORTANT]
+> install under `/usr` (cmake prefix) as it must be accessible\
+> by lightDM which supports only `/usr/share/icons` path
 
 edit `/usr/share/icons/default/index.theme`
 
@@ -246,11 +253,12 @@ edit `/usr/share/icons/default/index.theme`
 Inherits=Paper
 ```
 
-note: the icon theme is also set when `.Xresources` file is read
-when lightdm (display manager) starts and sources `.xprofile`
+> [!NOTE]
+> the icon theme is initially set by `.Xresources` which is\
+> read when lightdm (display manager) starts and sources `.xprofile`
 
-- https://wiki.archlinux.org/title/Cursor_themes
-- https://wiki.archlinux.org/index.php/Icons#Manually
+https://wiki.archlinux.org/title/Cursor_themes \
+https://wiki.archlinux.org/index.php/Icons#Manually
 
 ### set the wallpaper
 
@@ -350,3 +358,12 @@ widget.non-native-theme.scrollbar.size.override 48
 widget.non-native-theme.enable true
 ```
 
+### Bluetooth
+
+install
+
+```
+bluez bluetui
+```
+
+start/enable `bluetooth.service`
