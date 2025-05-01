@@ -183,6 +183,10 @@ xdg-user-dirs-update
 
 source: https://wiki.archlinux.org/index.php/XDG_user_directories
 
+> [!TIP]
+> To remove unwanted dirs like `~/Desktop`, `~/Templates` or `~/Public`\
+> just `rm -rf` them then run `xdg-user-dirs-update`
+
 ## Screen lock
 
 Install `i3lock-color` from AUR

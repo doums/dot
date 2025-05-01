@@ -209,7 +209,7 @@ nav2D = navigation2DP def ("<Up>", "<Left>", "<Down>", "<Right>")
                           True
 -- #
 
-kbRemoved = ["M-S-c"]
+kbRemoved = ["M-S-c", "M-S-q"]
 
 modm = mod4Mask
 myTerminal = "wezterm"
