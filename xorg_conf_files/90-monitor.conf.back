@@ -1,4 +1,0 @@
-Section "Monitor"
-    Identifier             "<default monitor>"
-    DisplaySize            309 174
-EndSection

@@ -8,7 +8,7 @@ Arch Linux build:
 
 - display server: Xorg (X11)
 - no desktop environment
-- display manager: LightDM + its GTK greeter
+- display manager: LightDM
 - window manager: XMonad
 - compositor: yshui/picom
 
@@ -37,6 +37,10 @@ lightdm lightdm-gtk-greeter
 ```
 
 Enable `lightdm.service`
+
+#### config
+
+Copy `lightdm/lightdm-gtk-greeter.conf` to `/etc/lightdm/`
 
 https://wiki.archlinux.org/index.php/LightDM#Installation
 
@@ -331,11 +335,18 @@ Set the env var `SSH_AUTH_SOCK` to `/run/user/1000/gcr/ssh`
 
 ### Firefox
 
-To set the scrollbar width set the following property in
-`about:config`
+`about:config` tweaks:
+
+- increase UI size
 
 ```
-widget.non-native-theme.scrollbar.size.override 16
+ui.textScaleFactor 180
 ```
 
-NOTE: the `widget.non-native-theme.enable` should be set to true
+- scrollbar width
+
+```
+widget.non-native-theme.scrollbar.size.override 48
+widget.non-native-theme.enable true
+```
+
