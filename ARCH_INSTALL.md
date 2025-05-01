@@ -150,13 +150,37 @@ man fstrim
 
 ### initramfs
 
-Disable `fallback` img generation (useless)
+[`mkinitcpio`](https://wiki.archlinux.org/title/Mkinitcpio) is
+used to generate the initramfs (Arch's default).
 
-- remove `fallback` from `PRESETS=(…)` line in all `.preset` files in `/etc/mkinitcpio.d/`
-- remove `/boot/*-fallback.img`
+In order to have the kernel image and initramfs generated in `/efi`\
+(arch default is `/boot`), the mkinitcpio preset must be updated.
 
-Re-generate initramfs → `mkinitcpio -P`
+1. edit `/etc/mkinitcpio.d/linux.preset` and replace the content\
+   with the following:
 
+```
+ESP_DIR="/efi/EFI/arch"
+#ALL_config="/etc/mkinitcpio.conf"
+ALL_kver="${ESP_DIR}/vmlinuz-linux"
+PRESETS=('default')
+#default_config="/etc/mkinitcpio.conf"
+default_image="${ESP_DIR}/initramfs-linux.img"
+```
+
+> [!TIP]
+> this config also drops the linux-fallback image (useless)
+
+2. move the kernel image and ucode from `/boot` to `/efi`
+
+```
+mv /boot/vmlinuz-linux /efi/EFI/arch/
+mv /boot/intel-ucode.img /efi/EFI/arch/
+```
+
+3. re-generate initramfs → `mkinitcpio -P`
+
+see also:\
 https://wiki.archlinux.org/title/Mkinitcpio#Possibly_missing_firmware_for_module_XXXX
 
 ### bootloader
@@ -182,19 +206,10 @@ write the Arch Linux entry in `/efi/loader/entries/arch.conf`
 
 ```
 title   Arch Linux
-linux   /vmlinuz-linux
-initrd  /initramfs-linux.img
+linux   /EFI/arch/vmlinuz-linux
+initrd  /EFI/arch/initramfs-linux.img
 options root=LABEL=ARCH rw quiet splash
 ```
-
-#### copy boot file to ESP
-
-```
-cp -a /boot/vmlinuz-linux /efi/
-cp -a /boot/initramfs-linux.img /efi/
-```
-
-⚠ be sure to read [system maintenance](#-system-maintenance)
 
 ### swapfile (as btrfs subvolume)
 
@@ -300,13 +315,12 @@ source: https://wiki.archlinux.org/title/Systemd-networkd#Multiple_interfaces_th
 
 ### ⚠ system maintenance
 
-To upgrade `systemd-boot` on package upgrade use a pacman hook
+Some pacman hooks are needed to
 
-To automatically copy kernel, initramfs images from
-`/boot` into the ESP (`/efi`), after a system upgrade use a pacman
-hook
+- upgrade `systemd-boot` on system upgrade
+- clear pacman packages cache
 
-https://github.com/doums/dotfiles/tree/master/pacman
+see https://github.com/doums/dotfiles/tree/master/pacman
 
 ### time & sync
 
@@ -358,7 +372,7 @@ Setup sudo
 
 Enable periodic TRIM
 
-https://wiki.archlinux.org/index.php/Solid_state_drive#Periodic_TRIM
+https://wiki.archlinux.org/title/Solid_state_drive#Periodic_TRIM
 
 ```
 # systemctl enable fstrim.timer
