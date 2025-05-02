@@ -180,8 +180,7 @@ cp -a /boot/intel-ucode.img /efi/EFI/arch/
 
 3. re-generate initramfs → `mkinitcpio -P`
 
-see also:\
-https://wiki.archlinux.org/title/Mkinitcpio#Possibly_missing_firmware_for_module_XXXX
+https://wiki.archlinux.org/title/EFI_system_partition#Using_mkinitcpio_preset
 
 #### Auto kernel copy
 
@@ -191,6 +190,8 @@ ie. after a system upgrade, a pacman hook is used:
 Copy `pacman/hooks/999-copy-kernel-efi.hook` into `/etc/pacman.d/hooks/` \
 Then copy the corresponding script `pacman/script/copy_kernel_efi.sh`
 into `/usr/local/bin/`
+
+https://wiki.archlinux.org/title/EFI_system_partition#Using_pacman_hook
 
 ### bootloader
 
