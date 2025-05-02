@@ -18,7 +18,7 @@ Arch Linux build:
 
 Install `xorg-server`
 
-https://wiki.archlinux.org/index.php/Xorg
+https://wiki.archlinux.org/title/Xorg
 
 #### compositor
 
@@ -46,7 +46,7 @@ Enable `lightdm.service`
 
 Copy `lightdm/lightdm-gtk-greeter.conf` to `/etc/lightdm/`
 
-https://wiki.archlinux.org/index.php/LightDM#Installation
+https://wiki.archlinux.org/title/LightDM#Installation
 
 ## Window Manager
 
@@ -137,7 +137,7 @@ source: https://xmonad.org/INSTALL.html
 
 Copy `xsessions/xmonad.desktop` in `/usr/share/xsessions`
 
-source: https://wiki.archlinux.org/index.php/Display_manager#Session_configuration
+source: https://wiki.archlinux.org/title/Display_manager#Session_configuration
 
 #### XMobar
 
@@ -181,7 +181,7 @@ sudo pacman -S xdg-user-dirs
 xdg-user-dirs-update
 ```
 
-source: https://wiki.archlinux.org/index.php/XDG_user_directories
+source: https://wiki.archlinux.org/title/XDG_user_directories
 
 > [!TIP]
 > To remove unwanted dirs like `~/Desktop`, `~/Templates` or `~/Public`\
@@ -202,18 +202,18 @@ sudo systemctl enable suspend@pierre.service
 
 https://wiki.archlinux.org/title/Power_management/Suspend_and_hibernate#Sleep_hooks
 
-## Design
+## UI style
 
-### GTK theme
+### Theme
 
 Install [materia](https://github.com/nana-4/materia-theme)
-`materia-gtk-theme` 
+`materia-gtk-theme`
 
-edit `$XDG_CONFIG_HOME/gtk-3.0/settings.ini`
+edit `.config/gtk-3.0/settings.ini`
 
 ```
 [Settings]
-gtk-icon-theme-name = Paper
+gtk-icon-theme-name = Papirus
 gtk-theme-name = Materia-dark
 gtk-font-name = Roboto 12
 ```
@@ -221,18 +221,19 @@ gtk-font-name = Roboto 12
 edit ~/.gtkrc-2.0
 
 ```
-gtk-icon-theme-name = "Paper"
+gtk-icon-theme-name = "Papirus"
 gtk-theme-name = "Materia-dark"
 gtk-font-name = "Roboto 12"
 ```
 
-#### gnome
+For gnome apps
 
 ```shell
 gsettings set org.gnome.desktop.interface gtk-theme Materia-dark
 gsettings set org.gnome.desktop.interface color-scheme prefer-dark
-gsettings set org.gnome.desktop.interface icon-theme Paper
-gsettings set org.gnome.desktop.interface cursor-size 64
+gsettings set org.gnome.desktop.interface icon-theme Papirus
+gsettings set org.gnome.desktop.interface cursor-theme Paper
+gsettings set org.gnome.desktop.interface cursor-size 48
 ```
 
 #### Flatpak
@@ -242,6 +243,19 @@ flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.f
 flatpak install flathub org.gtk.Gtk3theme.Materia-dark
 ```
 
+### Icon theme
+
+Install `hicolor-icon-theme` and `papirus-icon-theme` [Papirus](https://github.com/PapirusDevelopmentTeam/papirus-icon-theme)
+
+Edit `/usr/share/icons/default/index.theme`
+
+```
+[Icon Theme]
+Inherits=Papirus
+```
+
+https://wiki.archlinux.org/title/Icons#Manually
+
 ### Cursor theme
 
 Install https://github.com/snwh/paper-icon-theme
@@ -250,19 +264,13 @@ Install https://github.com/snwh/paper-icon-theme
 > install under `/usr` (cmake prefix) as it must be accessible\
 > by lightDM which supports only `/usr/share/icons` path
 
-edit `/usr/share/icons/default/index.theme`
+To apply the theme edit `.Xresources`
 
 ```
-[Icon Theme]
-Inherits=Paper
+Xcursor.theme: Paper
 ```
 
-> [!NOTE]
-> the icon theme is initially set by `.Xresources` which is\
-> read when lightdm (display manager) starts and sources `.xprofile`
-
-https://wiki.archlinux.org/title/Cursor_themes \
-https://wiki.archlinux.org/index.php/Icons#Manually
+https://wiki.archlinux.org/title/Cursor_themes
 
 ### set the wallpaper
 
@@ -291,8 +299,8 @@ it will be loaded during display manager (ligthdm) starts and sources `.xprofile
 
 sources:
 
-- https://wiki.archlinux.org/index.php/HiDPI#X_Resources
-- https://wiki.archlinux.org/index.php/LightDM#Environment_variables
+- https://wiki.archlinux.org/title/HiDPI#X_Resources
+- https://wiki.archlinux.org/title/LightDM#Environment_variables
 
 larger font for linux console
 
@@ -307,7 +315,7 @@ FONT=ter-v22b
 FONT_MAP=cp437
 ```
 
-source: https://wiki.archlinux.org/index.php/HiDPI#Linux_console
+source: https://wiki.archlinux.org/title/HiDPI#Linux_console_(tty)
 
 ## notes
 
@@ -329,7 +337,7 @@ this repo) into `/etc/systemd/journald.conf.d/` directory (create it)
 
 (the default is 4Gb)
 
-source: https://wiki.archlinux.org/index.php/Systemd/Journal#Journal_size_limit
+source: https://wiki.archlinux.org/title/Systemd/Journal#Journal_size_limit
 
 ### SSH agent
 
@@ -340,6 +348,7 @@ Enable the following systemd **user** unit (⚠ no `sudo`)
 ```shell
 systemctl --user enable gcr-ssh-agent.socket
 ```
+
 Set the env var `SSH_AUTH_SOCK` to `/run/user/1000/gcr/ssh`
 (`.xprofile`/ fish config)
 

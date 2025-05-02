@@ -17,7 +17,7 @@ configuration {
   window-format: "{c} - {t}";
   ssh-command: "wezterm ssh {host}";
   run-shell-command: "wezterm -e '{cmd}'";
-  icon-theme: "Paper";
+  icon-theme: "Papirus";
   kb-mode-next: "Alt+l,Alt+Right";
   kb-mode-previous: "Alt+h,Alt+Left";
   kb-row-up: "Up,Alt+k";

@@ -124,7 +124,7 @@ keybinds = ([
   , ("M-;",         sendMessage (IncMasterN 1))
   -- Decrement master slots
   , ("M-,",         sendMessage (IncMasterN (-1)))
-  , ("M-C-g",       (toggleScreenSpacingEnabled 
+  , ("M-C-g",       (toggleScreenSpacingEnabled
                       >> toggleWindowSpacingEnabled))
 
   -- ## Launch apps
@@ -316,9 +316,9 @@ myStartupHook = do
     -- spawnOnce "bato"
     spawnOnce "solaar -w hide"
     spawnOnce "clipmenud"
-    spawnOnce ("trayer --monitor primary --transparent true --alpha 120 --tint 0x212121 --iconspacing 4 --SetPartialStrut true --SetDockType true --align right --widthtype pixel" 
+    spawnOnce ("trayer --monitor primary --transparent true --alpha 120 --tint 0x212121 --iconspacing 4 --SetPartialStrut true --SetDockType true --align right --widthtype pixel"
         ++ " --height " ++ show trayH
-        ++ " --width " ++ show trayW 
+        ++ " --width " ++ show trayW
         ++ " --padding " ++ show trayP)
 
 -- xmobar
