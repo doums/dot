@@ -180,8 +180,7 @@ mv /boot/intel-ucode.img /efi/EFI/arch/
 
 3. re-generate initramfs → `mkinitcpio -P`
 
-see also:\
-https://wiki.archlinux.org/title/Mkinitcpio#Possibly_missing_firmware_for_module_XXXX
+https://wiki.archlinux.org/title/EFI_system_partition#Using_mkinitcpio_preset
 
 ### bootloader
 
