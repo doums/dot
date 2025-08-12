@@ -17,15 +17,10 @@ For some reason this failed when I tried it (04/2025):
 
 #### working solution
 
-Create the EFI partition manually during Windows install Setup,\
-using `diskpart.exe` (Shift+F10)
+Create the EFI partition manually during Windows install Setup\
+At _Select disk_ step:
 
-1. select the disk, ⚠ it should have no partitions; and apply,\
-   windows will create a bunch of partitions
-2. remove them, except the `Recovery` one if present (it was not),\
-   so I removed them all
-3. `Shift+F10` → launch `diskpart.exe`, create the EFI (size in
-   MiB)
+1. `Shift+F10` → run `diskpart.exe`, create the EFI (size in MiB)
 
 ```
 list disk
@@ -34,9 +29,15 @@ create partition efi size=1024
 format quick fs=fat32 label=System
 ```
 
-4. exit diskpart and cmd prompt to go back to the GUI
-5. create the main partition for windows with the desired size (in MiB)
-6. select it and continue the install
+2. exit `diskpart`, in the GUI click _Refresh_, the freshly created\
+   EFI partition should show up
+3. create the main partition for windows with the desired size
+
+> [!IMPORTANT]
+> Size unit is MiB (mebibyte), eg. 204800 for 200GB\
+> Use a converter GiB to MiB to get the desired MiB value
+
+4. select it and continue the install
 
 https://www.ctrl.blog/entry/how-to-esp-windows-setup.html
 https://wiki.archlinux.org/title/Dual_boot_with_Windows#The_EFI_system_partition_created_by_Windows_Setup_is_too_small

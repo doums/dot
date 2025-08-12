@@ -160,38 +160,34 @@ of the default `/boot`), the mkinitcpio preset must be updated.
    with the following:
 
 ```
-ESP_DIR="/efi/EFI/arch"
 #ALL_config="/etc/mkinitcpio.conf"
-ALL_kver="${ESP_DIR}/vmlinuz-linux"
+ALL_kver="/efi/EFI/arch/vmlinuz-linux"
 PRESETS=('default')
 #default_config="/etc/mkinitcpio.conf"
-default_image="${ESP_DIR}/initramfs-linux.img"
+default_image="/efi/EFI/arch/initramfs-linux.img"
 ```
 
-> [!TIP]
-> this config also drops the linux-fallback image (useless)
-
-2. copy the kernel image and ucode from `/boot` to `/efi`
+2. copy the kernel image from `/boot` to `/efi`
 
 ```
 cp -a /boot/vmlinuz-linux /efi/EFI/arch/
-cp -a /boot/intel-ucode.img /efi/EFI/arch/
 ```
 
 3. re-generate initramfs → `mkinitcpio -P`
 
-https://wiki.archlinux.org/title/EFI_system_partition#Using_mkinitcpio_preset
+> [!TIP]
+> this config also drops the linux-fallback image (useless)
 
-#### Auto kernel copy
+> [!NOTE]
+> on next updates `mkinitcpio` will copy the kernel from `/usr/lib/modules/*-arch1-1/vmlinuz`\
+> into the ESP dir as `vmlinuz-linux`
 
-To have the kernel and ucode automatically copied to `/efi/EFI/arch/`,\
-ie. after a system upgrade, a pacman hook is used:
+> [!NOTE]
+> CPU microcode (intel-ucode, amd-ucode) is packed into the initramfs\
+> and picked up from `/usr/lib/firmware/*-ucode/`
 
-Copy `pacman/hooks/999-copy-kernel-efi.hook` into `/etc/pacman.d/hooks/` \
-Then copy the corresponding script `pacman/script/copy_kernel_efi.sh`
-into `/usr/local/bin/`
-
-https://wiki.archlinux.org/title/EFI_system_partition#Using_pacman_hook
+https://wiki.archlinux.org/title/EFI_system_partition#Using_mkinitcpio_preset \
+https://wiki.archlinux.org/title/Microcode#mkinitcpio
 
 ### bootloader
 
