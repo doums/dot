@@ -37,7 +37,7 @@ format quick fs=fat32 label=System
 > Size unit is MiB (mebibyte), eg. 204800 for 200GB\
 > Use a converter GiB to MiB to get the desired MiB value
 
-4. select it and continue the install
+4. select it and continue the installation
 
 https://www.ctrl.blog/entry/how-to-esp-windows-setup.html
 https://wiki.archlinux.org/title/Dual_boot_with_Windows#The_EFI_system_partition_created_by_Windows_Setup_is_too_small

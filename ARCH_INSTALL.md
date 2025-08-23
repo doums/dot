@@ -191,6 +191,27 @@ https://wiki.archlinux.org/title/Microcode#mkinitcpio
 
 ### bootloader
 
+> [!WARNING]
+> Due to an issue with current systemd version (`257` 08/2025), installing\
+> systemd-boot from chroot can fail to create the Linux boot\
+> entry: `Created EFI boot entry "Linux Boot Manager"` is missing\
+> in the output\
+> see https://github.com/systemd/systemd/issues/36174
+
+> If after install on reboot there is no _Linux Boot Manager_ entry,\
+> and basically the system fails to start and the systemd-boot menu\
+> does not show up, that means the installation failed.
+> Boot entries can be listed using `efibootmgr`
+
+> A workaround is to install from outside chroot (still requires\
+> the root and esp to be mounted), then update from inside chroot
+
+> ```
+> bootctl --esp-path=/mnt/efi install
+> arch-chroot /mnt
+> bootctl install
+> ```
+
 Install `systemd-boot` with
 
 ```
