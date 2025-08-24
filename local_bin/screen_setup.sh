@@ -40,7 +40,7 @@ FHD_cfg[tray_p]=6
 declare -A QHD_cfg
 QHD_cfg[screen_conf]=alienware_AW2725DF
 QHD_cfg[dpi]=144
-QHD_cfg[dmenu_fsize]=28
+QHD_cfg[dmenu_fsize]=26
 QHD_cfg[layout_hcenter]='0.8 1.0'
 QHD_cfg[xmobar_dpi]=144
 QHD_cfg[xmobar_pos]="30 0 200 0 0"

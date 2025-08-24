@@ -22,6 +22,8 @@ alias x='xplr'
 
 # disable that
 set -g fish_greeting
+# see https://github.com/fish-shell/fish-shell/issues/11204
+# set -Ua fish_features no-keyboard-protocols
 
 # env vars
 # see https://wiki.archlinux.org/title/Debuginfod

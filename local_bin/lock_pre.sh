@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# this script is called before session lock
+# this script is called before suspend and lock actions
 
 shotgun "$BG_IMG_PATH"
 gm convert "$BG_IMG_PATH" -scale 10% -scale 1000% -colorspace Gray -gamma 0.6 \
