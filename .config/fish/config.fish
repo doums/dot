@@ -1,5 +1,5 @@
 # aliases
-alias ls='exa -lag --group-directories-first'
+alias ls='eza -lag --group-directories-first'
 alias la='ls'
 alias rt='trash'
 alias emu='emulator -avd main -gpu host -accel on -no-boot-anim'
