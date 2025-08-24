@@ -47,13 +47,14 @@ if [ "$XDG_SESSION_DESKTOP" = 'rosu' ]; then
 fi
 
 # android dev
-export ANDROID_HOME=$HOME/.local/share/android/sdk
+export ANDROID_HOME=$HOME/.local/share/android
 export ANDROID_USER_HOME=$HOME/.local/share/android/user
 export PATH=$PATH:$ANDROID_HOME/tools
 export PATH=$PATH:$ANDROID_HOME/emulator
 export PATH=$PATH:$ANDROID_HOME/tools/bin
+export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
 export PATH=$PATH:$ANDROID_HOME/platform-tools
-export NDK_HOME=$ANDROID_HOME/ndk/25.2.9519653
+export NDK_HOME=$ANDROID_HOME/ndk/29.0.13599879
 
 # Go
 export GOPATH=$HOME/.go

@@ -8,9 +8,12 @@ destination:
         bing: French
         chatgpt: French
         deepl: French
-        google: French
+        deeplx: English
+        google: English
+        libre: English
         reverso: French
 hide_below: false
+osc52: false
 source:
     border_color: green
     language:
@@ -19,7 +22,9 @@ source:
         bing: English
         chatgpt: English
         deepl: English
-        google: English
+        deeplx: English
+        google: French
+        libre: English
         reverso: English
 theme: cooper
 translator: Google

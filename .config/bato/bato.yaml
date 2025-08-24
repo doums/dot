@@ -8,7 +8,7 @@ critical:
 low:
   summary: Battery
   body: Low
-  icon: battery-040
+  icon: battery-low
 full:
   summary: Battery
   body: Full
