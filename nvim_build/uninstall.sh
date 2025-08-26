@@ -1,7 +1,7 @@
 #!/bin/bash
 
-share_dir="/usr/share/nvim"
-lib_dir="/usr/lib/nvim"
+share_dir="/usr/local/share/nvim"
+lib_dir="/usr/local/lib/nvim"
 to_remove=()
 run=0
 
@@ -19,7 +19,7 @@ printf "%s\n" "${to_remove[@]}"
 printf "\n"
 read_input=1
 while [ $read_input -eq 1 ]; do
-  read -r -s -N 1 -p "remove these files? (y/n) " input
+  read -r -p "remove these files? (y/n) " input
   printf "\n"
   if [ "$input" = "y" ]; then
     read_input=0
