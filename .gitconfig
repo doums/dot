@@ -16,26 +16,6 @@
 	autocrlf = input
 [interactive]
   diffFilter = delta --color-only
-[tig]
-  line-graphics = utf-8
-  tab-size = 4
-  truncation-delimiter = …
-  main-options = --abbrev-commit
-  main-view-date = custom,local=true,format=\"%a %d %b %y %H:%M\"
-  main-view-author = maxwidth=14
-  main-view-id = display=true
-[tig "bind"]
-  generic = <Ctrl-k>	move-half-page-up
-  generic = <Ctrl-j>	move-half-page-down
-  generic = d >git show %(commit)
-[tig "color"]
-  cursor = white blue bold
-  title-focus = white default bold
-  title-focus = magenta default bold
-  title-blur = default default bold
-  id = yellow default
-  delimiter = 8 default
-  status = 8 default
 [delta]
   dark                          = true
   navigate                      = true
