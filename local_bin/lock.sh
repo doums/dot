@@ -3,7 +3,20 @@
 # screen locker
 
 bg_img=/tmp/bg_lock.png
+shotgun $bg_img
+gm convert $bg_img -scale 10% -scale 1000% -colorspace Gray -gamma 0.6 \
+  -fill "#33333355" \
+  -draw 'rectangle 1375,879 1506,920' \
+  -font "/usr/share/fonts/TTF/Inconsolata-Bold.ttf" -pointsize 38 -fill white \
+  -draw 'gravity Center text 0,0 locked' \
+  $bg_img
+  # for 1440p
+  # -draw 'rectangle 1237,707 1324,734' -pointsize 26 \
+
 options="
+--screen=0
+--radius=80
+--ring-width=10
 --inside-color=ffffff1c
 --ring-color=ffffff3e
 --line-color=ffffff00

@@ -12,17 +12,21 @@ if ! dmenu -v &>/dev/null; then
   exit 1
 fi
 
-choice=$(printf "lock\nlogout\nsuspend\npoweroff\nreboot" | dmenu -b -i -p 'session' "$@")
-case $choice in
-"lock")
-  BG_IMG_PATH=/tmp/bg_lock.png lock_pre.sh
-  lock.sh
-  ;;
+actions=(
+  "lock"
+  "logout"
+  "sleep"
+  "hibernate"
+  "poweroff"
+  "reboot"
+)
+picked=$(printf '%s\n' "${actions[@]}" | dmenu -b -i -p 'session' "$@")
+
+case $picked in
+"lock") lock.sh ;;
 "logout") pkill -SIGTERM "$DESKTOP_SESSION" ;;
-"suspend")
-  BG_IMG_PATH=/tmp/bg_lock.png lock_pre.sh
-  systemctl suspend
-  ;;
+"sleep") systemctl sleep ;;
+"hibernate") systemctl hibernate ;;
 "poweroff") systemctl poweroff ;;
 "reboot") systemctl reboot ;;
 esac

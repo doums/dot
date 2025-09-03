@@ -26,6 +26,7 @@ set -g fish_greeting
 # set -Ua fish_features no-keyboard-protocols
 
 # env vars
+set -x PATH "$HOME/.local/bin" $PATH
 # see https://wiki.archlinux.org/title/Debuginfod
 set -x DEBUGINFOD_URLS https://debuginfod.archlinux.org
 # set -x GDK_SCALE 2
@@ -40,7 +41,7 @@ set -x NNN_BMS 'h:~;d:~/Documents/dot;r:/;m:/run/media/pierre;n:~/.config/nvim;x
 set -x NNN_FCOLORS '0505040a00060e0801030301'
 
 # fzf
-set -x FZF_DEFAULT_OPTS "--bind 'ctrl-w:toggle-preview-wrap,ctrl-p:toggle-preview,ctrl-a:toggle-all,alt-j:preview-half-page-down,alt-k:preview-half-page-up' --color='bg:-1,fg:-1,preview-bg:-1,preview-fg:-1,border:black:bold,bg+:#323232,fg+:-1:regular,hl:magenta:bold,hl+:magenta:bold,gutter:-1,pointer:yellow,prompt:blue,marker:green,spinner:bright-cyan,info:cyan:italic,header:blue:bold,query:-1:bold' --pointer=❱ --marker=❯ --prompt='❯ '"
+set -x FZF_DEFAULT_OPTS "--bind 'ctrl-w:toggle-preview-wrap,ctrl-p:toggle-preview,ctrl-a:toggle-all,alt-j:preview-half-page-down,alt-k:preview-half-page-up' --color='bg:-1,fg:-1,preview-bg:-1,preview-fg:-1,border:black:bold,bg+:#323232,fg+:-1:regular,hl:magenta:bold,hl+:magenta:bold,pointer:yellow,marker:bright-yellow,prompt:blue,spinner:bright-cyan,info:cyan:italic,header:blue:bold,query:-1:bold,scrollbar:black,preview-scrollbar:black' --marker=▐ --scrollbar=┃ --ellipsis=…"
 set -x FZF_DEFAULT_COMMAND "fd -H -t f --strip-cwd-prefix"
 
 # Java
