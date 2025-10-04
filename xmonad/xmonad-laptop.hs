@@ -46,7 +46,7 @@ cfg = def {
   workspaces         = wspaces,
   normalBorderColor  = darkGrey,
   focusedBorderColor = grey,
-  layoutHook         = myLayout,
+  layoutHook         = layouts,
   manageHook         = myManageHook,
   handleEventHook    = myEventHook,
   logHook            = myLogHook,
@@ -118,8 +118,10 @@ keybinds = ([
   , ("M-;",         sendMessage (IncMasterN 1))
   -- Decrement master slots
   , ("M-,",         sendMessage (IncMasterN (-1)))
-  , ("M-C-g",       (toggleScreenSpacingEnabled
-                      >> toggleWindowSpacingEnabled))
+  -- Fullscreen mode
+  , ("M-S-f",       (toggleScreenSpacingEnabled
+                      >> toggleWindowSpacingEnabled
+                      >> sendMessage ToggleStruts))
 
   -- ## Launch apps
   -- Open a terminal
@@ -208,10 +210,6 @@ myTerminal = "wezterm"
 wspaces = ["\985015", "\984479", "\987350", "\985977", "z", "\983414", "4", "5", "r"]
 wsKeys = "&é\"aze'%r"
 screenKeys = "[]"
--- trayer config
-trayW = 280
-trayH = 52
-trayP = 10
 
 grey = "#404040"
 darkGrey = "#262626"
@@ -225,7 +223,7 @@ dNearBlack = "\\#0d0d0d"
 dStone = "\\#8c8c8c"
 dmenuArgs = " -fn " ++ dmenuFn ++ " -nb " ++ dNearBlack ++ " -nf " ++ dStone ++ " -sb " ++ dDarkGrey ++ " -sf " ++ dStone
 
-myLayout = lessBorders Screen
+layouts = lessBorders Screen
            $ spaced (tiled ||| mirror) ||| full
   where
     tiled    = renamed [Replace "→"] (Tall nmaster delta ratio)
@@ -240,6 +238,7 @@ myManageHook = fmap not willFloat --> insertPosition Below Newer
                <+> namedScratchpadManageHook scratchpads
                <+> composeAll
     [ isDialog                          --> doFloat
+    , className =? "stalonetray"        --> doIgnore
     , className =? "feh"                --> doFloat
     , className =? "jetbrains-toolbox"  --> doCenterFloat
     , className =? "Gpick"              --> doFloat
@@ -260,7 +259,7 @@ myManageHook = fmap not willFloat --> insertPosition Below Newer
     where role = stringProperty "WM_WINDOW_ROLE"
 
 myEventHook = handleEventHook def
-                <> Hacks.trayerAboveXmobarEventHook
+                -- <> Hacks.trayerAboveXmobarEventHook
                 <> Hacks.windowedFullscreenFixEventHook
 
 myLogHook = workspaceHistoryHook
@@ -269,16 +268,14 @@ myStartupHook = do
     setDefaultCursor xC_left_ptr -- set default cursor
     spawnOnce "xwallpaper --daemon --clear --zoom $BG_PRIMARY"
     spawnOnce "picom.sh"
-    spawnOnce "redshift -c /home/pierre/.config/redshift/redshift.conf"
     spawnOnce "dunst"
     spawnOnce "udiskie"
     spawnOnce "bato"
     spawnOnce "solaar -w hide"
     spawnOnce "clipmenud"
-    spawnOnce ("trayer --monitor primary --transparent true --alpha 200 --tint 0xa8a29e --iconspacing 6 --SetPartialStrut true --SetDockType true --align right --widthtype pixel"
-        ++ " --height " ++ show trayH
-        ++ " --width " ++ show trayW
-        ++ " --padding " ++ show trayP)
+    spawnOnce "redshift -c /home/pierre/.config/redshift/redshift.conf"
+    spawnOnce "stalonetray -c /home/pierre/.config/stalonetray/config"
+    spawnOnce "x-on-resize --display ':0' --resize '/home/pierre/.local/bin/restart_stalonetray.sh'"
 
 -- xmobar
 bar = def

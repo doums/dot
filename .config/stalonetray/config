@@ -1,0 +1,21 @@
+# format is <slotnX>x<slotnY>+<X>+<Y>
+# slotnX|Y: number of horizontal/vertical icon slots
+# x: <screen_w> - (<slot_size> * <slot_num> + <scrollbar_size> * 2)
+# y: <screen_h> - <slot_size>
+# x: 2880 - (52 * 4 + 12 * 2)
+# y: 1800 - 52
+geometry 4x1+2648+1748
+max_geometry 4x1
+slot_size 52
+icon_size 46
+transparent true
+tint_color "#78716c"
+tint_level 90
+scrollbars horizontal
+scrollbars_highlight "#e7e5e4"
+scrollbars_size 12
+scroll_everywhere true
+monitor 0
+window_type dock
+window_strut bottom
+skip_taskbar true
