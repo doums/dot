@@ -20,6 +20,16 @@ alias gu='gitui'
 alias hx='helix'
 alias x='xplr'
 
+# on fish 4.1.0 alt-… no longer operate on punctuation-delimited
+# words but on whole arguments, revert this
+# https://github.com/fish-shell/fish-shell/releases/tag/4.1.0
+bind alt-backspace backward-kill-word
+bind ctrl-backspace backward-kill-token
+bind alt-left prevd-or-backward-word
+bind ctrl-left prevd-or-backward-token
+bind alt-right nextd-or-forward-word
+bind ctrl-right nextd-or-forward-token
+
 # disable that
 set -g fish_greeting
 # see https://github.com/fish-shell/fish-shell/issues/11204
@@ -60,7 +70,7 @@ set -x PATH $BUN_INSTALL/bin $PATH
 set -x LANGTOOL_HOST http://loup.lan:8010
 
 # Nodejs
-set -x PATH /opt/node22/bin $PATH
+set -x PATH /opt/node24/bin $PATH
 
 # manpage
 set -x MANPAGER 'nvim +Man!'
