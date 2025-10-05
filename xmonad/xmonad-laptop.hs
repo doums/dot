@@ -140,6 +140,8 @@ keybinds = ([
   , ("M-S-v",       spawn ("vm.sh" ++ dmenuArgs))
   -- Open clipboard manager
   , ("M-v",         spawn ("clipmenu -b -i -p '◧'" ++ dmenuArgs))
+  -- Setup monitors via xrandr
+  , ("M-C-s",       spawn ("monitor_setup.sh" ++ dmenuArgs))
   -- Restart compositor
   , ("M-p",         spawn "picom.sh")
   -- Toggle Redshift
