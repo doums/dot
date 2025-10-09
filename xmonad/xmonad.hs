@@ -50,7 +50,7 @@ cfg = def {
   workspaces         = wspaces,
   normalBorderColor  = darkGrey,
   focusedBorderColor = grey,
-  layoutHook         = myLayout,
+  layoutHook         = layouts,
   manageHook         = myManageHook,
   handleEventHook    = myEventHook,
   logHook            = myLogHook,
@@ -96,6 +96,8 @@ keybinds = ([
   , ("M-j",         windows W.focusDown)
   -- Focus master
   , ("M-m",         windows W.focusMaster)
+  -- Swap to master
+  , ("M-S-m",       windows W.swapMaster)
   -- Swap window up
   , ("M-S-k",       windows W.swapUp)
   -- Swap window down
@@ -124,8 +126,10 @@ keybinds = ([
   , ("M-;",         sendMessage (IncMasterN 1))
   -- Decrement master slots
   , ("M-,",         sendMessage (IncMasterN (-1)))
-  , ("M-C-g",       (toggleScreenSpacingEnabled
-                      >> toggleWindowSpacingEnabled))
+  -- Fullscreen mode
+  , ("M-S-f",       (toggleScreenSpacingEnabled
+                      >> toggleWindowSpacingEnabled
+                      >> sendMessage ToggleStruts))
 
   -- ## Launch apps
   -- Open a terminal
@@ -144,6 +148,8 @@ keybinds = ([
   , ("M-S-v",       spawn ("vm.sh" ++ dmenuArgs))
   -- Open clipboard manager
   , ("M-v",         spawn ("clipmenu -b -i -p '◧'" ++ dmenuArgs))
+  -- Setup monitors via xrandr
+  , ("M-C-s",       spawn ("monitor_setup.sh" ++ dmenuArgs))
   -- Restart compositor
   , ("M-p",         spawn "picom.sh")
   -- Toggle Redshift
@@ -218,10 +224,6 @@ myTerminal = "wezterm"
 wspaces = ["\985015", "\984479", "\987350", "\985977", "z", "\983414", "4", "5", "r"]
 wsKeys = "&é\"aze'("
 screenKeys = "[]"
--- trayer config
-trayW = 240
-trayH = 40
-trayP = 10
 
 grey = "#404040"
 darkGrey = "#262626"
@@ -235,7 +237,7 @@ dNearBlack = "\\#0d0d0d"
 dStone = "\\#8c8c8c"
 dmenuArgs = " -fn " ++ dmenuFn ++ " -nb " ++ dNearBlack ++ " -nf " ++ dStone ++ " -sb " ++ dDarkGrey ++ " -sf " ++ dStone
 
-myLayout = renamed [CutWordsLeft 1]
+layouts = renamed [CutWordsLeft 1]
            $ lessBorders Screen
            $ avoidStruts
            $ spacingWithEdge 7
@@ -275,6 +277,7 @@ myLayout = renamed [CutWordsLeft 1]
 myManageHook = namedScratchpadManageHook scratchpads
                <+> composeOne
     [ isDialog                          -?> doFloat
+    , className =? "stalonetray"        -?> doIgnore
     , className =? "feh"                -?> doFloat
     , className =? "jetbrains-toolbox"  -?> doCenterFloat
     , className =? "frame"              -?> doCenterFloat
@@ -291,6 +294,7 @@ myManageHook = namedScratchpadManageHook scratchpads
     , title ^? "NymVPN"                 -?> doFloat
     , appName =? "virt-manager"         -?> doFloat
     , appName =? "virt-viewer"          -?> doFloat
+    , appName =? "thunar"               -?> doFloat
     , (appName ^? "jetbrains" <&&> title ^? "Commit:")
                                         -?> doFloat
     , (role ^? "gimp-toolbox" <||> role =? "gimp-image-window")
@@ -300,7 +304,7 @@ myManageHook = namedScratchpadManageHook scratchpads
     where role = stringProperty "WM_WINDOW_ROLE"
 
 myEventHook = handleEventHook def
-                <> Hacks.trayerAboveXmobarEventHook
+                -- <> Hacks.trayerAboveXmobarEventHook
                 <> Hacks.windowedFullscreenFixEventHook
 
 myLogHook = workspaceHistoryHook
@@ -311,15 +315,11 @@ myStartupHook = do
     spawnOnce "xwallpaper --daemon --clear --zoom $BG_PRIMARY"
     spawnOnce "picom.sh"
     spawnOnce "redshift -c /home/pierre/.config/redshift/redshift.conf"
-    spawnOnce "dunst -c /home/pierre/.config/dunst/dunstrc"
+    spawnOnce "stalonetray -c /home/pierre/.config/stalonetray/config"
+    spawnOnce "dunst"
     spawnOnce "udiskie"
-    -- spawnOnce "bato"
     spawnOnce "solaar -w hide"
     spawnOnce "clipmenud"
-    spawnOnce ("trayer --monitor primary --transparent true --alpha 120 --tint 0x212121 --iconspacing 4 --SetPartialStrut true --SetDockType true --align right --widthtype pixel"
-        ++ " --height " ++ show trayH
-        ++ " --width " ++ show trayW
-        ++ " --padding " ++ show trayP)
 
 -- xmobar
 bar = def

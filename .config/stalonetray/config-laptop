@@ -2,14 +2,14 @@
 # slotnX|Y: number of horizontal/vertical icon slots
 # x = <screen_w> - (<slot_size_w> * <slot_num> + <scrollbar_size> * 2)
 # y = <screen_h> - <slot_size_h>
-# x = 3840 - (44*4 + 12*2)
-# y = 2560 - 40
-geometry 4x1+3640+2520
+# x = 2880 - (52 * 4 + 12 * 2)
+# y = 1800 - 52
+geometry 4x1+2648+1748
 max_geometry 4x1
-slot_size 44x40
-icon_size 38
+slot_size 52
+icon_size 46
 transparent true
-tint_color "#171717"
+tint_color "#78716c"
 tint_level 90
 scrollbars horizontal
 scrollbars_highlight "#e7e5e4"
