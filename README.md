@@ -380,3 +380,27 @@ bluez bluetui
 ```
 
 start/enable `bluetooth.service`
+
+### TrackPoint
+
+To customize the speed use the _magic trackpoint multiplier_\
+First, find the device name
+
+```
+sudo libinput list-devices | rg -i trackpoint
+```
+
+Create `/etc/libinput/local-overrides.quirks`
+
+```
+[Trackpoint Override]
+MatchUdevType=pointingstick
+MatchName=*TPPS/2 Elan TrackPoint*
+AttrTrackpointMultiplier=1.5
+```
+
+Default multiplier value is `1.0`
+
+ref:\
+https://wayland.freedesktop.org/libinput/doc/latest/trackpoint-configuration.html\
+ref https://wiki.archlinux.org/title/TrackPoint#device-quirks
