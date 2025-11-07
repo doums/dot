@@ -19,6 +19,7 @@ alias log='docker logs -f'
 alias gu='gitui'
 alias hx='helix'
 alias x='xplr'
+alias ff='fastfetch'
 
 # on fish 4.1.0 alt-… no longer operate on punctuation-delimited
 # words but on whole arguments, revert this
@@ -36,12 +37,16 @@ set -g fish_greeting
 # set -Ua fish_features no-keyboard-protocols
 
 # env vars
-set -x PATH "$HOME/.local/bin" $PATH
 # see https://wiki.archlinux.org/title/Debuginfod
 set -x DEBUGINFOD_URLS https://debuginfod.archlinux.org
 # set -x GDK_SCALE 2
 # set -x GDK_DPI_SCALE 0.5
 set -x SSH_AUTH_SOCK /run/user/1000/gcr/ssh
+set -x PATH "$HOME/.local/bin" $PATH
+# Intel
+set -x LIBVA_DRIVER_NAME iHD
+# NVIDIA
+# set -x LIBVA_DRIVER_NAME vdpau
 
 # nnn
 set -x NNN_OPTS QUAuex
@@ -67,7 +72,7 @@ set -x BUN_INSTALL "$HOME/.bun"
 set -x PATH $BUN_INSTALL/bin $PATH
 
 # LanguageTool server
-set -x LANGTOOL_HOST http://loup.lan:8010
+set -x LANGTOOL_HOST http://loup:8010
 
 # Nodejs
 set -x PATH /opt/node24/bin $PATH

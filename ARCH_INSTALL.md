@@ -191,28 +191,16 @@ https://wiki.archlinux.org/title/Microcode#mkinitcpio
 
 ### bootloader
 
-> [!WARNING]
-> Due to an issue with current systemd version (`257` 08/2025), installing\
-> systemd-boot from chroot can fail to create the Linux boot\
-> entry: `Created EFI boot entry "Linux Boot Manager"` is missing\
-> in the output\
-> see https://github.com/systemd/systemd/issues/36174
+> [!IMPORTANT]
+> `bootctl` will fail to update UEFI variables and boot entries
+> when running in classic chroot env.\
+> To create the boot entry, chroot in systemd mode using the `-S` flag
 
-> If after install on reboot there is no _Linux Boot Manager_ entry,\
-> and basically the system fails to start and the systemd-boot menu\
-> does not show up, that means the installation failed.
-> Boot entries can be listed using `efibootmgr`
+```
+arch-chroot -S /mnt
+```
 
-> A workaround is to install from outside chroot (still requires\
-> the root and esp to be mounted), then update from inside chroot
-
-> ```
-> bootctl --esp-path=/mnt/efi install
-> arch-chroot /mnt
-> bootctl install
-> ```
-
-Install `systemd-boot` with
+Then install `systemd-boot` with
 
 ```
 bootctl install
@@ -319,14 +307,20 @@ resolvectl query archlinux.org --cache=false
 - https://wiki.archlinux.org/title/Systemd-resolved
 - https://developers.cloudflare.com/1.1.1.1/setup/linux
 
-#### define hosts
+#### hosts file
+
+It is a good practice to add an entry for the local hostname
 
 `/etc/hosts`
 
 ```
 127.0.0.1   localhost
 ::1         localhost
+# new entry
+127.0.1.1   <hostname>
 ```
+
+https://wiki.archlinux.org/title/Network_configuration#local_hostname_is_resolved_over_the_network
 
 #### wait-online
 
@@ -445,7 +439,10 @@ MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)
 
 ⚠ remove `kms` from hooks array
 
-> Remove kms from the HOOKS array in /etc/mkinitcpio.conf and regenerate the initramfs. This will prevent the initramfs from containing the nouveau module making sure the kernel cannot load it during early boot.
+> Remove kms from the HOOKS array in /etc/mkinitcpio.conf and
+regenerate the initramfs.\
+This will prevent the initramfs from containing the nouveau module\
+making sure the kernel cannot load it during early boot.
 
 ```
 HOOKS=(… ~~kms~~ …)

@@ -272,7 +272,7 @@ myStartupHook = do
     spawnOnce "picom.sh"
     spawnOnce "dunst"
     spawnOnce "udiskie"
-    spawnOnce "bato"
+    spawnOnce "bato -lfile"
     spawnOnce "solaar -w hide"
     spawnOnce "clipmenud"
     spawnOnce "redshift -c /home/pierre/.config/redshift/redshift.conf"
