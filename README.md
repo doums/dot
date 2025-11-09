@@ -6,7 +6,7 @@ My dotfiles
 
 Arch Linux build:
 
-- display server: Xorg (X11)
+- display server: ~Xorg~ XLibre (**X11**)
 - no desktop environment
 - display manager: LightDM
 - window manager: XMonad
@@ -16,9 +16,13 @@ Arch Linux build:
 
 ## X
 
-Install `xorg-server`
-
+Install `xorg-server` \
 https://wiki.archlinux.org/title/Xorg
+
+> Le roi est mort, vive le roi ! \
+> No, not Wayland. ~17 years later, still hasn't replaced X.
+
+https://github.com/X11Libre/xserver
 
 #### compositor
 
@@ -41,6 +45,11 @@ lightdm lightdm-gtk-greeter
 ```
 
 Enable `lightdm.service`
+
+> [!NOTE]
+> If login fails with "wrong password" be sure to check the \
+> current keyboard layout. Eg. for FR it must be set as an X config \
+> `/etc/X11/xorg.conf.d/00-keyboard.conf`
 
 #### config
 
@@ -165,7 +174,7 @@ stack install
 
 ```
 rofi dmenu clipmenu trayer shotgun graphicsmagick xwallpaper
-udiskie xclip slop gpick ouch
+udiskie xclip slop gpick ouch go-yq
 ```
 
 aur
@@ -232,7 +241,7 @@ For gnome apps
 gsettings set org.gnome.desktop.interface gtk-theme Materia-dark
 gsettings set org.gnome.desktop.interface color-scheme prefer-dark
 gsettings set org.gnome.desktop.interface icon-theme Papirus
-gsettings set org.gnome.desktop.interface cursor-theme Paper
+gsettings set org.gnome.desktop.interface cursor-theme XCursor-Pro-Dark
 gsettings set org.gnome.desktop.interface cursor-size 48
 ```
 
@@ -258,16 +267,17 @@ https://wiki.archlinux.org/title/Icons#Manually
 
 ### Cursor theme
 
-Install https://github.com/snwh/paper-icon-theme
+To install [XCursor-Pro-Dark](https://github.com/ful1e5/XCursor-pro)
+run
 
-> [!IMPORTANT]
-> install under `/usr` (cmake prefix) as it must be accessible\
-> by lightDM which supports only `/usr/share/icons` path
+```
+./install_xcursor.sh
+```
 
 To apply the theme edit `.Xresources`
 
 ```
-Xcursor.theme: Paper
+Xcursor.theme: XCursor-Pro-Dark
 ```
 
 https://wiki.archlinux.org/title/Cursor_themes
@@ -311,15 +321,14 @@ $ sudo pacman -S terminus-font
 add in `/etc/vconsole.conf`
 
 ```
-FONT=ter-v22b
-FONT_MAP=cp437
+FONT=ter-v32b
 ```
 
 source: https://wiki.archlinux.org/title/HiDPI#Linux_console_(tty)
 
 ## notes
 
-The following notes are relevant to the installation of ArchLinux.
+The following notes are relevant to the installation of Arch Linux.
 
 ### solve icon problem for apps installed through Flatpak
 
