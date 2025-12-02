@@ -20,7 +20,7 @@ Install `xorg-server` \
 https://wiki.archlinux.org/title/Xorg
 
 > Le roi est mort, vive le roi ! \
-> No, not Wayland. ~17 years later, still hasn't replaced X.
+> (No, not Wayland)
 
 https://github.com/X11Libre/xserver
 
@@ -33,7 +33,7 @@ Install `picom`
 Install the following packages
 
 ```
-pipewire wireplumber pipewire-pulse pipewire-alsa pavucontrol
+pipewire wireplumber pipewire-pulse pipewire-alsa pipewire-jack pavucontrol
 ```
 
 ## Display manager
@@ -56,6 +56,20 @@ Enable `lightdm.service`
 Copy `lightdm/lightdm-gtk-greeter.conf` to `/etc/lightdm/`
 
 https://wiki.archlinux.org/title/LightDM#Installation
+
+## AUR setup
+
+1. install `base-devel` \
+2. install Rust https://rust-lang.org/tools/install/
+3. install `rua`
+
+```
+git clone https://aur.archlinux.org/rua.git
+cd rua
+makepkg -si
+```
+
+https://github.com/vn971/rua#install-the-aur-way
 
 ## Window Manager
 
@@ -173,8 +187,8 @@ stack install
 ##### required packages
 
 ```
-rofi dmenu clipmenu trayer shotgun graphicsmagick xwallpaper
-udiskie xclip slop gpick ouch go-yq
+eza rofi dunst dmenu clipmenu stalonetray shotgun graphicsmagick
+xwallpaper udiskie xclip slop gpick ouch go-yq
 ```
 
 aur
