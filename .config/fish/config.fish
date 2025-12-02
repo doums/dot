@@ -52,7 +52,7 @@ set -x LIBVA_DRIVER_NAME iHD
 set -x NNN_OPTS QUAuex
 set -x NNN_COLORS 2341
 set -x NNN_PLUG 'x:!ouch d -A "$nnn";X:!ouch ls "$nnn";i:!wezterm imgcat "$nnn"'
-set -x NNN_BMS 'h:~;d:~/Documents/dot;r:/;m:/run/media/pierre;n:~/.config/nvim;x:/opt/xmonad;s:~/sync'
+set -x NNN_BMS 'r:/;h:~;d:~/dot;s:~/sync;o:/opt;m:/run/media/pierre;n:~/.config/nvim;x:/opt/xmonad'
 set -x NNN_FCOLORS '0505040a00060e0801030301'
 
 # fzf
