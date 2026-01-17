@@ -31,6 +31,23 @@ bind ctrl-left prevd-or-backward-token
 bind alt-right nextd-or-forward-word
 bind ctrl-right nextd-or-forward-token
 
+# theme
+set fish_color_command white
+set fish_color_option blue
+set fish_color_comment brblack --italics
+set fish_color_end bryellow
+set fish_color_error brblack
+set fish_color_escape brmagenta
+set fish_color_normal white
+set fish_color_operator cyan
+set fish_color_param normal
+set fish_color_redirection magenta --bold
+set fish_color_search_match bryellow --background=black --bold
+set fish_color_keyword blue --bold
+set fish_pager_color_description brblack --italics
+set fish_pager_color_progress white --background=black --bold
+set fish_color_match --background=brblack
+
 # disable that
 set -g fish_greeting
 # see https://github.com/fish-shell/fish-shell/issues/11204
@@ -52,7 +69,7 @@ set -x LIBVA_DRIVER_NAME iHD
 set -x NNN_OPTS QUAuex
 set -x NNN_COLORS 2341
 set -x NNN_PLUG 'x:!ouch d -A "$nnn";X:!ouch ls "$nnn";i:!wezterm imgcat "$nnn"'
-set -x NNN_BMS 'r:/;h:~;d:~/dot;s:~/sync;o:/opt;m:/run/media/pierre;n:~/.config/nvim;x:/opt/xmonad'
+set -x NNN_BMS 'h:~;r:/;d:~/Downloads/;o:/opt;m:/run/media/pierre;n:~/.config/nvim;x:/opt/xmonad;s:~/sync'
 set -x NNN_FCOLORS '0505040a00060e0801030301'
 
 # fzf
