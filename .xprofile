@@ -43,7 +43,7 @@ export _JAVA_AWT_WM_NONREPARENTING=1
 # Intel
 export LIBVA_DRIVER_NAME=iHD
 # NVIDIA
-# export LIBVA_DRIVER_NAME=vdpau
+# export LIBVA_DRIVER_NAME=nvidia
 
 if [ "$XDG_SESSION_DESKTOP" = 'rosu' ]; then
   (baru | xrootwin) &

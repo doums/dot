@@ -8,7 +8,6 @@ setup overview:
 - ESP mounted to `/efi`
 - ROOT fs `ext4` or `btrfs`
 - Swap (partition or swapfile) of 8G
-- KMS
 
 [partitioning](#partitioning) • [formatting](#formatting) • [chroot](#chroot) • [post](#post-install) • [graphics](#graphics)
 
@@ -419,25 +418,47 @@ Install the needed packages
 | 32bits | lib32-mesa   | lib32-nvidia-utils |
 | libs   | vulkan-intel | nvidia-utils       |
 
-### KMS
+> [!TIP]
+> Intel: to run the new `xe` driver see\
+> https://wiki.archlinux.org/title/Intel_graphics#Testing_the_new_experimental_Xe_driver
 
-Edit `/etc/mkinitcpio.conf`
+### Early KMS
+
+> [!NOTE]
+> Early KMS should not be set when using **hibernation**.\
+> See
+> https://wiki.archlinux.org/title/Power_management/Suspend_and_hibernate#Suspend/hibernate_does_not_work,_or_does_not_work_consistently\
 
 #### Intel
 
+Should be enabled by default as the `kms` hook is present in the
+initramfs `/etc/mkinitcpio.conf`:
+
 ```
-MODULES=(i915)
+HOOKS=(… ~~kms~~ …)
 ```
 
 https://wiki.archlinux.org/title/Intel_graphics#Early_KMS
 
 #### NVIDIA
 
+Late KMS should be enabled by default, to check run
+
+```shell
+cat /sys/module/nvidia_drm/parameters/modeset
+```
+
+`Y` -> enabled
+
+https://wiki.archlinux.org/title/NVIDIA#DRM_kernel_mode_setting
+
+To enable kms at initramfs stage add the following modules in `/etc/mkinitcpio.conf`:
+
 ```
 MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)
 ```
 
-⚠ remove `kms` from hooks array
+⚠ Also remove `kms` from hooks array
 
 > Remove kms from the HOOKS array in /etc/mkinitcpio.conf and
 regenerate the initramfs.\
@@ -450,18 +471,38 @@ HOOKS=(… ~~kms~~ …)
 
 Re-generate initramfs → `mkinitcpio -P`
 
-#### NVIDIA DRM
-
-Add `nvidia_drm.modeset=1` to kernel parameters
-
-Edit `/efi/loader/entries/arch.conf`
-
-```
-options root=LABEL=ARCH rw quiet splash nvidia_drm.modeset=1
-```
-
-**TBD** consider using `nvidia_drm.fbdev=1`
-
 https://wiki.archlinux.org/title/Kernel_mode_setting#Early_KMS_start \
 https://wiki.archlinux.org/title/NVIDIA#Early_loading \
 https://wiki.archlinux.org/title/NVIDIA#DRM_kernel_mode_setting
+
+### NVIDIA suspend and hibernation
+
+Check the following services are enabled, should be by default:
+
+```
+nvidia-suspend.service
+nvidia-resume.service
+nvidia-suspend-then-hibernate.service
+```
+
+If not, enable them.
+
+#### Restore video memory after suspend
+
+Enabled by default, to check:
+
+```shell
+sudo sort /proc/driver/nvidia/params | rg 'PreserveVideoMemoryAllocations|TemporaryFilePath'
+
+# output:
+# PreserveVideoMemoryAllocations: 1
+# TemporaryFilePath: "/var/tmp"
+```
+
+> [!NOTE]
+> Early KMS should not be set if hibernation is used
+
+> when the loading of nvidia module happens in the initramfs, it has no access to NVreg_TemporaryFilePath which stores the previous video memory: early KMS should not be used if hibernation is desired.
+
+https://wiki.archlinux.org/title/NVIDIA/Tips_and_tricks#Preserve_video_memory_after_suspend
+

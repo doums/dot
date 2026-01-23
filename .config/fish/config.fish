@@ -63,7 +63,7 @@ set -x PATH "$HOME/.local/bin" $PATH
 # Intel
 set -x LIBVA_DRIVER_NAME iHD
 # NVIDIA
-# set -x LIBVA_DRIVER_NAME vdpau
+# set -x LIBVA_DRIVER_NAME nvidia
 
 # nnn
 set -x NNN_OPTS QUAuex
