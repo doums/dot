@@ -7,7 +7,7 @@ c.term = 'wezterm'
 -- c.dpi = 144  -- for DualUp
 -- c.dpi = 168 -- benq RD280U
 c.dpi = 168
-c.xcursor_theme = 'Paper'
+c.xcursor_theme = 'XCursor-Pro-Dark'
 c.color_scheme = 'Cooper'
 c.max_fps = 240
 c.adjust_window_size_when_changing_font_size = false
@@ -123,7 +123,7 @@ c.keys = {
   },
   {
     key = 't',
-    mods = 'LEADER',
+    mods = 'CTRL|ALT',
     action = act.SpawnTab('CurrentPaneDomain'),
   },
   {
@@ -145,7 +145,7 @@ c.keys = {
     mods = 'SHIFT|ALT',
     action = act.ActivatePaneDirection('Right'),
   },
-  -- rezise panes using <Ctrl-Alt-hjkl>
+  -- resize panes using <Ctrl-Alt-hjkl>
   {
     key = 'LeftArrow',
     mods = 'CTRL|ALT',
@@ -166,12 +166,45 @@ c.keys = {
     mods = 'CTRL|ALT',
     action = act.AdjustPaneSize({ 'Right', 2 }),
   },
+  -- panes misc
+  {
+    key = '*',
+    mods = 'ALT|CTRL',
+    action = act.PaneSelect({
+      mode = 'SwapWithActive',
+    }),
+  },
+  {
+    key = 'Enter',
+    mods = 'ALT|CTRL',
+    action = act.InputSelector({
+      action = wezterm.action_callback(function(window, pane, id, label)
+        if not id then
+          return
+        end
+        window:perform_action((id == 'window' and act.PaneSelect({
+          mode = 'MoveToNewWindow',
+        })) or (id == 'tab' and act.PaneSelect({
+          mode = 'MoveToNewTab',
+        })), pane)
+      end),
+      title = 'move pane',
+      description = 'Move pane to…',
+      choices = {
+        { label = 'new window', id = 'window' },
+        { label = 'new tab', id = 'tab' },
+      },
+    }),
+  },
   -- tabs navigation
   { key = 'h', mods = 'CTRL|ALT', action = act.ActivateTabRelative(-1) },
   { key = 'l', mods = 'CTRL|ALT', action = act.ActivateTabRelative(1) },
+  { key = 'h', mods = 'SHIFT|CTRL|ALT', action = act.MoveTabRelative(-1) },
+  { key = 'l', mods = 'SHIFT|CTRL|ALT', action = act.MoveTabRelative(1) },
   -- font size
   { key = '=', mods = 'CTRL', action = act.IncreaseFontSize },
-  { key = '*', mods = 'CTRL', action = act.DecreaseFontSize },
+  { key = '-', mods = 'CTRL', action = act.DecreaseFontSize },
+  -- { key = '*', mods = 'CTRL', action = act.DecreaseFontSize },
   { key = ')', mods = 'CTRL', action = act.ResetFontSize },
   -- copy/paste
   { key = 'C', mods = 'SHIFT|CTRL', action = act.CopyTo('Clipboard') },
@@ -213,11 +246,10 @@ c.keys = {
   },
 }
 
--- tabs mapping
-local tab_keys = { '&', 'phys:2', '"', "'" }
-for i, k in ipairs(tab_keys) do
+-- tabs mapping Alt-1 .. Alt-5
+for i = 1, 5 do
   table.insert(c.keys, {
-    key = k,
+    key = string.format('phys:%d', i),
     mods = 'ALT|CTRL',
     action = act.ActivateTab(i - 1),
   })
