@@ -41,7 +41,7 @@ cfg = def {
   terminal           = myTerminal,
   focusFollowsMouse  = True,
   clickJustFocuses   = False,
-  borderWidth        = 6,
+  borderWidth        = borders,
   modMask            = modm,
   workspaces         = wspaces,
   normalBorderColor  = darkGrey,
@@ -144,12 +144,16 @@ keybinds = ([
   , ("M-C-s",       spawn ("monitor_setup.sh" ++ dmenuArgs))
   -- Restart compositor
   , ("M-p",         spawn "picom.sh")
+  -- Kill compositor
+  , ("M-S-p",         spawn "pkill picom")
   -- Toggle Redshift
   , ("M-*",         spawn "pkill -USR1 redshift")
   -- Take a screenshot
   , ("<Print>",     spawn "screenshot.sh")
-  -- Take a screenshot with square selection
+  -- Take a screenshot from selection
   , ("M-c",         spawn "clipshot.sh")
+  -- Extract text from a screenshot
+  , ("M-C-t",       spawn "cliptext.sh")
 
   -- ## Scratchpads
   -- Keymap
@@ -216,6 +220,8 @@ screenKeys = "[]"
 grey = "#404040"
 darkGrey = "#262626"
 stone = "#8c8c8c"
+borders = 6
+gaps = 9
 
 -- dmenu config
 dmenuFnSize = 31
@@ -231,7 +237,7 @@ layouts = lessBorders Screen
     tiled    = renamed [Replace "→"] (Tall nmaster delta ratio)
     mirror   = renamed [Replace "↓"] (Mirror tiled)
     full     = renamed [Replace "■"] Full
-    spaced l = renamed [CutWordsLeft 1] $ avoidStruts $ spacingWithEdge 9 $ l
+    spaced l = renamed [CutWordsLeft 1] $ avoidStruts $ spacingWithEdge gaps $ l
     nmaster  = 1 -- default number of windows in the master pane
     ratio    = 1/2 -- default proportion of screen occupied by master pane
     delta    = 3/100 -- percent of screen to increment by when resizing panes
@@ -245,6 +251,7 @@ myManageHook = fmap not willFloat --> insertPosition Below Newer
     , className =? "jetbrains-toolbox"  --> doCenterFloat
     , className =? "Gpick"              --> doFloat
     , className =? "steam"              --> doFloat
+    , className =? "Arandr"             --> doFloat
     , title =? "splash"
         <&&> className ^? "jetbrains-"  --> doCenterFloat <> hasBorder False
     , title ^? "Emulator"               --> doFloat
@@ -277,7 +284,7 @@ myStartupHook = do
     spawnOnce "clipmenud"
     spawnOnce "redshift -c /home/pierre/.config/redshift/redshift.conf"
     spawnOnce "stalonetray -c /home/pierre/.config/stalonetray/config"
-    spawnOnce "x-on-resize --display ':0' --resize '/home/pierre/.local/bin/restart_stalonetray.sh'"
+    spawnOnce "x-on-resize --display ':0' --resize '/home/pierre/.local/bin/restart_tray.sh'"
 
 -- xmobar
 bar = def
