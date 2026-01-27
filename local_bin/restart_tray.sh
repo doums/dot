@@ -16,8 +16,8 @@ else
   log '⚠ stalonetray is not running'
 fi
 
-if ! (stalonetray --config /home/pierre/.config/stalonetray/config &); then
+if ! (stalonetray -c /home/pierre/.config/stalonetray/config &) then
   log '✗ stalonetray failed to start'
   exit 1
 fi
-log '✓ restarted stalonetray'
+log "✓ restarted stalonetray"

@@ -1,0 +1,23 @@
+# 1090x1080 FHD config
+#
+# format is <slotnX>x<slotnY>+<X>+<Y>
+# slotnX|Y: number of horizontal/vertical icon slots
+# x: <screen_w> - (<slot_size> * <slot_num> + <scrollbar_size> * 2)
+# y: <screen_h> - <slot_size>
+# x: 1920 - (32 * 4 + 20)
+# y: 1080 - 32
+geometry 4x1+1772+1048
+max_geometry 4x1
+slot_size 32
+icon_size 30
+transparent true
+tint_color "#78716c"
+tint_level 90
+scrollbars horizontal
+scrollbars_highlight "#e7e5e4"
+scrollbars_size 10
+scroll_everywhere true
+monitor 0
+window_type dock
+window_strut bottom
+skip_taskbar true
