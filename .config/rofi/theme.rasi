@@ -2,15 +2,15 @@
   background-color: #404040;
   text-color: #bfbfbf;
   font: "JetbrainsMonoSZ 12";
-  border: 0px;
+  border: 0;
 }
 
 window {
   anchor: north;
   location: north;
-  padding: 30px;
+  padding: 0.7em;
   y-offset: 400px;
-  width: 460px;
+  width: 16em;
 }
 
 mainbox {
@@ -22,20 +22,20 @@ prompt {
 }
 
 entry {
-  padding: 10px 20px;
+  padding: 0.4em;
   placeholder: "Search";
   placeholder-color: #6e6e6e;
   cursor: text;
 }
 
 element {
-  padding: 10px 15px;
+  padding: 0.4em;
   cursor: pointer;
 }
 
 element-icon {
-  size: 32px;
-  margin: 0px 15px 0px 0px;
+  size: 1.4em;
+  margin: 0 0.6em 0 0;
   cursor: pointer;
 }
 
@@ -61,7 +61,7 @@ element-text selected {
 }
 
 mode-switcher {
-  margin: 0px 0px 30px 0px;
+  margin: 0 0 0.6em 0;
 }
 
 listview {
@@ -69,11 +69,11 @@ listview {
   scrollbar: false;
   cycle: true;
   lines: 5;
-  margin: 30px 0px 0px 0px;
+  margin: 0.8em 0 0 0;
 }
 
 button {
-  padding: 10px 0;
+  padding: 0.5em 0;
   cursor: pointer;
   horizontal-align: 0.5;
   text-color: #8f8f8f;
@@ -81,5 +81,5 @@ button {
 
 button selected {
   text-color: #fafafa;
-  padding: 10px 0;
+  padding: 0.5em 0;
 }
