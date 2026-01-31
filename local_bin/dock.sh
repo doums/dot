@@ -2,7 +2,6 @@
 
 set -E
 set -o pipefail
-DIFFS=1
 
 # ANSI style codes
 RED="\e[38;5;1m" # red
@@ -35,6 +34,7 @@ tray_cfg="$traycfg_dir"/config
 # Safe edit infrastructure
 BACKUP_DIR="$HOME/.cache/screen_setup/bak"
 TMP_DIR=""
+DIFFS=1
 
 # shellcheck disable=SC2329
 catch_err() {
@@ -228,11 +228,11 @@ dock_mode() {
 }
 
 setup_laptop() {
+  xrandr --output eDP-1 --primary --mode 2880x1800_120
   xrandr --output DP-1 --off \
     --output DP-2 --off \
     --output DP-1-2 --off \
-    --output DP-1-3 --off \
-    --output eDP-1 --primary --mode 2880x1800_120
+    --output DP-1-3 --off || true
 
   dock_mode 'off'
 }
@@ -255,9 +255,10 @@ aw_dualup() {
 
 fzf_status=0
 choices=(
+  'laptop screen only'
   'setup AW & dualUp'
   'setup benQ & dualUp'
-  'laptop'
+  'cfg laptop'
   'cfg AW'
   'cfg BenQ'
 )
@@ -269,15 +270,17 @@ if [[ $fzf_status -eq 130 ]] || [[ -z "$choice" ]]; then
 fi
 
 case "$choice" in
+"laptop screen only")
+  setup_laptop
+  ;;
 "setup benQ & dualUp")
   benq_dualup
   ;;
 "setup AW & dualUp")
   aw_dualup
   ;;
-"laptop")
+"cfg laptop")
   update_cfg 'int_cfg'
-  setup_laptop
   ;;
 "cfg AW")
   update_cfg 'AW_cfg'

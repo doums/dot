@@ -11,11 +11,11 @@
 
 RS="\e[0m" # ANSI reset
 
-fg () {
+fg() {
   echo -ne "\e[38;5;$1m$2$RS"
 }
 
-bg () {
+bg() {
   echo -ne "\e[48;5;$1m$2$RS"
 }
 

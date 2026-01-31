@@ -3,10 +3,10 @@
 
 # wezterm ssh wrapper
 
-choice=$(printf "loup\nlinode\n"\
-        | dmenu -b -i -l 2 -p 'ssh' "$@" -fn 'JetBrainsMonoSZ:pixelsize=25:antialias=true')
+choice=$(printf "loup\nlinode\n" |
+  dmenu -b -i -l 2 -p 'ssh' "$@")
 
 case $choice in
-  "loup")  wezterm ssh loup.lan;;
-  "linode")  wezterm ssh linode;;
+"loup") wezterm ssh loup ;;
+"linode") wezterm ssh linode ;;
 esac
