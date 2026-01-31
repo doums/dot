@@ -9,7 +9,8 @@
 geometry 4x1+1772+1048
 max_geometry 4x1
 slot_size 32
-icon_size 30
+icon_size 32
+kludges force_icons_size
 transparent true
 tint_color "#78716c"
 tint_level 90

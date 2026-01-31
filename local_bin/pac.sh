@@ -42,7 +42,7 @@ orphans() {
 choices=(
   "query -Q"
   "search -S"
-  "foreign"
+  "aur"
   "explicitly"
   "remove"
   "orphans"
@@ -55,7 +55,7 @@ case "$choice" in
 "search -S")
   install
   ;;
-"foreign")
+"aur")
   pacman -Qmq | fzf --preview 'pacman -Qil {}' --preview-window=right:70%:noborder
   ;;
 "explicitly")

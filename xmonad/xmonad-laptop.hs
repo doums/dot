@@ -285,6 +285,7 @@ myStartupHook = do
     spawnOnce "redshift -c /home/pierre/.config/redshift/redshift.conf"
     spawnOnce "stalonetray -c /home/pierre/.config/stalonetray/config"
     spawnOnce "x-on-resize --display ':0' --resize '/home/pierre/.local/bin/restart_tray.sh'"
+    spawnOnce "snixembed --fork"
 
 -- xmobar
 bar = def

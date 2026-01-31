@@ -2,211 +2,62 @@
 
 set -E
 set -o pipefail
-DIFFS=1
 
 # ANSI style codes
 RED="\e[38;5;1m" # red
-GRN="\e[38;5;2m" # green
-YLW="\e[38;5;3m" # yellow
 MGT="\e[38;5;5m" # magenta
 BLD="\e[1m"      # bold
 ITL="\e[3m"      # italic
 RS="\e[0m"       # style reset
 B_RED="$BLD$RED"
-B_GRN="$BLD$GRN"
-B_YLW="$BLD$YLW"
 B_MGT="$BLD$MGT"
 BI_MGT="$ITL$B_MGT"
 ####
 
 trap 'catch_err $? $LINENO' ERR
 
-# Files to update
-xresources="$HOME"/.Xresources
-xmonad_hs=/opt/xmonad/xmonad.hs
-xmobar_cfg="$XDG_CONFIG_HOME"/xmobar/xmobarrc
-rofi_cfg="$XDG_CONFIG_HOME"/rofi/config.rasi
-rofi_theme="$XDG_CONFIG_HOME"/rofi/theme.rasi
-wezterm_cfg="$XDG_CONFIG_HOME"/wezterm/wezterm.lua
-gtk3_cfg="$XDG_CONFIG_HOME"/gtk-3.0/settings.ini
-traycfg_dir="$XDG_CONFIG_HOME"/stalonetray
-tray_cfg="$traycfg_dir"/config
-
-# Safe edit infrastructure
-BACKUP_DIR="$HOME/.cache/screen_setup/bak"
-TMP_DIR=""
+LAPTOP_OUTPUT="eDP-1"
+declare -A monitors
+connected_outputs=()
+# known monitor specs
+DUALUP_MODE=2560x2880
+DUALUP_FREQ=60
+DUALUP_OUTPUT=
+AW_MODE=2560x1440
+AW_FREQ=360
+AW_OUTPUT=
+BENQ_MODE=1920x1080
+BENQ_FREQ=240
+BENQ_OUTPUT=
 
 # shellcheck disable=SC2329
 catch_err() {
   trap - ERR
   echo -e " $B_RED✗$RS unexpected error, [$BLD$1$RS] L#$BLD$2$RS"
-  rm -rf "$TMP_DIR"
   exit 1
-}
-
-init_dirs() {
-  mkdir -p "$BACKUP_DIR"
-  TMP_DIR=$(mktemp -d)
-}
-
-cleanup() {
-  rm -rf "$TMP_DIR"
 }
 
 log() {
   echo -e "$1"
 }
 
-prepare_file() {
-  local src="$1"
-  local name
-  name=$(basename "$src")
-  cp "$src" "$TMP_DIR/$name"
-  cp "$src" "$BACKUP_DIR/$name"
-  log "  ${B_GRN}backdup$RS $B_YLW$name$RS to $B_YLW$BACKUP_DIR/$name$RS"
+trim() {
+  local var="$*"
+  var="${var#"${var%%[![:space:]]*}"}"
+  var="${var%"${var##*[![:space:]]}"}"
+  printf '%s' "$var"
 }
 
-apply_file() {
-  local src="$1"
-  local name
-  name=$(basename "$src")
-  if ! cmp -s "$TMP_DIR/$name" "$src"; then
-    cp "$TMP_DIR/$name" "$src"
-    log "  ${B_GRN}updated$RS $B_YLW$src$RS"
+# $1 float number
+ceil() {
+  intval=${1%%.*}
+  fractional=${1#*.}
+  if [[ "$1" == *.* &&
+    "$fractional" -ne 0 &&
+    "$1" != "$intval" ]]; then
+    intval=$((intval + 1))
   fi
-}
-
-tmp_path() {
-  local name
-  name=$(basename "$1")
-  echo "$TMP_DIR/$name"
-}
-
-# integrated display
-declare -A int_cfg
-int_cfg[dpi]=192
-int_cfg[xcursor_size]=72
-int_cfg[xmonad_borders]=6
-int_cfg[xmonad_gaps]=9
-int_cfg[xmonad_dfsize]=31
-int_cfg[xmobar_dpi]=168
-int_cfg[xmobar_pos]="52 0 232 0 0"
-int_cfg[xmobar_font]="JetBrainsMono SZMDI 14"
-int_cfg[traycfg]=qhd43_config
-int_cfg[rofi_yoffset]=380px
-int_cfg[rofi_dpi]=192
-int_cfg[wez_fontsize]=13.0
-int_cfg[wez_uthick]=8
-# shellcheck disable=SC2034
-int_cfg[gtkcursor_size]=72
-
-# FHD BenQ XL2546X
-declare -A FHD_cfg
-FHD_cfg[dpi]=96
-FHD_cfg[xcursor_size]=32
-FHD_cfg[xmonad_borders]=4
-FHD_cfg[xmonad_gaps]=5
-FHD_cfg[xmonad_dfsize]=18
-FHD_cfg[xmobar_dpi]=96
-FHD_cfg[xmobar_pos]="32 0 148 0 0"
-FHD_cfg[xmobar_font]="JetBrainsMono SZMDI 11"
-FHD_cfg[traycfg]=fhd_config
-FHD_cfg[rofi_yoffset]=380px
-FHD_cfg[rofi_dpi]=120
-FHD_cfg[wez_fontsize]=13.0
-FHD_cfg[wez_uthick]=6
-# shellcheck disable=SC2034
-FHD_cfg[gtkcursor_size]=32
-
-# QHD 1440p AW2725DF
-declare -A AW_cfg
-AW_cfg[dpi]=120
-AW_cfg[xcursor_size]=48
-AW_cfg[xmonad_borders]=4
-AW_cfg[xmonad_gaps]=5
-AW_cfg[xmonad_dfsize]=22
-AW_cfg[xmobar_dpi]=120
-AW_cfg[xmobar_pos]="32 0 148 0 0"
-AW_cfg[xmobar_font]="JetBrainsMono SZMDI 12"
-AW_cfg[traycfg]=qhd_config
-AW_cfg[rofi_yoffset]=400px
-AW_cfg[rofi_dpi]=120
-AW_cfg[wez_fontsize]=13.0
-AW_cfg[wez_uthick]=6
-# shellcheck disable=SC2034
-AW_cfg[gtkcursor_size]=48
-
-update_cfg() {
-  local -n cfg=$1
-
-  init_dirs
-
-  # prepare all files for safe editing
-  prepare_file "$xresources"
-  prepare_file "$xmonad_hs"
-  prepare_file "$xmobar_cfg"
-  prepare_file "$tray_cfg"
-  prepare_file "$rofi_cfg"
-  prepare_file "$rofi_theme"
-  prepare_file "$wezterm_cfg"
-  prepare_file "$gtk3_cfg"
-
-  # update Xresources DPI
-  sed -Ei "s|^Xft.dpi.+|Xft.dpi: ${cfg[dpi]}|" "$(tmp_path "$xresources")"
-  sed -Ei "s|^Xcursor.size.+|Xcursor.size: ${cfg[xcursor_size]}|" "$(tmp_path "$xresources")"
-  # update XMonad config
-  sed -Ei "s|^borders =.+|borders = ${cfg[xmonad_borders]}|" "$(tmp_path "$xmonad_hs")"
-  sed -Ei "s|^gaps =.+|gaps = ${cfg[xmonad_gaps]}|" "$(tmp_path "$xmonad_hs")"
-  sed -Ei "s|^dmenuFnSize =.+|dmenuFnSize = ${cfg[xmonad_dfsize]}|" "$(tmp_path "$xmonad_hs")"
-  # update XMobar config
-  sed -Ei "s|font = \".+\"|font = \"${cfg[xmobar_font]}\"|" "$(tmp_path "$xmobar_cfg")"
-  sed -Ei "s|dpi = .+|dpi = ${cfg[xmobar_dpi]}|" "$(tmp_path "$xmobar_cfg")"
-  sed -Ei "s|position = BottomHM.+|position = BottomHM ${cfg[xmobar_pos]}|" "$(tmp_path "$xmobar_cfg")"
-  # update rofi style
-  sed -Ei "s|dpi: .+;|dpi: ${cfg[rofi_dpi]};|" "$(tmp_path "$rofi_cfg")"
-  sed -Ei "s|y-offset: .+;|y-offset: ${cfg[rofi_yoffset]};|" "$(tmp_path "$rofi_theme")"
-  # update wezterm config
-  sed -Ei "s|^c.dpi = .+|c.dpi = ${cfg[dpi]}|" "$(tmp_path "$wezterm_cfg")"
-  sed -Ei "s|^c.font_size = .+|c.font_size = ${cfg[wez_fontsize]}|" "$(tmp_path "$wezterm_cfg")"
-  sed -Ei "s|^c.underline_thickness = .+|c.underline_thickness = ${cfg[wez_uthick]}|" "$(tmp_path "$wezterm_cfg")"
-  # update gtk3 config
-  sed -Ei "s|^gtk-cursor-theme-size = .+|gtk-cursor-theme-size = ${cfg[gtkcursor_size]}|" "$(tmp_path "$gtk3_cfg")"
-  # override stalonetray config
-  cp -f "$traycfg_dir/${cfg[traycfg]}" "$(tmp_path "$tray_cfg")"
-
-  # apply all changes
-  apply_file "$xresources"
-  apply_file "$xmonad_hs"
-  apply_file "$xmobar_cfg"
-  apply_file "$tray_cfg"
-  apply_file "$rofi_cfg"
-  apply_file "$rofi_theme"
-  apply_file "$wezterm_cfg"
-  apply_file "$gtk3_cfg"
-
-  # show diffs
-  if [ $DIFFS -eq 1 ]; then
-    log "${BI_MGT}--- changes applied ---${RS}"
-    delta -s --paging=never "$BACKUP_DIR/.Xresources" "$xresources" || true
-    delta -s --paging=never "$BACKUP_DIR/xmonad.hs" "$xmonad_hs" || true
-    delta -s --paging=never "$BACKUP_DIR/xmobarrc" "$xmobar_cfg" || true
-    delta -s --paging=never "$BACKUP_DIR/config" "$tray_cfg" || true
-    delta -s --paging=never "$BACKUP_DIR/config.rasi" "$rofi_cfg" || true
-    delta -s --paging=never "$BACKUP_DIR/theme.rasi" "$rofi_theme" || true
-    delta -s --paging=never "$BACKUP_DIR/wezterm.lua" "$wezterm_cfg" || true
-    delta -s --paging=never "$BACKUP_DIR/settings.ini" "$gtk3_cfg" || true
-  fi
-
-  # load new X properties
-  # NOTE: running apps would need relaunch in order to see the
-  #   changes
-  xrdb -load ~/.Xresources
-  # restart xmonad
-  xmonad --recompile && xmonad --restart
-
-  cleanup
-  log
-  log "${MGT}*${BI_MGT}DONE${RS}${MGT}*"
+  echo "$intval"
 }
 
 # switch on/off wlan0 and keyboard backlight
@@ -228,64 +79,180 @@ dock_mode() {
 }
 
 setup_laptop() {
-  xrandr --output DP-1 --off \
-    --output DP-2 --off \
-    --output DP-1-2 --off \
-    --output DP-1-3 --off \
-    --output eDP-1 --primary --mode 2880x1800_120
+  opts=(--output "$LAPTOP_OUTPUT" --primary --auto)
+  turn_off=()
+  for output in "${connected_outputs[@]}"; do
+    if [ "$output" != "$LAPTOP_OUTPUT" ]; then
+      echo "turning off $output"
+      turn_off+=(--output "$output" --off)
+    fi
+  done
+  xrandr "${opts[@]}" "${turn_off[@]}"
 
   dock_mode 'off'
 }
 
+# BenQ primary, DualUp on left
 benq_dualup() {
-  xrandr --output eDP-1 --off \
-    --output DP-1-2 --auto --pos 0x0 \
-    --output DP-2 --primary --mode 1920x1080_240 --pos 2560x1260
+  xrandr --output "$LAPTOP_OUTPUT" --off \
+    --output "$DUALUP_OUTPUT" --auto --pos 0x0 \
+    --output "$BENQ_OUTPUT" --primary --mode 1920x1080 --rate 240 --pos 2560x1260
 
   dock_mode 'on'
 }
 
+# AW primary, DualUp on left
 aw_dualup() {
-  xrandr --output eDP-1 --off \
-    --output DP-1-2 --auto --pos 0x0 \
-    --output DP-2 --primary --mode 2560x1440_240 --pos 2560x1260
+  xrandr --output "$LAPTOP_OUTPUT" --off \
+    --output "$DUALUP_OUTPUT" --auto --pos 0x0 \
+    --output "$AW_OUTPUT" --primary --mode "$AW_MODE" --rate 240 --pos 2560x1260
 
   dock_mode 'on'
 }
 
-fzf_status=0
-choices=(
-  'setup AW & dualUp'
-  'setup benQ & dualUp'
-  'laptop'
-  'cfg AW'
-  'cfg BenQ'
-)
-choice=$(printf "%s\n" "${choices[@]}" |
-  fzf --no-info --header="setup") || fzf_status=$?
+# laptop primary, DualUp on left
+laptop_dualup() {
+  xrandr --output "$LAPTOP_OUTPUT" --primary --auto --pos 2560x1000 \
+    --output "$DUALUP_OUTPUT" --auto --pos 0x0
+}
 
-if [[ $fzf_status -eq 130 ]] || [[ -z "$choice" ]]; then
-  exit 0
-fi
+# BenQ primary, laptop on left
+benq_laptop() {
+  xrandr --output "$LAPTOP_OUTPUT" --auto --pos 0x0 \
+    --output "$BENQ_OUTPUT" --primary --mode "$BENQ_MODE" --rate "$BENQ_FREQ" --pos 2880x0
+}
 
-case "$choice" in
-"setup benQ & dualUp")
-  benq_dualup
-  ;;
-"setup AW & dualUp")
-  aw_dualup
-  ;;
-"laptop")
-  update_cfg 'int_cfg'
-  setup_laptop
-  ;;
-"cfg AW")
-  update_cfg 'AW_cfg'
-  ;;
-"cfg BenQ")
-  update_cfg 'FHD_cfg'
-  ;;
-*) exit 1 ;;
-esac
+# AW primary, laptop on left
+aw_laptop() {
+  xrandr --output "$LAPTOP_OUTPUT" --auto --pos 0x0 \
+    --output "$AW_OUTPUT" --primary --mode "$AW_MODE" --rate 240 --pos 2880x0
+}
 
+select_layout() {
+  dualup="$DUALUP_OUTPUT"
+  aw="$AW_OUTPUT"
+  benq="$BENQ_OUTPUT"
+
+  fzf_status=0
+  choices=('laptop')
+  if [ -n "$benq" ] && [ -n "$dualup" ]; then
+    choices+=("BenQ & DualUp")
+  fi
+  if [ -n "$aw" ] && [ -n "$dualup" ]; then
+    choices+=("AW & DualUp")
+  fi
+  if [ -n "$aw" ]; then
+    choices+=("AW & laptop")
+  fi
+  if [ -n "$benq" ]; then
+    choices+=("BenQ & laptop")
+  fi
+  if [ -n "$dualup" ]; then
+    choices+=("laptop & DualUp")
+  fi
+  choice=$(printf "%s\n" "${choices[@]}" |
+    fzf --no-info --header="setup display") || fzf_status=$?
+
+  if [[ $fzf_status -eq 130 ]] || [[ -z "$choice" ]]; then
+    exit 0
+  fi
+
+  case "$choice" in
+  "laptop")
+    setup_laptop
+    ;;
+  "BenQ & DualUp")
+    benq_dualup
+    ;;
+  "AW & DualUp")
+    aw_dualup
+    ;;
+  "AW & laptop")
+    aw_laptop
+    ;;
+  "BenQ & laptop")
+    benq_laptop
+    ;;
+  "laptop & DualUp")
+    laptop_dualup
+    ;;
+    # TODO cfg DualUp
+  *) exit 1 ;;
+  esac
+}
+
+# $1 xrandr mode line output
+# expected format: <WIDTHxHEIGHT>[_REFRESHRATE] <REFRESHRATE1>[*][+] [<REFRESHRATE2> ...]
+parse_mode_and_rates() {
+  IFS=' ' read -r mode rest <<<"$1"
+  mode=$(trim "${mode}")
+  # then split rates into array, removing markers
+  IFS=' ' read -ra arr <<<"${rest//[+*]/ }"
+  highest_rate=0
+  for rate in "${arr[@]}"; do
+    rate=$(trim "$rate")
+    rate=$(ceil "$rate")
+    if [ -z "$highest_rate" ]; then
+      highest_rate=$rate
+    elif [ "$rate" -gt "$highest_rate" ]; then
+      highest_rate=$rate
+    fi
+  done
+  echo "$mode:$highest_rate"
+}
+
+parse_xrandr() {
+  mapfile -t xmonitors < <(xrandr |
+    rg -A1 '\bconnected' |
+    tr '\n' '|' |
+    sed 's/|$//' |
+    sed 's/|--|/\n/g')
+  # entries have this format:
+  # <OUTPUT_NAME> connected [primary] [<CURRENT_RESOLUTION>+<X>+<Y>] (...)| <SUPPORTED_RES_AND_RATES>
+  for line in "${xmonitors[@]}"; do
+    output=${line%% *}
+    connected_outputs+=("$output")
+    [[ $line =~ ([0-9]+x[0-9]+\+[0-9]+\+[0-9]+) ]] && state=1 ||
+      state=0
+    layout="${BASH_REMATCH[1]:--}"
+    res_data=$(trim "${line##*|}")
+    mode_rate=$(parse_mode_and_rates "$res_data")
+    mode=${mode_rate%%:*}
+    highest_rate=${mode_rate##*:}
+    # echo "[$output] state:$state layout:$layout mode:$mode highest_rate:$highest_rate"
+
+    monitors["state:$output"]="$state"
+    monitors["layout:$output"]="$layout"
+    monitors["mode:$output"]="${mode:--}"
+    monitors["rate:$output"]="$highest_rate"
+  done
+}
+
+match_known_monitors() {
+  for key in "${!monitors[@]}"; do
+    if [[ $key == mode:* ]]; then
+      output=${key#mode:}
+      mode=${monitors[$key]}
+      rate=${monitors["rate:$output"]}
+      if [ "$mode" == "$DUALUP_MODE" ] && [ "$rate" -eq "$DUALUP_FREQ" ]; then
+        echo "[$output] detected DualUp mode $mode at ${rate}Hz"
+        DUALUP_OUTPUT=$output
+      elif [ "$mode" == "$AW_MODE" ] && [ "$rate" -eq "$AW_FREQ" ]; then
+        echo "[$output] detected AW2725DF mode $mode at ${rate}Hz"
+        AW_OUTPUT=$output
+      elif [ "$mode" == "$BENQ_MODE" ] && [ "$rate" -eq "$BENQ_FREQ" ]; then
+        echo "[$output] detected BenQ XL2546X mode $mode at ${rate}Hz"
+        BENQ_OUTPUT=$output
+      elif [ "$output" != "$LAPTOP_OUTPUT" ]; then
+        echo "[$output] unknown monitor mode $mode at ${rate}Hz"
+      fi
+    fi
+  done
+}
+
+log "${BI_MGT}parsing xrandr…${RS}"
+parse_xrandr
+match_known_monitors
+select_layout
+log "${MGT}*${BI_MGT}DONE${RS}${MGT}*"
 exit 0

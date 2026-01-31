@@ -20,6 +20,8 @@ alias gu='gitui'
 alias hx='helix'
 alias x='xplr'
 alias ff='fastfetch'
+alias oc='opencode'
+alias ocp='opencode --port'
 
 # on fish 4.1.0 alt-… no longer operate on punctuation-delimited
 # words but on whole arguments, revert this
@@ -64,6 +66,7 @@ set -x PATH "$HOME/.local/bin" $PATH
 set -x LIBVA_DRIVER_NAME iHD
 # NVIDIA
 # set -x LIBVA_DRIVER_NAME nvidia
+set -x LIBVIRT_URI '' # replace me
 
 # nnn
 set -x NNN_OPTS QUAuex
