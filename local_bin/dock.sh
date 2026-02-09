@@ -21,7 +21,6 @@ declare -A monitors
 connected_outputs=()
 # known monitor specs
 DUALUP_MODE=2560x2880
-DUALUP_FREQ=60
 DUALUP_OUTPUT=
 AW_MODE=2560x1440
 AW_FREQ=360
@@ -29,6 +28,8 @@ AW_OUTPUT=
 BENQ_MODE=1920x1080
 BENQ_FREQ=240
 BENQ_OUTPUT=
+BENQP_MODE=3840x2560
+BENQP_OUTPUT=
 
 # shellcheck disable=SC2329
 catch_err() {
@@ -110,6 +111,15 @@ aw_dualup() {
   dock_mode 'on'
 }
 
+# BenQ Prog primary, DualUp on left
+benqp_dualup() {
+  xrandr --output "$LAPTOP_OUTPUT" --off \
+    --output "$DUALUP_OUTPUT" --auto --pos 0x0 \
+    --output "$BENQP_OUTPUT" --primary --mode "$BENQP_MODE" --pos 2560x320
+
+  dock_mode 'on'
+}
+
 # laptop primary, DualUp on left
 laptop_dualup() {
   xrandr --output "$LAPTOP_OUTPUT" --primary --auto --pos 2560x1000 \
@@ -128,10 +138,17 @@ aw_laptop() {
     --output "$AW_OUTPUT" --primary --mode "$AW_MODE" --rate 240 --pos 2880x0
 }
 
+# BenQ Prog primary, laptop on left
+benqp_laptop() {
+  xrandr --output "$LAPTOP_OUTPUT" --auto --pos 0x0 \
+    --output "$BENQP_OUTPUT" --primary --mode "$BENQP_MODE" --pos 2880x0
+}
+
 select_layout() {
   dualup="$DUALUP_OUTPUT"
   aw="$AW_OUTPUT"
   benq="$BENQ_OUTPUT"
+  benqp="$BENQP_OUTPUT"
 
   fzf_status=0
   choices=('laptop')
@@ -141,14 +158,20 @@ select_layout() {
   if [ -n "$aw" ] && [ -n "$dualup" ]; then
     choices+=("AW & DualUp")
   fi
-  if [ -n "$aw" ]; then
+  if [ -n "$benqp" ] && [ -n "$dualup" ]; then
+    choices+=("BenQ Prog & DualUp")
+  fi
+  if [ -n "$aw" ] && [ -z "$dualup" ]; then
     choices+=("AW & laptop")
   fi
-  if [ -n "$benq" ]; then
+  if [ -n "$benq" ] && [ -z "$dualup" ]; then
     choices+=("BenQ & laptop")
   fi
   if [ -n "$dualup" ]; then
     choices+=("laptop & DualUp")
+  fi
+  if [ -n "$benqp" ] && [ -z "$dualup" ]; then
+    choices+=("BenQ Prog & laptop")
   fi
   choice=$(printf "%s\n" "${choices[@]}" |
     fzf --no-info --header="setup display") || fzf_status=$?
@@ -167,6 +190,9 @@ select_layout() {
   "AW & DualUp")
     aw_dualup
     ;;
+  "BenQ Prog & DualUp")
+    benqp_dualup
+    ;;
   "AW & laptop")
     aw_laptop
     ;;
@@ -175,6 +201,9 @@ select_layout() {
     ;;
   "laptop & DualUp")
     laptop_dualup
+    ;;
+  "BenQ Prog & laptop")
+    benqp_laptop
     ;;
     # TODO cfg DualUp
   *) exit 1 ;;
@@ -234,7 +263,7 @@ match_known_monitors() {
       output=${key#mode:}
       mode=${monitors[$key]}
       rate=${monitors["rate:$output"]}
-      if [ "$mode" == "$DUALUP_MODE" ] && [ "$rate" -eq "$DUALUP_FREQ" ]; then
+      if [ "$mode" == "$DUALUP_MODE" ]; then
         echo "[$output] detected DualUp mode $mode at ${rate}Hz"
         DUALUP_OUTPUT=$output
       elif [ "$mode" == "$AW_MODE" ] && [ "$rate" -eq "$AW_FREQ" ]; then
@@ -243,6 +272,9 @@ match_known_monitors() {
       elif [ "$mode" == "$BENQ_MODE" ] && [ "$rate" -eq "$BENQ_FREQ" ]; then
         echo "[$output] detected BenQ XL2546X mode $mode at ${rate}Hz"
         BENQ_OUTPUT=$output
+      elif [ "$mode" == "$BENQP_MODE" ]; then
+        echo "[$output] detected BenQ Prog mode $mode at ${rate}Hz"
+        BENQP_OUTPUT=$output
       elif [ "$output" != "$LAPTOP_OUTPUT" ]; then
         echo "[$output] unknown monitor mode $mode at ${rate}Hz"
       fi

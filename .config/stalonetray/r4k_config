@@ -1,0 +1,23 @@
+# 3840x2560 4k config
+#
+# format is <slotnX>x<slotnY>+<X>+<Y>
+# slotnX|Y: number of horizontal/vertical icon slots
+# x: <screen_w> - (<slot_size> * <slot_num> + <scrollbar_size> * 2)
+# y: <screen_h> - <slot_size>
+# x: 3840 - (50 * 4 + 12 * 2)
+# y: 2560 - 50
+geometry 4x1+3616+2510
+max_geometry 4x1
+slot_size 50
+icon_size 46
+transparent true
+tint_color "#78716c"
+tint_level 90
+scrollbars horizontal
+scrollbars_highlight "#e7e5e4"
+scrollbars_size 12
+scroll_everywhere true
+monitor 0
+window_type dock
+window_strut bottom
+skip_taskbar true
