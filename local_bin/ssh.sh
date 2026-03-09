@@ -3,10 +3,12 @@
 
 # wezterm ssh wrapper
 
-choice=$(printf "loup\nlinode\n" |
-  dmenu -b -i -l 2 -p 'ssh' "$@")
+machines=('loup' 'linode' 'unas')
+choice=$(printf "%s\n" "${machines[@]}" |
+  dmenu -b -i -l "${#machines}" -p 'ssh' "$@")
 
 case $choice in
 "loup") wezterm ssh loup ;;
 "linode") wezterm ssh linode ;;
+"unas") wezterm ssh unas ;;
 esac
