@@ -18,6 +18,8 @@ BI_MGT="$ITL$B_MGT"
 
 trap 'catch_err $? $LINENO' ERR
 
+FIREFOX_PROFILE_ID=xxx # TODO
+
 # Files to update
 xresources="$HOME"/.Xresources
 xmonad_hs=/opt/xmonad/xmonad.hs
@@ -28,6 +30,7 @@ wezterm_cfg="$XDG_CONFIG_HOME"/wezterm/wezterm.lua
 gtk3_cfg="$XDG_CONFIG_HOME"/gtk-3.0/settings.ini
 traycfg_dir="$XDG_CONFIG_HOME"/stalonetray
 tray_cfg="$traycfg_dir"/config
+firefox_prefs="$HOME/.mozilla/firefox/$FIREFOX_PROFILE_ID/prefs.js"
 
 # Safe edit infrastructure
 BACKUP_DIR="$HOME/.cache/screen_setup/bak"
@@ -95,26 +98,28 @@ int_cfg[rofi_yoffset]=380px
 int_cfg[rofi_dpi]=192
 int_cfg[wez_fontsize]=13.0
 int_cfg[wez_uthick]=8
-# shellcheck disable=SC2034
 int_cfg[gtkcursor_size]=72
+# shellcheck disable=SC2034
+int_cfg[firefox_uiscale]=200
 
 # FHD BenQ XL2546X
 declare -A FHD_cfg
 FHD_cfg[dpi]=96
-FHD_cfg[xcursor_size]=32
+FHD_cfg[xcursor_size]=40
 FHD_cfg[xmonad_borders]=4
 FHD_cfg[xmonad_gaps]=5
 FHD_cfg[xmonad_dfsize]=18
 FHD_cfg[xmobar_dpi]=96
 FHD_cfg[xmobar_pos]="32 0 148 0 0"
-FHD_cfg[xmobar_font]="JetBrainsMono SZMDI 11"
+FHD_cfg[xmobar_font]="JetBrainsMono SZMDI 12"
 FHD_cfg[traycfg]=fhd_config
 FHD_cfg[rofi_yoffset]=380px
-FHD_cfg[rofi_dpi]=120
+FHD_cfg[rofi_dpi]=96
 FHD_cfg[wez_fontsize]=13.0
 FHD_cfg[wez_uthick]=6
+FHD_cfg[gtkcursor_size]=40
 # shellcheck disable=SC2034
-FHD_cfg[gtkcursor_size]=32
+FHD_cfg[firefox_uiscale]=100
 
 # QHD 1440p AW2725DF
 declare -A QHD_cfg
@@ -122,7 +127,7 @@ QHD_cfg[dpi]=120
 QHD_cfg[xcursor_size]=48
 QHD_cfg[xmonad_borders]=4
 QHD_cfg[xmonad_gaps]=5
-QHD_cfg[xmonad_dfsize]=22
+QHD_cfg[xmonad_dfsize]=20
 QHD_cfg[xmobar_dpi]=120
 QHD_cfg[xmobar_pos]="32 0 148 0 0"
 QHD_cfg[xmobar_font]="JetBrainsMono SZMDI 12"
@@ -131,8 +136,9 @@ QHD_cfg[rofi_yoffset]=400px
 QHD_cfg[rofi_dpi]=120
 QHD_cfg[wez_fontsize]=13.0
 QHD_cfg[wez_uthick]=6
-# shellcheck disable=SC2034
 QHD_cfg[gtkcursor_size]=48
+# shellcheck disable=SC2034
+QHD_cfg[firefox_uiscale]=125
 
 # 4K BenQ Prog
 declare -A R4K_cfg
@@ -140,17 +146,18 @@ R4K_cfg[dpi]=168
 R4K_cfg[xcursor_size]=64
 R4K_cfg[xmonad_borders]=6
 R4K_cfg[xmonad_gaps]=9
-R4K_cfg[xmonad_dfsize]=31
+R4K_cfg[xmonad_dfsize]=30
 R4K_cfg[xmobar_dpi]=168
-R4K_cfg[xmobar_pos]="50 0 224 0 0"
+R4K_cfg[xmobar_pos]="46 0 208 0 0"
 R4K_cfg[xmobar_font]="JetBrainsMono SZMDI 13"
 R4K_cfg[traycfg]=r4k_config
 R4K_cfg[rofi_yoffset]=900px
 R4K_cfg[rofi_dpi]=168
 R4K_cfg[wez_fontsize]=13.0
 R4K_cfg[wez_uthick]=8
-# shellcheck disable=SC2034
 R4K_cfg[gtkcursor_size]=64
+# shellcheck disable=SC2034
+R4K_cfg[firefox_uiscale]=200
 
 update_cfg() {
   local -n cfg=$1
@@ -166,6 +173,7 @@ update_cfg() {
   prepare_file "$rofi_theme"
   prepare_file "$wezterm_cfg"
   prepare_file "$gtk3_cfg"
+  prepare_file "$firefox_prefs"
 
   # update Xresources DPI
   sed -Ei "s|^Xft.dpi.+|Xft.dpi: ${cfg[dpi]}|" "$(tmp_path "$xresources")"
@@ -189,6 +197,8 @@ update_cfg() {
   sed -Ei "s|^gtk-cursor-theme-size = .+|gtk-cursor-theme-size = ${cfg[gtkcursor_size]}|" "$(tmp_path "$gtk3_cfg")"
   # override stalonetray config
   cp -f "$traycfg_dir/${cfg[traycfg]}" "$(tmp_path "$tray_cfg")"
+  # update firefox UI scale
+  sed -Ei "s|^user_pref\(\"ui.textScaleFactor\".+|user_pref(\"ui.textScaleFactor\", ${cfg[firefox_uiscale]});|" "$(tmp_path "$firefox_prefs")"
 
   # apply all changes
   apply_file "$xresources"
@@ -199,6 +209,7 @@ update_cfg() {
   apply_file "$rofi_theme"
   apply_file "$wezterm_cfg"
   apply_file "$gtk3_cfg"
+  apply_file "$firefox_prefs"
 
   # show diffs
   if [ $DIFFS -eq 1 ]; then
@@ -211,6 +222,7 @@ update_cfg() {
     delta -s --paging=never "$BACKUP_DIR/theme.rasi" "$rofi_theme" || true
     delta -s --paging=never "$BACKUP_DIR/wezterm.lua" "$wezterm_cfg" || true
     delta -s --paging=never "$BACKUP_DIR/settings.ini" "$gtk3_cfg" || true
+    delta -s --paging=never "$BACKUP_DIR/prefs.js" "$firefox_prefs" || true
   fi
 
   # load new X properties
