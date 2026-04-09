@@ -1,0 +1,5 @@
+# switch to battery
+ACTION=="change", SUBSYSTEM=="power_supply", ATTRS{type}=="Mains", ATTR{online}=="0", RUN+="/usr/local/bin/cpumode.sh set balanced"
+# switch to AC
+ACTION=="change", SUBSYSTEM=="power_supply", ATTRS{type}=="Mains", ATTR{online}=="1", RUN+="/usr/local/bin/cpumode.sh set perf"
+

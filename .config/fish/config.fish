@@ -1,6 +1,7 @@
 # aliases
 alias ls='eza -lag --group-directories-first'
 alias la='ls'
+alias lt='eza -Ta'
 alias rt='trash'
 alias emu='emulator -avd main -gpu host -accel on -no-boot-anim'
 alias fk='fk.sh'

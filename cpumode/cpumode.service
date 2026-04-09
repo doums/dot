@@ -1,0 +1,10 @@
+[Unit]
+Description=Set cpu mode
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/bin/cpumode.sh auto
+
+[Install]
+WantedBy=multi-user.target
