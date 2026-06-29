@@ -1,7 +1,0 @@
-#!/bin/sh
-
-case "$1" in
-post)
-  /usr/local/bin/cpumode.sh auto
-  ;;
-esac
