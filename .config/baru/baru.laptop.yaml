@@ -1,55 +1,58 @@
-format: '%m  %c %f  %t  %w%e  %a    %d  %r '
+format: '%m  %c %f  %t  %w  %a    %d  %r '
 tick: 100
 pulse_tick: 100
 failed_icon: '󱚡'
 date_time:
-  date_format: '%a %-e %b w%-U, %-kh%M'
+  date_format: '%a %-e w%-U, %-kh%M'
 battery:
-  full_design: true
+  tick: 1000
   low_level: 30
   full_label: '󰁹'
   charging_label: '󰂊'
   discharging_label: '󰂁'
   low_label: '󰁻'
+  not_charging_label: '󱟠'
   unknown_label: '󱃍'
   format: '%v %l'
 brightness:
+  tick: 500
   label: '󰃟'
   format: '%v %l'
 cpu_usage:
-  tick: 500
+  tick: 1000
   label: '󰻠'
   high_label: '󰈸'
   format: '%v'
 cpu_freq:
-  tick: 500
+  tick: 1000
   label: '󰻠'
   high_label: '󰈸'
   format: '%v %l'
 memory:
-  tick: 500
+  tick: 1000
   label: '󰍛'
   high_label: '󰈸'
   format: '%v %l'
 mic:
-  tick: 100
+  tick: 200
   label: '󰍬'
   mute_label: '󰍭'
   format: '%v %l'
 sound:
-  tick: 100
+  tick: 200
   label: '󰕾'
   mute_label: '󰝟'
   format: '%v %l'
 temperature:
   tick: 500
-  core_inputs: 2..5
+  core_inputs: 2..37
   label: '󰔏'
   high_label: '󰈸'
   format: '%v %l'
 wired:
   tick: 1000
   discrete: true
+  interface: en0
   label: '󰈁'
   disconnected_label: '󰈂'
   format: '%l'

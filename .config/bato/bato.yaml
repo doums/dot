@@ -1,24 +1,25 @@
-tick_rate: 1
-critical_level: 10
-low_level: 30
-critical:
-  summary: Battery
-  body: Critical!
-  icon: battery-caution
-low:
-  summary: Battery
-  body: Low
-  icon: battery-low
-full:
-  summary: Battery
-  body: Full
-  icon: battery-full
-  urgency: Normal
-charging:
-  summary: Battery
-  body: Charging
-  icon: battery-good-charging
-discharging:
-  summary: Battery
-  body: Discharging
-  icon: battery-good
+tick_rate = 30
+critical_level = 5
+low_level = 30
+full_design = false
+
+[charging]
+summary = "Charging"
+icon = "battery-good-charging"
+
+[discharging]
+summary = "Discharging"
+icon = "battery-good"
+
+[full]
+summary = "Full"
+icon = "battery-full"
+
+[low]
+summary = "Low"
+icon = "battery-low"
+
+[critical]
+summary = "Critical!"
+icon = "battery-caution"
+urgency = "critical"

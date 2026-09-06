@@ -70,3 +70,7 @@ export GTK_THEME=Materia-dark
 # Nodejs
 export PATH=$PATH:/opt/node24/bin
 
+# start bato
+killall -q bato
+bato -lfile &
+
