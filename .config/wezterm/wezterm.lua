@@ -4,12 +4,12 @@ local c = wezterm.config_builder()
 local act = wezterm.action
 
 c.term = 'wezterm'
--- c.dpi = 144  -- for DualUp
+-- c.dpi = 144  -- for DualUp, AW25
 -- c.dpi = 168 -- benq RD280U
 c.dpi = 168
 c.xcursor_theme = 'XCursor-Pro-Dark'
 c.color_scheme = 'Cooper'
-c.max_fps = 240
+c.max_fps = 144
 c.adjust_window_size_when_changing_font_size = false
 
 -- font
@@ -36,9 +36,8 @@ c.freetype_render_target = 'HorizontalLcd'
 c.char_select_font_size = 14.0
 c.custom_block_glyphs = false
 
--- by default for 'Half' intensity font weight is set to 'ExtraLight'
--- override to 'Regular'
 c.font_rules = {
+  -- override 'Half' intensity: 'ExtraLight' → 'Regular'
   {
     intensity = 'Half',
     italic = true,
@@ -55,6 +54,26 @@ c.font_rules = {
     font = wezterm.font({
       family = 'JetBrains Mono',
       weight = 'Regular',
+      harfbuzz_features = font_features,
+    }),
+  },
+  -- override Bold → DemiBold
+  {
+    intensity = 'Bold',
+    italic = false,
+    font = wezterm.font({
+      family = 'JetBrains Mono',
+      weight = 'DemiBold',
+      harfbuzz_features = font_features,
+    }),
+  },
+  {
+    intensity = 'Bold',
+    italic = true,
+    font = wezterm.font({
+      family = 'JetBrains Mono',
+      weight = 'DemiBold',
+      style = 'Italic',
       harfbuzz_features = font_features,
     }),
   },
@@ -204,7 +223,7 @@ c.keys = {
   -- font size
   { key = '=', mods = 'CTRL', action = act.IncreaseFontSize },
   { key = '-', mods = 'CTRL', action = act.DecreaseFontSize },
-  -- { key = '*', mods = 'CTRL', action = act.DecreaseFontSize },
+  -- can be 0, *
   { key = ')', mods = 'CTRL', action = act.ResetFontSize },
   -- copy/paste
   { key = 'C', mods = 'SHIFT|CTRL', action = act.CopyTo('Clipboard') },
