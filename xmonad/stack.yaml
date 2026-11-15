@@ -1,0 +1,6 @@
+snapshot: lts-24.66
+
+packages:
+- xmonad
+- xmonad-contrib
+
