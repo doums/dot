@@ -1,25 +1,20 @@
-resolver: lts-20.26
+# ghc-9.10.3
+resolver: lts-24.45
 
 packages:
- - .
+  - .
 
 flags:
- xmobar:
-   with_dbus: true
-   with_threaded: true
-   with_xrender: true
+  xmobar:
+    with_threaded: true
+    with_xrender: true
 
-extra-deps:
- - cairo-0.13.8.2
- - pango-0.13.8.2
- - glib-0.13.8.2
- - gtk2hs-buildtools-0.13.8.3
 nix:
-    packages:
-      - pkgconfig
-      - xorg.libX11
-      - xorg.libXext
-      - xorg.libXft
-      - xorg.libXpm
-      - xorg.libXrandr
-      - zlib
+  packages:
+    - pkgconfig
+    - xorg.libX11
+    - xorg.libXext
+    - xorg.libXft
+    - xorg.libXpm
+    - xorg.libXrandr
+    - zlib
